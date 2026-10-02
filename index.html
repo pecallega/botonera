@@ -56,7 +56,7 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 </aside>
 
 <script>
-// ===== AUDIOS BASE: agregá acá los archivos de la carpeta "audios" =====
+
 const BASE=[
   // "audios/cintia.mp3",
   // "audios/homerolasquierelocas.mp3",
@@ -68,7 +68,7 @@ const BASE=[
   // "audios/yesterdayrelease.mp3",
   
 ];
-// =======================================================================
+
 const KEYS="1234567890QWERTYUIOPASDFGHJKLZXCVBNM".split("");
 const ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:"interactive"});
 let items=[];      // {name, blob, buffer, key, playing:Set}
