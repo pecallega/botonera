@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Botonera al aire</title>
+<style>
+:root{--bg:#e9ecef;--pad:#fff;--ink:#1d232b;--mut:#66707c;--on:#e8423a;--line:#c9d0d7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171b21;--pad:#262d36;--ink:#eef1f4;--mut:#99a3ae;--line:#3a434e}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;padding:16px}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:16px}
+h1{font-size:1.25rem;margin:0}
+.bar{display:flex;gap:8px;flex-wrap:wrap}
+button,label.btn{font:inherit;border:2px solid var(--line);background:var(--pad);color:var(--ink);padding:10px 14px;border-radius:8px;cursor:pointer}
+button:focus-visible,label.btn:focus-within{outline:3px solid var(--on);outline-offset:2px}
+.stop{background:var(--on);border-color:var(--on);color:#fff;font-weight:bold}
+input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.pad{position:relative;min-height:96px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;touch-action:manipulation;user-select:none}
+.pad .k{font-size:1.6rem;font-weight:bold}
+.pad .n{font-size:.85rem;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pad.on{border-color:var(--on);background:var(--on);color:#fff}
+.pad.on .n{color:#fff}
+#msg{color:var(--mut);margin:0 0 14px;max-width:60ch;line-height:1.4}
+#menu{position:fixed;top:0;right:0;bottom:0;width:min(380px,100%);background:var(--bg);border-left:2px solid var(--line);padding:calc(16px + env(safe-area-inset-top,0px)) 16px 16px;overflow-y:auto;display:none;z-index:5}
+#menu.open{display:block}
+#menu h2{font-size:1.05rem;margin:0}
+#menu .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+#menu p{color:var(--mut);font-size:.9rem;line-height:1.4;margin:0 0 12px}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.row .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .key{min-width:84px;font-weight:bold}
+.row .key.wait{border-color:var(--on);color:var(--on)}
+.row .del{padding:10px 12px;color:var(--mut)}
+@media (prefers-reduced-motion:no-preference){.pad{transition:background .06s}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Botonera al aire</h1>
+  <div class="bar">
+    <label class="btn">Cargar audios<input id="file" type="file" accept="audio/*" multiple></label>
+    <button id="stop" class="stop">Parar todo</button>
+    <button id="burger" aria-label="Configurar teclas" title="Configurar teclas">☰</button>
+  </div>
+</header>
+<p id="msg">Cargá tus audios (MP3, WAV, OGG). Tocá un botón o apretá su tecla. Esc corta el primero que se disparó.</p>
+<div id="grid"></div>
+
+<aside id="menu" aria-label="Configurar teclas">
+  <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
+  <p>Tocá "Cambiar", después apretá la letra o número que quieras. Backspace deja el botón sin tecla. Esc cancela.</p>
+  <div id="list"></div>
+</aside>
+
+<script>
+// ===== AUDIOS BASE: agregá acá los archivos de la carpeta "audios" =====
+const BASE=[
+  // "audios/aplausos.mp3",
+  // "audios/risas.mp3",
+];
+// =======================================================================
+const KEYS="1234567890QWERTYUIOPASDFGHJKLZXCVBNM".split("");
+const ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:"interactive"});
+let items=[];      // {name, blob, buffer, key, playing:Set}
+let queue=[];      // {it, s} en orden de disparo
+let waiting=null;  // índice que está esperando una tecla
+const $=id=>document.getElementById(id);
+const grid=$("grid"),msg=$("msg"),menu=$("menu"),list=$("list");
+
+function db(){return new Promise((ok,no)=>{try{const r=indexedDB.open("botonera",1);
+  r.onupgradeneeded=()=>r.result.createObjectStore("s");
+  r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}})}
+async function save(){try{const d=await db();const t=d.transaction("s","readwrite");
+  const keys={};items.forEach(i=>keys[i.name]=i.key);
+  t.objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key})),keys},"items")}catch(e){console.warn("No se pudo guardar",e)}}
+async function load(){try{const d=await db();return await new Promise(ok=>{
+  const q=d.transaction("s").objectStore("s").get("items");q.onsuccess=()=>ok(q.result||[]);q.onerror=()=>ok([])})}catch(e){return []}}
+
+function freeKey(){return KEYS.find(k=>!items.some(i=>i.key===k))||""}
+async function add(name,blob,key,base){
+  try{
+    const buffer=await ctx.decodeAudioData(await blob.arrayBuffer());
+    items.push({name,blob,buffer,key:key===undefined?freeKey():key,base:!!base,playing:new Set()});
+  }catch(e){msg.textContent="No pude leer \""+name+"\". Probá con MP3 o WAV."}
+}
+
+function render(){
+  grid.innerHTML="";
+  items.forEach((it,idx)=>{
+    const b=document.createElement("button");
+    b.className="pad";b.id="p"+idx;
+    b.innerHTML='<span class="k"></span><span class="n"></span>';
+    b.querySelector(".k").textContent=it.key||"–";
+    b.querySelector(".n").textContent=it.name.replace(/\.[^.]+$/,"");
+    b.addEventListener("pointerdown",e=>{e.preventDefault();play(idx)});
+    b.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")e.preventDefault()});
+    grid.appendChild(b);
+    mark(idx);
+  });
+  renderMenu();
+}
+function renderMenu(){
+  list.innerHTML="";
+  items.forEach((it,idx)=>{
+    const r=document.createElement("div");r.className="row";
+    r.innerHTML='<span class="nm"></span><button class="key"></button><button class="del" title="Quitar audio">🗑</button>';
+    r.querySelector(".nm").textContent=it.name.replace(/\.[^.]+$/,"");
+    const kb=r.querySelector(".key");
+    kb.textContent=waiting===idx?"Apretá una tecla…":(it.key?it.key+" · Cambiar":"Asignar");
+    if(waiting===idx)kb.classList.add("wait");
+    kb.addEventListener("click",()=>{waiting=waiting===idx?null:idx;renderMenu()});
+    if(it.base)r.querySelector(".del").remove();
+    else r.querySelector(".del").addEventListener("click",()=>remove(idx));
+    list.appendChild(r);
+  });
+  if(!items.length)list.innerHTML="<p>Todavía no cargaste audios.</p>";
+}
+function mark(idx){const el=$("p"+idx);if(el)el.classList.toggle("on",items[idx].playing.size>0)}
+
+function play(idx){
+  const it=items[idx];if(!it)return;
+  if(ctx.state!=="running")ctx.resume();
+  const s=ctx.createBufferSource();
+  s.buffer=it.buffer;s.connect(ctx.destination);
+  const entry={it,s};
+  it.playing.add(s);queue.push(entry);mark(idx);
+  s.onended=()=>{it.playing.delete(s);queue=queue.filter(q=>q!==entry);mark(items.indexOf(it))};
+  s.start(0);
+}
+function stopFirst(){const q=queue[0];if(q){try{q.s.stop()}catch(e){}}}
+function stopAll(){queue.slice().forEach(q=>{try{q.s.stop()}catch(e){}})}
+function remove(idx){items[idx].playing.forEach(s=>{try{s.stop()}catch(e){}});
+  items.splice(idx,1);waiting=null;render();save()}
+function assign(idx,k){
+  const other=items.findIndex((i,n)=>n!==idx&&i.key===k);
+  if(other>=0)items[other].key=items[idx].key; // si ya la usa otro, se intercambian
+  items[idx].key=k;waiting=null;render();save();
+}
+
+$("file").addEventListener("change",async e=>{
+  for(const f of e.target.files)await add(f.name,f);
+  e.target.value="";render();save();
+  if(items.length)msg.textContent="Listo. Tocá un botón o apretá su tecla.";
+});
+$("stop").addEventListener("click",stopAll);
+$("burger").addEventListener("click",()=>{menu.classList.toggle("open");waiting=null;renderMenu()});
+$("close").addEventListener("click",()=>{menu.classList.remove("open");waiting=null;renderMenu()});
+
+document.addEventListener("keydown",e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  if(waiting!==null){
+    e.preventDefault();
+    if(e.key==="Escape"){waiting=null;renderMenu();return}
+    if(e.key==="Backspace"||e.key==="Delete"){items[waiting].key="";waiting=null;render();save();return}
+    if(e.key.length===1&&KEYS.includes(e.key.toUpperCase()))assign(waiting,e.key.toUpperCase());
+    return;
+  }
+  if(e.repeat)return;
+  if(e.key==="Escape"){stopFirst();return}
+  const idx=items.findIndex(i=>i.key&&i.key===e.key.toUpperCase());
+  if(idx>=0){e.preventDefault();play(idx)}
+});
+
+(async()=>{
+  const saved=await load();
+  const own=Array.isArray(saved)?saved:(saved.own||[]);
+  const keys=Array.isArray(saved)?{}:(saved.keys||{});
+  for(const b of BASE){
+    try{
+      const r=await fetch(b);if(!r.ok)throw new Error(r.status);
+      const name=decodeURIComponent(b.split("/").pop());
+      await add(name,await r.blob(),keys[name]===undefined?null:keys[name],true);
+    }catch(e){console.warn("No se pudo cargar",b,e)}
+  }
+  for(const s of own)await add(s.name,s.blob,s.key);
+  items.forEach(i=>{if(i.key===null)i.key=freeKey()});
+  render();
+  if(items.length)msg.textContent="Listo. Tocá un botón o apretá su tecla. Con ☰ cambiás las teclas.";
+})();
+</script>
+</body>
+</html>
