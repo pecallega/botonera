@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:"Satoshi";src:url(fonts/Satoshi-Regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"Satoshi";src:url(fonts/Satoshi-Medium.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:"Satoshi";src:url(fonts/Satoshi-Bold.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Satoshi";src:url(fonts/Satoshi-Regular.woff2) format("woff2"),url(Satoshi-Regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Satoshi";src:url(fonts/Satoshi-Medium.woff2) format("woff2"),url(Satoshi-Medium.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Satoshi";src:url(fonts/Satoshi-Bold.woff2) format("woff2"),url(Satoshi-Bold.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
 :root{--logo:drop-shadow(0 6px 14px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(232,35,42,.35));--bg:#0b0b0d;--ink:#f4f4f6;--mut:rgba(255,255,255,.55);--on:#e8232a;--glass:rgba(255,255,255,.055);--glass2:rgba(255,255,255,.1);--line:rgba(255,255,255,.1);--disp:"Satoshi",system-ui,-apple-system,"Segoe UI",sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px);color-scheme:dark}
@@ -106,7 +106,7 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 #cm input[type=color]{width:38px;height:32px;padding:0;border:1px solid var(--line);border-radius:10px;background:none;cursor:pointer}
 /* ---- ajustes: mayúsculas, íconos, logo, campos numéricos ---- */
 header{justify-content:flex-start;align-items:flex-start}
-.brand{flex-wrap:wrap;align-items:flex-start;gap:22px}
+.brand{flex-wrap:wrap;align-items:flex-start;gap:22px clamp(40px,7vw,96px)}
 .logo{height:138px}
 .main{display:flex;flex-direction:column;gap:14px;min-width:0}
 h1,#air,#splash .tx{font-family:"Archivo","Satoshi",system-ui,sans-serif;font-weight:800;font-stretch:88%}
@@ -452,6 +452,7 @@ async function repoList(){
 }
 setTimeout(()=>$("splash").classList.add("off"),8000);
 $("splash").addEventListener("click",()=>$("splash").classList.add("off"));
+if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{msg.textContent='La fuente Satoshi no cargó: revisá que la carpeta "fonts" esté junto a index.html en GitHub.'});
 (async()=>{
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
   const saved=await load();
