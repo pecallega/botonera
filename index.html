@@ -18,7 +18,8 @@ button:focus-visible,label.btn:focus-within{outline:3px solid var(--on);outline-
 .stop{background:var(--on);border-color:var(--on);color:#fff;font-weight:bold}
 input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.pad{position:relative;min-height:112px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:4px;padding:8px 10px;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.cell{position:relative}
+.pad{position:relative;width:100%;height:100%;min-height:112px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:4px;padding:8px 10px;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .pad .k{font-size:1.5rem;font-weight:bold;line-height:1}
 .pad .w{display:block;width:100%;height:24px;opacity:.6;pointer-events:none;fill:currentColor}
 .pad .n{font-size:.82rem;line-height:1.15;color:var(--mut);overflow:hidden;overflow-wrap:anywhere;word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;max-height:3.5em}
@@ -30,7 +31,13 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 .pad.on .n{color:#fff}
 .pad.col.on{background:var(--c);color:var(--fg);box-shadow:0 0 0 4px var(--on)}
 .pad.col.on .n{color:var(--fg)}
+#msg:empty{display:none}
 #msg{color:var(--mut);margin:0 0 14px;max-width:70ch;line-height:1.4}
+.gear{position:absolute;top:6px;right:6px;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,.32);color:#fff;font-size:17px;line-height:28px;text-align:center;z-index:2}
+.gear:hover{background:rgba(0,0,0,.6)}
+.so{display:none;position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(0,0,0,.6);border:2px solid #fff;pointer-events:none;z-index:1}
+.so::after{content:"";position:absolute;left:14px;top:14px;width:12px;height:12px;background:#fff;border-radius:2px}
+.pad.on .so{display:block}
 #menu{position:fixed;top:0;right:0;bottom:0;width:min(380px,100%);background:var(--bg);border-left:2px solid var(--line);padding:calc(16px + env(safe-area-inset-top,0px)) 16px 16px;overflow-y:auto;display:none;z-index:5}
 #menu.open{display:block}
 #menu h2{font-size:1.05rem;margin:0}
@@ -58,7 +65,7 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
     <button id="burger" aria-label="Configurar teclas" title="Configurar teclas">☰</button>
   </div>
 </header>
-<p id="msg">Cargando…</p>
+<p id="msg"></p>
 <div id="grid"></div>
 
 <aside id="menu" aria-label="Configurar teclas">
@@ -130,9 +137,13 @@ function fg(h){const n=parseInt(h.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return
 function render(){
   grid.innerHTML="";
   items.forEach((it,idx)=>{
+    const cell=document.createElement("div");cell.className="cell";
     const b=document.createElement("button");
     b.className="pad";b.id="p"+idx;b.title=nice(it.name);
-    b.innerHTML='<span class="k"></span>'+waveSVG(it.peaks)+'<span class="n"></span>';
+    b.innerHTML='<span class="k"></span>'+waveSVG(it.peaks)+'<span class="n"></span><span class="so"></span>';
+    const g=document.createElement("button");
+    g.className="gear";g.textContent="\u2699\uFE0E";g.title="Cambiar color";g.setAttribute("aria-label","Cambiar color de "+nice(it.name));
+    g.addEventListener("click",e=>{e.stopPropagation();const r=g.getBoundingClientRect();openCm(r.left,r.bottom+4,idx)});
     b.querySelector(".k").textContent=it.key||"–";
     b.querySelector(".n").textContent=nice(it.name);
     const c=colors[it.name];
@@ -140,7 +151,7 @@ function render(){
     b.addEventListener("pointerdown",e=>{if(e.button!==0)return;e.preventDefault();hideCm();toggle(idx)});
     b.addEventListener("contextmenu",e=>{e.preventDefault();openCm(e.clientX,e.clientY,idx)});
     b.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")e.preventDefault()});
-    grid.appendChild(b);mark(idx);
+    cell.appendChild(b);cell.appendChild(g);grid.appendChild(cell);mark(idx);
   });
   renderMenu();
 }
@@ -187,7 +198,7 @@ window.addEventListener("scroll",hideCm,true);window.addEventListener("resize",h
 $("file").addEventListener("change",async e=>{
   for(const f of e.target.files)await add(f.name,f);
   e.target.value="";render();save();
-  if(items.length)msg.textContent="Listo. Tocá un botón (otra vez para frenarlo) o apretá su tecla. Clic derecho = color.";
+  if(items.length&&msg.textContent.indexOf("Cargá")===0)msg.textContent="";
 });
 $("stop").addEventListener("click",stopAll);
 $("burger").addEventListener("click",()=>{menu.classList.toggle("open");waiting=null;renderMenu()});
@@ -232,7 +243,7 @@ async function repoList(){
   for(const s of own)await add(s.name,s.blob,s.key);
   items.forEach(i=>{if(i.key===null)i.key=freeKey()});
   render();
-  msg.textContent=items.length?"Listo. Tocá un botón (otra vez para frenarlo) o apretá su tecla. Clic derecho = color. ☰ = teclas.":"Cargá tus audios (MP3, WAV, OGG) con el botón de arriba.";
+  if(!items.length&&!msg.textContent)msg.textContent="Cargá tus audios (MP3, WAV, OGG) con el botón de arriba.";
 })();
 </script>
 </body>
