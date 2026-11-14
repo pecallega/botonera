@@ -44,6 +44,9 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 #menu .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 #menu p{color:var(--mut);font-size:.9rem;line-height:1.4;margin:0 0 12px}
 .row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.row{padding:4px 6px;border-radius:8px}
+.row:hover{background:var(--hov)}
+.row button:hover{background:var(--pad);border-color:var(--on)}
 .row .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .row .key{min-width:84px;font-weight:bold}
 .row .key.wait{border-color:var(--on);color:var(--on)}
@@ -143,7 +146,7 @@ function render(){
     b.innerHTML='<span class="k"></span>'+waveSVG(it.peaks)+'<span class="n"></span><span class="so"></span>';
     const g=document.createElement("button");
     g.className="gear";g.textContent="\u2699\uFE0E";g.title="Cambiar color";g.setAttribute("aria-label","Cambiar color de "+nice(it.name));
-    g.addEventListener("click",e=>{e.stopPropagation();const r=g.getBoundingClientRect();openCm(r.left,r.bottom+4,idx)});
+    g.addEventListener("click",e=>{e.stopPropagation();if(cm.style.display==="block"&&cmIdx===idx){hideCm();return}const r=g.getBoundingClientRect();openCm(r.left,r.bottom+4,idx)});
     b.querySelector(".k").textContent=it.key||"–";
     b.querySelector(".n").textContent=nice(it.name);
     const c=colors[it.name];
@@ -191,7 +194,11 @@ function hideCm(){cm.style.display="none";cmIdx=null}
 function setColor(c){if(cmIdx===null)return;const n=items[cmIdx].name;if(c)colors[n]=c;else delete colors[n];hideCm();render();save()}
 $("cpick").addEventListener("change",e=>setColor(e.target.value));
 $("creset").addEventListener("click",()=>setColor(null));
-document.addEventListener("pointerdown",e=>{if(cm.style.display==="block"&&!cm.contains(e.target))hideCm()},true);
+document.addEventListener("pointerdown",e=>{
+  const t=e.target;
+  if(cm.style.display==="block"&&!cm.contains(t)&&!(t.closest&&t.closest(".gear")))hideCm();
+  if(menu.classList.contains("open")&&!menu.contains(t)&&!(t.closest&&t.closest("#burger"))){menu.classList.remove("open");waiting=null;renderMenu()}
+},true);
 window.addEventListener("scroll",hideCm,true);window.addEventListener("resize",hideCm);
 
 /* ---------- eventos ---------- */
