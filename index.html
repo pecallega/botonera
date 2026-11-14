@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Botonera al aire · v1.12 · actualización n.º 12 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -124,6 +125,12 @@ label.btn{display:inline-flex;align-items:center;gap:8px}
 .num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .num input:focus{outline:2px solid var(--on);outline-offset:1px}
 .num i{font-style:normal;font-size:.7rem;font-weight:700;letter-spacing:.05em;color:var(--mut);min-width:16px}
+#sig{display:flex;align-items:center;gap:10px;padding:6px 14px;border-radius:999px;background:rgba(18,18,22,.7);border:1px solid var(--line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:.78rem;color:var(--mut)}
+#sig a{padding:0;background:none;border:0;border-radius:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+#sig .ver{padding-left:10px;border-left:1px solid var(--line);font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.cdel{width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;padding:7px 10px;color:#ff7377;border-color:rgba(232,35,42,.4);background:rgba(232,35,42,.08)}
+.cdel:hover{background:rgba(232,35,42,.22);border-color:var(--on);color:#fff}
+.row .restore{width:100%;margin-top:8px}
 @media (prefers-reduced-motion:no-preference){
 .pad,.logo{transition:transform .15s,background .15s,border-color .15s,box-shadow .2s}
 body.air .lamp::after,body.live .lamp::after{animation:ring 1.2s ease-out infinite}
@@ -174,7 +181,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
 <div id="grid"></div>
 
-<footer id="sig"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a></footer>
+<footer id="sig" title="Versión 1.12 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.12</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
@@ -186,6 +193,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <div id="cm" role="menu" aria-label="Color del botón">
   <div class="sw" id="sw"></div>
   <div class="ft"><input type="color" id="cpick" title="Color personalizado"><button id="creset">Sin color</button></div>
+  <button id="cdel" class="cdel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar botón</button>
 </div>
 
 <script>
@@ -381,15 +389,19 @@ function renderMenu(){
     kb.textContent=waiting===idx?"Apretá una tecla…":(it.key?it.key+" · Cambiar":"Asignar");
     if(waiting===idx)kb.classList.add("wait");
     kb.addEventListener("click",()=>{waiting=waiting===idx?null:idx;renderMenu()});
-    if(it.base)r.querySelector(".del").remove();
-    else r.querySelector(".del").addEventListener("click",()=>remove(idx));
+    r.querySelector(".del").addEventListener("click",()=>askRemove(idx));
     list.appendChild(r);
   });
   if(!items.length)list.innerHTML="<p>Todavía no cargaste audios.</p>";
+  if(hidden.size){const b=document.createElement("button");b.className="restore";b.textContent="Restaurar ocultos ("+hidden.size+")";
+    b.addEventListener("click",()=>{hidden.clear();try{localStorage.removeItem("botonera_hidden")}catch(e){}location.reload()});list.appendChild(b)}
 }
 function mark(idx){const el=$("p"+idx);if(el&&items[idx])el.classList.toggle("on",items[idx].playing.size>0);document.body.classList.toggle("air",items.some(i=>i.playing.size>0))}
-function remove(idx){items[idx].playing.forEach(s=>{try{s.stop()}catch(e){}});
-  delete colors[items[idx].name];items.splice(idx,1);waiting=null;render();save()}
+function remove(idx){const it=items[idx];it.playing.forEach(s=>{try{s.stop()}catch(e){}});
+  if(it.base){hidden.add(it.name);try{localStorage.setItem("botonera_hidden",JSON.stringify([...hidden]))}catch(e){}}
+  delete colors[it.name];items.splice(idx,1);waiting=null;render();save()}
+function askRemove(idx){const it=items[idx];if(!it)return;
+  if(confirm("¿Eliminar el botón «"+nice(it.name)+"»?"+(it.base?"\n\nEl archivo sigue en GitHub: solo se oculta en este navegador.":"")))remove(idx)}
 function assign(idx,k){
   const o=items.findIndex((i,n)=>n!==idx&&i.key===k);
   if(o>=0)items[o].key=items[idx].key;
@@ -407,6 +419,7 @@ function hideCm(){cm.style.display="none";cmIdx=null}
 function setColor(c){if(cmIdx===null)return;const n=items[cmIdx].name;if(c)colors[n]=c;else delete colors[n];hideCm();render();save()}
 $("cpick").addEventListener("change",e=>setColor(e.target.value));
 $("creset").addEventListener("click",()=>setColor(null));
+$("cdel").addEventListener("click",()=>{const i=cmIdx;hideCm();if(i!==null)askRemove(i)});
 document.addEventListener("pointerdown",e=>{
   const t=e.target;
   if(cm.style.display==="block"&&!cm.contains(t)&&!(t.closest&&t.closest(".gear")))hideCm();
@@ -452,6 +465,7 @@ async function repoList(){
 }
 setTimeout(()=>$("splash").classList.add("off"),8000);
 $("splash").addEventListener("click",()=>$("splash").classList.add("off"));
+let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem("botonera_hidden")||"[]"))}catch(e){}
 if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{msg.textContent='La fuente Satoshi no cargó: revisá que la carpeta "fonts" esté junto a index.html en GitHub.'});
 (async()=>{
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
@@ -459,6 +473,7 @@ if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").c
   const own=saved.own||[],keys=saved.keys||{};colors=saved.colors||{};
   const names=Array.from(new Set(BASE.concat(await repoList())));
   for(const n of names){
+    if(hidden.has(n))continue;
     try{
       const r=await fetch("audios/"+encodeURIComponent(n));if(!r.ok)throw new Error(r.status);
       await add(n,await r.blob(),keys[n]===undefined?null:keys[n],true);
