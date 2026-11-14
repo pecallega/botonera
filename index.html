@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.12 · actualización n.º 12 · por @pecallega -->
+<!-- Botonera al aire · v1.13 · actualización n.º 13 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -117,7 +117,7 @@ button:not(.pad):not(.gear),label.btn,select{font-size:.82rem;font-weight:700}
 label.btn{display:inline-flex;align-items:center;gap:8px}
 .ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fx{grid-template-columns:auto 150px 88px}
-.fx button,.fx .lbl{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:132px}
+.fx button,.fx .lbl{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:152px;white-space:nowrap}
 .fx .lbl{font-size:.82rem;font-weight:700}
 .fx select{font-size:.75rem}
 .num{display:flex;align-items:center;justify-content:flex-end;gap:5px}
@@ -131,6 +131,32 @@ label.btn{display:inline-flex;align-items:center;gap:8px}
 .cdel{width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;padding:7px 10px;color:#ff7377;border-color:rgba(232,35,42,.4);background:rgba(232,35,42,.08)}
 .cdel:hover{background:rgba(232,35,42,.22);border-color:var(--on);color:#fff}
 .row .restore{width:100%;margin-top:8px}
+/* ---- menú contextual con submenú de color ---- */
+#cm{width:210px;padding:6px}
+#cm .mw{position:relative}
+#cm .mi{display:flex;align-items:center;justify-content:flex-start;gap:10px;width:100%;padding:9px 10px;border:1px solid transparent;border-radius:10px;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+#cm .mi:hover,#cm .mw:hover>.mi,#cm .mw.open>.mi{background:var(--glass2)}
+#cm .mi.del{color:#ff7377}
+#cm .mi.del:hover{background:rgba(232,35,42,.2);color:#fff}
+#cm .chev{width:14px;height:14px;margin-left:auto;opacity:.6}
+#cm .sub{display:none;position:absolute;top:-6px;left:calc(100% + 4px);width:208px;padding:10px;background:rgba(24,24,28,.97);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#cm .sub::before{content:"";position:absolute;top:0;bottom:0;left:-8px;width:8px}
+#cm.flip .sub{left:auto;right:calc(100% + 4px)}
+#cm.flip .sub::before{left:auto;right:-8px}
+#cm .mw:hover>.sub,#cm .mw.open>.sub,#cm .mw:focus-within>.sub{display:block}
+#cm .pk{display:flex;align-items:center;gap:6px;color:var(--mut)}
+/* ---- Insert audio: nivel de entrada + vúmetro ---- */
+.fx{grid-template-columns:152px 150px 88px}
+.fx .ins{grid-column:1/-1;display:none;grid-template-columns:152px 150px 88px;gap:8px 10px;align-items:center;padding-top:6px;border-top:1px solid var(--line)}
+body.ins .fx .ins{display:grid}
+.gv{width:100%;text-align:right;font-size:.85rem;font-weight:700}
+.vu{position:relative;height:14px;margin-bottom:14px;border-radius:7px;background:rgba(255,255,255,.09)}
+.vfill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:7px;background:rgba(244,244,246,.92)}
+.vfill.hot{background:var(--on);box-shadow:0 0 12px rgba(232,35,42,.7)}
+.vu .m3{position:absolute;top:-3px;bottom:-3px;left:93.75%;width:1px;background:rgba(255,255,255,.55)}
+.vu i{position:absolute;top:100%;margin-top:3px;transform:translateX(-50%);font-style:normal;font-size:.58rem;color:var(--mut);white-space:nowrap}
+.clip{visibility:hidden;justify-self:start;margin-bottom:14px;padding:3px 8px;border-radius:6px;background:var(--on);color:#fff;font-weight:800;font-size:.68rem;letter-spacing:.1em}
+.clip.on{visibility:visible}
 @media (prefers-reduced-motion:no-preference){
 .pad,.logo{transition:transform .15s,background .15s,border-color .15s,box-shadow .2s}
 body.air .lamp::after,body.live .lamp::after{animation:ring 1.2s ease-out infinite}
@@ -168,9 +194,17 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
           <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="10" opacity=".55"/></svg>Reverb</span>
           <input id="rev" type="range" min="0" max="100" step="1" value="0" aria-label="Cantidad de reverb">
           <span class="num"><input id="rnum" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" aria-label="Reverb en porcentaje (escribir valor exacto)"><i>%</i></span>
-          <button id="mic" aria-pressed="false" title="Escucha la entrada de la placa con delay y reverb. Usá auriculares para evitar el acople."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Mic en vivo</button>
+          <button id="mic" aria-pressed="false" title="Insert audio: la entrada de la placa suena en vivo con el delay y el reverb. Usá auriculares para evitar el acople. Lo que grabás también pasa por el nivel de entrada."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Insert audio</button>
           <select id="indev" aria-label="Entrada de audio"><option value="">Entrada predeterminada</option></select>
           <span id="mv" class="v"></span>
+          <div class="ins">
+            <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Nivel</span>
+            <input id="gain" type="range" min="0" max="40" step="1" value="0" aria-label="Nivel de entrada en decibeles">
+            <span id="gval" class="gv">+0 dB</span>
+            <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M10 20V6M15 20v-10M20 20V4"/></svg>VU</span>
+            <div class="vu" aria-label="Vúmetro de entrada"><div class="vfill" id="vfill"></div><span class="m3"></span><i style="left:0">−48</i><i style="left:50%">−24</i><i style="left:75%">−12</i><i style="left:93.75%">−3</i></div>
+            <span id="clip" class="clip" role="status">CLIP</span>
+          </div>
         </div>
         <button id="burger" aria-label="Configurar teclas" title="Configurar teclas">☰</button>
       </div>
@@ -181,7 +215,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
 <div id="grid"></div>
 
-<footer id="sig" title="Versión 1.12 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.12</span></footer>
+<footer id="sig" title="Versión 1.13 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.13</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
@@ -190,10 +224,15 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
   <img class="mlogo" src="logo.png" alt="" onerror="this.style.display='none'">
 </aside>
 
-<div id="cm" role="menu" aria-label="Color del botón">
-  <div class="sw" id="sw"></div>
-  <div class="ft"><input type="color" id="cpick" title="Color personalizado"><button id="creset">Sin color</button></div>
-  <button id="cdel" class="cdel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar botón</button>
+<div id="cm" role="menu" aria-label="Opciones del botón">
+  <div class="mw" id="mw">
+    <button class="mi" id="mcol" role="menuitem" aria-haspopup="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>Color<svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+    <div class="sub" id="csub">
+      <div class="sw" id="sw"></div>
+      <div class="ft"><label class="pk" title="Color personalizado"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg><input type="color" id="cpick"></label><button id="creset">Sin color</button></div>
+    </div>
+  </div>
+  <button class="mi del" id="cdel" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar botón</button>
 </div>
 
 <script>
@@ -252,26 +291,58 @@ $("rev").addEventListener("input",e=>{fx.rev=+e.target.value;applyFx()});
 applyFx();
 
 /* ---------- entrada de la placa: en vivo + grabar ---------- */
-const mic={stream:null,src:null,live:false,rec:null,dev:""};
-try{mic.dev=localStorage.getItem("botonera_dev")||""}catch(e){}
+const mic={stream:null,src:null,live:false,rec:null,dev:"",gainDb:0};
+try{mic.dev=localStorage.getItem("botonera_dev")||"";mic.gainDb=Math.min(40,Math.max(0,parseInt(localStorage.getItem("botonera_gain"),10)||0))}catch(e){}
 const MICFAIL="No pude acceder a la entrada de audio. Revisá el permiso del micrófono en la barra del navegador.",HEAD="Usá auriculares para evitar el acople (silbido).";
+// cadena de entrada: placa -> nivel (inGain) -> vúmetro | monitoreo con efectos | grabación
+const inGain=ctx.createGain(),monGain=ctx.createGain(),an=ctx.createAnalyser(),recDest=ctx.createMediaStreamDestination(),mute=ctx.createGain();
+an.fftSize=2048;mute.gain.value=0;monGain.gain.value=0;
+inGain.connect(an);an.connect(mute);mute.connect(ctx.destination);
+inGain.connect(recDest);
+inGain.connect(monGain);monGain.connect(dry);monGain.connect(dlyIn);monGain.connect(revSend);
+function applyGain(){
+  inGain.gain.setTargetAtTime(Math.pow(10,mic.gainDb/20),ctx.currentTime,.01);
+  $("gain").value=mic.gainDb;$("gval").textContent=(mic.gainDb>0?"+":"")+mic.gainDb+" dB";
+  try{localStorage.setItem("botonera_gain",mic.gainDb)}catch(e){}
+}
+$("gain").addEventListener("input",e=>{mic.gainDb=+e.target.value;applyGain()});
+applyGain();
+// vúmetro: rojo por encima de -3 dB; CLIP al llegar a 0 dB y se queda 1,5 s después de que baja
+const vf=$("vfill"),clipEl=$("clip"),fbuf=new Float32Array(an.fftSize),bbuf=new Uint8Array(an.fftSize);
+let lvl=-100,clipUntil=0,raf=0;
+function meterLoop(){
+  let pk=0;const f=!!an.getFloatTimeDomainData;
+  if(f){an.getFloatTimeDomainData(fbuf);for(let i=0;i<fbuf.length;i++){const v=Math.abs(fbuf[i]);if(v>pk)pk=v}}
+  else{an.getByteTimeDomainData(bbuf);for(let i=0;i<bbuf.length;i++){const v=Math.abs(bbuf[i]-128)/128;if(v>pk)pk=v}}
+  const db=pk>0?20*Math.log10(pk):-100,now=performance.now();
+  lvl=db>lvl?db:Math.max(db,lvl-.8);
+  vf.style.width=Math.max(0,Math.min(100,(lvl+48)/48*100))+"%";
+  vf.classList.toggle("hot",lvl>-3);
+  if(pk>=(f?.999:.99))clipUntil=now+1500;
+  clipEl.classList.toggle("on",now<clipUntil);
+  raf=requestAnimationFrame(meterLoop);
+}
+function syncIns(){
+  const on=mic.live||!!mic.rec;document.body.classList.toggle("ins",on);
+  if(on&&!raf)raf=requestAnimationFrame(meterLoop);
+  if(!on){cancelAnimationFrame(raf);raf=0;lvl=-100;clipUntil=0;vf.style.width="0";vf.classList.remove("hot");clipEl.classList.remove("on")}
+}
 async function openMic(){
   if(mic.stream)return mic.stream;
   const a={echoCancellation:false,noiseSuppression:false,autoGainControl:false};
   try{mic.stream=await navigator.mediaDevices.getUserMedia({audio:mic.dev?Object.assign({deviceId:{exact:mic.dev}},a):a})}
   catch(e){if(!mic.dev)throw e;mic.dev="";mic.stream=await navigator.mediaDevices.getUserMedia({audio:a})}
+  mic.src=ctx.createMediaStreamSource(mic.stream);mic.src.connect(inGain);
   fillDevs();return mic.stream;
 }
 async function fillDevs(){try{
   const l=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==="audioinput"),sel=$("indev");sel.innerHTML="";
   l.forEach((d,i)=>{const o=document.createElement("option");o.value=d.deviceId;o.textContent=d.label||("Entrada "+(i+1));sel.appendChild(o)});
   const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId;if(cur)sel.value=cur}catch(e){}}
-function routeLive(){
-  if(mic.src){try{mic.src.disconnect()}catch(e){}mic.src=null}
-  if(mic.live&&mic.stream){mic.src=ctx.createMediaStreamSource(mic.stream);mic.src.connect(dry);mic.src.connect(dlyIn);mic.src.connect(revSend)}
-}
-function closeMicIfIdle(){if(!mic.live&&!mic.rec&&mic.stream){mic.stream.getTracks().forEach(t=>t.stop());mic.stream=null}}
-function liveUI(){$("mic").classList.toggle("active",mic.live);$("mic").setAttribute("aria-pressed",mic.live);$("mv").textContent=mic.live?"EN VIVO":"";document.body.classList.toggle("live",mic.live)}
+function dropStream(){if(mic.src){try{mic.src.disconnect()}catch(e){}mic.src=null}if(mic.stream){mic.stream.getTracks().forEach(t=>t.stop());mic.stream=null}}
+function routeLive(){monGain.gain.setTargetAtTime(mic.live&&mic.stream?1:0,ctx.currentTime,.01)}
+function closeMicIfIdle(){if(!mic.live&&!mic.rec)dropStream()}
+function liveUI(){$("mic").classList.toggle("active",mic.live);$("mic").setAttribute("aria-pressed",mic.live);$("mv").textContent=mic.live?"ON":"";document.body.classList.toggle("live",mic.live);syncIns()}
 $("mic").addEventListener("click",async()=>{
   if(mic.live){mic.live=false;routeLive();closeMicIfIdle();liveUI();if(msg.textContent===HEAD)msg.textContent="";return}
   try{if(ctx.state!=="running")ctx.resume();await openMic();mic.live=true;routeLive();liveUI();msg.textContent=HEAD}
@@ -280,7 +351,7 @@ $("mic").addEventListener("click",async()=>{
 $("indev").addEventListener("change",async e=>{
   mic.dev=e.target.value;e.target.blur();try{localStorage.setItem("botonera_dev",mic.dev)}catch(x){}
   if(mic.rec||!mic.stream)return;
-  mic.stream.getTracks().forEach(t=>t.stop());mic.stream=null;
+  dropStream();
   if(mic.live){try{await openMic();routeLive()}catch(x){mic.live=false;liveUI();msg.textContent=MICFAIL}}
 });
 function recCell(){
@@ -301,16 +372,16 @@ async function recToggle(){
   if(!window.MediaRecorder){msg.textContent="Este navegador no permite grabar. Probá con Chrome, Brave, Edge o Firefox.";return}
   try{
     if(ctx.state!=="running")ctx.resume();
-    const st=await openMic(),chunks=[],mr=new MediaRecorder(st);
+    await openMic();const chunks=[],mr=new MediaRecorder(recDest.stream);
     mic.rec={mr,t0:Date.now(),timer:setInterval(tick,250)};
     mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
     mr.onstop=async()=>{
-      clearInterval(mic.rec.timer);mic.rec=null;closeMicIfIdle();
+      clearInterval(mic.rec.timer);mic.rec=null;closeMicIfIdle();syncIns();
       const type=mr.mimeType||"audio/webm",ext=/mp4/.test(type)?"m4a":/ogg/.test(type)?"ogg":"webm",d=new Date(),z=n=>String(n).padStart(2,"0");
       await add("Grabación "+z(d.getHours())+"."+z(d.getMinutes())+"."+z(d.getSeconds())+"."+ext,new Blob(chunks,{type}));
       render();save();
     };
-    mr.start();render();
+    mr.start();render();syncIns();
   }catch(e){mic.rec=null;msg.textContent=MICFAIL}
 }
 
@@ -412,13 +483,15 @@ function assign(idx,k){
 PALETTE.forEach(c=>{const b=document.createElement("button");b.style.background=c;b.title=c;b.setAttribute("aria-label","Color "+c);
   b.addEventListener("click",()=>setColor(c));$("sw").appendChild(b)});
 function openCm(x,y,idx){cmIdx=idx;cm.style.display="block";
-  const w=cm.offsetWidth,h=cm.offsetHeight;
-  cm.style.left=Math.max(4,Math.min(x,innerWidth-w-8))+"px";cm.style.top=Math.max(4,Math.min(y,innerHeight-h-8))+"px";
+  const w=cm.offsetWidth,h=cm.offsetHeight,L=Math.max(4,Math.min(x,innerWidth-w-8));
+  cm.style.left=L+"px";cm.style.top=Math.max(4,Math.min(y,innerHeight-h-8))+"px";
+  cm.classList.toggle("flip",L+w+216>innerWidth);$("mw").classList.remove("open");
   $("cpick").value=colors[items[idx].name]||"#2f80ed"}
 function hideCm(){cm.style.display="none";cmIdx=null}
 function setColor(c){if(cmIdx===null)return;const n=items[cmIdx].name;if(c)colors[n]=c;else delete colors[n];hideCm();render();save()}
 $("cpick").addEventListener("change",e=>setColor(e.target.value));
 $("creset").addEventListener("click",()=>setColor(null));
+$("mcol").addEventListener("click",()=>$("mw").classList.toggle("open"));
 $("cdel").addEventListener("click",()=>{const i=cmIdx;hideCm();if(i!==null)askRemove(i)});
 document.addEventListener("pointerdown",e=>{
   const t=e.target;
