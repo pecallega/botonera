@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Botonera al aire</title>
+<link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
@@ -12,6 +13,18 @@
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px);color-scheme:dark}
 body{margin:0;min-height:100vh;color:var(--ink);font-family:"Barlow Condensed","Arial Narrow",Impact,sans-serif;font-size:17px;letter-spacing:.02em;padding:16px;background:radial-gradient(900px 420px at 50% -8%,rgba(232,35,42,.30),transparent 65%),repeating-linear-gradient(135deg,#0d0d0d 0 14px,#111 14px 28px);background-color:#0d0d0d;background-attachment:fixed}
+body::before{content:"";position:fixed;right:-6vmin;bottom:-6vmin;width:min(85vmin,760px);aspect-ratio:663/677;background:url(logo.png) center/contain no-repeat;opacity:.09;transform:rotate(-12deg);pointer-events:none;z-index:0}
+header,.tape,#msg,#grid,#empty{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{height:92px;width:auto;transform:rotate(-4deg);filter:drop-shadow(0 4px 0 rgba(0,0,0,.6)) drop-shadow(0 0 14px rgba(232,35,42,.35))}
+.logo:hover{transform:rotate(4deg) scale(1.08)}
+#empty{display:none;text-align:center;padding:10px 0 40px}
+#empty img{width:min(72vw,380px);height:auto;filter:drop-shadow(0 8px 0 rgba(0,0,0,.6)) drop-shadow(0 0 24px rgba(232,35,42,.45))}
+#splash{position:fixed;inset:0;z-index:30;background:#0d0d0d radial-gradient(600px 400px at 50% 40%,rgba(232,35,42,.35),transparent 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .5s}
+#splash.off{opacity:0;pointer-events:none}
+#splash .lg{width:min(62vw,340px);height:auto;filter:drop-shadow(0 8px 0 rgba(0,0,0,.6))}
+#splash .tx{font-family:var(--disp);text-transform:uppercase;font-size:.95rem;color:var(--mut)}
+.mlogo{display:block;width:150px;height:auto;margin:26px auto 4px;opacity:.9;transform:rotate(-4deg);filter:drop-shadow(0 4px 0 rgba(0,0,0,.6))}
 header{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;justify-content:space-between;margin-bottom:12px}
 h1{display:flex;align-items:center;gap:10px;margin:0;font-family:var(--disp);font-weight:400;font-size:clamp(1.3rem,4.5vw,1.9rem);text-transform:uppercase;transform:rotate(-2deg);text-shadow:3px 3px 0 #000}
 h1 em{font-style:normal;color:var(--on)}
@@ -78,14 +91,22 @@ input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 .pad{transition:transform .12s,background .06s,box-shadow .12s}
 .pad.on{animation:pulse 1s ease-in-out infinite}
 body.air .lamp{animation:blink 1s steps(2) infinite}
+body.air .logo{animation:beat .6s ease-in-out infinite}
+.logo{transition:transform .2s}
+#splash .lg{animation:pop .7s cubic-bezier(.2,1.4,.4,1)}
+#empty img{animation:float 3s ease-in-out infinite}
+@keyframes beat{50%{transform:rotate(-4deg) scale(1.1)}}
+@keyframes pop{from{transform:scale(.3) rotate(-15deg);opacity:0}}
+@keyframes float{50%{transform:translateY(-8px) rotate(1deg)}}
 @keyframes pulse{50%{box-shadow:0 5px 0 #000,0 0 30px 8px rgba(232,35,42,.95)}}
 @keyframes blink{50%{opacity:.35}}
 }
 </style>
 </head>
 <body>
+<div id="splash"><img class="lg" src="logo.png" alt="" onerror="this.parentNode.style.display='none'"><div class="tx">Cargando audios…</div></div>
 <header>
-  <h1><span class="lamp" aria-hidden="true"></span>Botonera <em>al aire</em></h1>
+  <div class="brand"><img class="logo" src="logo.png" alt="" onerror="this.style.display='none'"><h1><span class="lamp" aria-hidden="true"></span>Botonera <em>al aire</em></h1></div>
   <div class="bar">
     <label class="btn">Cargar audios<input id="file" type="file" accept="audio/*" multiple></label>
     <div class="fx" title="Delay: 80 a 150 ms = slapback rockabilly. Los rebotes van de lado a lado.">
@@ -102,12 +123,14 @@ body.air .lamp{animation:blink 1s steps(2) infinite}
 </header>
 <div class="tape" aria-hidden="true"></div>
 <p id="msg"></p>
+<div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
 <div id="grid"></div>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
   <p>Tocá "Cambiar", después apretá la letra o número que quieras. Backspace deja el botón sin tecla. Esc cancela.</p>
   <div id="list"></div>
+  <img class="mlogo" src="logo.png" alt="" onerror="this.style.display='none'">
 </aside>
 
 <div id="cm" role="menu" aria-label="Color del botón">
@@ -223,6 +246,7 @@ function render(){
     cell.appendChild(b);cell.appendChild(g);grid.appendChild(cell);mark(idx);
   });
   renderMenu();
+  $("empty").style.display=items.length?"none":"block";
 }
 function renderMenu(){
   list.innerHTML="";
@@ -302,6 +326,8 @@ async function repoList(){
     return(await res.json()).filter(f=>f.type==="file"&&/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i.test(f.name)).map(f=>f.name);
   }catch(e){return []}
 }
+setTimeout(()=>$("splash").classList.add("off"),8000);
+$("splash").addEventListener("click",()=>$("splash").classList.add("off"));
 (async()=>{
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
   const saved=await load();
@@ -316,6 +342,7 @@ async function repoList(){
   for(const s of own)await add(s.name,s.blob,s.key);
   items.forEach(i=>{if(i.key===null)i.key=freeKey()});
   render();
+  const sp=$("splash");setTimeout(()=>sp.classList.add("off"),Math.max(0,1000-performance.now()));
   if(!items.length&&!msg.textContent)msg.textContent="Cargá tus audios (MP3, WAV, OGG) con el botón de arriba.";
 })();
 </script>
