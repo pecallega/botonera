@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.14 · actualización n.º 14 · por @pecallega -->
+<!-- Botonera al aire · v1.15 · actualización n.º 15 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -184,7 +184,35 @@ body.lfx .fx{border-color:rgba(232,35,42,.55);box-shadow:0 0 28px rgba(232,35,42
 #edc{display:block;width:100%;height:150px;border-radius:12px;background:rgba(0,0,0,.35);cursor:crosshair;touch-action:none}
 #edsave{background:var(--on);border-color:transparent;color:#fff}
 #edsave,#edx{padding:8px 11px}
+/* ---- v1.15: tipografía fina y chica, título integrado, animación de botones ---- */
+button:not(.pad):not(.gear),label.btn,select{font-size:.7rem;font-weight:500;letter-spacing:.08em;padding:8px 12px}
+.fx .lbl{font-size:.7rem;font-weight:500;letter-spacing:.08em}
+.fx select{font-size:.66rem}
+.fx .onmute button{font-size:.62rem;font-weight:500;padding:4px 8px}
+.num input{font-size:.8rem;font-weight:500}
+.gv{font-size:.78rem;font-weight:500}
+.ic{width:15px;height:15px}
+#menu h2,#ed .edh b{font-size:.72rem;font-weight:600;letter-spacing:.1em}
+#air{font-size:.8rem;font-weight:700}
+.row .key{font-size:.66rem}
+h1{font-size:clamp(.95rem,2.3vw,1.2rem);font-weight:600;letter-spacing:.16em;text-shadow:none}
+.lamp{width:15px;height:15px}
+#edc{cursor:text}
+#edz{margin-left:auto;color:var(--mut);font-size:.68rem}
+#edinfo{margin-left:12px}
+#edsave,#ednew,#edx{padding:7px 11px}
+.pad>:not(.pf):not(.so):not(.cd){position:relative;z-index:1}
+.pf{position:absolute;inset:0;border-radius:inherit;pointer-events:none;transform-origin:left;transform:scaleX(var(--p,0));background:linear-gradient(90deg,rgba(232,35,42,.28),rgba(232,35,42,.62));opacity:0;transition:opacity .35s}
+.pad.on .pf{opacity:1}
+.pad.col .pf{background:linear-gradient(90deg,var(--c2),var(--c));filter:none}
+.pad.col.on .pf{opacity:.5}
+.cd{display:none;position:absolute;top:12px;left:52px;height:28px;align-items:center;font-size:.8rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.04em;color:#fff;z-index:2}
+.pad.on .cd{display:flex}
+.pad.on{background:rgba(232,35,42,.16);overflow:hidden}
+@keyframes hit{0%{transform:scale(.93)}55%{transform:scale(1.035)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:no-preference){
+.pad.hit{animation:hit .28s ease-out}
+.pad.on.hit{animation:hit .28s ease-out,glow 1.2s ease-in-out .28s infinite}
 .pad,.logo{transition:transform .15s,background .15s,border-color .15s,box-shadow .2s}
 body.air .lamp::after,body.live .lamp::after{animation:ring 1.2s ease-out infinite}
 .pad.on{animation:glow 1.2s ease-in-out infinite}
@@ -223,7 +251,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
           <span class="num"><input id="rnum" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" aria-label="Reverb en porcentaje (escribir valor exacto)"><i>%</i></span>
           <button id="mic" aria-pressed="false" title="Live audio FX: la entrada de la placa suena con delay y reverb. Arranca en MUTE para regular el nivel. Usá auriculares."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Live audio FX</button>
           <select id="indev" aria-label="Entrada de audio"><option value="">Entrada predeterminada</option></select>
-          <div class="onmute"><button id="onb">ON</button><button id="mutb">Mute</button></div>
+          <div class="onmute"><button id="mutb">Mute</button><button id="onb">ON</button></div>
           <div class="ins">
             <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Nivel</span>
             <input id="gain" type="range" min="0" max="40" step="1" value="0" aria-label="Nivel de entrada en decibeles">
@@ -243,15 +271,15 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <div id="grid"></div>
 <section id="ed" aria-label="Editor de audio">
   <div class="edh"><b>Editor de audio</b><span id="edn"></span><span class="sp"></span>
-    <div class="edact"><button id="edsave" title="Guardar cambios" aria-label="Guardar cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
+    <div class="edact"><button id="edsave" title="Guardar (modifica este botón)" aria-label="Guardar cambios en este botón"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="ednew" title="Guardar como botón nuevo (el botón original no cambia)" aria-label="Guardar como botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Nuevo botón</button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
   <p id="edhint">Clic derecho sobre un botón → Editar audio. Acá podés recortar silencios, normalizar y borrar partes.</p>
   <div class="edbody">
-    <div class="edtools"><button id="edplay"><svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play</button><button id="edtrim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Recortar silencios</button><button id="ednorm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg>Normalizar 0 dB</button><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><span id="edinfo"></span></div>
+    <div class="edtools"><button id="edplay"><svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play</button><button id="edtrim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Recortar silencios</button><button id="ednorm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg>Normalizar 0 dB</button><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><span id="edz"></span><span id="edinfo"></span></div>
     <canvas id="edc" height="150"></canvas>
   </div>
 </section>
 
-<footer id="sig" title="Versión 1.14 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.14</span></footer>
+<footer id="sig" title="Versión 1.15 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.15</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
@@ -453,11 +481,17 @@ async function add(name,blob,key,base){
     items.push({name,blob,buffer,peaks:peaks(buffer,48),key:key===undefined?freeKey():key,base:!!base,playing:new Set()});
   }catch(e){msg.textContent="No pude leer \""+name+"\". Probá con MP3 o WAV."}
 }
+let padRaf=0;
+function padTick(){let any=false;
+  items.forEach((it,i)=>{if(!it.playing.size)return;any=true;const el=$("p"+i);if(!el)return;
+    const e=ctx.currentTime-it.t0,d=it.buffer.duration,r=Math.max(0,Math.ceil(d-e));
+    el.style.setProperty("--p",Math.min(1,e/d));el.querySelector(".cd").textContent="−"+Math.floor(r/60)+":"+String(r%60).padStart(2,"0")});
+  padRaf=any?requestAnimationFrame(padTick):0}
 function play(idx){
   const it=items[idx];if(!it)return;
   if(ctx.state!=="running")ctx.resume();
   const s=ctx.createBufferSource();s.buffer=it.buffer;s.connect(dry);s.connect(dlyIn);s.connect(revSend);
-  it.playing.add(s);mark(idx);
+  it.playing.add(s);it.t0=ctx.currentTime;mark(idx);{const el=$("p"+idx);if(el){el.style.setProperty("--p",0);el.classList.remove("hit");void el.offsetWidth;el.classList.add("hit")}}if(!padRaf)padTick();
   s.onended=()=>{it.playing.delete(s);mark(items.indexOf(it))};
   s.start(0);
 }
@@ -477,7 +511,7 @@ function render(){
     const cell=document.createElement("div");cell.className="cell";
     const b=document.createElement("button");
     b.className="pad";b.id="p"+idx;b.title=nice(it.name);
-    b.innerHTML='<span class="k"></span>'+waveSVG(it.peaks)+'<span class="n"></span><span class="so"></span>';
+    b.innerHTML='<span class="pf"></span><span class="k"></span>'+waveSVG(it.peaks)+'<span class="n"></span><span class="cd"></span><span class="so"></span>';
     const g=document.createElement("button");
     g.className="gear";g.textContent="\u2699\uFE0E";g.title="Cambiar color";g.setAttribute("aria-label","Cambiar color de "+nice(it.name));
     g.addEventListener("click",e=>{e.stopPropagation();if(cm.style.display==="block"&&cmIdx===idx){hideCm();return}const r=g.getBoundingClientRect();openCm(r.left,r.bottom+4,idx)});
@@ -594,16 +628,17 @@ const ed={it:null,ch:null,sr:44100,sel:null,cur:0,src:null,t0:0,from:0,raf:0},ed
 const edN=()=>ed.ch[0].length;
 function edOpen(idx){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
   edStop();ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
-  ed.sel=null;ed.cur=0;ed.dirty=false;$("ed").classList.add("open");$("edn").textContent=nice(it.name);edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
+  ed.sel=null;ed.cur=0;ed.dirty=false;ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
 function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
-function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.max(300,edc.clientWidth*k),H=edc.height=150*k,n=edN(),mid=H/2;
+function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.max(300,edc.clientWidth*k),H=edc.height=150*k,n=edN(),mid=H/2,v0=ed.v0,sp=ed.v1-ed.v0,X=q=>(q-v0)/sp*W;
   g2.fillStyle="rgba(255,255,255,.8)";
-  for(let x=0;x<W;x++){let mn=0,mx=0;const a=Math.floor(x/W*n),b=Math.max(a+1,Math.floor((x+1)/W*n)),st=Math.max(1,Math.floor((b-a)/48));
-    for(let i=a;i<b;i+=st)for(const c of ed.ch){const v=c[i];if(v<mn)mn=v;if(v>mx)mx=v}
+  for(let x=0;x<W;x++){let mn=0,mx=0;const a=Math.floor(v0+x/W*sp),b=Math.max(a+1,Math.floor(v0+(x+1)/W*sp)),st=Math.max(1,Math.floor((b-a)/48));
+    for(let i=a;i<b&&i<n;i+=st)for(const c of ed.ch){const v=c[i];if(v<mn)mn=v;if(v>mx)mx=v}
     g2.fillRect(x,mid-mx*mid,1,Math.max(1,(mx-mn)*mid))}
-  if(ed.sel){g2.fillStyle="rgba(232,35,42,.4)";g2.fillRect(ed.sel[0]/n*W,0,(ed.sel[1]-ed.sel[0])/n*W,H)}
-  const pos=ed.src?ed.from+(ctx.currentTime-ed.t0)*ed.sr:ed.cur;g2.fillStyle="#fff";g2.fillRect(Math.min(W-2,pos/n*W),0,2,H)}
+  if(ed.sel){g2.fillStyle="rgba(232,35,42,.4)";g2.fillRect(X(ed.sel[0]),0,(ed.sel[1]-ed.sel[0])/sp*W,H)}
+  const pos=ed.src?ed.from+(ctx.currentTime-ed.t0)*ed.sr:ed.cur;g2.fillStyle="#fff";g2.fillRect(X(pos),0,2,H);
+  $("edz").textContent="zoom ×"+(n/sp).toFixed(n/sp<10?1:0)+" · rueda: zoom · Shift+rueda: mover · doble clic: ver todo"}
 function edBtn(){$("edplay").innerHTML=ed.src?'<svg class="ic" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg>Stop':'<svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play'}
 function edStop(){cancelAnimationFrame(ed.raf);if(ed.src){const s=ed.src;ed.src=null;try{s.stop()}catch(e){}}edBtn();edDraw()}
 function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;const n=edN(),b=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>b.copyToChannel(c,i));
@@ -613,31 +648,39 @@ function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;const n=edN(),b=ct
   const lp=()=>{if(ed.src){edDraw();ed.raf=requestAnimationFrame(lp)}};lp()}
 function edDel(){if(!ed.it||!ed.sel)return;edStop();const[a,b]=ed.sel;
   ed.ch=ed.ch.map(c=>{const o=new Float32Array(c.length-(b-a));o.set(c.subarray(0,a));o.set(c.subarray(b),a);return o});
-  ed.cur=a;ed.sel=null;ed.dirty=true;edInfo();edDraw()}
+  ed.cur=a;ed.sel=null;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
 function edTrim(){if(!ed.it)return;edStop();const n=edN(),th=Math.pow(10,-48/20),pad=Math.round(ed.sr*.01),loud=i=>ed.ch.some(c=>Math.abs(c[i])>th);
   let a=0,b=n-1;while(a<n&&!loud(a))a++;while(b>a&&!loud(b))b--;
   if(a>=n){msg.textContent="Ese audio está en silencio total.";return}
   a=Math.max(0,a-pad);b=Math.min(n,b+pad+1);if(a===0&&b===n){msg.textContent="No hay silencios para recortar.";return}
-  ed.ch=ed.ch.map(c=>c.slice(a,b));ed.sel=null;ed.cur=0;ed.dirty=true;edInfo();edDraw()}
+  ed.ch=ed.ch.map(c=>c.slice(a,b));ed.sel=null;ed.cur=0;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
 function edNorm(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   if(!pk||Math.abs(pk-1)<1e-4)return;const k=1/pk;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++)c[i]*=k});ed.dirty=true;edInfo();edDraw()}
 function wavBlob(ch,sr){const n=ch[0].length,k=ch.length,d=new DataView(new ArrayBuffer(44+n*k*2)),w=(o,t)=>[...t].forEach((x,i)=>d.setUint8(o+i,x.charCodeAt(0)));
   w(0,"RIFF");d.setUint32(4,36+n*k*2,true);w(8,"WAVEfmt ");d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,k,true);d.setUint32(24,sr,true);d.setUint32(28,sr*k*2,true);d.setUint16(32,k*2,true);d.setUint16(34,16,true);w(36,"data");d.setUint32(40,n*k*2,true);
   let o=44;for(let i=0;i<n;i++)for(let c=0;c<k;c++){const v=Math.max(-1,Math.min(1,ch[c][i]));d.setInt16(o,v<0?v*32768:v*32767,true);o+=2}
   return new Blob([d],{type:"audio/wav"})}
-function edSave(){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n){msg.textContent="El audio quedó vacío: no se guardó.";return}
-  it.playing.forEach(s=>{try{s.stop()}catch(e){}});const old=it.name;let nn=nice(old)+(it.base?" (editado)":"")+".wav";
+function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n){msg.textContent="El audio quedó vacío: no se guardó.";return}
+  if(!asNew)it.playing.forEach(s=>{try{s.stop()}catch(e){}});const old=it.name;let nn=nice(old)+(it.base?" (editado)":"")+".wav";
   if(items.some(i=>i!==it&&i.name===nn))nn=nice(nn)+" (editado).wav";
   const buf=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>buf.copyToChannel(c,i));
+  if(asNew){const k=nice(old);let nm=k+" (editado).wav",c=2;while(items.some(i=>i.name===nm))nm=k+" (editado "+(c++)+").wav";
+    const n2={name:nm,blob:wavBlob(ed.ch,ed.sr),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set()};
+    if(colors[old])colors[nm]=colors[old];items.splice(items.indexOf(it)+1,0,n2);edClose(true);render();save();return}
   if(it.base){hidden.add(old);try{localStorage.setItem("botonera_hidden",JSON.stringify([...hidden]))}catch(e){}it.base=false}
   if(colors[old]){colors[nn]=colors[old];delete colors[old]}
   it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);edClose(true);render();save()}
 function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;$("ed").classList.remove("open")}
-let edDrag=null;const edPx=e=>{const r=edc.getBoundingClientRect();return Math.max(0,Math.min(edN(),Math.round((e.clientX-r.left)/r.width*edN())))};
+let edDrag=null;const edPx=e=>{const r=edc.getBoundingClientRect();return Math.max(0,Math.min(edN(),Math.round(ed.v0+(e.clientX-r.left)/r.width*(ed.v1-ed.v0))))};
 edc.addEventListener("pointerdown",e=>{if(!ed.it)return;edc.setPointerCapture(e.pointerId);edDrag=edPx(e);ed.cur=edDrag;ed.sel=null;edDraw()});
-edc.addEventListener("pointermove",e=>{if(edDrag===null)return;const p=edPx(e);ed.sel=Math.abs(p-edDrag)>ed.sr*.005?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
+edc.addEventListener("pointermove",e=>{if(edDrag===null)return;const p=edPx(e);ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
 edc.addEventListener("pointerup",()=>{edDrag=null});
-[["edplay",edPlay],["edtrim",edTrim],["ednorm",edNorm],["eddel",edDel],["edsave",edSave],["edx",()=>edClose(false)]].forEach(([id,f])=>$(id).addEventListener("click",f));
+edc.addEventListener("wheel",e=>{if(!ed.it)return;e.preventDefault();const n=edN(),r=edc.getBoundingClientRect(),f=(e.clientX-r.left)/r.width,sp=ed.v1-ed.v0;
+  if(e.shiftKey){const a=Math.max(0,Math.min(n-sp,ed.v0+(e.deltaY||e.deltaX)/r.width*sp));ed.v0=a;ed.v1=a+sp}
+  else{const ns=Math.max(Math.min(n,64),Math.min(n,sp*(e.deltaY<0?.8:1.25))),c=ed.v0+f*sp,a=Math.max(0,Math.min(n-ns,c-f*ns));ed.v0=a;ed.v1=a+ns}
+  edDraw()},{passive:false});
+edc.addEventListener("dblclick",()=>{if(ed.it){ed.v0=0;ed.v1=edN();edDraw()}});
+[["edplay",edPlay],["edtrim",edTrim],["ednorm",edNorm],["eddel",edDel],["edsave",()=>edSave(false)],["ednew",()=>edSave(true)],["edx",()=>edClose(false)]].forEach(([id,f])=>$(id).addEventListener("click",f));
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#ed button");if(b)b.blur()});
 window.addEventListener("resize",()=>edDraw());
 let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem("botonera_hidden")||"[]"))}catch(e){}
