@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.19 · actualización n.º 19 · por @pecallega -->
+<!-- Botonera al aire · v1.20 · actualización n.º 20 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -55,6 +55,19 @@ select option{background:#18181b;color:#fff}
 input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 .cell{position:relative}
+.sep{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:6px 0 0;color:rgba(255,255,255,.55);font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
+.sep::before,.sep::after{content:"";height:1px;background:rgba(255,255,255,.18)}
+.sep::before{width:14px}.sep::after{flex:1}
+.mv{position:absolute;bottom:8px;right:8px;width:26px;height:26px;padding:0;border:0;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);cursor:grab;z-index:3;display:flex;align-items:center;justify-content:center;touch-action:none}
+.mv:hover,.mv:focus-visible{background:rgba(255,255,255,.2);color:#fff}
+.mv svg{pointer-events:none}
+.cell.dragging{z-index:50;opacity:.85;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.cell.dragging .pad{outline:2px solid #e11}
+.cell.ins-b::before,.cell.ins-a::after{content:"";position:absolute;top:0;bottom:0;width:4px;background:#e11;z-index:60}
+.cell.ins-b::before{left:-8px}.cell.ins-a::after{right:-8px}
+body.mvg,body.mvg *{cursor:grabbing!important;user-select:none}
+#dz{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(10,10,10,.82);border:2px dashed #e11;color:#fff;font-size:.95rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
+#dz.on{display:flex}
 .pad{position:relative;width:100%;height:100%;min-height:122px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:6px;padding:12px;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;background:var(--glass);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .pad .k{font-family:var(--disp);font-weight:700;font-size:.95rem;line-height:1;min-width:28px;height:28px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,255,255,.1);align-self:flex-start}
 .pad .w{display:block;width:100%;height:26px;opacity:.5;pointer-events:none;fill:currentColor}
@@ -112,8 +125,8 @@ header{justify-content:flex-start;align-items:flex-start}
 .main{display:flex;flex-direction:column;gap:14px;min-width:0}
 h1,#air,#splash .tx{font-family:"Archivo","Satoshi",system-ui,sans-serif;font-weight:800;font-stretch:88%}
 h1{font-size:clamp(1.5rem,5.2vw,2.5rem);letter-spacing:.015em}
-button:not(.pad):not(.gear),label.btn,select,.fx .lbl,#menu h2{text-transform:uppercase;letter-spacing:.05em}
-button:not(.pad):not(.gear),label.btn,select{font-size:.82rem;font-weight:700}
+button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,#menu h2{text-transform:uppercase;letter-spacing:.05em}
+button:not(.pad):not(.gear):not(.mv),label.btn,select{font-size:.82rem;font-weight:700}
 label.btn{display:inline-flex;align-items:center;gap:8px}
 .ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fx{grid-template-columns:auto 150px 88px}
@@ -185,7 +198,7 @@ body.lfx .fx{border-color:rgba(232,35,42,.55);box-shadow:0 0 28px rgba(232,35,42
 #edsave{background:var(--on);border-color:transparent;color:#fff}
 #edsave,#edx{padding:8px 11px}
 /* ---- v1.15: tipografía fina y chica, título integrado, animación de botones ---- */
-button:not(.pad):not(.gear),label.btn,select{font-size:.7rem;font-weight:500;letter-spacing:.08em;padding:8px 12px}
+button:not(.pad):not(.gear):not(.mv),label.btn,select{font-size:.7rem;font-weight:500;letter-spacing:.08em;padding:8px 12px}
 .fx .lbl{font-size:.7rem;font-weight:500;letter-spacing:.08em}
 .fx select{font-size:.66rem}
 .fx .onmute button{font-size:.62rem;font-weight:500;padding:4px 8px}
@@ -211,7 +224,7 @@ h1{font-size:clamp(.95rem,2.3vw,1.2rem);font-weight:600;letter-spacing:.16em;tex
 .pad.on{background:rgba(232,35,42,.16);overflow:hidden}
 @keyframes hit{0%{transform:scale(.93)}55%{transform:scale(1.035)}100%{transform:scale(1)}}
 /* ---- v1.16: todo cuadrado, título arriba a la derecha, barra del editor ---- */
-button,label.btn,select,input,.pad,.fx,#cm,#cm .sub,#cm .mi,#cm .sw button,#sig,#ed,#edc,.pad .k,.clip,.pf,#menu,.row,.vu,.vfill,.gear,.stop,#edsb,#edth,.num input,.onmute button{border-radius:0!important}
+button,label.btn,select,input,.pad,.fx,#cm,#cm .sub,#cm .mi,#cm .sw button,#sig,#ed,#edc,.pad .k,.clip,.pf,#menu,.row,.vu,.vfill,.gear,.mv,.stop,#edsb,#edth,.num input,.onmute button{border-radius:0!important}
 header{position:relative}
 h1{position:absolute;top:2px;right:0;margin:0}
 @media (max-width:900px){h1{position:static;order:-1;width:100%}}
@@ -230,8 +243,8 @@ h1{position:absolute;top:2px;right:0;margin:0}
 #msg span{flex:1}
 #msg .nx{display:flex;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:0;background:none;color:inherit;opacity:.65}
 #msg .nx:hover{opacity:1;background:rgba(255,255,255,.1)}
-button:not(.pad):not(.gear),label.btn,select{line-height:1}
-button:not(.pad):not(.gear) .ic,label.btn .ic{flex:none}
+button:not(.pad):not(.gear):not(.mv),label.btn,select{line-height:1}
+button:not(.pad):not(.gear):not(.mv) .ic,label.btn .ic{flex:none}
 .fx button,.fx .lbl{justify-content:flex-start;padding-left:12px}
 .fx .onmute{grid-column:2/4;justify-content:flex-start}
 .fx .onmute button{display:inline-flex;align-items:center;gap:5px}
@@ -406,7 +419,8 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
   </div>
 </section>
 
-<footer id="sig" title="Versión 1.19 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.19</span></footer>
+<div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
+<footer id="sig" title="Versión 1.20 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.20</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -601,8 +615,8 @@ async function recToggle(){
     mr.onstop=async()=>{
       clearInterval(mic.rec.timer);const mk=mic.rec.marks;mic.rec=null;closeMicIfIdle();syncIns();
       const type=mr.mimeType||"audio/webm",ext=/mp4/.test(type)?"m4a":/ogg/.test(type)?"ogg":"webm",d=new Date(),z=n=>String(n).padStart(2,"0");
-      await add("Grabación "+z(d.getHours())+"."+z(d.getMinutes())+"."+z(d.getSeconds())+"."+ext,new Blob(chunks,{type}));
-      {const it=items[items.length-1];if(it&&mk.length&&it.name.indexOf("Grabación")===0)it.marks=mk}
+      const rn="Grabación "+z(d.getHours())+"."+z(d.getMinutes())+"."+z(d.getSeconds())+"."+ext;await add(rn,new Blob(chunks,{type}));
+      {const it=items.find(x=>x.name===rn);if(it&&mk.length)it.marks=mk}
       render();save();
     };
     mic.rec.t0=Date.now();mr.start();render();syncIns();
@@ -614,7 +628,7 @@ function db(){return new Promise((ok,no)=>{try{const r=indexedDB.open("botonera"
   r.onupgradeneeded=()=>r.result.createObjectStore("s");
   r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}})}
 async function save(){try{const d=await db();const keys={};items.forEach(i=>keys[i.name]=i.key);
-  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks})),keys,colors},"items")}catch(e){console.warn("No se pudo guardar",e)}}
+  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks})),keys,colors,order:items.map(i=>i.name)},"items")}catch(e){console.warn("No se pudo guardar",e)}}
 async function load(){try{const d=await db();return await new Promise(ok=>{
   const q=d.transaction("s").objectStore("s").get("items");q.onsuccess=()=>ok(q.result||{});q.onerror=()=>ok({})})}catch(e){return {}}}
 
@@ -657,10 +671,59 @@ function stopFirst(){const i=items.find(i=>i.playing.size);if(i)i.playing.forEac
 /* ---------- interfaz ---------- */
 function tint(h,a){const n=parseInt(h.slice(1),16);return"rgba("+(n>>16)+","+(n>>8&255)+","+(n&255)+","+a+")"}
 function fg(h){const n=parseInt(h.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return(r*299+g*587+b*114)/1000>150?"#111":"#fff"}
+const isCort=n=>/^\s*cortinas?(?![a-záéíóúüñ])/i.test(n);
+function normalizeOrder(){
+  const a=items.filter(i=>!isCort(i.name)),b=items.filter(i=>isCort(i.name));
+  items.splice(0,items.length,...a,...b);
+}
+const MVSVG='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M12 2v20M2 12h20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/></svg>';
+function moveItem(from,to,after){
+  if(from===to)return;
+  const it=items[from];items.splice(from,1);
+  let t=to>from?to-1:to;if(after)t++;
+  items.splice(t,0,it);normalizeOrder();render();save();
+}
+function startMove(e,idx,cell){
+  if(e.button!==undefined&&e.button!==0)return;
+  e.preventDefault();e.stopPropagation();hideCm();
+  const cort=isCort(items[idx].name);
+  const sx=e.clientX,sy=e.clientY;let moved=false,tgt=null,after=false;
+  const cells=()=>Array.from(grid.querySelectorAll(".cell")).filter(c=>c!==cell&&c.dataset.idx!==undefined&&isCort(items[+c.dataset.idx].name)===cort);
+  const clr=()=>grid.querySelectorAll(".ins-a,.ins-b").forEach(c=>c.classList.remove("ins-a","ins-b"));
+  const mv=ev=>{
+    const dx=ev.clientX-sx,dy=ev.clientY-sy;
+    if(!moved&&Math.hypot(dx,dy)<4)return;
+    if(!moved){moved=true;cell.classList.add("dragging");document.body.classList.add("mvg")}
+    cell.style.transform="translate("+dx+"px,"+dy+"px)";
+    const y=ev.clientY,x=ev.clientX;
+    if(y<60)window.scrollBy(0,-14);else if(y>innerHeight-60)window.scrollBy(0,14);
+    clr();tgt=null;
+    let best=1e9;
+    for(const c of cells()){
+      const r=c.getBoundingClientRect();
+      const cx=Math.min(Math.max(x,r.left),r.right),cy=Math.min(Math.max(y,r.top),r.bottom);
+      const d=Math.hypot(x-cx,y-cy);
+      if(d<best){best=d;tgt=c;after=x>r.left+r.width/2&&y>=r.top-4&&y<=r.bottom+4||y>r.bottom}
+    }
+    if(tgt&&best<90)tgt.classList.add(after?"ins-a":"ins-b");else tgt=null;
+  };
+  const up=()=>{
+    document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);
+    document.body.classList.remove("mvg");
+    if(moved&&tgt){const to=+tgt.dataset.idx;clr();moveItem(idx,to,after)}
+    else{clr();cell.classList.remove("dragging");cell.style.transform=""}
+  };
+  document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up);
+}
 function render(){
   grid.innerHTML="";
+  normalizeOrder();
+  let sepDone=false;
+  const closeNormal=()=>{if(sepDone)return;sepDone=true;grid.appendChild(recCell());
+    if(items.some(i=>isCort(i.name))){const sp=document.createElement("div");sp.className="sep";sp.textContent="Cortinas";grid.appendChild(sp)}};
   items.forEach((it,idx)=>{
-    const cell=document.createElement("div");cell.className="cell";
+    if(isCort(it.name))closeNormal();
+    const cell=document.createElement("div");cell.className="cell";cell.dataset.idx=idx;
     const b=document.createElement("button");
     b.className="pad";b.id="p"+idx;b.title=nice(it.name);
     b.innerHTML='<span class="pf"></span><span class="k"></span>'+waveSVG(it.peaks)+'<span class="n"></span><span class="cd"></span><span class="so"></span>';
@@ -674,9 +737,23 @@ function render(){
     b.addEventListener("pointerdown",e=>{if(e.button!==0)return;e.preventDefault();hideCm();toggle(idx)});
     b.addEventListener("contextmenu",e=>{e.preventDefault();openCm(e.clientX,e.clientY,idx)});
     b.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")e.preventDefault()});
-    cell.appendChild(b);cell.appendChild(g);grid.appendChild(cell);mark(idx);
+    const m=document.createElement("button");
+    m.className="mv";m.innerHTML=MVSVG;m.title="Arrastrar para mover (o usar las flechas del teclado)";m.setAttribute("aria-label","Mover botón "+nice(it.name));
+    m.addEventListener("pointerdown",e=>startMove(e,idx,cell));
+    m.addEventListener("click",e=>e.stopPropagation());
+    m.addEventListener("keydown",e=>{
+      const cort=isCort(it.name);const same=i=>isCort(items[i].name)===cort;
+      let t=-1;
+      if(e.key==="ArrowLeft"||e.key==="ArrowUp"){for(let i=idx-1;i>=0;i--)if(same(i)){t=i;break}}
+      else if(e.key==="ArrowRight"||e.key==="ArrowDown"){for(let i=idx+1;i<items.length;i++)if(same(i)){t=i;break}}
+      else return;
+      e.preventDefault();if(t<0)return;
+      const nm=it.name;moveItem(idx,t,t>idx);
+      const ni=items.findIndex(x=>x.name===nm);const nb=grid.querySelector('.cell[data-idx="'+ni+'"] .mv');if(nb)nb.focus();
+    });
+    cell.appendChild(b);cell.appendChild(g);cell.appendChild(m);grid.appendChild(cell);mark(idx);
   });
-  grid.appendChild(recCell());
+  closeNormal();
   renderMenu();
   $("empty").style.display=items.length?"none":"block";
 }
@@ -734,11 +811,25 @@ document.addEventListener("pointerdown",e=>{
 window.addEventListener("scroll",hideCm,true);window.addEventListener("resize",hideCm);
 
 /* ---------- eventos ---------- */
-$("file").addEventListener("change",async e=>{
-  for(const f of e.target.files)await add(f.name,f);
-  e.target.value="";render();save();
+async function loadFiles(list){
+  const files=Array.from(list||[]);
+  const ok=files.filter(f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba)$/i.test(f.name));
+  const bad=files.length-ok.length;
+  let n=0,dup=0;
+  for(const f of ok){const before=items.length;await add(f.name,f);if(items.length>before)n++;else if(items.some(i=>i.name===f.name))dup++}
+  render();save();
   if(items.length)clearNote("empty");
-});
+  if(n)note(n+(n===1?" botón creado":" botones creados")+(dup?" · "+dup+" ya existían":"")+(bad?" · "+bad+" no son audio":"")+".","info","drop",5000);
+  else if(files.length)note(bad===files.length?"Los archivos soltados no son audio.":"Los audios ya estaban cargados.","warn","drop",5000);
+}
+$("file").addEventListener("change",async e=>{const fl=Array.from(e.target.files);e.target.value="";await loadFiles(fl)});
+(()=>{const dz=$("dz");let depth=0;
+  const hasF=e=>e.dataTransfer&&Array.from(e.dataTransfer.types||[]).includes("Files");
+  window.addEventListener("dragenter",e=>{if(!hasF(e))return;e.preventDefault();depth++;dz.classList.add("on")});
+  window.addEventListener("dragover",e=>{if(!hasF(e))return;e.preventDefault();e.dataTransfer.dropEffect="copy"});
+  window.addEventListener("dragleave",e=>{if(!hasF(e))return;depth=Math.max(0,depth-1);if(!depth)dz.classList.remove("on")});
+  window.addEventListener("drop",e=>{if(!hasF(e))return;e.preventDefault();depth=0;dz.classList.remove("on");loadFiles(e.dataTransfer.files)});
+})();
 $("stop").addEventListener("click",stopAll);
 $("burger").addEventListener("click",()=>{menu.classList.toggle("open");waiting=null;renderMenu()});
 $("close").addEventListener("click",()=>{menu.classList.remove("open");waiting=null;renderMenu()});
@@ -991,7 +1082,7 @@ async function lkToPad(){
     let nm=base+".mp3",c=2;if(!LK.ok&&p.direct==="audio"){const e=(p.url.split("?")[0].match(/\.([a-z0-9]+)$/i)||[])[1];nm=base+"."+(e||"mp3")}
     const ext=nm.slice(nm.lastIndexOf("."));while(items.some(i=>i.name===nm))nm=base+" ("+(c++)+")"+ext;
     const before=items.length;await add(nm,blob);if(items.length===before)return;render();save();
-    const it=items[items.length-1];note("Botón creado: «"+nice(nm)+"» ("+fmtMB(blob.size)+")"+(it.key?" · tecla "+it.key:"")+".","info","lk",8000);
+    const it=items.find(x=>x.name===nm)||items[items.length-1];note("Botón creado: «"+nice(nm)+"» ("+fmtMB(blob.size)+")"+(it.key?" · tecla "+it.key:"")+".","info","lk",8000);
   }catch(e){if(e instanceof TypeError&&!LK.ok)note("El sitio no permite bajar ese archivo desde el navegador (bloqueo CORS). Con el helper sí se puede.","error","lk",10000);else lkErr(e);lkStatus("")}
 }
 
@@ -1068,6 +1159,8 @@ if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").c
   }
   for(const s of own){await add(s.name,s.blob,s.key);const it=items.find(i=>i.name===s.name);if(it&&s.marks&&s.marks.length)it.marks=s.marks}
   items.forEach(i=>{if(i.key===null)i.key=freeKey()});
+  if(saved.order&&saved.order.length){const o=saved.order,pos=n=>{const k=o.indexOf(n);return k<0?1e6:k};
+    const ix=new Map(items.map((i,k)=>[i,k]));items.sort((a,b)=>pos(a.name)-pos(b.name)||ix.get(a)-ix.get(b))}
   render();
   const sp=$("splash");setTimeout(()=>sp.classList.add("off"),Math.max(0,1000-performance.now()));
   if(!items.length&&!msg.dataset.k)note("Sin audios cargados. Usá CARGAR AUDIOS (MP3, WAV, OGG, M4A, FLAC) o grabá con GRABAR.","info","empty");
