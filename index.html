@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.21 · actualización n.º 21 · por @pecallega -->
+<!-- Botonera al aire · v1.22 · actualización n.º 22 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -365,7 +365,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
           <span class="num"><input id="rnum" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" aria-label="Reverb en porcentaje (escribir valor exacto)"><i>%</i></span>
           <button id="mic" aria-pressed="false" title="Live audio FX: la entrada de la placa suena con delay y reverb. Arranca en MUTE para regular el nivel. Usá auriculares."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Live audio FX</button>
           <div class="onmute"><button id="mutb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Mute</button><button id="onb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg>ON</button></div>
-          <select id="indev" aria-label="Fuente de entrada de audio"><option value="">Entrada predeterminada</option><option value="__system">🔊 Audio del sistema / pestaña</option></select>
+          <select id="indev" aria-label="Fuente de entrada de audio"><option value="">Entrada predeterminada</option><option value="__player">▶ Reproductor del buscador (sin micrófono)</option><option value="__system">🔊 Audio del sistema / pestaña</option></select>
           <div class="ins">
             <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Nivel</span>
             <input id="gain" type="range" min="0" max="40" step="1" value="0" aria-label="Nivel de entrada en decibeles">
@@ -420,7 +420,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.21 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.21</span></footer>
+<footer id="sig" title="Versión 1.22 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.22</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -512,11 +512,11 @@ applyFx();
 /* ---------- entrada de la placa: en vivo + grabar ---------- */
 const mic={stream:null,src:null,live:false,rec:null,dev:"",gainDb:0,muted:true};
 try{mic.dev=localStorage.getItem("botonera_dev")||"";mic.gainDb=Math.min(40,Math.max(0,parseInt(localStorage.getItem("botonera_gain"),10)||0))}catch(e){}
-if(mic.dev==="__system")$("indev").value="__system";
+if(mic.dev==="__system"||mic.dev==="__player")$("indev").value=mic.dev;
 const HEAD="LIVE AUDIO FX activo en MUTE: la señal NO sale a la salida. Ajustá NIVEL (pico objetivo: −6 a −3 dB) y pulsá ON para emitir. Con parlantes hay acople: usá auriculares.";
 const micErr=e=>{const n=e&&e.name||"";
   if(e&&e.message==="noaudio")return"La captura no incluye audio. En el diálogo elegí una pestaña y marcá «Compartir audio de la pestaña» (o pantalla completa + «Compartir audio del sistema», solo Windows/ChromeOS).";
-  if(n==="NotAllowedError")return mic.dev==="__system"?"Captura cancelada: no se eligió ninguna pestaña o pantalla.":"Permiso de micrófono denegado. Habilitalo para este sitio (candado en la barra de direcciones) y reintentá.";
+  if(n==="NotAllowedError")return mic.dev[0]==="_"?"Captura cancelada: no se eligió ninguna pestaña o pantalla.":"Permiso de micrófono denegado. Habilitalo para este sitio (candado en la barra de direcciones) y reintentá.";
   if(n==="NotFoundError"||n==="OverconstrainedError")return"No se encontró la entrada de audio. Verificá que la placa esté conectada y seleccionada en el sistema.";
   return"No se pudo abrir la entrada de audio ("+(n||"error desconocido")+"). Cerrá otras apps que usen la placa y reintentá."};
 // cadena de entrada: placa -> nivel (inGain) -> vúmetro | monitoreo con efectos | grabación
@@ -554,15 +554,25 @@ function syncIns(){
   if(!on){cancelAnimationFrame(raf);raf=0;lvl=-100;clipUntil=0;vf.style.setProperty("--lv","0%");vf.parentNode.classList.remove("hot");ph=-100;clipEl.classList.remove("on")}
 }
 async function openMic(){
-  const wantSys=mic.dev==="__system";
-  if(mic.stream&&!!mic.stream.__sys!==wantSys)dropStream();
+  const kind=mic.dev[0]==="_"?mic.dev:"mic";
+  if(mic.stream&&mic.stream.__kind!==kind)dropStream();
   if(mic.stream)return mic.stream;
   const a={echoCancellation:false,noiseSuppression:false,autoGainControl:false};
-  if(mic.dev==="__system"){
-    const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:1},audio:Object.assign({suppressLocalAudioPlayback:true},a)});
+  if(mic.dev[0]==="_"){
+    let st=null,how="";
+    if(mic.dev==="__player"&&vpMedia&&/^blob:/.test(vpMedia.currentSrc||vpMedia.src||"")){
+      try{const c=vpMedia.captureStream?vpMedia.captureStream():(vpMedia.mozCaptureStream?vpMedia.mozCaptureStream():null);
+        const at=c?c.getAudioTracks():[];if(at.length){st=new MediaStream(at);how="el"}}catch(e){}
+    }
+    if(!st){
+      const opt=Object.assign({suppressLocalAudioPlayback:false},a);
+      const vo=mic.dev==="__player"?{video:{frameRate:1},audio:opt,preferCurrentTab:true,selfBrowserSurface:"include",systemAudio:"exclude"}:{video:{frameRate:1},audio:Object.assign({suppressLocalAudioPlayback:true},a),selfBrowserSurface:"include"};
+      if(mic.dev==="__player")note("Reproductor en la página: el navegador va a pedir compartir ESTA pestaña. Aceptá y dejá marcado «Compartir audio de la pestaña».","info","live",9000);
+      st=await navigator.mediaDevices.getDisplayMedia(vo);how="tab";
+    }
     if(!st.getAudioTracks().length){st.getTracks().forEach(t=>t.stop());throw new Error("noaudio")}
-    st.getAudioTracks()[0].addEventListener("ended",()=>{if(mic.stream!==st)return;if(mic.rec)mic.rec.mr.stop();mic.live=false;routeLive();dropStream();liveUI();note("Se detuvo la captura de audio del sistema (se cortó el uso compartido desde la barra del navegador).","warn","live",9000)});
-    st.__sys=true;mic.stream=st;
+    st.getAudioTracks()[0].addEventListener("ended",()=>{if(mic.stream!==st)return;if(mic.rec)mic.rec.mr.stop();mic.live=false;routeLive();dropStream();liveUI();note(how==="el"?"El audio del reproductor terminó o se reemplazó: la grabación se detuvo y quedó guardada.":"Se detuvo la captura de audio (se cortó el uso compartido desde la barra del navegador).","warn","live",9000)});
+    st.__kind=mic.dev;mic.stream=st;
   }else{
     try{mic.stream=await navigator.mediaDevices.getUserMedia({audio:mic.dev?Object.assign({deviceId:{exact:mic.dev}},a):a})}
     catch(e){if(!mic.dev)throw e;mic.dev="";mic.stream=await navigator.mediaDevices.getUserMedia({audio:a})}
@@ -574,7 +584,7 @@ async function openMic(){
 async function fillDevs(){try{
   const l=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==="audioinput"),sel=$("indev");sel.innerHTML="";
   l.forEach((d,i)=>{const o=document.createElement("option");o.value=d.deviceId;o.textContent=d.label||("Entrada "+(i+1));sel.appendChild(o)});
-  const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId;const o2=document.createElement("option");o2.value="__system";o2.textContent="🔊 Audio del sistema / pestaña";sel.appendChild(o2);sel.value=mic.dev==="__system"?"__system":(cur||sel.value)}catch(e){}}
+  const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId;const o2=document.createElement("option");o2.value="__system";o2.textContent="🔊 Audio del sistema / pestaña";sel.appendChild(o2);const o3=document.createElement("option");o3.value="__player";o3.textContent="▶ Reproductor del buscador (sin micrófono)";sel.insertBefore(o3,o2);sel.value=mic.dev[0]==="_"?mic.dev:(cur||sel.value)}catch(e){}}
 function dropStream(){if(mic.src){try{mic.src.disconnect()}catch(e){}mic.src=null}if(mic.stream){mic.stream.getTracks().forEach(t=>t.stop());mic.stream=null}}
 function routeLive(){monGain.gain.setTargetAtTime(mic.live&&mic.stream&&!mic.muted?1:0,ctx.currentTime,.01)}
 function closeMicIfIdle(){if(!mic.live&&!mic.rec)dropStream()}
@@ -592,6 +602,7 @@ $("indev").addEventListener("change",async e=>{
   if(mic.rec){e.target.value=mic.dev||e.target.value;e.target.blur();note("No se puede cambiar la entrada mientras se graba. Detené la grabación primero.","warn","live",6000);return}
   mic.dev=e.target.value;e.target.blur();try{localStorage.setItem("botonera_dev",mic.dev)}catch(x){}
   if(mic.dev==="__system")note("Modo audio del sistema / pestaña: el micrófono queda desactivado, solo entra el sonido capturado.","info","live",6000);
+  else if(mic.dev==="__player")note("Modo reproductor del buscador: se graba lo que suena en el panel de links, sin micrófono.","info","live",6000);
   if(!mic.stream)return;
   dropStream();
   if(mic.live){try{await openMic();routeLive()}catch(x){mic.live=false;liveUI();note(micErr(x),"error","live")}}
