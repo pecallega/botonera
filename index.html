@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.32 · actualización n.º 32 · por @pecallega -->
+<!-- Botonera al aire · v1.33 · actualización n.º 33 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -413,6 +413,21 @@ button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-fa
   .pad.on:hover::after{opacity:1;transform:scale(1);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='6' width='12' height='12' fill='%23ffffff' stroke='%23200003' stroke-width='1.2'/%3E%3C/svg%3E");filter:drop-shadow(0 0 8px rgba(232,35,42,.7))}
 }
 #edz,#edinfo,#edhint,#edlg{color:#3dff7a!important;text-shadow:0 0 6px rgba(61,255,122,.45)}
+/* ---- v1.33: reproductor sin ventanas auxiliares · generador de voz · barra de progreso ---- */
+#vprs{display:inline-flex}
+.lktts{flex:1 1 100%;display:flex;flex-direction:column;gap:6px;min-width:0;border-top:1px solid var(--line);padding-top:8px}
+.lktts .lkr{gap:6px}
+.lktts .seg{grid-template-columns:repeat(2,1fr);flex:0 0 auto;min-width:120px}
+.lktts .seg button{padding:7px 10px;font-size:.6rem}
+.lktts .lkr.acts{flex-wrap:wrap}
+.lktts .lkr.acts button.go{padding:7px 10px;font-size:.6rem;white-space:nowrap}
+.lktts .cnt{margin-left:auto;font-size:.62rem;color:var(--mut)}
+#prog{order:6;flex:1 0 100%;display:flex;align-items:center;gap:10px;height:22px;padding:0 12px;border:1px solid var(--line);background:rgba(0,0,0,.35);opacity:.0;transition:opacity .15s;font-family:var(--f-txt);font-weight:300;font-size:.68rem;color:#3dff7a;text-shadow:0 0 6px rgba(61,255,122,.55);box-sizing:border-box}
+#prog.on{opacity:1;border-color:rgba(61,255,122,.45)}
+#prog .pgn{flex:0 1 38%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+#prog .pgb{flex:1;height:6px;background:rgba(61,255,122,.14);position:relative}
+#prog .pgb i{position:absolute;left:0;top:0;bottom:0;width:0;background:#3dff7a;box-shadow:0 0 8px rgba(61,255,122,.7)}
+#prog .pgt{flex:none;font-variant-numeric:tabular-nums;white-space:nowrap}
 #mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 #mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
@@ -455,6 +470,7 @@ button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-fa
           </div>
         </div>
         <button id="burger" aria-label="Configurar teclas" title="Configurar teclas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div id="prog" aria-hidden="true"><span class="pgn" id="pgn"></span><div class="pgb"><i id="pgf"></i></div><span class="pgt" id="pgt">0:00.0 / 0:00.0</span></div>
       </div>
     </div>
   </div>
@@ -472,6 +488,17 @@ button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-fa
       </div>
       <button id="lkh" class="lkh off" title="Estado del helper de descarga"><i class="dot"></i><span>Helper</span></button>
     </div>
+    <div class="lktts" id="tts">
+      <div class="lkr"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+        <input id="ttxt" type="text" maxlength="400" spellcheck="true" autocomplete="off" placeholder="Voz IA: escribí un texto corto…" aria-label="Texto para convertir en voz"></div>
+      <div class="lkr acts">
+        <div class="seg" id="ttl" role="group" aria-label="Idioma"><button data-v="es" class="sel" aria-pressed="true">Español</button><button data-v="en" aria-pressed="false">English</button></div>
+        <div class="seg" id="ttg" role="group" aria-label="Tipo de voz"><button data-v="f" class="sel" aria-pressed="true">Femenina</button><button data-v="m" aria-pressed="false">Masculina</button></div>
+        <button id="ttlis" class="go" title="Escuchar la voz generada"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Escuchar</button>
+        <button id="ttnew" class="go" title="Crear un botón con esta voz"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Crear botón</button>
+        <span class="cnt" id="ttcnt">0/400</span>
+      </div>
+    </div>
     <div id="lkres"></div>
     <div class="lks" id="lks"><span id="lkst" role="status" aria-live="polite"></span><button id="lkcancel" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Cancelar</button></div>
   </div>
@@ -482,6 +509,7 @@ button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-fa
 <aside id="vp" aria-label="Reproductor">
   <div class="vph"><span class="vpt" id="vpt"></span>
     <button id="vpmu" aria-pressed="false" title="Silenciar / activar sonido del reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg><span>Mute</span></button>
+    <button id="vprs" title="Reiniciar: vuelve a empezar y se puede reproducir de nuevo, siempre en esta misma ventana" aria-label="Reiniciar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span>Reiniciar</span></button>
     <button id="vpfs" title="Pantalla completa" aria-label="Pantalla completa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button id="vpx" title="Cerrar reproductor" aria-label="Cerrar reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
@@ -500,7 +528,7 @@ button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-fa
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.32 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.32</span></footer>
+<footer id="sig" title="Versión 1.33 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.33</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1267,10 +1295,16 @@ function setVpMute(on){
   else if(EMB.k==="yt"){embedCmd({event:"command",func:on?"mute":"unMute",args:[]});EMB.muted=on}
   else if(EMB.k==="vimeo"){embedCmd({method:"setVolume",value:on?0:1});EMB.muted=on}
   muUI()}
-function vpClear(){if(vpMedia){try{vpMedia.pause()}catch(e){}}vpMedia=null;EMB.k=null;EMB.muted=false;vbEl.textContent="";muUI()}
+function vpClear(){if(vpMedia){try{vpMedia.pause()}catch(e){}}vpMedia=null;EMB.k=null;EMB.last=null;EMB.muted=false;vbEl.textContent="";muUI()}
 function vpClose(){if(document.fullscreenElement)try{document.exitFullscreen()}catch(e){}vpClear();vpEl.classList.remove("open");document.body.classList.remove("vpopen")}
+function vpRestart(){
+  if(vpMedia){try{vpMedia.currentTime=0;const r=vpMedia.play();if(r&&r.catch)r.catch(()=>{})}catch(e){}return}
+  if(EMB.last){const l=EMB.last;playEmbed(l.p,l.title)}}
+$("vprs").addEventListener("click",vpRestart);
 function vpPause(){if(vpMedia)try{vpMedia.pause()}catch(e){}}
 function playEmbed(p,title){vpClear();const f=document.createElement("iframe");f.src=p.embed.src;f.allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-write";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";f.title=title||p.platform;
+  f.setAttribute("sandbox","allow-scripts allow-same-origin allow-presentation"); // sin allow-popups ni allow-top-navigation: el embed no puede abrir ventanas ni cambiar esta página
+  EMB.last={p,title};
   EMB.k=/^YouTube/.test(p.platform)?"yt":(p.platform==="Vimeo"?"vimeo":null);EMB.muted=!!EMB.k; // arrancan en silencio: se activa el sonido cuando termina la publicidad
   f.addEventListener("load",()=>{if(EMB.k==="yt"){embedCmd({event:"listening",id:1});embedCmd({event:"command",func:EMB.muted?"mute":"unMute",args:[]})}else if(EMB.k==="vimeo")embedCmd({method:"setVolume",value:EMB.muted?0:1})});
   vbEl.appendChild(f);muUI();vpShow(p.embed.cls,p.embed.ratio,p.platform+(title?" · "+title:""))}
@@ -1321,7 +1355,7 @@ async function lkPlay(){
   const p=LK.p;if(!p)return;const mode=LK.mode,title=LK.info?LK.info.title:"",vert=LK.info&&LK.info.width&&LK.info.height?LK.info.height>LK.info.width:(p.embed&&p.embed.cls==="v");
   try{
     if(p.direct){if(p.direct==="audio"&&mode==="v")note("Ese archivo es solo audio: no tiene imagen para mostrar. Se reproduce el audio.","warn","lk",7000);playNative(p.url,p.direct,mode,title||p.platform);return}
-    if(mode==="av"&&p.embed){playEmbed(p,title);return}
+    if(mode==="av"&&p.embed&&!(LK.ok&&/instagram|facebook|fb\.watch|tiktok/i.test((p.platform||"")+" "+(p.host||"")))){playEmbed(p,title);return}
     if(!LK.ok){note("Sin el helper no se puede reproducir «"+p.host+"»: no tiene reproductor oficial incrustable. Iniciá el helper.","warn","lk",10000);return}
     const audioOnly=mode==="a"||(LK.info&&LK.info.has_video===false);
     const m=await getMedia(audioOnly?"audio":"video");playNative(m.url,audioOnly?"audio":"video",audioOnly?"a":mode,title||p.platform,vert);
@@ -1351,6 +1385,64 @@ async function lkToPad(){
     const it=items.find(x=>x.name===nm)||items[items.length-1];note("Botón creado: «"+nice(nm)+"» ("+fmtMB(blob.size)+")"+(it.key?" · tecla "+it.key:"")+".","info","lk",8000);
   }catch(e){if(e instanceof TypeError&&!LK.ok)note("El sitio no permite bajar ese archivo desde el navegador (bloqueo CORS). Con el helper sí se puede.","error","lk",10000);else lkErr(e);lkStatus("")}
 }
+
+/* --- voz IA (helper: edge-tts; sin helper: solo vista previa con la voz del navegador) --- */
+const TT={l:"es",g:"f",cache:{},busy:false},TTV={es:{f:"es-AR-ElenaNeural",m:"es-AR-TomasNeural"},en:{f:"en-US-JennyNeural",m:"en-US-GuyNeural"}};
+function ttSeg(id,key){$(id).addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;TT[key]=b.dataset.v;$(id).querySelectorAll("button").forEach(x=>{const s=x===b;x.classList.toggle("sel",s);x.setAttribute("aria-pressed",s)})})}
+ttSeg("ttl","l");ttSeg("ttg","g");
+$("ttxt").addEventListener("input",()=>{$("ttcnt").textContent=$("ttxt").value.length+"/400"});
+$("ttxt").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")$("ttlis").click()});
+function ttText(){return $("ttxt").value.replace(/\s+/g," ").trim()}
+async function ttGet(){
+  const text=ttText(),voice=TTV[TT.l][TT.g],key=voice+"|"+text;
+  if(TT.cache[key])return TT.cache[key];
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),100000);
+  try{const res=await fetch(HELPER+"/tts?voice="+encodeURIComponent(voice)+"&text="+encodeURIComponent(text),{signal:ac.signal});
+    if(!res.ok){let m="";try{m=(await res.json()).error}catch(e){}throw new Error(m||("HTTP "+res.status))}
+    const blob=await res.blob();return TT.cache[key]={blob,url:URL.createObjectURL(blob)}}
+  finally{clearTimeout(tm)}}
+function ttBusy(on){TT.busy=on;$("ttlis").disabled=on;$("ttnew").disabled=on;lkStatus(on?"Generando voz…":"")}
+function ttBrowser(text){
+  if(!("speechSynthesis" in window))return false;
+  const u=new SpeechSynthesisUtterance(text);u.lang=TT.l==="es"?"es-AR":"en-US";
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith(TT.l));
+  const fem=/female|mujer|helena|laura|sabina|monica|paulina|elena|zira|samantha|jenny|sonia|elvira|dalia|google .*(es|us)/i,mas=/male|hombre|jorge|pablo|raul|diego|david|mark|guy|ryan|alvaro|tomas/i;
+  const pick=vs.find(v=>(TT.g==="f"?fem:mas).test(v.name)&&!(TT.g==="m"&&/female/i.test(v.name)))||vs[0];if(pick)u.voice=pick;
+  speechSynthesis.cancel();speechSynthesis.speak(u);return true}
+async function ttListen(){
+  const text=ttText();if(!text){note("Escribí un texto para convertir en voz.","warn","tts",4000);return}
+  if(!LK.ok||(LK.h&&LK.h.tts===false)){
+    if(ttBrowser(text))note("Vista previa con la voz del navegador (calidad menor). La voz IA y «Crear botón» requieren el helper"+(LK.ok?" con edge-tts (reabrí iniciar-helper.bat).":"."),"warn","tts",9000);
+    else note("La voz IA requiere el helper. Iniciá iniciar-helper.bat.","warn","tts",9000);
+    return}
+  ttBusy(true);try{const m=await ttGet();ttBusy(false);playNative(m.url,"audio","a","Voz IA · "+(TT.l==="es"?"español":"english")+" · "+(TT.g==="f"?"femenina":"masculina"))}catch(e){ttBusy(false);lkErr(e)}}
+async function ttNew(){
+  const text=ttText();if(!text){note("Escribí un texto para convertir en voz.","warn","tts",4000);return}
+  if(!LK.ok||(LK.h&&LK.h.tts===false)){note("Crear un botón con voz IA requiere el helper"+(LK.ok?" con edge-tts (reabrí iniciar-helper.bat).":" (iniciar-helper.bat)."),"warn","tts",9000);return}
+  ttBusy(true);
+  try{const m=await ttGet();ttBusy(false);
+    const base="Voz · "+text.replace(/[\\/:*?"<>|]/g,"").slice(0,28).trim();let nm=base+".mp3",c=2;
+    while(items.some(i=>i.name===nm))nm=base+" ("+(c++)+").mp3";
+    const before=items.length;await add(nm,m.blob);if(items.length===before)return;render();save();
+    note("Botón creado: «"+nice(nm)+"» ("+fmtMB(m.blob.size)+").","info","tts",8000)}
+  catch(e){ttBusy(false);lkErr(e)}}
+$("ttlis").addEventListener("click",ttListen);$("ttnew").addEventListener("click",ttNew);
+
+/* --- barra de progreso (informativa) --- */
+(()=>{const bar=$("prog"),nm=$("pgn"),f=$("pgf"),tx=$("pgt");let last="";
+  const T=s=>{s=Math.max(0,s);const m=Math.floor(s/60);return m+":"+(s-m*60).toFixed(1).padStart(4,"0")};
+  setInterval(()=>{
+    let name="",pos=0,dur=0,on=false;
+    try{
+      if(typeof ed!=="undefined"&&ed.src&&ed.it&&ed.ch&&ed.ch[0]){on=true;dur=ed.ch[0].length/ed.sr;pos=(ed.from+(ctx.currentTime-ed.t0)*ed.sr)/ed.sr;name=ed.it.name}
+      else{const it=lastPlay&&lastPlay.playing.size?lastPlay:items.find(i=>i.playing.size);
+        if(it&&it.buffer){on=true;dur=it.buffer.duration;pos=ctx.currentTime-it.t0;name=it.name}}
+    }catch(e){on=false}
+    if(!on){if(last!=="off"){bar.classList.remove("on");bar.setAttribute("aria-hidden","true");last="off"}return}
+    pos=Math.min(dur,Math.max(0,pos));
+    if(last!=="on"){bar.classList.add("on");bar.removeAttribute("aria-hidden");last="on"}
+    const n=nice(name);if(nm.textContent!==n)nm.textContent=n;
+    f.style.width=(dur?pos/dur*100:0)+"%";tx.textContent=T(pos)+" / "+T(dur)},80)})();
 
 /* --- tarjeta de resultado y búsqueda --- */
 function lkCard(){
