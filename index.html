@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.15 · actualización n.º 15 · por @pecallega -->
+<!-- Botonera al aire · v1.16 · actualización n.º 16 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -210,6 +210,15 @@ h1{font-size:clamp(.95rem,2.3vw,1.2rem);font-weight:600;letter-spacing:.16em;tex
 .pad.on .cd{display:flex}
 .pad.on{background:rgba(232,35,42,.16);overflow:hidden}
 @keyframes hit{0%{transform:scale(.93)}55%{transform:scale(1.035)}100%{transform:scale(1)}}
+/* ---- v1.16: todo cuadrado, título arriba a la derecha, barra del editor ---- */
+button,label.btn,select,input,.pad,.fx,#cm,#cm .sub,#cm .mi,#cm .sw button,#sig,#ed,#edc,.pad .k,.clip,.pf,#menu,.row,.vu,.vfill,.gear,.stop,#edsb,#edth,.num input,.onmute button{border-radius:0!important}
+header{position:relative}
+h1{position:absolute;top:2px;right:0;margin:0}
+@media (max-width:900px){h1{position:static;order:-1;width:100%}}
+@media (min-width:901px){.main{padding-top:34px}}
+#edsb{position:relative;height:14px;margin-top:6px;background:rgba(255,255,255,.07);cursor:pointer;touch-action:none}
+#edth{position:absolute;top:2px;bottom:2px;left:0;width:100%;min-width:28px;background:rgba(255,255,255,.38);cursor:grab}
+#edth:hover{background:rgba(255,255,255,.6)}
 @media (prefers-reduced-motion:no-preference){
 .pad.hit{animation:hit .28s ease-out}
 .pad.on.hit{animation:hit .28s ease-out,glow 1.2s ease-in-out .28s infinite}
@@ -272,14 +281,15 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <section id="ed" aria-label="Editor de audio">
   <div class="edh"><b>Editor de audio</b><span id="edn"></span><span class="sp"></span>
     <div class="edact"><button id="edsave" title="Guardar (modifica este botón)" aria-label="Guardar cambios en este botón"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="ednew" title="Guardar como botón nuevo (el botón original no cambia)" aria-label="Guardar como botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Nuevo botón</button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
-  <p id="edhint">Clic derecho sobre un botón → Editar audio. Acá podés recortar silencios, normalizar y borrar partes.</p>
+  <p id="edhint">Clic derecho sobre un botón → Editar audio. Acá podés recortar el silencio inicial, normalizar y borrar partes.</p>
   <div class="edbody">
-    <div class="edtools"><button id="edplay"><svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play</button><button id="edtrim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Recortar silencios</button><button id="ednorm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg>Normalizar 0 dB</button><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><span id="edz"></span><span id="edinfo"></span></div>
+    <div class="edtools"><button id="edplay"><svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play</button><button id="edtrim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Recortar silencio inicial</button><button id="ednorm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg>Normalizar 0 dB</button><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><span id="edz"></span><span id="edinfo"></span></div>
     <canvas id="edc" height="150"></canvas>
+    <div id="edsb" title="Rueda del mouse o arrastrar para moverte"><div id="edth"></div></div>
   </div>
 </section>
 
-<footer id="sig" title="Versión 1.15 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.15</span></footer>
+<footer id="sig" title="Versión 1.16 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.16</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
@@ -438,22 +448,23 @@ function recCell(){
   b.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")e.preventDefault()});
   c.appendChild(b);return c;
 }
-function tick(){const t=document.querySelector("#recpad .t");if(t&&mic.rec){const s=Math.floor((Date.now()-mic.rec.t0)/1000);t.textContent="tocá para parar · "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}}
+function tick(){const t=document.querySelector("#recpad .t");if(t&&mic.rec){const s=Math.floor((Date.now()-mic.rec.t0)/1000);t.textContent="tocá para parar · "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0")+" · "+mic.rec.marks.length+" marca"+(mic.rec.marks.length===1?"":"s")+" (tecla C)"}}
 async function recToggle(){
   if(mic.rec){mic.rec.mr.stop();return}
   if(!window.MediaRecorder){msg.textContent="Este navegador no permite grabar. Probá con Chrome, Brave, Edge o Firefox.";return}
   try{
     if(ctx.state!=="running")ctx.resume();
     await openMic();const chunks=[],mr=new MediaRecorder(recDest.stream);
-    mic.rec={mr,t0:Date.now(),timer:setInterval(tick,250)};
+    mic.rec={mr,t0:Date.now(),marks:[],timer:setInterval(tick,250)};
     mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
     mr.onstop=async()=>{
-      clearInterval(mic.rec.timer);mic.rec=null;closeMicIfIdle();syncIns();
+      clearInterval(mic.rec.timer);const mk=mic.rec.marks;mic.rec=null;closeMicIfIdle();syncIns();
       const type=mr.mimeType||"audio/webm",ext=/mp4/.test(type)?"m4a":/ogg/.test(type)?"ogg":"webm",d=new Date(),z=n=>String(n).padStart(2,"0");
       await add("Grabación "+z(d.getHours())+"."+z(d.getMinutes())+"."+z(d.getSeconds())+"."+ext,new Blob(chunks,{type}));
+      {const it=items[items.length-1];if(it&&mk.length&&it.name.indexOf("Grabación")===0)it.marks=mk}
       render();save();
     };
-    mr.start();render();syncIns();
+    mic.rec.t0=Date.now();mr.start();render();syncIns();
   }catch(e){mic.rec=null;msg.textContent=MICFAIL}
 }
 
@@ -462,7 +473,7 @@ function db(){return new Promise((ok,no)=>{try{const r=indexedDB.open("botonera"
   r.onupgradeneeded=()=>r.result.createObjectStore("s");
   r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}})}
 async function save(){try{const d=await db();const keys={};items.forEach(i=>keys[i.name]=i.key);
-  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key})),keys,colors},"items")}catch(e){console.warn("No se pudo guardar",e)}}
+  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks})),keys,colors},"items")}catch(e){console.warn("No se pudo guardar",e)}}
 async function load(){try{const d=await db();return await new Promise(ok=>{
   const q=d.transaction("s").objectStore("s").get("items");q.onsuccess=()=>ok(q.result||{});q.onerror=()=>ok({})})}catch(e){return {}}}
 
@@ -593,6 +604,7 @@ $("close").addEventListener("click",()=>{menu.classList.remove("open");waiting=n
 document.addEventListener("keydown",e=>{
   if(e.ctrlKey||e.metaKey||e.altKey)return;
   if(e.target&&(e.target.type==="number"||e.target.tagName==="SELECT"))return;
+  if(mic.rec&&(e.key==="c"||e.key==="C")){e.preventDefault();if(!e.repeat){mic.rec.marks.push((Date.now()-mic.rec.t0)/1000);tick()}return}
   if(ed.it&&waiting===null){if(e.code==="Space"){e.preventDefault();if(!e.repeat)edPlay();return}if(e.key==="Delete"&&ed.sel){e.preventDefault();edDel();return}} // escribiendo un valor: no disparar botones
   if(waiting!==null){
     e.preventDefault();
@@ -628,7 +640,7 @@ const ed={it:null,ch:null,sr:44100,sel:null,cur:0,src:null,t0:0,from:0,raf:0},ed
 const edN=()=>ed.ch[0].length;
 function edOpen(idx){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
   edStop();ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
-  ed.sel=null;ed.cur=0;ed.dirty=false;ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
+  ed.marks=(it.marks||[]).map(q=>Math.round(q*ed.sr));ed.sel=null;ed.cur=0;ed.dirty=false;ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
 function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
 function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.max(300,edc.clientWidth*k),H=edc.height=150*k,n=edN(),mid=H/2,v0=ed.v0,sp=ed.v1-ed.v0,X=q=>(q-v0)/sp*W;
@@ -637,8 +649,9 @@ function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.
     for(let i=a;i<b&&i<n;i+=st)for(const c of ed.ch){const v=c[i];if(v<mn)mn=v;if(v>mx)mx=v}
     g2.fillRect(x,mid-mx*mid,1,Math.max(1,(mx-mn)*mid))}
   if(ed.sel){g2.fillStyle="rgba(232,35,42,.4)";g2.fillRect(X(ed.sel[0]),0,(ed.sel[1]-ed.sel[0])/sp*W,H)}
+  ed.marks.forEach((q,i)=>{const x=X(q);if(x<-20||x>W+20)return;g2.fillStyle="#f2c230";g2.fillRect(x-k,0,2*k,H);g2.beginPath();g2.moveTo(x,0);g2.lineTo(x+13*k,0);g2.lineTo(x,13*k);g2.fill();g2.font=(11*k)+"px Satoshi,sans-serif";g2.fillText(i+1,x+4*k,H-6*k)});
   const pos=ed.src?ed.from+(ctx.currentTime-ed.t0)*ed.sr:ed.cur;g2.fillStyle="#fff";g2.fillRect(X(pos),0,2,H);
-  $("edz").textContent="zoom ×"+(n/sp).toFixed(n/sp<10?1:0)+" · rueda: zoom · Shift+rueda: mover · doble clic: ver todo"}
+  edSb();$("edz").textContent="zoom ×"+(n/sp).toFixed(n/sp<10?1:0)+" · rueda: zoom · Shift+rueda: mover · doble clic: ver todo"}
 function edBtn(){$("edplay").innerHTML=ed.src?'<svg class="ic" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg>Stop':'<svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play'}
 function edStop(){cancelAnimationFrame(ed.raf);if(ed.src){const s=ed.src;ed.src=null;try{s.stop()}catch(e){}}edBtn();edDraw()}
 function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;const n=edN(),b=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>b.copyToChannel(c,i));
@@ -648,12 +661,13 @@ function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;const n=edN(),b=ct
   const lp=()=>{if(ed.src){edDraw();ed.raf=requestAnimationFrame(lp)}};lp()}
 function edDel(){if(!ed.it||!ed.sel)return;edStop();const[a,b]=ed.sel;
   ed.ch=ed.ch.map(c=>{const o=new Float32Array(c.length-(b-a));o.set(c.subarray(0,a));o.set(c.subarray(b),a);return o});
-  ed.cur=a;ed.sel=null;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
-function edTrim(){if(!ed.it)return;edStop();const n=edN(),th=Math.pow(10,-48/20),pad=Math.round(ed.sr*.01),loud=i=>ed.ch.some(c=>Math.abs(c[i])>th);
-  let a=0,b=n-1;while(a<n&&!loud(a))a++;while(b>a&&!loud(b))b--;
+  ed.marks=ed.marks.filter(q=>q<a||q>=b).map(q=>q>=b?q-(b-a):q);ed.cur=a;ed.sel=null;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
+function edTrim(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
+  const n=edN(),thr=Math.max(Math.pow(10,-66/20),pk*.01),pad=Math.round(ed.sr*.01);let a=0;
+  while(a<n&&!ed.ch.some(c=>Math.abs(c[a])>thr))a++;
   if(a>=n){msg.textContent="Ese audio está en silencio total.";return}
-  a=Math.max(0,a-pad);b=Math.min(n,b+pad+1);if(a===0&&b===n){msg.textContent="No hay silencios para recortar.";return}
-  ed.ch=ed.ch.map(c=>c.slice(a,b));ed.sel=null;ed.cur=0;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
+  a=Math.max(0,a-pad);if(a===0){msg.textContent="El audio ya empieza sin silencio.";return}
+  ed.ch=ed.ch.map(c=>c.slice(a));ed.marks=ed.marks.map(q=>q-a).filter(q=>q>=0);ed.sel=null;ed.cur=0;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
 function edNorm(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   if(!pk||Math.abs(pk-1)<1e-4)return;const k=1/pk;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++)c[i]*=k});ed.dirty=true;edInfo();edDraw()}
 function wavBlob(ch,sr){const n=ch[0].length,k=ch.length,d=new DataView(new ArrayBuffer(44+n*k*2)),w=(o,t)=>[...t].forEach((x,i)=>d.setUint8(o+i,x.charCodeAt(0)));
@@ -665,20 +679,30 @@ function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n
   if(items.some(i=>i!==it&&i.name===nn))nn=nice(nn)+" (editado).wav";
   const buf=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>buf.copyToChannel(c,i));
   if(asNew){const k=nice(old);let nm=k+" (editado).wav",c=2;while(items.some(i=>i.name===nm))nm=k+" (editado "+(c++)+").wav";
-    const n2={name:nm,blob:wavBlob(ed.ch,ed.sr),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set()};
+    const n2={name:nm,blob:wavBlob(ed.ch,ed.sr),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:ed.marks.length?ed.marks.map(q=>q/ed.sr):undefined};
     if(colors[old])colors[nm]=colors[old];items.splice(items.indexOf(it)+1,0,n2);edClose(true);render();save();return}
   if(it.base){hidden.add(old);try{localStorage.setItem("botonera_hidden",JSON.stringify([...hidden]))}catch(e){}it.base=false}
   if(colors[old]){colors[nn]=colors[old];delete colors[old]}
-  it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);edClose(true);render();save()}
+  it.marks=ed.marks.length?ed.marks.map(q=>q/ed.sr):undefined;it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);edClose(true);render();save()}
 function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;$("ed").classList.remove("open")}
+const edSnap=p=>{const tol=16/edc.clientWidth*(ed.v1-ed.v0);let best=null,d=tol+1;ed.marks.forEach(q=>{const x=Math.abs(q-p);if(x<=tol&&x<d){best=q;d=x}});return best===null?p:best};
 let edDrag=null;const edPx=e=>{const r=edc.getBoundingClientRect();return Math.max(0,Math.min(edN(),Math.round(ed.v0+(e.clientX-r.left)/r.width*(ed.v1-ed.v0))))};
-edc.addEventListener("pointerdown",e=>{if(!ed.it)return;edc.setPointerCapture(e.pointerId);edDrag=edPx(e);ed.cur=edDrag;ed.sel=null;edDraw()});
-edc.addEventListener("pointermove",e=>{if(edDrag===null)return;const p=edPx(e);ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
+edc.addEventListener("pointerdown",e=>{if(!ed.it)return;edc.setPointerCapture(e.pointerId);edDrag=edSnap(edPx(e));ed.cur=edDrag;ed.sel=null;edDraw()});
+edc.addEventListener("pointermove",e=>{if(edDrag===null)return;const p=edSnap(edPx(e));ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
 edc.addEventListener("pointerup",()=>{edDrag=null});
 edc.addEventListener("wheel",e=>{if(!ed.it)return;e.preventDefault();const n=edN(),r=edc.getBoundingClientRect(),f=(e.clientX-r.left)/r.width,sp=ed.v1-ed.v0;
   if(e.shiftKey){const a=Math.max(0,Math.min(n-sp,ed.v0+(e.deltaY||e.deltaX)/r.width*sp));ed.v0=a;ed.v1=a+sp}
   else{const ns=Math.max(Math.min(n,64),Math.min(n,sp*(e.deltaY<0?.8:1.25))),c=ed.v0+f*sp,a=Math.max(0,Math.min(n-ns,c-f*ns));ed.v0=a;ed.v1=a+ns}
   edDraw()},{passive:false});
+const sb=$("edsb"),thb=$("edth");
+function edSb(){const n=edN();thb.style.left=(ed.v0/n*100)+"%";thb.style.width=((ed.v1-ed.v0)/n*100)+"%"}
+function edPan(a){const n=edN(),sp=ed.v1-ed.v0;a=Math.max(0,Math.min(n-sp,a));ed.v0=a;ed.v1=a+sp;edDraw()}
+let sbD=null;
+thb.addEventListener("pointerdown",e=>{if(!ed.it)return;e.stopPropagation();thb.setPointerCapture(e.pointerId);sbD={x:e.clientX,v:ed.v0}});
+thb.addEventListener("pointermove",e=>{if(sbD)edPan(sbD.v+(e.clientX-sbD.x)/sb.clientWidth*edN())});
+thb.addEventListener("pointerup",()=>{sbD=null});
+sb.addEventListener("pointerdown",e=>{if(!ed.it||e.target===thb)return;const r=sb.getBoundingClientRect();edPan((e.clientX-r.left)/r.width*edN()-(ed.v1-ed.v0)/2)});
+sb.addEventListener("wheel",e=>{if(!ed.it)return;e.preventDefault();edPan(ed.v0+(e.deltaY>0?1:-1)*(ed.v1-ed.v0)*.2)},{passive:false});
 edc.addEventListener("dblclick",()=>{if(ed.it){ed.v0=0;ed.v1=edN();edDraw()}});
 [["edplay",edPlay],["edtrim",edTrim],["ednorm",edNorm],["eddel",edDel],["edsave",()=>edSave(false)],["ednew",()=>edSave(true)],["edx",()=>edClose(false)]].forEach(([id,f])=>$(id).addEventListener("click",f));
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#ed button");if(b)b.blur()});
@@ -697,7 +721,7 @@ if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").c
       await add(n,await r.blob(),keys[n]===undefined?null:keys[n],true);
     }catch(e){console.warn("Se omitió",n)}
   }
-  for(const s of own)await add(s.name,s.blob,s.key);
+  for(const s of own){await add(s.name,s.blob,s.key);const it=items.find(i=>i.name===s.name);if(it&&s.marks&&s.marks.length)it.marks=s.marks}
   items.forEach(i=>{if(i.key===null)i.key=freeKey()});
   render();
   const sp=$("splash");setTimeout(()=>sp.classList.add("off"),Math.max(0,1000-performance.now()));
