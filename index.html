@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.47 · actualización n.º 47 · por @pecallega -->
+<!-- Botonera al aire · v1.48 · actualización n.º 48 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -610,6 +610,11 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 .plr.flash{animation:plflash .5s ease 3}
 @keyframes plflash{50%{background:rgba(61,255,122,.38);border-color:#3dff7a}}
 #pll{padding:2px 10px 44px}
+#dlg ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;max-height:42vh;overflow:auto}
+#dlg li{display:flex;justify-content:space-between;gap:12px;padding:6px 9px;border:1px solid #e8232a;background:rgba(232,35,42,.14);color:#ff7377;font-family:var(--f-txt);font-weight:300;font-size:.72rem}
+#dlg li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dlg li em{font-style:normal;color:#fff;white-space:nowrap}
+.pad.dupmark{outline:3px solid #e8232a;outline-offset:-3px}
 #mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 #mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
@@ -738,7 +743,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.47 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.47</span></footer>
+<footer id="sig" title="Versión 1.48 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.48</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -2030,30 +2035,42 @@ document.addEventListener("keydown",e=>{ // editor: Inicio / Fin llevan el curso
   ed.cur=to;edPan(to===0?0:n);if(typeof edInfo==="function")edInfo()},true);
 $("plshow").addEventListener("click",plShowCur);
 /* ---------- diálogo de confirmación ---------- */
-function askDlg(title,msg,okLabel){return new Promise(res=>{
+function askDlg(title,msg,okLabel,list){return new Promise(res=>{
   const w=document.createElement("div");w.id="dlg";w.innerHTML='<div class="dbox" role="alertdialog" aria-modal="true"><b></b><p></p><div class="drow"><button class="dno">Cancelar</button><button class="dok"></button></div></div>';
-  w.querySelector("b").textContent=title;w.querySelector("p").textContent=msg;w.querySelector(".dok").textContent=okLabel||"Aceptar";document.body.appendChild(w);
+  w.querySelector("b").textContent=title;w.querySelector("p").textContent=msg;
+  if(list&&list.length){const ul=document.createElement("ul");list.forEach(x=>{const li=document.createElement("li"),a=document.createElement("span"),b=document.createElement("em");a.textContent=x.t;b.textContent=x.g;li.append(a,b);ul.appendChild(li)});w.querySelector("p").after(ul)}w.querySelector(".dok").textContent=okLabel||"Aceptar";document.body.appendChild(w);
   const end=v=>{document.removeEventListener("keydown",kd,true);w.remove();res(v)};
   const kd=e=>{if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();end(false)}else if(e.key==="Enter"){e.preventDefault();e.stopImmediatePropagation();end(true)}};
   document.addEventListener("keydown",kd,true);w.querySelector(".dno").onclick=()=>end(false);w.querySelector(".dok").onclick=()=>end(true);w.addEventListener("pointerdown",e=>{if(e.target===w)end(false)});w.querySelector(".dok").focus()})}
 /* ---------- fila de la lista → botón nuevo ---------- */
 const plSameItem=r=>items.find(i=>i.blob===r.blob||(i.name===r.name&&i.blob&&r.blob&&i.blob.size===r.blob.size));
-async function plToButton(row,at){
+async function plToButton(row,at,quiet){
   if(!row||row.t!=="f")return null;
   const ex=plSameItem(row);let name=row.name,src=ex||row;
-  if(ex){const ok=await askDlg("Ese botón ya existe","Ya hay un botón con «"+nice(ex.name)+"». ¿Querés duplicarlo? Se crea otro botón igual, con nombre «"+nice(ex.name)+" (copia)». Si cancelás no pasa nada.","Duplicar");if(!ok)return null;
-    let k=1,n=nice(ex.name)+" (copia)";while(items.some(i=>i.name===n+".wav"||i.name===n))n=nice(ex.name)+" (copia "+(++k)+")";name=n+(/\.[^.]+$/.test(ex.name)?ex.name.match(/\.[^.]+$/)[0]:".wav")}
+  if(ex){let k=1,n=nice(ex.name)+" (copia)";while(items.some(i=>i.name===n+".wav"||i.name===n))n=nice(ex.name)+" (copia "+(++k)+")";name=n+(/\.[^.]+$/.test(ex.name)?ex.name.match(/\.[^.]+$/)[0]:".wav")}
   const ob=src.buffer,buf=ctx.createBuffer(ob.numberOfChannels,ob.length,ob.sampleRate);for(let c=0;c<ob.numberOfChannels;c++)buf.copyToChannel(ob.getChannelData(c),c);
   const it={name,blob:src.blob,buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:ex&&ex.marks?ex.marks.map(m=>Object.assign({},m)):undefined};
   const pos=at!=null&&at>=0?at+1:items.length;items.splice(pos,0,it);render();save();
-  note((ex?"Botón duplicado: «":"Botón nuevo desde la lista: «")+nice(name)+"».","info","",5000);return pos}
+  if(!quiet)note((ex?"Botón duplicado: «":"Botón nuevo desde la lista: «")+nice(name)+"».","info","",5000);return pos}
+// varios temas de la lista → botonera: una sola pregunta para todos los que ya existen, mostrándolos en rojo con su tecla y su lugar
+async function plDropRows(rows,at){
+  rows=rows.filter(r=>r&&r.t==="f");if(!rows.length)return;
+  const dups=rows.map(r=>({r,ex:plSameItem(r)})).filter(x=>x.ex),mark=dups.map(d=>$("p"+items.indexOf(d.ex))).filter(Boolean);
+  if(dups.length){
+    mark.forEach(el=>el.classList.add("dupmark"));
+    const lst=dups.map(d=>({t:nice(d.ex.name),g:(d.ex.key?"tecla "+d.ex.key:"sin tecla")+" · lugar "+(items.indexOf(d.ex)+1)}));
+    const ok=await askDlg(dups.length===1?"Ese botón ya existe":dups.length+" botones ya existen",
+      (dups.length===1?"Ya hay un botón con ese audio (en rojo).":"Estos audios ya están en la botonera (en rojo).")+" Si aceptás se crea una copia de cada uno"+(rows.length>dups.length?(rows.length-dups.length===1?" y además se agrega 1 nuevo":" y además se agregan "+(rows.length-dups.length)+" nuevos"):"")+". Si cancelás no se crea ninguno.","Duplicar",lst);
+    mark.forEach(el=>el.classList.remove("dupmark"));if(!ok)return}
+  let pos=at,n=0;for(const r of rows){const q=await plToButton(r,pos,true);if(q!=null){pos=q;n++}}
+  note(n===1&&rows.length===1?"Botón "+(dups.length?"duplicado":"nuevo")+" desde la lista.":"Botones creados desde la lista: "+n+(dups.length?" ("+dups.length+" duplicados)":"")+".","info","",5000)}
 (function(){const g=$("gcol");let on=false;
   const idxAt=e=>{const c=e.target.closest&&e.target.closest("#grid .cell"),pad=c&&c.querySelector(".pad");const m=pad&&/^p(\d+)$/.exec(pad.id);return m?+m[1]:-1};
   const off=()=>{on=false;g.classList.remove("dropbtn")};
   const okDrag=()=>{if(PL.drag===null)return false;return (PL.dragIds||[PL.drag]).some(id=>{const r=plRow(id);return !!r&&r.t==="f"})}; // los stops no se pueden soltar en la botonera
   ["dragenter","dragover"].forEach(ev=>g.addEventListener(ev,e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect="move";if(!on){on=true;g.classList.add("dropbtn")}}));
   g.addEventListener("dragleave",e=>{if(okDrag()&&!g.contains(e.relatedTarget))off()});
-  g.addEventListener("drop",e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();off();const ids=PL.dragIds||[PL.drag],rows=PL.rows.filter(r=>ids.includes(r.id)&&r.t==="f"),at=idxAt(e);PL.drag=null;PL.dragIds=null;(async()=>{let pos=at;for(const r of rows){const q=await plToButton(r,pos);if(q!=null)pos=q}})()});
+  g.addEventListener("drop",e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();off();const ids=PL.dragIds||[PL.drag],rows=PL.rows.filter(r=>ids.includes(r.id)&&r.t==="f"),at=idxAt(e);PL.drag=null;PL.dragIds=null;plDropRows(rows,at)});
   document.addEventListener("dragend",off)})();
 /* botón de la botonera: suena al soltar; si se mantiene y se arrastra, se puede soltar en la lista y no suena */
 function plWhereXY(x,y){const el=document.elementFromPoint(x,y);if(!el||!el.closest||!el.closest("#pl"))return null;
