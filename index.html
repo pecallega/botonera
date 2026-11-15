@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.44 · actualización n.º 44 · por @pecallega -->
+<!-- Botonera al aire · v1.46 · actualización n.º 46 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -601,6 +601,14 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 #dlg p{margin:0;font-family:var(--f-txt);font-weight:300;font-size:.78rem;line-height:1.5;color:var(--ink)}
 #dlg .drow{display:flex;gap:8px;justify-content:flex-end}
 #dlg .dok{background:var(--on);border-color:var(--on);color:#fff}
+#pl .plh #plcnt{white-space:nowrap;flex:none}
+#pl .plh .plb{padding:5px 8px;flex:none;white-space:nowrap}
+#pl .plh .otag{flex:0 1 auto;min-width:0}
+.plr.msel{outline:2px dashed #fff1a8;outline-offset:-3px;background:rgba(255,241,168,.1)}
+.plr.stp.msel{outline-offset:0}
+.plr.flash{animation:plflash .5s ease 3}
+@keyframes plflash{50%{background:rgba(61,255,122,.38);border-color:#3dff7a}}
+#pll{padding:2px 10px 44px}
 #mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 #mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
@@ -680,7 +688,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
 <div id="stage"><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*" multiple></label></div><div id="grid"></div></div>
 <aside id="pl" aria-label="Lista de reproducción">
-  <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span><button type="button" class="otag" id="otg-pl"></button></div>
+  <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span><button type="button" id="plshow" class="plb" title="Play actual: lleva la lista hasta el tema que suena o el que quedó elegido para reproducirse (Ctrl+A)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Play actual</span></button><button type="button" class="otag" id="otg-pl"></button></div>
   <div class="plact">
     <button id="plsvb" class="plb" title="Guardar la lista, abrir una guardada o pasarla de/ a un archivo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg><span>Listas</span></button>
     <button id="plclr" class="plb" title="Vaciar la lista: quita todos los temas y stops (pide confirmar con un segundo clic)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg><span>Vaciar</span></button>
@@ -729,7 +737,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.44 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.44</span></footer>
+<footer id="sig" title="Versión 1.46 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.46</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -751,10 +759,13 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
   <p class="oh2">Una salida distinta de la principal agrega un poco de latencia (algunas decenas de ms).</p>
 </div>
 <div id="plm" role="menu" aria-label="Opciones del tema de la lista">
+  <button class="mi" data-a="show" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Mostrar reproducción actual</button>
+  <div class="msep" style="display:block"></div>
   <button class="mi" data-a="stop" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18"/><path d="M12 6v12" opacity=".0"/></svg>Agregar comando de stop</button>
   <button class="mi" data-a="copy" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>Copiar</button>
   <button class="mi" data-a="cut" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Cortar</button>
   <button class="mi" data-a="paste" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4h2a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2"/><rect x="8" y="2" width="8" height="4"/></svg>Pegar</button>
+  <button class="mi" data-a="all" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" stroke-dasharray="3 2"/><path d="m8 12 3 3 5-6"/></svg>Seleccionar todo</button>
   <button class="mi del" data-a="del" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar de la lista</button>
   <div class="msep" id="plsep"></div>
   <button class="mi cl" id="plcol" role="menuitem" aria-expanded="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10" r="1.2" fill="currentColor"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="10" r="1.2" fill="currentColor"/></svg>Color<svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
@@ -793,6 +804,7 @@ const AC=window.AudioContext||window.webkitAudioContext;
 const ctx=new AC({latencyHint:"interactive"});
 let items=[],colors={},waiting=null,cmIdx=null;
 const SEL=new Set(); // botones seleccionados (Ctrl+clic o recuadro)
+let ACT=null; // sección donde se hizo el último clic: "pl" lista, "ed" editor, "pad" botonera (decide a quién van Ctrl+C/V, Supr, Inicio y Fin)
 const $=id=>document.getElementById(id);
 const grid=$("grid"),msg=$("msg"),menu=$("menu"),list=$("list"),cm=$("cm");
 const nice=n=>n.replace(/\.[^.]+$/,"");
@@ -1212,7 +1224,7 @@ $("stop").addEventListener("click",stopAll);
 $("burger").addEventListener("click",()=>{menu.classList.toggle("open");waiting=null;renderMenu()});
 $("close").addEventListener("click",()=>{menu.classList.remove("open");waiting=null;renderMenu()});
 document.addEventListener("keydown",e=>{
-  if((e.ctrlKey||e.metaKey)&&!e.altKey&&ed.it&&!(e.target&&(e.target.type==="number"||e.target.type==="text"||e.target.tagName==="SELECT"))){const k=(e.key||"").toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&!e.altKey&&ed.it&&ACT!=="pl"&&!(e.target&&(e.target.type==="number"||e.target.type==="text"||e.target.tagName==="SELECT"))){const k=(e.key||"").toLowerCase();
     if(k==="z"){e.preventDefault();e.shiftKey?edRedo():edUndo();return}
     if(k==="y"){e.preventDefault();edRedo();return}
     if(k==="c"&&ed.sel){e.preventDefault();edCopy();return}
@@ -1287,7 +1299,7 @@ const ed={hist:[],redo:[],clip:null,it:null,ch:null,sr:44100,sel:null,cur:0,src:
 const edN=()=>ed.ch[0].length;
 function edOpen(idx,quiet){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
   edStop();ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
-  ed.marks=normMarks(it.marks).map(m=>({p:Math.round(m.t*ed.sr),k:m.k}));ed.sel=null;ed.cur=0;ed.dirty=false;ed.hist=[];ed.redo=[];ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();if(!quiet)$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
+  ed.marks=normMarks(it.marks).map(m=>({p:Math.round(m.t*ed.sr),k:m.k}));ed.sel=null;ed.cur=0;ed.dirty=false;ed.hist=[];ed.redo=[];ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();if(!quiet){ACT="ed";$("ed").scrollIntoView({behavior:"smooth",block:"end"})}}
 function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
 function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.max(300,edc.clientWidth*k),H=edc.height=150*k,n=edN(),mid=H/2,v0=ed.v0,sp=ed.v1-ed.v0,X=q=>(q-v0)/sp*W;
@@ -1690,7 +1702,8 @@ $("ttlis").addEventListener("click",ttListen);$("ttnew").addEventListener("click
 
 /* --- lista de reproducción --- */
 const PLK="pl"+(PROF.active==="p0"?"":":"+PROF.active);
-const PL={rows:[],curId:null,nxtId:null,state:"stop",src:null,off:0,t0:0,ts:0,gen:0,solo:false,clip:[],uid:1,drag:null,menuId:null};
+const PL={rows:[],curId:null,nxtId:null,state:"stop",src:null,off:0,t0:0,ts:0,gen:0,solo:false,clip:[],uid:1,drag:null,dragIds:null,menuId:null};
+const PLS=[]; let PLANCH=null,PLC=null; // filas seleccionadas de la lista (en orden de selección), ancla para Shift y clic sobre grupo
 const plIdx=id=>PL.rows.findIndex(r=>r.id===id),plRow=id=>PL.rows[plIdx(id)];
 const plAudio=f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba)$/i.test(f.name);
 const fmtM=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
@@ -1766,11 +1779,12 @@ function plSt(){
   $("plpause").disabled=PL.state!=="play";$("plstop").disabled=PL.state==="stop"&&!PL.off&&!PL.rows.length;$("plprev").disabled=$("plnext").disabled=PL.state!=="play";
   $("plplay").classList.toggle("lit",PL.state==="play");$("plpause").classList.toggle("lit",PL.state==="pause");$("plstop").classList.toggle("lit",PL.state==="stop");
   ["plb5","plb1","plf1","plf5"].forEach(k=>$(k).disabled=!has);
-  $("plclr").disabled=!PL.rows.length;plTimes();$("plsolo").setAttribute("aria-checked",PL.solo);$("plsolo").querySelector("em").textContent=PL.solo?"ON":"OFF"}
+  $("plclr").disabled=!PL.rows.length;$("plshow").disabled=plShowId()===null;plTimes();$("plsolo").setAttribute("aria-checked",PL.solo);$("plsolo").querySelector("em").textContent=PL.solo?"ON":"OFF"}
 function plRender(){
-  const L=$("pll");L.textContent="";const ci=plIdx(PL.curId),ni=plNextIdx();let k=0;
+  const L=$("pll"),st0=L.scrollTop;L.textContent="";const ci=plIdx(PL.curId),ni=plNextIdx();let k=0;
+  for(let q=PLS.length-1;q>=0;q--)if(plIdx(PLS[q])<0)PLS.splice(q,1);
   PL.rows.forEach((r,i)=>{const d=document.createElement("div");
-    d.className="plr"+(r.t==="s"?" stp":"")+(i===ci?" cur":"")+(i===ni?" nxt":"")+(i===ci&&PL.state==="play"?" playing":"");
+    d.className="plr"+(r.t==="s"?" stp":"")+(i===ci?" cur":"")+(i===ni?" nxt":"")+(i===ci&&PL.state==="play"?" playing":"")+(PLS.includes(r.id)?" msel":"");
     d.dataset.id=r.id;d.draggable=true;d.setAttribute("role","option");
     if(r.t==="s"){const s=document.createElement("span");s.textContent="STOP";d.appendChild(s)}
     else{k++;if(r.color)d.style.setProperty("--c",r.color);
@@ -1780,6 +1794,7 @@ function plRender(){
       const du=document.createElement("span");du.className="d";du.textContent=fmtM(r.buffer.duration);d.appendChild(du);
       if(i===ci&&PL.state==="play"){const g=document.createElement("i");g.className="pg";d.appendChild(g)}}
     L.appendChild(d)});
+  L.scrollTop=st0;
   $("plcnt").textContent=PL.rows.length?k+(k===1?" tema":" temas")+(PL.rows.length>k?" · "+(PL.rows.length-k)+" stop":""):"";
   plSt()}
 let plSaveT=0;
@@ -1954,6 +1969,65 @@ $("pldlf").addEventListener("click",async()=>{
   const b=await plsPack(name,plsRows());saveBlob(b,name+".botolista");note("Descargado: "+name+".botolista ("+fmtMB(b.size)+"). Incluye los audios; se abre con «Abrir archivo».","info","pl",6000)});
 $("plopenf").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const l=await plsUnpack(f);$("plname").value=l.name;await plsApply(l.rows,l.name)}catch(x){note(String(x.message||x),"error","pl",8000)}});
+/* ---------- selección en la lista: clic, Ctrl, Shift, recuadro, teclado ---------- */
+function plSelApply(){document.querySelectorAll("#pll .plr").forEach(d=>d.classList.toggle("msel",PLS.includes(+d.dataset.id)))}
+function plSelSet(ids,anchor){PLS.length=0;ids.forEach(i=>PLS.push(i));if(anchor!==undefined)PLANCH=anchor;plSelApply()}
+const plSelRows=()=>PL.rows.filter(r=>PLS.includes(r.id));
+function plCopySel(cut){const rows=plSelRows();if(!rows.length)return;PL.clip=rows.map(plClone);
+  if(cut){rows.forEach(r=>plDel(r.id));PLS.length=0;plRender();plSave()}
+  note((cut?"Cortado: ":"Copiado: ")+rows.length+(rows.length===1?" elemento":" elementos")+". Ctrl+V pega.","info","pl",2200)}
+function plPasteSel(){if(!PL.clip.length)return;const sel=plSelRows(),last=sel.length?plIdx(sel[sel.length-1].id):-1,at=last>=0?last+1:PL.rows.length,nr=PL.clip.map(plClone);
+  PL.rows.splice(at,0,...nr);plSelSet(nr.map(r=>r.id),nr[0].id);plRender();plSave();note("Pegado: "+nr.length+(nr.length===1?" elemento":" elementos")+".","info","pl",2200)}
+function plDelSel(){const rows=plSelRows();if(!rows.length)return;rows.forEach(r=>plDel(r.id));PLS.length=0;plRender();plSave()}
+const plShowId=()=>plIdx(PL.curId)>=0?PL.curId:(plIdx(PL.nxtId)>=0?PL.nxtId:null); // lo que suena, está en pausa o quedó elegido para reproducirse
+function plShowCur(){const L=$("pll"),id=plShowId(),el=id===null?null:L.querySelector('.plr[data-id="'+id+'"]');
+  if(!el){note("No hay ningún tema sonando ni elegido para reproducir.","info","pl",2500);return}
+  L.style.paddingBottom=Math.max(44,L.clientHeight-el.offsetHeight-6)+"px"; // espacio al final para que el tema pueda quedar arriba de todo
+  L.scrollTop+=el.getBoundingClientRect().top-L.getBoundingClientRect().top-3;el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash")}
+function plMarquee(e0){
+  const L=$("pll");e0.preventDefault();const lr0=L.getBoundingClientRect(),sx=e0.clientX,syc=e0.clientY-lr0.top+L.scrollTop,add=e0.ctrlKey||e0.metaKey||e0.shiftKey,base=add?PLS.slice():[];
+  let box=null,moved=false,px=e0.clientX,py=e0.clientY,tm=0;const sy0=e0.clientY;
+  const calc=()=>{const lr=L.getBoundingClientRect(),pyc=py-lr.top+L.scrollTop,y1=Math.min(syc,pyc),y2=Math.max(syc,pyc),x1=Math.min(sx,px),x2=Math.max(sx,px);
+    const t=Math.max(lr.top,y1-L.scrollTop+lr.top),b=Math.min(lr.bottom,y2-L.scrollTop+lr.top);
+    box.style.left=Math.max(lr.left,x1)+"px";box.style.top=t+"px";box.style.width=Math.max(0,Math.min(lr.right,x2)-Math.max(lr.left,x1))+"px";box.style.height=Math.max(0,b-t)+"px";
+    const hit=[];L.querySelectorAll(".plr").forEach(d=>{const r=d.getBoundingClientRect(),rt=r.top-lr.top+L.scrollTop,rb=rt+r.height;if(rb>y1&&rt<y2&&r.right>x1&&r.left<x2)hit.push(+d.dataset.id)});
+    const prev=PLS.filter(id=>!base.includes(id)&&hit.includes(id)),rest=hit.filter(id=>!base.includes(id)&&!prev.includes(id));
+    PLS.length=0;base.concat(prev,rest).forEach(i=>PLS.push(i));plSelApply()};
+  const mv=ev=>{px=ev.clientX;py=ev.clientY;
+    if(!moved){if(Math.hypot(px-sx,py-sy0)<4)return;moved=true;box=document.createElement("div");box.className="marq";document.body.appendChild(box);document.body.classList.add("marqing");
+      tm=setInterval(()=>{const lr=L.getBoundingClientRect();if(py<lr.top+24)L.scrollTop-=14;else if(py>lr.bottom-24)L.scrollTop+=14;calc()},30)}
+    calc()};
+  const up=()=>{window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);clearInterval(tm);
+    if(box)box.remove();document.body.classList.remove("marqing");if(!moved&&!add)plSelSet([])};
+  window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)}
+{const L=$("pll");
+  L.addEventListener("pointerdown",e=>{if(e.button!==0)return;const row=e.target.closest(".plr");if(!row){plMarquee(e);return}
+    const id=+row.dataset.id,mod=e.ctrlKey||e.metaKey,sh=e.shiftKey;PLC=null;
+    if(sh){const ai=plIdx(PLANCH!==null&&plIdx(PLANCH)>=0?PLANCH:(PL.rows[0]&&PL.rows[0].id)),bi=plIdx(id),rng=PL.rows.slice(Math.min(ai,bi),Math.max(ai,bi)+1).map(r=>r.id);
+      plSelSet(mod?PLS.concat(rng.filter(x=>!PLS.includes(x))):rng)}
+    else if(mod){const q=PLS.indexOf(id);if(q>=0)PLS.splice(q,1);else PLS.push(id);PLANCH=id;plSelApply()}
+    else if(PLS.includes(id)&&PLS.length>1)PLC=id; // puede ser el comienzo de un arrastre del grupo: se decide en el clic
+    else plSelSet([id],id)});
+  L.addEventListener("click",e=>{if(PLC!==null&&!e.ctrlKey&&!e.shiftKey&&!e.metaKey){const row=e.target.closest(".plr");if(row&&+row.dataset.id===PLC)plSelSet([PLC],PLC)}PLC=null})}
+document.addEventListener("pointerdown",e=>{const t=e.target;ACT=t.closest?(t.closest("#pl,#plm")?"pl":t.closest("#ed")?"ed":t.closest("#gcol")?"pad":null):null},true);
+const kTyping=e=>{const t=e.target;return !!t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.tagName==="SELECT"||t.isContentEditable)};
+document.addEventListener("keydown",e=>{ // lista: Ctrl+A/C/X/V, Supr, Inicio, Fin
+  if(ACT!=="pl"||kTyping(e)||e.altKey||(typeof waiting!=="undefined"&&waiting!==null)||document.getElementById("dlg"))return;
+  const mod=e.ctrlKey||e.metaKey,k=(e.key||"").toLowerCase(),eat=()=>{e.preventDefault();e.stopImmediatePropagation()};
+  if(mod){
+    if(k==="a"){eat();if(!e.repeat)plShowCur();return}
+    if((k==="c"||k==="x")&&PLS.length){eat();if(!e.repeat)plCopySel(k==="x");return}
+    if(k==="v"&&PL.clip.length){eat();if(!e.repeat)plPasteSel();return}
+    return}
+  if((e.key==="Delete"||e.key==="Backspace")&&PLS.length){eat();if(!e.repeat)plDelSel();return}
+  if(e.key==="Home"||e.key==="End"){eat();const L=$("pll");L.scrollTop=e.key==="Home"?0:L.scrollHeight}
+},true);
+document.addEventListener("keydown",e=>{ // editor: Inicio / Fin llevan el cursor al principio o al final
+  if(ACT!=="ed"||!ed.it||kTyping(e)||e.ctrlKey||e.metaKey||e.altKey||(e.key!=="Home"&&e.key!=="End"))return;
+  e.preventDefault();e.stopImmediatePropagation();const n=edN(),to=e.key==="Home"?0:n;
+  if(e.shiftKey){const a=ed.sel?(e.key==="Home"?ed.sel[1]:ed.sel[0]):ed.cur;ed.sel=Math.abs(a-to)>0?[Math.min(a,to),Math.max(a,to)]:null}else ed.sel=null;
+  ed.cur=to;edPan(to===0?0:n);if(typeof edInfo==="function")edInfo()},true);
+$("plshow").addEventListener("click",plShowCur);
 /* ---------- diálogo de confirmación ---------- */
 function askDlg(title,msg,okLabel){return new Promise(res=>{
   const w=document.createElement("div");w.id="dlg";w.innerHTML='<div class="dbox" role="alertdialog" aria-modal="true"><b></b><p></p><div class="drow"><button class="dno">Cancelar</button><button class="dok"></button></div></div>';
@@ -1964,21 +2038,21 @@ function askDlg(title,msg,okLabel){return new Promise(res=>{
 /* ---------- fila de la lista → botón nuevo ---------- */
 const plSameItem=r=>items.find(i=>i.blob===r.blob||(i.name===r.name&&i.blob&&r.blob&&i.blob.size===r.blob.size));
 async function plToButton(row,at){
-  if(!row||row.t!=="f")return;
+  if(!row||row.t!=="f")return null;
   const ex=plSameItem(row);let name=row.name,src=ex||row;
-  if(ex){const ok=await askDlg("Ese botón ya existe","Ya hay un botón con «"+nice(ex.name)+"». ¿Querés duplicarlo? Se crea otro botón igual, con nombre «"+nice(ex.name)+" (copia)». Si cancelás no pasa nada.","Duplicar");if(!ok)return;
+  if(ex){const ok=await askDlg("Ese botón ya existe","Ya hay un botón con «"+nice(ex.name)+"». ¿Querés duplicarlo? Se crea otro botón igual, con nombre «"+nice(ex.name)+" (copia)». Si cancelás no pasa nada.","Duplicar");if(!ok)return null;
     let k=1,n=nice(ex.name)+" (copia)";while(items.some(i=>i.name===n+".wav"||i.name===n))n=nice(ex.name)+" (copia "+(++k)+")";name=n+(/\.[^.]+$/.test(ex.name)?ex.name.match(/\.[^.]+$/)[0]:".wav")}
   const ob=src.buffer,buf=ctx.createBuffer(ob.numberOfChannels,ob.length,ob.sampleRate);for(let c=0;c<ob.numberOfChannels;c++)buf.copyToChannel(ob.getChannelData(c),c);
   const it={name,blob:src.blob,buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:ex&&ex.marks?ex.marks.map(m=>Object.assign({},m)):undefined};
   const pos=at!=null&&at>=0?at+1:items.length;items.splice(pos,0,it);render();save();
-  note((ex?"Botón duplicado: «":"Botón nuevo desde la lista: «")+nice(name)+"».","info","",5000)}
+  note((ex?"Botón duplicado: «":"Botón nuevo desde la lista: «")+nice(name)+"».","info","",5000);return pos}
 (function(){const g=$("gcol");let on=false;
   const idxAt=e=>{const c=e.target.closest&&e.target.closest("#grid .cell"),pad=c&&c.querySelector(".pad");const m=pad&&/^p(\d+)$/.exec(pad.id);return m?+m[1]:-1};
   const off=()=>{on=false;g.classList.remove("dropbtn")};
-  const okDrag=()=>{if(PL.drag===null)return false;const r=PL.rows[plIdx(PL.drag)];return !!r&&r.t==="f"}; // los stops no se pueden soltar en la botonera
+  const okDrag=()=>{if(PL.drag===null)return false;return (PL.dragIds||[PL.drag]).some(id=>{const r=plRow(id);return !!r&&r.t==="f"})}; // los stops no se pueden soltar en la botonera
   ["dragenter","dragover"].forEach(ev=>g.addEventListener(ev,e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect="move";if(!on){on=true;g.classList.add("dropbtn")}}));
   g.addEventListener("dragleave",e=>{if(okDrag()&&!g.contains(e.relatedTarget))off()});
-  g.addEventListener("drop",e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();off();const at=idxAt(e),row=PL.rows[plIdx(PL.drag)];PL.drag=null;plToButton(row,at)});
+  g.addEventListener("drop",e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();off();const ids=PL.dragIds||[PL.drag],rows=PL.rows.filter(r=>ids.includes(r.id)&&r.t==="f"),at=idxAt(e);PL.drag=null;PL.dragIds=null;(async()=>{let pos=at;for(const r of rows){const q=await plToButton(r,pos);if(q!=null)pos=q}})()});
   document.addEventListener("dragend",off)})();
 /* botón de la botonera: suena al soltar; si se mantiene y se arrastra, se puede soltar en la lista y no suena */
 function plWhereXY(x,y){const el=document.elementFromPoint(x,y);if(!el||!el.closest||!el.closest("#pl"))return null;
@@ -2060,7 +2134,8 @@ $("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)ret
     if(e.target.closest("#plm")||!e.target.closest("#pll"))return;
     e.preventDefault();hideCm();hideMkm&&hideMkm();
     const r=e.target.closest(".plr");PL.menuId=r?+r.dataset.id:null;
-    const row=r?plRow(PL.menuId):null;
+    const row=r?plRow(PL.menuId):null;if(row&&!PLS.includes(row.id))plSelSet([row.id],row.id);
+    plm.querySelector('[data-a=show]').disabled=plShowId()===null;plm.querySelector('[data-a=all]').disabled=!PL.rows.length;
     plm.querySelectorAll(".mi[data-a]").forEach(b=>{const a=b.dataset.a;b.style.display=(!row&&(a==="copy"||a==="cut"||a==="del"))?"none":"flex";if(a==="paste")b.disabled=!PL.clip.length});
     {const f=!!row&&row.t==="f";$("plsw").style.display="none";$("plcol").style.display=f?"flex":"none";$("plcol").setAttribute("aria-expanded","false");$("plsep").style.display=f?"block":"none"}
     plm.style.display="block";const w=plm.offsetWidth,h=plm.offsetHeight;
@@ -2070,11 +2145,13 @@ $("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)ret
   $("plcol").addEventListener("click",()=>{const o=$("plsw").style.display!=="block";$("plsw").style.display=o?"block":"none";$("plcol").setAttribute("aria-expanded",o)});
   plm.querySelectorAll(".mi[data-a]").forEach(b=>b.addEventListener("click",()=>{
     const a=b.dataset.a,id=PL.menuId,i=id===null?-1:plIdx(id);hideP();
+    if(a==="show"){plShowCur();return}
+    if(a==="all"){plSelSet(PL.rows.map(r=>r.id));return}
     if(a==="stop"){PL.rows.splice(i<0?PL.rows.length:i+1,0,plMkStop())}
-    else if(a==="copy"&&i>=0){PL.clip=[plClone(PL.rows[i])]}
-    else if(a==="cut"&&i>=0){PL.clip=[plClone(PL.rows[i])];plDel(id)}
+    else if(a==="copy"&&i>=0){plCopySel(false)}
+    else if(a==="cut"&&i>=0){plCopySel(true)}
     else if(a==="paste"&&PL.clip.length){const at=i<0?PL.rows.length:i+1;PL.rows.splice(at,0,...PL.clip.map(plClone))}
-    else if(a==="del"&&i>=0){plDel(id)}
+    else if(a==="del"&&i>=0){plDelSel()}
     plRender();plSave()}));
   document.addEventListener("pointerdown",e=>{if(plm.style.display==="block"&&!plm.contains(e.target))hideP()},true);
   window.addEventListener("scroll",hideP,true);window.addEventListener("resize",hideP);
@@ -2082,8 +2159,8 @@ $("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)ret
   const clr=()=>{L.querySelectorAll(".da,.db").forEach(x=>x.classList.remove("da","db"))};
   const hasF=e=>e.dataTransfer&&Array.from(e.dataTransfer.types||[]).includes("Files");
   const where=e=>{const r=e.target.closest&&e.target.closest(".plr");if(!r)return{ins:PL.rows.length,el:null,after:true};const rc=r.getBoundingClientRect(),after=e.clientY>rc.top+rc.height/2;return{ins:plIdx(+r.dataset.id)+(after?1:0),el:r,after}};
-  L.addEventListener("dragstart",e=>{const r=e.target.closest(".plr");if(!r)return;PL.drag=+r.dataset.id;r.classList.add("dragging");e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain","pl")}catch(x){}});
-  L.addEventListener("dragend",()=>{PL.drag=null;clr();L.querySelectorAll(".dragging").forEach(x=>x.classList.remove("dragging"))});
+  L.addEventListener("dragstart",e=>{const r=e.target.closest(".plr");if(!r)return;PL.drag=+r.dataset.id;PL.dragIds=PLS.includes(PL.drag)?PLS.slice():[PL.drag];PL.dragIds.forEach(id=>{const x=L.querySelector('.plr[data-id="'+id+'"]');if(x)x.classList.add("dragging")});e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain","pl")}catch(x){}});
+  L.addEventListener("dragend",()=>{PL.drag=null;PL.dragIds=null;clr();L.querySelectorAll(".dragging").forEach(x=>x.classList.remove("dragging"))});
   const pl=$("pl");
   ["dragenter","dragover"].forEach(ev=>pl.addEventListener(ev,e=>{
     if(PL.drag===null&&!hasF(e))return;e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect=PL.drag!==null?"move":"copy";
@@ -2091,7 +2168,7 @@ $("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)ret
   pl.addEventListener("dragleave",e=>{if(PL.drag===null&&!hasF(e))return;e.stopPropagation();if(!pl.contains(e.relatedTarget)){clr();pl.classList.remove("dropfiles")}});
   pl.addEventListener("drop",async e=>{
     if(PL.drag===null&&!hasF(e))return;e.preventDefault();e.stopPropagation();pl.classList.remove("dropfiles");const w=where(e);clr();
-    if(PL.drag!==null){const from=plIdx(PL.drag);PL.drag=null;if(from<0)return;let ins=w.ins;if(from<ins)ins--;if(ins===from)return;const [r]=PL.rows.splice(from,1);PL.rows.splice(ins,0,r);plRender();plSave()}
+    if(PL.drag!==null){const ids=new Set(PL.dragIds||[PL.drag]);PL.drag=null;PL.dragIds=null;const mv=PL.rows.filter(r=>ids.has(r.id));if(!mv.length)return;let ins=w.ins;ins-=PL.rows.slice(0,ins).filter(r=>ids.has(r.id)).length;PL.rows=PL.rows.filter(r=>!ids.has(r.id));PL.rows.splice(ins,0,...mv);plRender();plSave()}
     else await plAddFiles(e.dataTransfer.files,w.ins)})}
 
 /* --- tarjeta de resultado y búsqueda --- */
