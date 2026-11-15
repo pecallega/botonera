@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.25 · actualización n.º 25 · por @pecallega -->
+<!-- Botonera al aire · v1.26 · actualización n.º 26 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -54,6 +54,9 @@ select option{background:#18181b;color:#fff}
 .fx #mv{color:var(--on);font-weight:600;font-size:.7rem}
 input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
 #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.usr{display:inline-flex;align-items:center;gap:6px}
+.usr select{max-width:150px}
+.usr button{padding:8px 9px!important}
 .cell{position:relative}
 .sep{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:6px 0 0;color:rgba(255,255,255,.55);font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
 .sep::before,.sep::after{content:"";height:1px;background:rgba(255,255,255,.18)}
@@ -193,6 +196,7 @@ body.lfx .fx{border-color:rgba(232,35,42,.55);box-shadow:0 0 28px rgba(232,35,42
 #ed.open #edhint{display:none}
 #edhint{margin:8px 0 0;color:var(--mut)}
 #ed .edtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.cmpg{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
 #edinfo{margin-left:auto;color:var(--mut);font-size:.8rem}
 #edc{display:block;width:100%;height:150px;border-radius:12px;background:rgba(0,0,0,.35);cursor:crosshair;touch-action:none}
 #edsave{background:var(--on);border-color:transparent;color:#fff}
@@ -356,6 +360,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
       <h1><span class="lamp" aria-hidden="true"></span>Botonera <em>al aire</em></h1>
       <div class="bar">
         <label class="btn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*" multiple></label>
+        <div class="usr" role="group" aria-label="Usuarios de esta computadora"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><select id="usr" aria-label="Usuario activo"></select><button id="usradd" title="Nuevo usuario (escritorio vacío; muestra solo la carpeta audios)" aria-label="Nuevo usuario"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button><button id="usrdel" title="Eliminar este usuario y sus botones" aria-label="Eliminar este usuario"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
         <div class="fx" title="Delay: 80 a 150 ms = slapback rockabilly. Podés escribir el valor exacto en el campo de la derecha.">
           <button id="dly" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.2" fill="currentColor"/><path d="M11 8a5.5 5.5 0 0 1 0 8"/><path d="M15 5a9.5 9.5 0 0 1 0 14"/></svg>Delay</button>
           <input id="dms" type="range" min="0" max="800" step="1" value="120" aria-label="Tiempo del delay en milisegundos">
@@ -411,16 +416,16 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <section id="ed" aria-label="Editor de audio">
   <div class="edh"><b>Editor de audio</b><span id="edn"></span><label class="nmf" title="Nombre del botón al guardar. Vacío = se mantiene el nombre actual."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg><input id="edname" type="text" maxlength="60" placeholder="Nombre del botón" autocomplete="off"></label><span class="sp"></span>
     <div class="edact"><button id="edsave" title="Guardar (modifica este botón)" aria-label="Guardar cambios en este botón"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="ednew" title="Guardar como botón nuevo (el botón original no cambia)" aria-label="Guardar como botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Nuevo botón</button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
-  <p id="edhint">Clic derecho sobre un botón → Editar audio. Acá podés recortar el silencio inicial, normalizar y borrar partes.</p>
+  <p id="edhint">Todavía no hay botones. Cargá audios y acá vas a poder recortar, normalizar, comprimir y borrar partes. También con clic derecho sobre un botón → Editar audio.</p>
   <div class="edbody">
-    <div class="edtools"><button id="edplay"><svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play</button><button id="edtrim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Recortar silencio inicial</button><button id="ednorm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg>Normalizar 0 dB</button><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><span id="edz"></span><span id="edinfo"></span></div>
+    <div class="edtools"><button id="edplay"><svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play</button><button id="edtrim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Recortar silencio inicial</button><button id="ednorm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg>Normalizar 0 dB</button><span class="cmpg"><button id="edcomp" title="Comprime la selección (o todo el audio si no hay selección) y recupera el nivel pico original"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 19h16"/><path d="m8 9 4 3-4 3M16 9l-4 3 4 3"/></svg>Comprimir</button><label class="num" title="Umbral: por encima de este nivel el audio se comprime"><i>Umbral</i><input id="edthr" type="number" min="-60" max="0" step="1" value="-24" inputmode="numeric" aria-label="Umbral del compresor en decibeles"><i>dB</i></label><label class="num" title="Ratio de compresión x:1. 0 o 1 = sin compresión; 8 = muy fuerte"><i>Ratio</i><input id="edrat" type="number" min="0" max="8" step="0.5" value="3" inputmode="decimal" aria-label="Ratio de compresión"><i>:1</i></label></span><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><span id="edz"></span><span id="edinfo"></span></div>
     <canvas id="edc" height="150"></canvas>
     <div id="edsb" title="Rueda del mouse o arrastrar para moverte"><div id="edth"></div></div>
   </div>
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.25 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.25</span></footer>
+<footer id="sig" title="Versión 1.26 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.26</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -446,6 +451,13 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 // Audios extra opcionales (nombres de archivos dentro de la carpeta "audios").
 // Si el sitio está en GitHub Pages, la carpeta se lee sola: no hace falta listar nada acá.
 const BASE=[];
+/* ---------- usuarios (escritorios) en esta computadora ---------- */
+const PROF=(()=>{let l=[],a="p0";
+  try{l=JSON.parse(localStorage.getItem("botonera_users")||"[]");a=localStorage.getItem("botonera_user")||"p0"}catch(e){}
+  if(!Array.isArray(l)||!l.length||!l.some(u=>u&&u.id==="p0"))l=[{id:"p0",name:"Principal"}].concat(Array.isArray(l)?l.filter(u=>u&&u.id!=="p0"&&u.name):[]);
+  if(!l.some(u=>u.id===a))a="p0";return{list:l,active:a}})();
+const IK=PROF.active==="p0"?"items":"items:"+PROF.active,HK="botonera_hidden"+(PROF.active==="p0"?"":":"+PROF.active);
+function profSave(){try{localStorage.setItem("botonera_users",JSON.stringify(PROF.list));localStorage.setItem("botonera_user",PROF.active)}catch(e){}}
 
 const KEYS="1234567890QWERTYUIOPASDFGHJKLZXCVBNM".split("");
 const PALETTE=["#e8232a","#a3141a","#ff5a36","#f2c230","#4a90f2","#3a3a3a","#6b6b6b","#9a9a9a","#c4c4c4","#ffffff"];
@@ -644,9 +656,9 @@ function db(){return new Promise((ok,no)=>{try{const r=indexedDB.open("botonera"
   r.onupgradeneeded=()=>r.result.createObjectStore("s");
   r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}})}
 async function save(){try{const d=await db();const keys={};items.forEach(i=>keys[i.name]=i.key);
-  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks})).concat((window.__lostOwn||[]).filter(l=>!items.some(i=>i.name===l.name))),keys,colors,order:items.map(i=>i.name)},"items")}catch(e){console.warn("No se pudo guardar",e)}}
+  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks})).concat((window.__lostOwn||[]).filter(l=>!items.some(i=>i.name===l.name))),keys,colors,order:items.map(i=>i.name)},IK)}catch(e){console.warn("No se pudo guardar",e)}}
 async function load(){try{const d=await db();return await new Promise(ok=>{
-  const q=d.transaction("s").objectStore("s").get("items");q.onsuccess=()=>ok(q.result||{});q.onerror=()=>ok({})})}catch(e){return {}}}
+  const q=d.transaction("s").objectStore("s").get(IK);q.onsuccess=()=>ok(q.result||{});q.onerror=()=>ok({})})}catch(e){return {}}}
 
 /* ---------- audio ---------- */
 function decode(ab){return new Promise((ok,no)=>{const p=ctx.decodeAudioData(ab,ok,no);if(p&&p.catch)p.catch(no)})}
@@ -791,11 +803,11 @@ function renderMenu(){
   });
   if(!items.length)list.innerHTML="<p>Todavía no cargaste audios.</p>";
   if(hidden.size){const b=document.createElement("button");b.className="restore";b.innerHTML=ICRS+"Restaurar ocultos ("+hidden.size+")";
-    b.addEventListener("click",()=>{hidden.clear();try{localStorage.removeItem("botonera_hidden")}catch(e){}location.reload()});list.appendChild(b)}
+    b.addEventListener("click",()=>{hidden.clear();try{localStorage.removeItem(HK)}catch(e){}location.reload()});list.appendChild(b)}
 }
 function mark(idx){const el=$("p"+idx);if(el&&items[idx])el.classList.toggle("on",items[idx].playing.size>0);document.body.classList.toggle("air",items.some(i=>i.playing.size>0))}
 function remove(idx){const it=items[idx];it.playing.forEach(s=>{try{s.stop()}catch(e){}});
-  if(it.base){hidden.add(it.name);try{localStorage.setItem("botonera_hidden",JSON.stringify([...hidden]))}catch(e){}}
+  if(it.base){hidden.add(it.name);try{localStorage.setItem(HK,JSON.stringify([...hidden]))}catch(e){}}
   delete colors[it.name];items.splice(idx,1);waiting=null;render();save()}
 function askRemove(idx){const it=items[idx];if(!it)return;
   if(confirm("¿Eliminar el botón «"+nice(it.name)+"»?"+(it.base?"\n\nEl archivo sigue en GitHub: solo se oculta en este navegador.":"")))remove(idx)}
@@ -892,11 +904,24 @@ $("splash").addEventListener("click",()=>$("splash").classList.add("off"));
   el.addEventListener("wheel",e=>{e.preventDefault();el.value=+el.value+(e.deltaY<0?1:-1)*(e.shiftKey?1:st);el.dispatchEvent(new Event("input"))},{passive:false})});
 
 /* ---------- editor de audio ---------- */
+function usrUI(){const sl=$("usr");sl.innerHTML="";PROF.list.forEach(u=>{const o=document.createElement("option");o.value=u.id;o.textContent=u.name;sl.appendChild(o)});sl.value=PROF.active;$("usrdel").disabled=PROF.active==="p0"}
+usrUI();
+$("usr").addEventListener("change",e=>{PROF.active=e.target.value;profSave();location.reload()});
+$("usradd").addEventListener("click",()=>{
+  let n=(prompt("Nombre del nuevo usuario:","")||"").trim().replace(/[<>]/g,"").slice(0,24);if(!n)return;
+  if(PROF.list.some(u=>u.name.toLowerCase()===n.toLowerCase())){note("Ya existe un usuario llamado «"+n+"».","warn","usr",6000);return}
+  const id="u"+Date.now().toString(36);PROF.list.push({id,name:n});PROF.active=id;profSave();location.reload()});
+$("usrdel").addEventListener("click",async()=>{
+  if(PROF.active==="p0")return;const u=PROF.list.find(x=>x.id===PROF.active);
+  if(!confirm("¿Eliminar el usuario «"+(u?u.name:"")+"» y todos sus botones guardados? No se puede deshacer."))return;
+  try{const d=await db();await new Promise(ok=>{const t=d.transaction("s","readwrite");t.objectStore("s").delete(IK);t.oncomplete=ok;t.onerror=ok;t.onabort=ok})}catch(e){}
+  try{localStorage.removeItem(HK)}catch(e){}
+  PROF.list=PROF.list.filter(x=>x.id!==PROF.active);PROF.active="p0";profSave();location.reload()});
 const ed={it:null,ch:null,sr:44100,sel:null,cur:0,src:null,t0:0,from:0,raf:0},edc=$("edc"),g2=edc.getContext("2d");
 const edN=()=>ed.ch[0].length;
-function edOpen(idx){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
+function edOpen(idx,quiet){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
   edStop();ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
-  ed.marks=(it.marks||[]).map(q=>Math.round(q*ed.sr));ed.sel=null;ed.cur=0;ed.dirty=false;ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
+  ed.marks=(it.marks||[]).map(q=>Math.round(q*ed.sr));ed.sel=null;ed.cur=0;ed.dirty=false;ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();if(!quiet)$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
 function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
 function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.max(300,edc.clientWidth*k),H=edc.height=150*k,n=edN(),mid=H/2,v0=ed.v0,sp=ed.v1-ed.v0,X=q=>(q-v0)/sp*W;
@@ -907,7 +932,7 @@ function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.
   if(ed.sel){g2.fillStyle="rgba(232,35,42,.4)";g2.fillRect(X(ed.sel[0]),0,(ed.sel[1]-ed.sel[0])/sp*W,H)}
   ed.marks.forEach((q,i)=>{const x=X(q);if(x<-20||x>W+20)return;g2.fillStyle="#f2c230";g2.fillRect(x-k,0,2*k,H);g2.beginPath();g2.moveTo(x,0);g2.lineTo(x+13*k,0);g2.lineTo(x,13*k);g2.fill();g2.font=(11*k)+"px Satoshi,sans-serif";g2.fillText(i+1,x+4*k,H-6*k)});
   const pos=ed.src?ed.from+(ctx.currentTime-ed.t0)*ed.sr:ed.cur;g2.fillStyle="#fff";g2.fillRect(X(pos),0,2,H);
-  edSb();$("edz").textContent="zoom ×"+(n/sp).toFixed(n/sp<10?1:0)+" · rueda: zoom · Shift+rueda: mover · doble clic: ver todo"}
+  edSb();$("edz").textContent="zoom ×"+(n/sp).toFixed(n/sp<10?1:0)+" · rueda: zoom · Shift+rueda: mover · doble clic: seleccionar todo"}
 function edBtn(){$("edplay").innerHTML=ed.src?'<svg class="ic" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg>Stop':'<svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play'}
 function edStop(){cancelAnimationFrame(ed.raf);if(ed.src){const s=ed.src;ed.src=null;try{s.stop()}catch(e){}}edBtn();edDraw()}
 function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;const n=edN(),b=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>b.copyToChannel(c,i));
@@ -931,6 +956,28 @@ function edNorm(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i
   if(Math.abs(pk-1)<1e-4){note("Normalizar: sin cambios. El pico ya está en 0,0 dBFS.","info","",7000);return}
   const k=1/pk,g=20*Math.log10(k);ed.ch.forEach(c=>{for(let i=0;i<c.length;i++)c[i]*=k});ed.dirty=true;edInfo();edDraw();
   note("Normalizado: "+(g>=0?"+":"")+g.toFixed(1)+" dB (pico "+(20*Math.log10(pk)).toFixed(1)+" → 0,0 dBFS).","info","",7000)}
+function edComp(){if(!ed.it)return;edStop();
+  let thr=parseFloat($("edthr").value),rat=parseFloat($("edrat").value);
+  if(!isFinite(thr))thr=-24;if(!isFinite(rat))rat=0;thr=Math.max(-60,Math.min(0,thr));rat=Math.max(0,Math.min(8,rat));
+  $("edthr").value=thr;$("edrat").value=rat;
+  if(rat<=1){note("Compresor: con ratio "+rat+":1 no hay compresión. Subí el ratio (2 a 4 es lo habitual).","warn","",7000);return}
+  const n=edN(),a=ed.sel?ed.sel[0]:0,b=ed.sel?ed.sel[1]:n,sr=ed.sr,k=ed.ch.length;
+  const at=Math.exp(-1/(sr*.005)),rl=Math.exp(-1/(sr*.08)),slope=1-1/rat;
+  const rms=()=>{let s=0,c=0;for(let i=a;i<b;i++)for(let j=0;j<k;j++){s+=ed.ch[j][i]*ed.ch[j][i];c++}return c?Math.sqrt(s/c):0};
+  let pk0=0;for(let i=a;i<b;i++)for(let j=0;j<k;j++){const v=Math.abs(ed.ch[j][i]);if(v>pk0)pk0=v}
+  if(!pk0){note("Compresor: la zona elegida es silencio digital.","warn","",7000);return}
+  const r0=rms();let pk1=0;const L=b-a,g=new Float32Array(L),want=new Float32Array(L),la=Math.max(1,Math.round(sr*.003));
+  for(let i=0;i<L;i++){let m=0;for(let j=0;j<k;j++){const v=Math.abs(ed.ch[j][a+i]);if(v>m)m=v}
+    const lv=m>1e-6?20*Math.log10(m):-120;want[i]=lv>thr?(lv-thr)*slope:0}
+  // anticipación de 3 ms (máximo deslizante) para que los picos no se escapen antes de que actúe el ataque
+  const dq=new Int32Array(L+1);let h=0,t=0,gr=0;
+  for(let i=0,e=0;i<L;i++){const hi=Math.min(L-1,i+la);while(e<=hi){while(t>h&&want[dq[t-1]]<=want[e])t--;dq[t++]=e;e++}
+    while(dq[h]<i)h++;const w=want[dq[h]];
+    gr=w>gr?at*gr+(1-at)*w:rl*gr+(1-rl)*w;if(w>gr)gr=w;g[i]=Math.pow(10,-gr/20)}
+  for(let i=a;i<b;i++)for(let j=0;j<k;j++){const v=ed.ch[j][i]*g[i-a];ed.ch[j][i]=v;if(Math.abs(v)>pk1)pk1=Math.abs(v)}
+  const mk=pk1?pk0/pk1:1;for(let i=a;i<b;i++)for(let j=0;j<k;j++)ed.ch[j][i]=Math.max(-1,Math.min(1,ed.ch[j][i]*mk));
+  const r1=rms(),dr=r0?20*Math.log10(r1/r0):0;ed.dirty=true;edInfo();edDraw();
+  note("Comprimido "+(ed.sel?"(selección)":"(todo)")+": umbral "+thr+" dB, ratio "+rat+":1. Pico conservado; nivel medio "+(dr>=0?"+":"")+dr.toFixed(1)+" dB. Guardá con el diskette para aplicar al botón.","info","",9000)}
 function wavBlob(ch,sr){const n=ch[0].length,k=ch.length,d=new DataView(new ArrayBuffer(44+n*k*2)),w=(o,t)=>[...t].forEach((x,i)=>d.setUint8(o+i,x.charCodeAt(0)));
   w(0,"RIFF");d.setUint32(4,36+n*k*2,true);w(8,"WAVEfmt ");d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,k,true);d.setUint32(24,sr,true);d.setUint32(28,sr*k*2,true);d.setUint16(32,k*2,true);d.setUint16(34,16,true);w(36,"data");d.setUint32(40,n*k*2,true);
   let o=44;for(let i=0;i<n;i++)for(let c=0;c<k;c++){const v=Math.max(-1,Math.min(1,ch[c][i]));d.setInt16(o,v<0?v*32768:v*32767,true);o+=2}
@@ -942,7 +989,7 @@ function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n
   if(asNew){const nm=uniq(custom||nice(old)+" (editado)",null);
     const n2={name:nm,blob:wavBlob(ed.ch,ed.sr),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:ed.marks.length?ed.marks.map(q=>q/ed.sr):undefined};
     if(colors[old])colors[nm]=colors[old];items.splice(items.indexOf(it)+1,0,n2);const sec=(n/ed.sr).toFixed(2);edClose(true);render();save();note("Botón nuevo creado: «"+nice(nm)+"» ("+sec+" s). El botón original no se modificó.","info","",8000);return}
-  if(it.base){hidden.add(old);try{localStorage.setItem("botonera_hidden",JSON.stringify([...hidden]))}catch(e){}it.base=false}
+  if(it.base){hidden.add(old);try{localStorage.setItem(HK,JSON.stringify([...hidden]))}catch(e){}it.base=false}
   if(colors[old]){colors[nn]=colors[old];delete colors[old]}
   it.marks=ed.marks.length?ed.marks.map(q=>q/ed.sr):undefined;it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);const sec2=(n/ed.sr).toFixed(2),sr2=ed.sr;edClose(true);render();save();note("Guardado en «"+nice(nn)+"» ("+sec2+" s, WAV 16-bit, "+sr2+" Hz). Se reemplazó el audio anterior de este botón.","info","",8000)}
 function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;$("ed").classList.remove("open")}
@@ -964,12 +1011,13 @@ thb.addEventListener("pointermove",e=>{if(sbD)edPan(sbD.v+(e.clientX-sbD.x)/sb.c
 thb.addEventListener("pointerup",()=>{sbD=null});
 sb.addEventListener("pointerdown",e=>{if(!ed.it||e.target===thb)return;const r=sb.getBoundingClientRect();edPan((e.clientX-r.left)/r.width*edN()-(ed.v1-ed.v0)/2)});
 sb.addEventListener("wheel",e=>{if(!ed.it)return;e.preventDefault();edPan(ed.v0+(e.deltaY>0?1:-1)*(ed.v1-ed.v0)*.2)},{passive:false});
+[["edthr",1,-60,0],["edrat",.5,0,8]].forEach(([id,st,mn,mx])=>{const el=$(id);el.addEventListener("wheel",e=>{e.preventDefault();const v=parseFloat(el.value)||0;el.value=Math.max(mn,Math.min(mx,v+(e.deltaY<0?st:-st)))},{passive:false});el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key==="Escape")el.blur()});el.addEventListener("focus",()=>el.select())});
 $("edname").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key==="Escape")e.target.blur()});
-edc.addEventListener("dblclick",()=>{if(ed.it){ed.v0=0;ed.v1=edN();edDraw()}});
-[["edplay",edPlay],["edtrim",edTrim],["ednorm",edNorm],["eddel",edDel],["edsave",()=>edSave(false)],["ednew",()=>edSave(true)],["edx",()=>edClose(false)]].forEach(([id,f])=>$(id).addEventListener("click",f));
+edc.addEventListener("dblclick",()=>{if(!ed.it)return;edStop();ed.v0=0;ed.v1=edN();ed.sel=[0,edN()];ed.cur=0;edDraw()});
+[["edplay",edPlay],["edtrim",edTrim],["ednorm",edNorm],["edcomp",edComp],["eddel",edDel],["edsave",()=>edSave(false)],["ednew",()=>edSave(true)],["edx",()=>edClose(false)]].forEach(([id,f])=>$(id).addEventListener("click",f));
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#ed button");if(b)b.blur()});
 window.addEventListener("resize",()=>edDraw());
-let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem("botonera_hidden")||"[]"))}catch(e){}
+let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem(HK)||"[]"))}catch(e){}
 /* ---------- buscador de links + reproductor lateral + descarga (helper) ---------- */
 const HELPER=(()=>{try{return localStorage.getItem("botonera_helper")||"http://127.0.0.1:8765"}catch(e){return"http://127.0.0.1:8765"}})();
 document.querySelectorAll("#lkmodes button").forEach(x=>x.dataset.t=x.title);
@@ -1189,6 +1237,7 @@ window.addEventListener("error",e=>fatal(e.message));window.addEventListener("un
   if(saved.order&&saved.order.length){const o=saved.order,pos=n=>{const k=o.indexOf(n);return k<0?1e6:k};
     const ix=new Map(items.map((i,k)=>[i,k]));items.sort((a,b)=>pos(a.name)-pos(b.name)||ix.get(a)-ix.get(b))}
   render();
+  if(items.length)try{edOpen(0,true)}catch(e){console.warn(e)}
   const sp=$("splash");setTimeout(()=>sp.classList.add("off"),Math.max(0,1000-performance.now()));
   if(window.__repoStale&&!msg.dataset.k)note("GitHub no respondió la lista de audios de la carpeta «audios» (límite de consultas por hora). Se usó la última lista guardada; si falta algo, esperá unos minutos y recargá.","warn","repo",12000);
   if(!items.length&&!msg.dataset.k)note("Sin audios cargados. Usá CARGAR AUDIOS (MP3, WAV, OGG, M4A, FLAC) o grabá con GRABAR.","info","empty");
