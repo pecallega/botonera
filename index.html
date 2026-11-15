@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.53 · actualización n.º 53 · por @pecallega -->
+<!-- Botonera al aire · v1.54 · actualización n.º 54 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -603,6 +603,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 .gsel button{padding:5px 8px!important;font-size:.58rem!important;display:inline-flex;align-items:center;gap:5px}
 .gsel .ic{width:13px;height:13px}
 #gcol{min-height:260px}
+.pad>.selno{position:absolute!important;margin:0!important;height:auto!important;width:auto!important;flex:none!important}
 .selno{position:absolute;top:8px;left:50%;transform:translateX(-50%);min-width:20px;padding:1px 6px;background:#fff1a8;color:#000;font:700 .7rem/1.3 var(--f-act);text-align:center;pointer-events:none;z-index:3}
 #gcol.dropbtn{outline:2px dashed #fff1a8;outline-offset:-4px;background:rgba(255,241,168,.05)}
 #dlg{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:16px}
@@ -635,6 +636,10 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 #dlg li:has(.dli){padding:0;border:0;background:none}
 @keyframes plblink{0%,100%{background:rgba(255,241,168,.3);border-color:#fff1a8}50%{background:rgba(255,255,255,.04);border-color:var(--line)}}
 .plr.blink{animation:plblink .5s ease-in-out 4}
+body.selgrab,body.selgrab *{cursor:grabbing!important}
+#dlg input{width:100%;padding:9px 10px;border:1px solid rgba(255,255,255,.3);background:#030304;color:var(--ink);font:300 .85rem var(--f-txt);outline:0;border-radius:0;text-transform:none;letter-spacing:0}
+#dlg input:focus{border-color:var(--on)}
+#dlg input::selection{background:#fff1a8;color:#000}
 #mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 #mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
@@ -763,7 +768,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.53 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.53</span></footer>
+<footer id="sig" title="Versión 1.54 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.54</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1358,7 +1363,7 @@ function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.
   const pos=ed.src?ed.from+(ctx.currentTime-ed.t0)*ed.sr:(padp!==null?padp:ed.cur);
   if((ed.src||padp!==null)&&!sbD&&sp<n&&(pos>ed.v1||pos<ed.v0)){const a=Math.max(0,Math.min(n-sp,pos-sp*.1));ed.v0=a;ed.v1=a+sp;return edDraw()}
   g2.fillStyle="#fff";g2.fillRect(X(pos),0,2,H);
-  edUI();edSb();$("edz").textContent="zoom ×"+(n/sp).toFixed(n/sp<10?1:0)+" · rueda: zoom · Shift+rueda: mover · doble clic: seleccionar todo · Supr sobre una marca: borrarla"}
+  edUI();edSb();$("edz").textContent="zoom ×"+(n/sp).toFixed(n/sp<10?1:0)+" · rueda: zoom · Shift+rueda: mover · doble clic: seleccionar todo · arrastrá la selección (manito) a la botonera o a la lista · Supr sobre una marca: borrarla"}
 function edBtn(){const pl=ed.src||(ed.it&&ed.it.playing.size>0);$("edplay").innerHTML=pl?'<svg class="ic" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg>Stop':'<svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play'}
 function edStop(){cancelAnimationFrame(ed.raf);if(ed.src){const s=ed.src;ed.src=null;try{s.stop()}catch(e){}}edBtn();edDraw()}
 function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;
@@ -1395,15 +1400,54 @@ function edPaste(){if(!ed.it)return;if(!ed.clip){note("Pegar: no hay nada copiad
   ed.ch=ed.ch.map((c,i)=>{const o=new Float32Array(c.length-(b-a)+L);o.set(c.subarray(0,a));o.set(clip[i],a);o.set(c.subarray(b),a+L);return o});
   ed.marks=ed.marks.filter(m=>m.p<a||m.p>=b).map(m=>({p:m.p>=b?m.p-(b-a)+L:m.p,k:m.k}));
   ed.sel=[a,a+L];ed.cur=a;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw();note("Pegado: "+edDur(L)+" en "+fmtT(a/sr)+(b>a?" (reemplazó la selección)":"")+". Guardá con el diskette para aplicar.","info","cp",5000)}
-function edSelNew(){if(!ed.it)return;if(!ed.sel||ed.sel[1]-ed.sel[0]<2){note("Selección → botón: primero hacé una selección en la forma de onda.","warn","cp",3500);return}
-  edStop();const[a,b]=ed.sel,ch=ed.ch.map(c=>c.slice(a,b)),sr=ed.sr;
-  let c=1,def="Selección 1";while(items.some(i=>i.name===def+".wav"))def="Selección "+(++c);
-  let nm=prompt("Nombre del botón nuevo. Aceptá para usar «"+def+"»:",def);if(nm===null)return;
-  nm=nm.trim().replace(/[\\/:*?"<>|]+/g,"")||def;let fin=nm+".wav",k=2;while(items.some(i=>i.name===fin))fin=nm+" ("+(k++)+").wav";
-  const buf=ctx.createBuffer(ch.length,ch[0].length,sr);ch.forEach((x,i)=>buf.copyToChannel(x,i));
+function edSelGrab(e0,raw){
+  const sx=e0.clientX,sy=e0.clientY;let drag=false,ghost=null;
+  const clr=()=>{document.querySelectorAll("#pll .da,#pll .db").forEach(x=>x.classList.remove("da","db"));$("pl").classList.remove("dropfiles");$("gcol").classList.remove("dropbtn")};
+  const where=(x,y)=>{const el=document.elementFromPoint(x,y);if(!el||!el.closest)return null;
+    if(el.closest("#pl")){const w=plWhereXY(x,y);return w?{k:"list",w}:null}
+    if(el.closest("#gcol")){const c=el.closest("#grid .cell"),pad=c&&c.querySelector(".pad"),m=pad&&/^p(\d+)$/.exec(pad.id);return{k:"btn",at:m?+m[1]:-1}}return null};
+  const mv=ev=>{
+    if(!drag){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<6)return;drag=true;const sel=ed.sel;
+      ghost=document.createElement("div");ghost.className="padghost";ghost.textContent="Selección · "+(sel?edDur(sel[1]-sel[0]):"");document.body.appendChild(ghost);document.body.classList.add("paddrag","selgrab")}
+    ghost.style.left=ev.clientX+14+"px";ghost.style.top=ev.clientY+14+"px";clr();const t=where(ev.clientX,ev.clientY);
+    if(t&&t.k==="list"){$("pl").classList.add("dropfiles");if(t.w.el)t.w.el.classList.add(t.w.after?"db":"da")}else if(t&&t.k==="btn")$("gcol").classList.add("dropbtn")};
+  const up=ev=>{
+    window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);
+    if(!drag){ // fue un clic: se comporta como siempre (mueve el cursor y deja de estar seleccionado)
+      ed.cur=raw;ed.sel=null;edDraw();const playing=ed.src||(!ed.dirty&&ed.it.playing.size);if(playing){if(ed.src)edStart(raw,edN());else seekItem(ed.it,raw/ed.sr)}return}
+    ghost.remove();document.body.classList.remove("paddrag","selgrab");clr();
+    if(ev.type!=="pointerup")return;const t=where(ev.clientX,ev.clientY);
+    if(t&&t.k==="btn")edSelToButton(t.at);else if(t&&t.k==="list")edSelToList(t.w.ins)};
+  window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)}
+function edSelData(){
+  if(!ed.it||!ed.sel||ed.sel[1]-ed.sel[0]<2)return null;
+  const[a,b]=ed.sel,ch=ed.ch.map(c=>c.slice(a,b)),sr=ed.sr,buf=ctx.createBuffer(ch.length,ch[0].length,sr);ch.forEach((x,i)=>buf.copyToChannel(x,i));
   const mk=ed.marks.filter(m=>m.p>=a&&m.p<b).map(m=>({t:(m.p-a)/sr,k:m.k}));
-  const it={name:fin,blob:wavBlob(ch,sr),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:mk.length?mk:undefined};
-  items.splice(items.indexOf(ed.it)+1,0,it);render();save();note("Botón nuevo «"+nice(fin)+"» con la selección ("+edDur(b-a)+"). El audio original no cambió.","info","",7000)}
+  return{ch,sr,buf,mk,len:b-a,src:ed.it}}
+const edGenName=()=>{let c=1,d="Selección de material";const ex=n=>items.some(i=>nice(i.name)===n)||PL.rows.some(r=>r.t==="f"&&nice(r.name)===n);while(ex(d))d="Selección de material "+(++c);return d};
+function askName(title,msg,def,okLabel){return new Promise(res=>{
+  const w=document.createElement("div");w.id="dlg";w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b></b><p></p><input type="text" maxlength="60" autocomplete="off" spellcheck="false" aria-label="Nombre"><div class="drow"><button class="dno">Cancelar</button><button class="dok"></button></div></div>';
+  w.querySelector("b").textContent=title;w.querySelector("p").textContent=msg;const inp=w.querySelector("input");inp.value=def;w.querySelector(".dok").textContent=okLabel||"Aceptar";
+  const end=v=>{w.remove();res(v)};
+  inp.addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();end(inp.value.trim()||def)}else if(e.key==="Escape"){e.preventDefault();end(null)}});
+  w.querySelector(".dno").onclick=()=>end(null);w.querySelector(".dok").onclick=()=>end(inp.value.trim()||def);w.addEventListener("pointerdown",e=>{if(e.target===w)end(null)});
+  document.body.appendChild(w);inp.focus();inp.select()})} // el nombre genérico queda seleccionado: si escribís, lo reemplaza; Enter lo acepta
+async function edSelAsk(kind){const def=edGenName(),nm=await askName("Nombre de la selección","Escribí el nombre del "+kind+" nuevo o aceptá «"+def+"».",def,"Aceptar");
+  return nm===null?null:(nm.replace(/[\\/:*?"<>|]+/g,"").trim()||def)}
+async function edSelToButton(at){
+  const d=edSelData();if(!d){note("Selección → botón: primero hacé una selección en la forma de onda.","warn","cp",3500);return}
+  edStop();const nm=await edSelAsk("botón");if(nm===null)return;
+  let fin=nm+".wav",k=2;while(items.some(i=>i.name===fin))fin=nm+" ("+(k++)+").wav";
+  const it={name:fin,blob:wavBlob(d.ch,d.sr),buffer:d.buf,peaks:peaks(d.buf,48),key:freeKey(),base:false,playing:new Set(),marks:d.mk.length?d.mk:undefined};
+  const pos=at!=null&&at>=0?at+1:Math.max(0,items.indexOf(d.src))+1;items.splice(pos,0,it);render();save();
+  note("Botón nuevo «"+nice(fin)+"» con la selección ("+edDur(d.len)+"). El audio original no cambió.","info","",7000)}
+async function edSelToList(ins){
+  const d=edSelData();if(!d){note("Primero hacé una selección en la forma de onda.","warn","cp",3500);return}
+  edStop();const nm=await edSelAsk("tema");if(nm===null)return;
+  const r=plMk(nm+".wav",wavBlob(d.ch,d.sr),d.buf);PL.rows.splice(ins==null?PL.rows.length:Math.min(ins,PL.rows.length),0,r);plSelSet([r.id],r.id);plRender();plSave();
+  const el=document.querySelector('#pll .plr[data-id="'+r.id+'"]');if(el)el.scrollIntoView({block:"nearest"});
+  note("Tema nuevo «"+nm+"» en la lista con la selección ("+edDur(d.len)+"). El audio original no cambió.","info","pl",6000)}
+function edSelNew(){return edSelToButton(null)}
 function edDel(){if(!ed.it||!ed.sel)return;edStop();edPush();const[a,b]=ed.sel;
   ed.ch=ed.ch.map(c=>{const o=new Float32Array(c.length-(b-a));o.set(c.subarray(0,a));o.set(c.subarray(b),a);return o});
   ed.marks=ed.marks.filter(m=>m.p<a||m.p>=b).map(m=>({p:m.p>=b?m.p-(b-a):m.p,k:m.k}));ed.cur=a;ed.sel=null;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
@@ -1495,13 +1539,14 @@ function edEdgeAt(e){if(!ed.sel||!ed.it)return -1;const r=edc.getBoundingClientR
 edc.addEventListener("pointerdown",e=>{if(!ed.it||e.button!==0)return;hideMkm();
   {const tm=edTabAt(e);if(tm){e.preventDefault();try{edc.setPointerCapture(e.pointerId)}catch(x){}edPush();mkDrag=tm;edc.style.cursor="grabbing";edDraw();return}}
   {const ei=edEdgeAt(e);if(ei>=0){e.preventDefault();try{edc.setPointerCapture(e.pointerId)}catch(x){}edDrag=ed.sel[1-ei];edDraw();return}} // borde de la selección: se arrastra para ampliar o achicar
+  {const raw=edPx(e);if(ed.sel&&raw>ed.sel[0]&&raw<ed.sel[1]){e.preventDefault();edSelGrab(e,raw);return}} // dentro de la selección: manito para soltarla en la botonera o en la lista
   {const raw=edPx(e),mk=edMarkAt(raw),playing=ed.src||(!ed.dirty&&ed.it.playing.size);
    if(playing){const at=mk?mk.p:raw;
      if(ed.src)edStart(at,edN());else seekItem(ed.it,at/ed.sr);
      if(mk){e.preventDefault();ed.cur=mk.p;ed.sel=null;edDraw();return}}}edc.setPointerCapture(e.pointerId);{const raw=edPx(e),sn=edSnap(raw);edDrag=(sn!==raw&&ed.cur===sn)?raw:sn}ed.cur=edDrag;ed.sel=null;edDraw()});
 edc.addEventListener("pointermove",e=>{
   if(mkDrag){mkDrag.p=edPx(e);edDraw();return}
-  if(edDrag===null){edc.style.cursor=edTabAt(e)?"grab":(edEdgeAt(e)>=0?"ew-resize":"crosshair");return}const p=edSnap(edPx(e));ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
+  if(edDrag===null){{const raw=edPx(e);edc.style.cursor=edTabAt(e)?"grab":(edEdgeAt(e)>=0?"ew-resize":(ed.sel&&raw>ed.sel[0]&&raw<ed.sel[1]?"grab":"crosshair"))}return}const p=edSnap(edPx(e));ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
 edc.addEventListener("pointerup",()=>{edDrag=null;if(mkDrag){const m=mkDrag;mkDrag=null;ed.marks.sort((a,b)=>a.p-b.p);edSaveMarks();edDraw();edc.style.cursor="crosshair";note("Marca "+MK[m.k].n+" movida a "+fmtT(m.p/ed.sr)+(ed.dirty?" · se guarda con el diskette":""),"info","mk",2200)}});
 edc.addEventListener("contextmenu",e=>{if(!ed.it)return;const m=edTabAt(e)||edMarkAt(edPx(e));if(!m){if(ed.sel){e.preventDefault();hideMkm();showSelm(e.clientX,e.clientY)}return}e.preventDefault();hideMkm();showMkm(m,e.clientX,e.clientY)});
 selm.querySelectorAll(".mi").forEach(b=>b.addEventListener("click",()=>{const a=b.dataset.a;hideMkm();({copy:edCopy,cut:edCut,paste:edPaste,new:edSelNew,del:edDel})[a]()}));
