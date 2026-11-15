@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.18 · actualización n.º 18 · por @pecallega -->
+<!-- Botonera al aire · v1.19 · actualización n.º 19 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -275,6 +275,8 @@ button:not(.pad):not(.gear) .ic,label.btn .ic{flex:none}
 .lks{display:none;align-items:center;gap:8px;font-size:.72rem;color:var(--mut)}
 body.vpopen #empty{display:none!important}
 .lks.on{display:flex}
+#vpmu.sel{background:var(--on);border-color:var(--on);color:#fff;box-shadow:0 0 14px rgba(232,35,42,.55)}
+#vpmu:disabled{opacity:.35;cursor:not-allowed}
 .lks #lkst{flex:1}
 .lks button{padding:5px 8px;font-size:.6rem}
 #stage{display:flex;align-items:flex-start;position:relative;z-index:1}
@@ -387,7 +389,8 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <div id="stage"><div id="grid"></div>
 <aside id="vp" aria-label="Reproductor">
   <div class="vph"><span class="vpt" id="vpt"></span>
-    <button id="vpfs" title="Pantalla completa" aria-label="Pantalla completa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Pantalla completa</button>
+    <button id="vpmu" aria-pressed="false" title="Silenciar / activar sonido del reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg><span>Mute</span></button>
+    <button id="vpfs" title="Pantalla completa" aria-label="Pantalla completa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button id="vpx" title="Cerrar reproductor" aria-label="Cerrar reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
   <div class="vbox" id="vbox"></div>
@@ -403,7 +406,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
   </div>
 </section>
 
-<footer id="sig" title="Versión 1.18 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.18</span></footer>
+<footer id="sig" title="Versión 1.19 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.19</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -869,7 +872,7 @@ function parseLink(raw){
   if(!/^https?:$/.test(u.protocol))return null;
   const h=u.hostname.toLowerCase().replace(/^(www|m|mobile|music)\./,""),p=u.pathname,q=u.searchParams;let m;
   const r={url:u.href,host:h,platform:h},ext=(p.match(/\.([a-z0-9]{2,5})$/i)||[])[1]||"";
-  const yt=(id,v)=>{r.platform="YouTube"+(v?" Shorts":"");r.embed={src:"https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id)+"?autoplay=1&rel=0&playsinline=1",ratio:v?"9/16":"16/9",cls:v?"v":"h"};return r};
+  const yt=(id,v)=>{r.platform="YouTube"+(v?" Shorts":"");r.embed={src:"https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id)+"?autoplay=1&mute=1&enablejsapi=1&rel=0&playsinline=1"+(location.protocol.indexOf("http")===0?"&origin="+encodeURIComponent(location.origin):""),ratio:v?"9/16":"16/9",cls:v?"v":"h"};return r};
   if(/^(mp3|wav|ogg|oga|m4a|aac|flac|opus)$/i.test(ext)){r.direct="audio";r.platform="Archivo de audio";return r}
   if(/^(mp4|webm|mov|m4v|ogv)$/i.test(ext)){r.direct="video";r.platform="Archivo de video";return r}
   if(h==="youtu.be"&&(m=p.match(/^\/([\w-]{6,})/)))return yt(m[1],false);
@@ -882,7 +885,7 @@ function parseLink(raw){
   if(h.endsWith("instagram.com")){r.platform="Instagram";if((m=p.match(/\/(p|reel|reels|tv)\/([\w-]+)/)))r.embed={src:"https://www.instagram.com/"+(m[1]==="reels"?"reel":m[1])+"/"+m[2]+"/embed/",ratio:"9/16",cls:"v"};return r}
   if(h==="x.com"||h==="twitter.com"){r.platform="X";if((m=p.match(/\/status(?:es)?\/(\d+)/)))r.embed={src:"https://platform.twitter.com/embed/Tweet.html?id="+m[1]+"&theme=dark&dnt=true",ratio:"460/540",cls:"h"};return r}
   if(h==="fb.watch"||h.endsWith("facebook.com")||h==="fb.com"){r.platform="Facebook";const rl=/\/reel\//.test(p);r.embed={src:"https://www.facebook.com/plugins/video.php?href="+encodeURIComponent(u.href)+"&show_text=false&autoplay=true&width=560",ratio:rl?"9/16":"16/9",cls:rl?"v":"h"};return r}
-  if(h.endsWith("vimeo.com")&&(m=p.match(/\/(\d+)/))){r.platform="Vimeo";r.embed={src:"https://player.vimeo.com/video/"+m[1]+"?autoplay=1",ratio:"16/9",cls:"h"};return r}
+  if(h.endsWith("vimeo.com")&&(m=p.match(/\/(\d+)/))){r.platform="Vimeo";r.embed={src:"https://player.vimeo.com/video/"+m[1]+"?autoplay=1&muted=1",ratio:"16/9",cls:"h"};return r}
   if(h.endsWith("twitch.tv")){r.platform="Twitch";const par=location.hostname||"localhost";
     if((m=p.match(/^\/videos\/(\d+)/)))r.embed={src:"https://player.twitch.tv/?video=v"+m[1]+"&parent="+par+"&autoplay=false",ratio:"16/9",cls:"h"};
     else if((m=p.match(/^\/(\w+)\/?$/)))r.embed={src:"https://player.twitch.tv/?channel="+m[1]+"&parent="+par+"&autoplay=false",ratio:"16/9",cls:"h"};return r}
@@ -896,16 +899,29 @@ const looksUrl=s=>/^https?:\/\//i.test(s)||(!/\s/.test(s)&&/^[\w-]+(\.[\w-]+)+(\
 
 /* --- panel lateral --- */
 function vpShow(cls,ratio,title){document.body.classList.add("vpopen");vpEl.classList.remove("v","h","a");vpEl.classList.add("open",cls);vbEl.style.aspectRatio=ratio||"16/9";vbEl.classList.toggle("au",cls==="a"&&!ratio);$("vpt").textContent=title||""}
-function vpClear(){if(vpMedia){try{vpMedia.pause()}catch(e){}}vpMedia=null;vbEl.textContent=""}
+const EMB={k:null,muted:false};
+function embedCmd(m){const f=vbEl.querySelector("iframe");if(f&&f.contentWindow)try{f.contentWindow.postMessage(typeof m==="string"?m:JSON.stringify(m),"*")}catch(e){}}
+function muUI(){const can=!!vpMedia||!!EMB.k,b=$("vpmu"),m=vpMedia?vpMedia.muted:EMB.muted;
+  b.disabled=!can;b.classList.toggle("sel",can&&!!m);b.setAttribute("aria-pressed",can&&!!m);
+  b.querySelector("span").textContent=can&&m?"Silenciado":"Mute";
+  b.title=!can?"Este reproductor no permite controlar el sonido desde la botonera":(m?"Activar el sonido":"Silenciar (por ejemplo durante la publicidad)")}
+function setVpMute(on){
+  if(vpMedia)vpMedia.muted=on;
+  else if(EMB.k==="yt"){embedCmd({event:"command",func:on?"mute":"unMute",args:[]});EMB.muted=on}
+  else if(EMB.k==="vimeo"){embedCmd({method:"setVolume",value:on?0:1});EMB.muted=on}
+  muUI()}
+function vpClear(){if(vpMedia){try{vpMedia.pause()}catch(e){}}vpMedia=null;EMB.k=null;EMB.muted=false;vbEl.textContent="";muUI()}
 function vpClose(){if(document.fullscreenElement)try{document.exitFullscreen()}catch(e){}vpClear();vpEl.classList.remove("open");document.body.classList.remove("vpopen")}
 function vpPause(){if(vpMedia)try{vpMedia.pause()}catch(e){}}
 function playEmbed(p,title){vpClear();const f=document.createElement("iframe");f.src=p.embed.src;f.allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-write";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";f.title=title||p.platform;
-  vbEl.appendChild(f);vpShow(p.embed.cls,p.embed.ratio,p.platform+(title?" · "+title:""))}
+  EMB.k=/^YouTube/.test(p.platform)?"yt":(p.platform==="Vimeo"?"vimeo":null);EMB.muted=!!EMB.k; // arrancan en silencio: se activa el sonido cuando termina la publicidad
+  f.addEventListener("load",()=>{if(EMB.k==="yt"){embedCmd({event:"listening",id:1});embedCmd({event:"command",func:EMB.muted?"mute":"unMute",args:[]})}else if(EMB.k==="vimeo")embedCmd({method:"setVolume",value:EMB.muted?0:1})});
+  vbEl.appendChild(f);muUI();vpShow(p.embed.cls,p.embed.ratio,p.platform+(title?" · "+title:""))}
 function playNative(src,kind,mode,title,vertHint){
   vpClear();const aOnly=mode==="a"||kind==="audio",el=document.createElement(aOnly?"audio":"video");
   el.src=src;el.controls=true;el.autoplay=true;el.preload="auto";if(!aOnly){el.playsInline=true;if(mode==="v")el.muted=true}
   el.addEventListener("error",()=>note("El reproductor no pudo abrir el archivo (formato no soportado o enlace caído).","error","lk",9000));
-  vbEl.appendChild(el);vpMedia=el;
+  vbEl.appendChild(el);vpMedia=el;el.addEventListener("volumechange",muUI);muUI();
   if(aOnly){vpShow("a",null,title);return}
   vpShow(vertHint?"v":"h",vertHint?"9/16":"16/9",title);
   el.addEventListener("loadedmetadata",()=>{const w=el.videoWidth,h=el.videoHeight;if(w&&h)vpShow(h>w?"v":"h",w+"/"+h,title)})}
@@ -1033,6 +1049,8 @@ $("lkh").addEventListener("click",async()=>{await hping();
   else note("Helper v"+LK.h.v+" · yt-dlp "+LK.h.ytdlp+" · ffmpeg OK.","info","lk",6000)});
 $("lkcancel").addEventListener("click",()=>{if(LK.busy)LK.busy.ac.abort()});
 $("vpx").addEventListener("click",vpClose);
+$("vpmu").addEventListener("click",()=>setVpMute(!(vpMedia?vpMedia.muted:EMB.muted)));
+muUI();
 $("vpfs").addEventListener("click",()=>{if(document.fullscreenElement){document.exitFullscreen();return}const f=vbEl.requestFullscreen||vbEl.webkitRequestFullscreen;if(f)f.call(vbEl);else note("Este navegador no permite pantalla completa en el reproductor.","warn","lk",6000)});
 hping();
 if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{note("No se pudo cargar la tipografía Satoshi (no se encuentran los archivos de /fonts). La página funciona con tipografía de respaldo. Verificá que la carpeta «fonts» esté junto a index.html en el repo.","warn","font")});
