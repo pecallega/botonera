@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.59 · actualización n.º 59 · por @pecallega -->
+<!-- Botonera al aire · v1.60 · actualización n.º 60 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -468,6 +468,11 @@ button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-fa
 #plm,#plm *{font-family:"Satoshi",system-ui,-apple-system,"Segoe UI",sans-serif!important}
 #plm .mi{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:1px solid transparent;background:transparent;border-radius:0;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);-webkit-backdrop-filter:none;backdrop-filter:none;justify-content:flex-start}
 #plm .mi:hover:not(:disabled){background:var(--glass2)}
+#wfm{position:fixed;display:none;z-index:410;width:180px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:0;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#wfm,#wfm *{font-family:"Satoshi",system-ui,-apple-system,"Segoe UI",sans-serif!important}
+#wfm .mi{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:1px solid transparent;background:transparent;border-radius:0;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#ff7377;cursor:pointer}
+#wfm .mi:hover{background:rgba(232,35,42,.2);color:#fff}
+#wfm .ic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.4}
 #plm .mi:disabled{opacity:.35;cursor:not-allowed}
 #plm .mi.del{color:#ff7377}
 #plm .mi.del:hover:not(:disabled){background:rgba(232,35,42,.2);color:#fff}
@@ -787,7 +792,7 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.59 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.59</span></footer>
+<footer id="sig" title="Versión 1.60 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.60</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1873,7 +1878,7 @@ function plStopBtn(){ // 1.er toque: detiene (los cues quedan). Con el tema ya d
   if(PL.state==="stop"&&r&&r.t==="f"&&r.cues&&r.cues.length){const c=r.cues.shift();plRender();plSave();note("Cue borrado ("+fmtT(c)+")"+(r.cues.length?" · quedan "+r.cues.length:" · el tema ya no tiene cues"),"info","pl",3000);return}
   plStop()}
 function plAddCue(r,t){r.cues=r.cues||[];const V=wfV(),dd=Math.min(.15,(V.v1-V.v0)*r.buffer.duration*.01);if(r.cues.some(c=>Math.abs(c-t)<dd)){note("Ya hay un cue en ese punto.","info","pl",1800);return}
-  r.cues.push(t);plRender();plSave();note("Cue "+r.cues.length+" en "+fmtT(t)+" · Play arranca desde el más antiguo. Stop (con el tema detenido) los borra en orden.","info","pl",4500)}
+  r.cues.push(t);plRender();plSave();note("Cue "+r.cues.length+" en "+fmtT(t)+" · Play arranca desde el más antiguo · arrastralo para moverlo · botón derecho para borrarlo.","info","pl",4500)}
 function plSeek(d){
   const i=plIdx(PL.curId);if(i<0||PL.rows[i].t!=="f")return;
   const pos=PL.state==="play"?ctx.currentTime-PL.t0:PL.off,np=Math.max(0,Math.min(PL.rows[i].buffer.duration-.05,pos+d));
@@ -2095,7 +2100,7 @@ $("pldlf").addEventListener("click",async()=>{
   const b=await plsPack(name,plsRows());saveBlob(b,name+".botolista");note("Descargado: "+name+".botolista ("+fmtMB(b.size)+"). Incluye los audios; se abre con «Abrir archivo».","info","pl",6000)});
 $("plopenf").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const l=await plsUnpack(f);$("plname").value=l.name;await plsApply(l.rows,l.name)}catch(x){note(String(x.message||x),"error","pl",8000)}});
-/* ---------- onda del tema elegido: progreso, zoom con la rueda, salto con un clic y cues movibles ---------- */
+/* ---------- onda del tema elegido: progreso, zoom con la rueda, doble clic = cue, cue arrastrable y borrable con botón derecho ---------- */
 var WFX=null,WFD=null,WFL={t:0,x:0};
 function plPeaks(r){if(r._wf)return r._wf;const d=r.buffer.getChannelData(0),d2=r.buffer.numberOfChannels>1?r.buffer.getChannelData(1):null,N=1400,size=Math.max(1,Math.floor(d.length/N)),st=Math.max(1,Math.floor(size/40)),out=new Float32Array(N);
   for(let i=0;i<N;i++){let m=0;const a=i*size,b=Math.min(d.length,a+size);for(let k=a;k<b;k+=st){let v=Math.abs(d[k]);if(d2){const w=Math.abs(d2[k]);if(w>v)v=w}if(v>m)m=v}out[i]=m}
@@ -2122,28 +2127,33 @@ function plWfDraw(){
   if(!ok){g.fillStyle="rgba(61,255,122,.25)";g.fillRect(0,mid-dpr/2,W,Math.max(1,dpr));return}
   const xo=t=>(t/dur-V.v0)/span*W,step=Math.max(2,Math.round(dpr*1.6)),bw=Math.max(1,Math.round(dpr)),px=xo(pos),played=PL.state==="play"||PL.state==="pause",full=span>=.999,cols=Math.ceil(W/step);
   const pk=full?plPeaks(r):plColPeaks(r,V.v0,V.v1,cols);
-  for(let k=0;k<cols;k++){const x=k*step,v=full?pk[Math.min(pk.length-1,Math.floor(x/W*pk.length))]:pk[k],h=Math.max(dpr,v*(mid-14*dpr));g.fillStyle=played&&x<=px?"#3dff7a":"rgba(61,255,122,.3)";g.fillRect(x,mid-h,bw,h*2)}
+  for(let k=0;k<cols;k++){const x=k*step,v=full?pk[Math.min(pk.length-1,Math.floor(x/W*pk.length))]:pk[k],h=Math.max(dpr,v*(mid-3*dpr));g.fillStyle=played&&x<=px?"#3dff7a":"rgba(61,255,122,.3)";g.fillRect(x,mid-h,bw,h*2)}
   g.font="bold "+(9*dpr)+"px 'JetBrains Mono',monospace";g.textBaseline="middle";g.textAlign="center";
   (r.cues||[]).forEach((q,i)=>{const x=Math.round(xo(q));if(x<-8*dpr||x>W+8*dpr)return;const hot=WFD&&WFD.i===i;
-    g.fillStyle="#fff1a8";g.fillRect(x-Math.floor(dpr*.75),0,Math.max(1,Math.round(dpr*1.5)),H);
-    g.fillStyle=hot?"#fff":"#fff1a8";g.fillRect(x-6*dpr,0,12*dpr,12*dpr);g.fillStyle="#000";g.fillText(String(i+1),x,6.5*dpr);   // arriba: asa para mover
-    g.fillStyle="rgba(0,0,0,.85)";g.fillRect(x-6*dpr,H-12*dpr,12*dpr,12*dpr);g.strokeStyle="#fff1a8";g.lineWidth=dpr;g.strokeRect(x-6*dpr+.5*dpr,H-12*dpr+.5*dpr,11*dpr,11*dpr);g.fillStyle="#fff1a8";g.fillText("×",x,H-5.5*dpr)}); // abajo: borrar
+    g.fillStyle=hot?"#fff":"#fff1a8";g.fillRect(x-Math.floor(dpr*.75),0,Math.max(1,Math.round(dpr*1.5)),H);
+    g.fillStyle="rgba(0,0,0,.75)";g.fillRect(x+2*dpr,0,10*dpr,11*dpr);g.fillStyle=hot?"#fff":"#fff1a8";g.fillText(String(i+1),x+7*dpr,5.5*dpr)});
   g.textAlign="start";
   if(played||pos>0){g.fillStyle="#fff";g.fillRect(Math.round(px),0,Math.max(1,Math.round(dpr*1.5)),H)}
   if(WFX!==null&&!WFD){g.fillStyle="rgba(255,255,255,.35)";g.fillRect(Math.round(WFX*dpr),0,Math.max(1,dpr),H)}}
 function plDelCue(r,i){r.cues.splice(i,1);if(i<=PL.cueAt)PL.cueAt--;plRender();plSave();plSt();plWfDraw();note("Cue borrado.","info","pl",1500)}
-{const c=$("plwfc");
+{const c=$("plwfc"),M=document.createElement("div");M.id="wfm";M.innerHTML='<button class="mi del" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar cue</button>';document.body.appendChild(M);let MI=-1;
+  const hideM=()=>{M.style.display="none";MI=-1};
   const tAt=(e,r)=>{const rc=c.getBoundingClientRect(),V=wfV(),dur=r.buffer.duration;return Math.max(0,Math.min(dur-.05,(V.v0+(e.clientX-rc.left)/rc.width*(V.v1-V.v0))*dur))};
-  const hit=(e,r)=>{const rc=c.getBoundingClientRect(),V=wfV(),dur=r.buffer.duration,x=e.clientX-rc.left,y=e.clientY-rc.top,sp=V.v1-V.v0;let best=null,bd=1e9;
-    (r.cues||[]).forEach((q,i)=>{const cx=((q/dur)-V.v0)/sp*rc.width,d=Math.abs(x-cx);if(d<=7&&d<bd){const k=y<=14?"move":y>=rc.height-14?"del":null;if(k){best={i,k};bd=d}}});return best};
+  const hit=(e,r)=>{const rc=c.getBoundingClientRect(),V=wfV(),dur=r.buffer.duration,x=e.clientX-rc.left,sp=V.v1-V.v0;let best=-1,bd=1e9;
+    (r.cues||[]).forEach((q,i)=>{const d=Math.abs(x-((q/dur)-V.v0)/sp*rc.width);if(d<=5&&d<bd){best=i;bd=d}});return best};
   c.addEventListener("pointermove",e=>{const r=plRow(PL.curId),ok=r&&r.t==="f"&&r.buffer;WFX=e.clientX-c.getBoundingClientRect().left;
     if(WFD&&ok){r.cues[WFD.i]=tAt(e,r);WFD.moved=true;plWfDraw();return}
-    if(ok){const h=hit(e,r);c.style.cursor=h?(h.k==="move"?"grab":"pointer"):"crosshair"}
+    if(ok)c.style.cursor=hit(e,r)>=0?"ew-resize":"crosshair";
     if(PL.state!=="play")plWfDraw()});
   c.addEventListener("pointerleave",()=>{WFX=null;if(PL.state!=="play")plWfDraw()});
   const endDrag=()=>{if(!WFD)return;WFD=null;c.style.cursor="crosshair";plSave();plRender();plWfDraw()};
   c.addEventListener("pointerup",endDrag);c.addEventListener("pointercancel",endDrag);
-  c.addEventListener("wheel",e=>{const r=plRow(PL.curId);if(!r||r.t!=="f"||!r.buffer)return;e.preventDefault();
+  c.addEventListener("contextmenu",e=>{e.preventDefault();const r=plRow(PL.curId);if(!r||r.t!=="f"||!r.buffer)return;const i=hit(e,r);if(i<0){hideM();return}
+    MI=i;M.style.display="block";M.style.left=Math.min(e.clientX,innerWidth-190)+"px";M.style.top=Math.min(e.clientY,innerHeight-60)+"px"});
+  M.querySelector("button").addEventListener("click",()=>{const r=plRow(PL.curId);if(r&&MI>=0&&r.cues&&MI<r.cues.length)plDelCue(r,MI);hideM()});
+  document.addEventListener("pointerdown",e=>{if(!e.target.closest||!e.target.closest("#wfm"))hideM()},true);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")hideM()});window.addEventListener("blur",hideM);
+  c.addEventListener("wheel",e=>{const r=plRow(PL.curId);if(!r||r.t!=="f"||!r.buffer)return;e.preventDefault();hideM();
     const rc=c.getBoundingClientRect(),V=wfV(),dur=r.buffer.duration,span=V.v1-V.v0,mn=Math.min(1,.1/dur);PL.wfT=performance.now();
     if(e.shiftKey||Math.abs(e.deltaX)>Math.abs(e.deltaY)){const d=(e.deltaX||e.deltaY)/rc.width*span;V.v0=Math.max(0,Math.min(1-span,V.v0+d));V.v1=V.v0+span}
     else{const fx=(e.clientX-rc.left)/rc.width,f=V.v0+fx*span,ns=Math.max(mn,Math.min(1,span*(e.deltaY<0?.8:1.25)));V.v0=Math.max(0,Math.min(1-ns,f-fx*ns));V.v1=V.v0+ns;if(ns>=.999){V.v0=0;V.v1=1}}
@@ -2151,13 +2161,12 @@ function plDelCue(r,i){r.cues.splice(i,1);if(i<=PL.cueAt)PL.cueAt--;plRender();p
   c.addEventListener("pointerdown",e=>{
     if(e.button!==0)return;const r=plRow(PL.curId);if(!r||r.t!=="f")return;e.preventDefault();ACT="pl";
     const h=hit(e,r);
-    if(h){if(h.k==="del"){plDelCue(r,h.i);return}WFD={i:h.i,moved:false};try{c.setPointerCapture(e.pointerId)}catch(_){}c.style.cursor="grabbing";plWfDraw();return}
-    const t=tAt(e,r),i=plIdx(PL.curId),mod=e.ctrlKey||e.altKey||e.metaKey,now=performance.now();
+    if(h>=0){WFD={i:h,moved:false};try{c.setPointerCapture(e.pointerId)}catch(_){}c.style.cursor="grabbing";WFL={t:0,x:0};plWfDraw();return} // tocar un cue: arrastrarlo
+    const t=tAt(e,r),i=plIdx(PL.curId),now=performance.now();
     const dbl=now-WFL.t<350&&Math.abs(e.clientX-WFL.x)<6;WFL={t:dbl?0:now,x:e.clientX};
-    if(dbl){if(PL.state==="play")plAddCue(r,t);return}                // doble clic sonando: crea un cue
-    if(PL.state==="play"&&!mod){plStart(i,t,false,true);return}       // suena: un clic y sigue desde ahí
-    if(PL.state==="pause"&&!mod){PL.off=t;plSt();return}              // en pausa: marca desde dónde sigue
-    plAddCue(r,t)});                                                  // listo para reproducir (o Ctrl/Alt+clic): marca un cue
+    if(dbl){plAddCue(r,t);return}                                      // doble clic (en play, stop o pausa): crea un cue
+    if(PL.state==="play"){plStart(i,t,false,true);return}              // suena: un clic y sigue desde ahí
+    if(PL.state==="pause"){PL.off=t;plSt()}})                          // en pausa: marca desde dónde sigue
   setInterval(()=>{if(PL.state==="play")plWfDraw()},66);
   if(window.ResizeObserver)new ResizeObserver(()=>plWfDraw()).observe($("pl"));}
 /* ---------- selección en la lista: clic, Ctrl, Shift, recuadro, teclado ---------- */
