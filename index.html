@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.40 · actualización n.º 40 · por @pecallega -->
+<!-- Botonera al aire · v1.41 · actualización n.º 41 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -553,6 +553,46 @@ canvas.vu2{display:block;width:100%;height:22px;background:#030304;border:1px so
 .msep{height:1px;margin:6px 4px;background:rgba(255,255,255,.2)}
 #plm .chev{width:14px;height:14px;margin-left:auto;opacity:.6}
 #plm .pls{padding:4px 10px 8px;display:none}
+/* ---- v1.41: salidas, listas guardadas, selección múltiple ---- */
+#outb{display:inline-flex;align-items:center;gap:7px}
+#outb.alt{border-color:#f2c230;color:#f2c230}
+@media (min-width:1200px){#outb{order:1}}
+.otag{font-family:var(--f-txt)!important;font-weight:300!important;font-size:.58rem!important;letter-spacing:.08em!important;text-transform:uppercase;color:var(--mut);max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid var(--line);padding:3px 7px!important;background:rgba(0,0,0,.35)!important;flex:none}
+.otag.alt{color:#f2c230;border-color:#f2c230;background:rgba(242,194,48,.1)!important}
+#outp{position:fixed;z-index:420;width:min(380px,calc(100vw - 16px));padding:12px;background:rgba(10,10,12,.97);border:1px solid rgba(255,255,255,.22);box-shadow:0 14px 44px rgba(0,0,0,.7);border-radius:0;display:flex;flex-direction:column;gap:9px;font-family:var(--f-txt);font-weight:300}
+#outp[hidden]{display:none}
+#outp .oh{display:flex;align-items:center;justify-content:space-between}
+#outp .oh b{font-family:var(--f-ttl);font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
+#outp .oh button{padding:5px 7px}
+#outp p{margin:0;font-size:.68rem;line-height:1.4;color:var(--mut)}
+#outp .os{color:#3dff7a;text-shadow:0 0 6px rgba(61,255,122,.4)}
+#outp .oh2{font-size:.62rem}
+#outp .or{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;align-items:center}
+#outp label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase}
+#outp select{width:100%;min-width:0;font-size:.68rem;text-transform:none;letter-spacing:0;padding:7px 8px}
+#outnames{font-size:.6rem;padding:7px 9px}
+.plact{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.plact .plb{justify-content:center;padding:7px 4px!important}
+#plsv{display:flex;flex-direction:column;gap:6px;padding:8px;background:rgba(0,0,0,.35);border:1px solid var(--line)}
+#plsv[hidden]{display:none}
+.plr2{display:flex;gap:4px;min-width:0}
+.plr2 input,.plr2 select{flex:1;min-width:0;padding:7px 8px;border:1px solid var(--line);background:#030304;color:var(--ink);font:inherit;font-size:.7rem;outline:0;border-radius:0;text-transform:none;letter-spacing:0}
+.plr2 input:focus{border-color:var(--on)}
+.plr2 button,.plr2 label.btn{flex:1 1 0;min-width:0;padding:7px 4px!important;font-size:.58rem!important;display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+.plr2 input+button,.plr2 select+button{flex:0 0 auto}
+.plr2 select+button+button{flex:0 0 auto}
+.plr2 .ic{width:13px;height:13px}
+.plhint{margin:0;font-size:.6rem;line-height:1.4;color:var(--mut);font-family:var(--f-txt);font-weight:300}
+button.ask{background:rgba(232,35,42,.35)!important;border-color:var(--on)!important;color:#fff!important}
+.pad.sel{outline:2px dashed #fff1a8;outline-offset:-5px;background:#171609}
+.pad.dragsrc{opacity:.45}
+.marq{position:fixed;z-index:450;border:1px dashed #fff;background:rgba(255,255,255,.08);pointer-events:none}
+body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:crosshair!important}
+.gsel{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-txt);font-weight:300;font-size:.66rem;color:#fff1a8}
+.gsel[hidden]{display:none}
+.gsel button{padding:5px 8px!important;font-size:.58rem!important;display:inline-flex;align-items:center;gap:5px}
+.gsel .ic{width:13px;height:13px}
+#gcol{min-height:260px}
 #mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 #mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
@@ -593,6 +633,7 @@ canvas.vu2{display:block;width:100%;height:22px;background:#030304;border:1px so
             <span id="clip" class="clip" role="status">CLIP</span>
           </div>
         </div>
+        <button id="outb" title="Salida de audio: elegir la placa de la botonera, la lista y el editor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span>Salida</span></button>
         <button id="burger" aria-label="Configurar teclas" title="Configurar teclas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div id="prog"><svg class="ic pgi" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg><div class="pgc"><span class="pgn" id="pgn"></span><div class="pgb"><i id="pgf"></i></div><span class="pgt" id="pgt">0:00.0 / 0:00.0</span></div></div>
       </div>
@@ -629,11 +670,20 @@ canvas.vu2{display:block;width:100%;height:22px;background:#030304;border:1px so
 </header>
 <p id="msg"></p>
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
-<div id="stage"><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*" multiple></label></div><div id="grid"></div></div>
+<div id="stage"><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*" multiple></label></div><div id="grid"></div></div>
 <aside id="pl" aria-label="Lista de reproducción">
-  <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span>
+  <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span><button type="button" class="otag" id="otg-pl"></button></div>
+  <div class="plact">
+    <button id="plsvb" class="plb" title="Guardar la lista, abrir una guardada o pasarla de/ a un archivo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg><span>Listas</span></button>
     <button id="plclr" class="plb" title="Vaciar la lista: quita todos los temas y stops (pide confirmar con un segundo clic)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg><span>Vaciar</span></button>
-    <label class="btn plb" title="Agregar audios a la lista (también podés arrastrarlos hasta acá)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar<input id="plfile" type="file" accept="audio/*" multiple hidden></label></div>
+    <label class="btn plb" title="Agregar audios a la lista (también podés arrastrarlos hasta acá)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar<input id="plfile" type="file" accept="audio/*" multiple hidden></label>
+  </div>
+  <div id="plsv" hidden>
+    <div class="plr2"><input id="plname" type="text" maxlength="40" placeholder="Nombre de la lista" autocomplete="off" aria-label="Nombre de la lista"><button id="plsaveb" title="Guardar la lista actual en este navegador">Guardar</button></div>
+    <div class="plr2"><select id="plsel" aria-label="Listas guardadas"></select><button id="plload" title="Reemplaza la lista actual por la guardada">Cargar</button><button id="plsvdel" title="Borrar la lista guardada">Borrar</button></div>
+    <div class="plr2"><button id="pldlf" title="Descargar la lista (con sus audios) como archivo .botolista"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>Descargar</button><label class="btn" title="Abrir una lista descargada (.botolista)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Abrir archivo<input id="plopenf" type="file" accept=".botolista" hidden></label></div>
+    <p class="plhint">Las listas guardadas viven en este navegador y las ven todos los usuarios de esta computadora. «Descargar» baja una copia para llevar a otra.</p>
+  </div>
   <div class="pltm"><div><span>Total lista</span><b id="pltot">0:00</b></div><div><span>Resta del tema</span><b id="plrem">–:––</b></div></div>
   <canvas id="plvu" class="vu2" aria-label="Vúmetro de la lista (izquierdo y derecho)"></canvas>
   <div class="plc c5">
@@ -659,7 +709,7 @@ canvas.vu2{display:block;width:100%;height:22px;background:#030304;border:1px so
   <div class="vbox" id="vbox"></div>
 </aside></div>
 <section id="ed" aria-label="Editor de audio">
-  <div class="edh"><b>Editor de audio</b><span id="edn"></span><label class="nmf" title="Nombre del botón al guardar. Vacío = se mantiene el nombre actual."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg><input id="edname" type="text" maxlength="60" placeholder="Nombre del botón" autocomplete="off"></label><canvas id="edvu" class="vu2" aria-label="Vúmetro del editor (izquierdo y derecho)"></canvas><span class="sp"></span>
+  <div class="edh"><b>Editor de audio</b><span id="edn"></span><label class="nmf" title="Nombre del botón al guardar. Vacío = se mantiene el nombre actual."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg><input id="edname" type="text" maxlength="60" placeholder="Nombre del botón" autocomplete="off"></label><button type="button" class="otag" id="otg-ed"></button><canvas id="edvu" class="vu2" aria-label="Vúmetro del editor (izquierdo y derecho)"></canvas><span class="sp"></span>
     <div class="edact"><button id="edundo" title="Deshacer (Ctrl+Z)" aria-label="Deshacer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg></button><button id="edredo" title="Rehacer (Ctrl+Y)" aria-label="Rehacer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg></button><button id="edsave" title="Guardar (modifica este botón)" aria-label="Guardar cambios en este botón"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="ednew" title="Guardar como botón nuevo (el botón original no cambia)" aria-label="Guardar como botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Nuevo botón</button><button id="eddl" title="Descargar el audio con las ediciones actuales como archivo WAV (guardar como…)" aria-label="Descargar archivo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>Descargar</button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
   <p id="edhint">Todavía no hay botones. Cargá audios y acá vas a poder recortar, normalizar, comprimir y borrar partes. También con clic derecho sobre un botón → Editar audio.</p>
   <div class="edbody">
@@ -671,7 +721,7 @@ canvas.vu2{display:block;width:100%;height:22px;background:#030304;border:1px so
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.40 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.40</span></footer>
+<footer id="sig" title="Versión 1.41 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.41</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -682,6 +732,16 @@ canvas.vu2{display:block;width:100%;height:22px;background:#030304;border:1px so
 
 <div id="mkm" role="menu" aria-label="Opciones de la marca"><div class="mkt" id="mkt"></div><div class="mkr" aria-label="Cambiar tipo de marca"><button data-k="m" style="color:#ff8a1f">M</button><button data-k="i" style="color:#8cf29a">I</button><button data-k="o" style="color:#e8232a">O</button><button data-k="c" style="color:#ff2d2d">C</button></div><button class="mi" id="mkdel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar marca</button></div>
 <div id="selm" role="menu" aria-label="Opciones de la selección"><button class="mi " data-a="copy"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span><em>Ctrl+C</em></button><button class="mi " data-a="cut"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg><span>Cortar</span><em>Ctrl+X</em></button><button class="mi " data-a="paste"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg><span>Pegar</span><em>Ctrl+V</em></button><button class="mi " data-a="new"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg><span>Selección → botón</span><em></em></button><button class="mi del" data-a="del"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg><span>Borrar selección</span><em>Supr</em></button></div>
+<div id="outp" role="dialog" aria-label="Salida de audio" hidden>
+  <div class="oh"><b>Salida de audio</b><button id="outx" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <p>Por defecto todo sale por la placa principal que tenga configurada el sistema. Cada sección puede salir por otra.</p>
+  <div class="or"><label for="o-pad">Botonera</label><select id="o-pad"></select></div>
+  <div class="or"><label for="o-pl">Lista</label><select id="o-pl"></select></div>
+  <div class="or"><label for="o-ed">Editor</label><select id="o-ed"></select></div>
+  <button id="outnames" hidden>Mostrar nombres de los dispositivos (pide permiso)</button>
+  <p class="os" id="outst"></p>
+  <p class="oh2">Una salida distinta de la principal agrega un poco de latencia (algunas decenas de ms).</p>
+</div>
 <div id="plm" role="menu" aria-label="Opciones del tema de la lista">
   <button class="mi" data-a="stop" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18"/><path d="M12 6v12" opacity=".0"/></svg>Agregar comando de stop</button>
   <button class="mi" data-a="copy" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>Copiar</button>
@@ -724,6 +784,7 @@ const PALETTE=["#e8232a","#a3141a","#ff5a36","#f2c230","#4a90f2","#3a3a3a","#6b6
 const AC=window.AudioContext||window.webkitAudioContext;
 const ctx=new AC({latencyHint:"interactive"});
 let items=[],colors={},waiting=null,cmIdx=null;
+const SEL=new Set(); // botones seleccionados (Ctrl+clic o recuadro)
 const $=id=>document.getElementById(id);
 const grid=$("grid"),msg=$("msg"),menu=$("menu"),list=$("list"),cm=$("cm");
 const nice=n=>n.replace(/\.[^.]+$/,"");
@@ -740,28 +801,31 @@ function note(text,kind,tag,ms){kind=kind||"warn";msg.className="n-"+kind;msg.da
 function clearNote(tag){if(!tag||msg.dataset.k===tag){msg.innerHTML="";msg.className="";delete msg.dataset.k}}
 
 /* ---------- efectos: delay estéreo (ping-pong) + reverb ---------- */
-const dry=ctx.createGain(),dlyIn=ctx.createGain(),wet=ctx.createGain(),revSend=ctx.createGain(),reverb=ctx.createConvolver();
-dlyIn.channelCount=1;dlyIn.channelCountMode="explicit"; // el delay recibe mono para poder mandar cada rebote a un lado
-const dL=ctx.createDelay(1),dR=ctx.createDelay(1);
+const busPad=ctx.createGain(),busPl=ctx.createGain(),busEd=ctx.createGain(); // una salida por sección: botonera, lista y editor
+busPad.connect(ctx.destination);busPl.connect(ctx.destination);busEd.connect(ctx.destination); // por defecto: la salida principal del sistema
 const lp=()=>{const f=ctx.createBiquadFilter();f.type="lowpass";f.frequency.value=3200;return f};
 const gn=v=>{const g=ctx.createGain();g.gain.value=v;return g};
 const pan=v=>{if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=v;return p}return ctx.createGain()};
-const pL=pan(-1),pR=pan(1),l1=lp(),l2=lp(),f1=gn(.5),f2=gn(.5); // .5 = cada rebote suena a la mitad y se va apagando
-dlyIn.connect(dL);dL.connect(pL);pL.connect(wet);
-dL.connect(l1);l1.connect(f1);f1.connect(dR);dR.connect(pR);pR.connect(wet);
-dR.connect(l2);l2.connect(f2);f2.connect(dL);
-wet.gain.value=0;wet.connect(ctx.destination);dry.connect(ctx.destination);
-(function(){const len=Math.floor(ctx.sampleRate*2.2),b=ctx.createBuffer(2,len,ctx.sampleRate);
+const REVBUF=(function(){const len=Math.floor(ctx.sampleRate*2.2),b=ctx.createBuffer(2,len,ctx.sampleRate);
   for(let c=0;c<2;c++){const d=b.getChannelData(c);let y=0;for(let i=0;i<len;i++){y+=((Math.random()*2-1)-y)*.45;d[i]=y*Math.pow(1-i/len,2.8)}}
-  reverb.buffer=b})();
-revSend.gain.value=0;revSend.connect(reverb);reverb.connect(ctx.destination);
+  return b})();
+function mkFx(out){ // delay estéreo (ping-pong) + reverb, con salida propia
+  const o={dry:ctx.createGain(),dlyIn:ctx.createGain(),wet:ctx.createGain(),revSend:ctx.createGain(),reverb:ctx.createConvolver(),dL:ctx.createDelay(1),dR:ctx.createDelay(1)};
+  o.dlyIn.channelCount=1;o.dlyIn.channelCountMode="explicit"; // el delay recibe mono para poder mandar cada rebote a un lado
+  const pL=pan(-1),pR=pan(1),l1=lp(),l2=lp(),f1=gn(.5),f2=gn(.5); // .5 = cada rebote suena a la mitad y se va apagando
+  o.dlyIn.connect(o.dL);o.dL.connect(pL);pL.connect(o.wet);
+  o.dL.connect(l1);l1.connect(f1);f1.connect(o.dR);o.dR.connect(pR);pR.connect(o.wet);
+  o.dR.connect(l2);l2.connect(f2);f2.connect(o.dL);
+  o.wet.gain.value=0;o.wet.connect(out);o.dry.connect(out);
+  o.reverb.buffer=REVBUF;o.revSend.gain.value=0;o.revSend.connect(o.reverb);o.reverb.connect(out);return o}
+const FXP=mkFx(busPad),FXL=mkFx(busPl),{dry,dlyIn,wet,revSend,reverb,dL,dR}=FXP;
 let fx={on:false,ms:120,rev:30,revOn:false};
 try{const f=JSON.parse(localStorage.getItem("botonera_fx")||"null");if(f&&typeof f.ms==="number")fx={on:!!f.on,ms:Math.min(800,Math.max(0,f.ms)),rev:+f.rev>0?Math.min(100,+f.rev):30,revOn:f.revOn===undefined?+f.rev>0:!!f.revOn}}catch(e){}
 function applyFx(){
   const t=ctx.currentTime;
-  wet.gain.setTargetAtTime(fx.on?0.65:0,t,.01);
-  dL.delayTime.setTargetAtTime(fx.ms/1000,t,.02);dR.delayTime.setTargetAtTime(fx.ms/1000,t,.02);
-  revSend.gain.setTargetAtTime(fx.revOn?fx.rev/100*0.9:0,t,.02);
+  [FXP,FXL].forEach(F=>{F.wet.gain.setTargetAtTime(fx.on?0.65:0,t,.01);
+  F.dL.delayTime.setTargetAtTime(fx.ms/1000,t,.02);F.dR.delayTime.setTargetAtTime(fx.ms/1000,t,.02);
+  F.revSend.gain.setTargetAtTime(fx.revOn?fx.rev/100*0.9:0,t,.02)});
   $("rvb").classList.toggle("active",fx.revOn);$("rvb").setAttribute("aria-pressed",fx.revOn);$("dly").classList.toggle("active",fx.on);$("dly").setAttribute("aria-pressed",fx.on);
   $("dms").value=fx.ms;if(document.activeElement!==$("dnum"))$("dnum").value=fx.ms;
   $("rev").value=fx.rev;if(document.activeElement!==$("rnum"))$("rnum").value=fx.rev;
@@ -854,9 +918,15 @@ async function openMic(){
   fillDevs();return mic.stream;
 }
 async function fillDevs(){try{
-  const l=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==="audioinput"),sel=$("indev");sel.innerHTML="";
-  l.forEach((d,i)=>{const o=document.createElement("option");o.value=d.deviceId;o.textContent=d.label||("Entrada "+(i+1));sel.appendChild(o)});
-  const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId;const o2=document.createElement("option");o2.value="__system";o2.textContent="🔊 Audio del sistema / pestaña";sel.appendChild(o2);const o3=document.createElement("option");o3.value="__player";o3.textContent="▶ Reproductor del buscador (sin micrófono)";sel.insertBefore(o3,o2);sel.value=mic.dev[0]==="_"?mic.dev:(cur||sel.value)}catch(e){}}
+  const all=await navigator.mediaDevices.enumerateDevices(),l=all.filter(d=>d.kind==="audioinput"&&d.deviceId!=="default"&&d.deviceId!=="communications"),sel=$("indev"),keep=sel.value;sel.innerHTML="";
+  const o0=document.createElement("option");o0.value="";o0.textContent="Entrada predeterminada del sistema";sel.appendChild(o0);
+  const named=l.some(d=>d.label);
+  l.forEach((d,i)=>{if(!d.deviceId)return;const o=document.createElement("option");o.value=d.deviceId;o.textContent=(d.label||("Entrada "+(i+1)))+(/bluetooth|bt |airpods|hands-free|manos libres/i.test(d.label)?" · Bluetooth":(/usb/i.test(d.label)?" · USB":""));sel.appendChild(o)});
+  const o3=document.createElement("option");o3.value="__player";o3.textContent="▶ Reproductor del buscador (sin micrófono)";sel.appendChild(o3);
+  const o2=document.createElement("option");o2.value="__system";o2.textContent="🔊 Audio del sistema / pestaña";sel.appendChild(o2);
+  if(!named){const o4=document.createElement("option");o4.value="__detect";o4.textContent="🔄 Detectar dispositivos USB / Bluetooth… (pide permiso)";sel.appendChild(o4)}
+  const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId,has=v=>v&&Array.from(sel.options).some(o=>o.value===v);
+  sel.value=has(mic.dev)?mic.dev:(has(cur)?cur:(has(keep)&&keep!=="__detect"?keep:""))}catch(e){}}
 function dropStream(){if(mic.src){try{mic.src.disconnect()}catch(e){}mic.src=null}if(mic.stream){mic.stream.getTracks().forEach(t=>t.stop());mic.stream=null}}
 function routeLive(){monGain.gain.setTargetAtTime(mic.live&&mic.stream&&!mic.muted?1:0,ctx.currentTime,.01)}
 function closeMicIfIdle(){if(!mic.live&&!mic.rec)dropStream()}
@@ -871,6 +941,9 @@ $("mic").addEventListener("click",async()=>{
   catch(e){note(micErr(e),"error","live")}
 });
 $("indev").addEventListener("change",async e=>{
+  if(e.target.value==="__detect"){e.target.blur();
+    try{const st=await navigator.mediaDevices.getUserMedia({audio:true});st.getTracks().forEach(t=>t.stop());await fillDevs();await outList();outFill();note("Dispositivos detectados: "+Math.max(0,$("indev").options.length-3)+" entrada(s) de audio. Los USB y Bluetooth aparecen en esta lista apenas se conectan.","info","live",7000)}
+    catch(x){await fillDevs();note(micErr(x),"error","live")}return}
   if(mic.rec){e.target.value=mic.dev||e.target.value;e.target.blur();note("No se puede cambiar la entrada mientras se graba. Detené la grabación primero.","warn","live",6000);return}
   mic.dev=e.target.value;e.target.blur();try{localStorage.setItem("botonera_dev",mic.dev)}catch(x){}
   if(mic.dev==="__system")note("Modo audio del sistema / pestaña: el micrófono queda desactivado, solo entra el sonido capturado.","info","live",6000);
@@ -1051,7 +1124,7 @@ function render(){
     }catch(err){console.error("Botón con error",it&&it.name,err)}
   });
   closeNormal();
-  renderMenu();
+  renderMenu();selApply();
   $("empty").style.display=items.length?"none":"block";
 }
 function renderMenu(){
@@ -1235,7 +1308,7 @@ function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;
 function edStart(a,e){const n=edN(),b=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>b.copyToChannel(c,i));
   if(ctx.state!=="running")ctx.resume();cancelAnimationFrame(ed.raf);
   if(ed.src){const o=ed.src;ed.src=null;try{o.stop()}catch(x){}}
-  const s=ctx.createBufferSource();s.buffer=b;s.connect(ctx.destination);ed.src=s;ed.from=a;ed.t0=ctx.currentTime;ed.ts=performance.now();
+  const s=ctx.createBufferSource();s.buffer=b;s.connect(busEd);ed.src=s;ed.from=a;ed.t0=ctx.currentTime;ed.ts=performance.now();
   s.onended=()=>{if(ed.src===s){ed.src=null;edBtn();edDraw()}};s.start(0,a/ed.sr,(e-a)/ed.sr);edBtn();
   const lp=()=>{if(ed.src){edDraw();ed.raf=requestAnimationFrame(lp)}};lp()}
 const edSnapState=()=>({ch:ed.ch,marks:ed.marks.map(m=>({p:m.p,k:m.k})),dirty:ed.dirty});
@@ -1629,7 +1702,7 @@ function plKill(fade){PL.gen++;if(PL.src){const s=PL.src,g=PL.gn;PL.src=null;PL.
 function plStart(i,off,fade){
   const r=PL.rows[i];if(!r||r.t!=="f")return;
   if(ctx.state!=="running")ctx.resume();
-  plKill(fade);const s=ctx.createBufferSource(),gn=ctx.createGain();s.buffer=r.buffer;s.connect(gn);gn.connect(dry);gn.connect(dlyIn);gn.connect(revSend);
+  plKill(fade);const s=ctx.createBufferSource(),gn=ctx.createGain();s.buffer=r.buffer;s.connect(gn);gn.connect(FXL.dry);gn.connect(FXL.dlyIn);gn.connect(FXL.revSend);
   if(fade){const t=ctx.currentTime;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(1,t+PL_FADE)}
   const g=++PL.gen;PL.src=s;PL.gn=gn;PL.curId=r.id;PL.off=off||0;PL.t0=ctx.currentTime-PL.off;if(PL.state!=="play")PL.ts=performance.now();PL.state="play";
   if(PL.nxtId===r.id)PL.nxtId=null;
@@ -1763,24 +1836,153 @@ function plTimes(){
   const r=plRow(PL.curId);let t="–:––";
   if(r&&r.buffer){if(PL.state==="play")t="−"+fmtH(Math.ceil(r.buffer.duration-Math.min(r.buffer.duration,ctx.currentTime-PL.t0)));else if(PL.state==="pause")t="−"+fmtH(Math.ceil(r.buffer.duration-PL.off))}
   $("plrem").textContent=t}
+/* ---------- salida de audio por sección ---------- */
+const OUTK={pad:"Botonera",pl:"Lista",ed:"Editor"},OUT={pad:{bus:busPad,id:"",label:"",el:null},pl:{bus:busPl,id:"",label:"",el:null},ed:{bus:busEd,id:"",label:"",el:null}};
+const SINK=typeof HTMLMediaElement!=="undefined"&&"setSinkId" in HTMLMediaElement.prototype,OUTWAIT=new Set();let outDevs=[];
+try{const sv=JSON.parse(localStorage.getItem("botonera_out")||"{}");Object.keys(OUT).forEach(k=>{if(typeof sv[k]==="string")OUT[k].id=sv[k];if(typeof sv[k+"L"]==="string")OUT[k].label=sv[k+"L"]})}catch(e){}
+const outName=k=>OUT[k].id?(OUT[k].label||"Dispositivo elegido"):"Principal del sistema";
+const outSummary=()=>Object.keys(OUT).map(k=>OUTK[k]+": "+outName(k)).join(" · ");
+const outAny=()=>Object.keys(OUT).some(k=>OUT[k].id);
+function outSave(){try{const o={};Object.keys(OUT).forEach(k=>{o[k]=OUT[k].id;o[k+"L"]=OUT[k].label});localStorage.setItem("botonera_out",JSON.stringify(o))}catch(e){}}
+function outTags(){Object.keys(OUT).forEach(k=>{const t=$("otg-"+k);if(!t)return;t.textContent="Salida: "+outName(k);t.classList.toggle("alt",!!OUT[k].id);t.title="La salida de "+OUTK[k]+" es: "+outName(k)+". Clic para cambiarla."});$("outb").classList.toggle("alt",outAny())}
+async function outRoute(k){
+  const o=OUT[k];try{o.bus.disconnect()}catch(e){}
+  if(o.el){try{o.el.pause();o.el.srcObject=null}catch(e){}OUTWAIT.delete(o.el);o.el=null}
+  if(!o.id){o.bus.connect(ctx.destination);return true}
+  try{
+    if(!SINK)throw new Error("nosink");
+    const dst=ctx.createMediaStreamDestination(),el=new Audio();el.srcObject=dst.stream;await el.setSinkId(o.id);
+    o.bus.connect(dst);o.el=el;
+    try{await el.play()}catch(e){OUTWAIT.add(el)} // si el navegador pide un gesto, se reintenta con el primer toque
+    return true}
+  catch(e){o.id="";o.label="";o.el=null;o.bus.connect(ctx.destination);return false}}
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev,()=>{OUTWAIT.forEach(el=>{el.play().then(()=>OUTWAIT.delete(el)).catch(()=>{})})},true));
+async function outList(){try{outDevs=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==="audiooutput"&&d.deviceId&&d.deviceId!=="default"&&d.deviceId!=="communications")}catch(e){outDevs=[]}return outDevs}
+function outFill(){
+  const named=outDevs.some(d=>d.label);
+  Object.keys(OUT).forEach(k=>{const sel=$("o-"+k);sel.innerHTML="";
+    const o0=document.createElement("option");o0.value="";o0.textContent="Principal del sistema (predeterminada)";sel.appendChild(o0);
+    outDevs.forEach((d,i)=>{const o=document.createElement("option");o.value=d.deviceId;o.textContent=d.label||("Salida "+(i+1));sel.appendChild(o);if(OUT[k].id===d.deviceId&&d.label)OUT[k].label=d.label});
+    if(OUT[k].id&&!outDevs.some(d=>d.deviceId===OUT[k].id)){const o=document.createElement("option");o.value=OUT[k].id;o.textContent=(OUT[k].label||"Dispositivo guardado")+" (no detectado)";sel.appendChild(o)}
+    sel.value=OUT[k].id;sel.disabled=!SINK});
+  $("outnames").hidden=named||!SINK;
+  $("outst").textContent=SINK?"Ahora → "+outSummary():"Este navegador no permite elegir la salida (usá Brave, Chrome o Edge).";outTags()}
+Object.keys(OUT).forEach(k=>$("o-"+k).addEventListener("change",async e=>{
+  const o=OUT[k];o.id=e.target.value;const d=outDevs.find(x=>x.deviceId===o.id);o.label=d?(d.label||"Salida elegida"):"";
+  const ok=await outRoute(k);outSave();outFill();
+  note(ok?("SALIDAS · "+outSummary()):("No se pudo usar esa salida: "+OUTK[k]+" vuelve a la principal del sistema."),ok&&outAny()?"warn":"info","out",ok?10000:9000)}));
+$("outnames").addEventListener("click",async()=>{
+  try{const st=await navigator.mediaDevices.getUserMedia({audio:true});st.getTracks().forEach(t=>t.stop())}catch(e){note(micErr(e),"error","out",7000)}
+  await outList();outFill();fillDevs()});
+function outOpen(anchor){const p=$("outp");p.hidden=false;outList().then(outFill);
+  const r=(anchor||$("outb")).getBoundingClientRect();p.style.top=Math.min(innerHeight-p.offsetHeight-8,r.bottom+6)+"px";p.style.left=Math.max(8,Math.min(r.left,innerWidth-p.offsetWidth-8))+"px"}
+const outClose=()=>{$("outp").hidden=true};
+$("outb").addEventListener("click",e=>{e.stopPropagation();$("outp").hidden?outOpen($("outb")):outClose()});
+$("outx").addEventListener("click",outClose);
+["pad","pl","ed"].forEach(k=>$("otg-"+k).addEventListener("click",e=>{e.stopPropagation();outOpen($("otg-"+k))}));
+document.addEventListener("pointerdown",e=>{if(!$("outp").hidden&&!$("outp").contains(e.target)&&!e.target.closest("#outb,.otag"))outClose()},true);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("outp").hidden){outClose();e.stopImmediatePropagation()}},true);
+async function outInit(){
+  await outList();
+  for(const k of Object.keys(OUT)){if(OUT[k].id){const ok=await outRoute(k);if(!ok)note("La salida guardada de "+OUTK[k]+" no está disponible: vuelve a la principal del sistema.","warn","out",9000)}}
+  outSave();outFill();fillDevs();
+  if(outAny())note("SALIDAS · "+outSummary(),"warn","out",12000)}
+if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener)navigator.mediaDevices.addEventListener("devicechange",async()=>{
+  await outList();let lost=[];
+  for(const k of Object.keys(OUT)){if(OUT[k].id&&outDevs.length&&!outDevs.some(d=>d.deviceId===OUT[k].id)){OUT[k].id="";OUT[k].label="";await outRoute(k);lost.push(OUTK[k])}}
+  if(lost.length){outSave();note("Se desconectó la salida de: "+lost.join(", ")+". Vuelve a la principal del sistema. "+outSummary(),"warn","out",12000)}
+  outFill();fillDevs()});
+outInit();
+/* ---------- listas guardadas (en este navegador, para todos los usuarios) ---------- */
+const PLS_KEY="plists";
+async function plsGet(){try{const d=await db();return await new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(PLS_KEY);q.onsuccess=()=>ok(Array.isArray(q.result)?q.result:[]);q.onerror=()=>ok([])})}catch(e){return[]}}
+async function plsPut(a){const d=await db();return new Promise((ok,no)=>{const tx=d.transaction("s","readwrite");tx.objectStore("s").put(a,PLS_KEY);tx.oncomplete=()=>ok();tx.onerror=()=>no(tx.error);tx.onabort=()=>no(tx.error)})}
+const plsRows=()=>PL.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color});
+async function plsFill(keep){const a=await plsGet(),sel=$("plsel");sel.innerHTML="";
+  if(!a.length){const o=document.createElement("option");o.value="";o.textContent="(no hay listas guardadas)";sel.appendChild(o)}
+  a.forEach(l=>{const o=document.createElement("option");o.value=l.name;const n=l.rows.filter(r=>r.t==="f").length;o.textContent=l.name+" · "+n+(n===1?" tema":" temas");sel.appendChild(o)});
+  if(keep&&a.some(l=>l.name===keep))sel.value=keep;$("plload").disabled=$("plsvdel").disabled=!a.length;return a}
+function twoStep(btn,label,fn){let t=0;const old=btn.textContent;
+  btn.addEventListener("click",()=>{if(btn.disabled)return;if(!btn.classList.contains("ask")){btn.classList.add("ask");btn.textContent=label;t=setTimeout(()=>{btn.classList.remove("ask");btn.textContent=old},3000);return}
+    clearTimeout(t);btn.classList.remove("ask");btn.textContent=old;fn()})}
+async function plsApply(rows,name){
+  plKill();PL.state="stop";PL.off=0;PL.curId=null;PL.nxtId=null;PL.rows=[];let skipped=0;
+  for(const x of rows){if(x.t==="s"){PL.rows.push(plMkStop());continue}const b=x.blob&&await plDecode(x.blob);if(!b){skipped++;continue}const r=plMk(x.name,x.blob,b);r.color=x.color||null;PL.rows.push(r)}
+  plRender();plSave();note("Lista «"+name+"» cargada: "+PL.rows.filter(r=>r.t==="f").length+" temas"+(skipped?" ("+skipped+" no se pudieron leer)":"")+".","info","pl",4000)}
+$("plsvb").addEventListener("click",async()=>{const v=$("plsv");v.hidden=!v.hidden;if(!v.hidden)await plsFill()});
+$("plname").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")$("plsaveb").click()});
+$("plsaveb").addEventListener("click",async()=>{
+  const name=$("plname").value.trim().replace(/[<>]/g,"").slice(0,40);
+  if(!name){note("Escribí un nombre para guardar la lista.","warn","pl",4000);$("plname").focus();return}
+  if(!PL.rows.length){note("La lista está vacía: no hay nada para guardar.","warn","pl",4000);return}
+  try{const a=await plsGet(),snap={name,date:Date.now(),rows:plsRows()},i=a.findIndex(l=>l.name===name);if(i>=0)a[i]=snap;else a.push(snap);await plsPut(a);await plsFill(name);
+    note("Lista «"+name+"» "+(i>=0?"actualizada":"guardada")+" ("+snap.rows.filter(r=>r.t==="f").length+" temas). Queda disponible para todos los usuarios de este navegador.","info","pl",5000)}
+  catch(e){note("No se pudo guardar la lista (espacio del navegador lleno o bloqueado).","error","pl",8000)}});
+twoStep($("plload"),"¿Reemplazar?",async()=>{const a=await plsGet(),l=a.find(x=>x.name===$("plsel").value);if(!l)return;$("plname").value=l.name;await plsApply(l.rows,l.name)});
+twoStep($("plsvdel"),"¿Borrar?",async()=>{const n=$("plsel").value;if(!n)return;const a=(await plsGet()).filter(l=>l.name!==n);await plsPut(a);await plsFill();note("Lista «"+n+"» borrada de este navegador.","info","pl",3500)});
+$("plsel").addEventListener("change",()=>{$("plname").value=$("plsel").value});
+async function plsPack(name,rows){
+  const parts=[],meta={v:1,name,rows:[]};
+  rows.forEach(r=>{if(r.t==="s")meta.rows.push({t:"s"});else{meta.rows.push({t:"f",name:r.name,color:r.color||null,size:r.blob.size,type:r.blob.type||""});parts.push(r.blob)}});
+  const h=new TextEncoder().encode(JSON.stringify(meta)),len=new Uint8Array(4);new DataView(len.buffer).setUint32(0,h.length);
+  return new Blob([new TextEncoder().encode("BTLS1\n"),len,h,...parts],{type:"application/octet-stream"})}
+async function plsUnpack(file){
+  const buf=await file.arrayBuffer(),u=new Uint8Array(buf);
+  if(u.length<10||new TextDecoder().decode(u.slice(0,6))!=="BTLS1\n")throw new Error("El archivo no es una lista de la botonera (.botolista).");
+  const hl=new DataView(buf,6,4).getUint32(0),meta=JSON.parse(new TextDecoder().decode(u.slice(10,10+hl)));let off=10+hl;const rows=[];
+  for(const r of meta.rows){if(r.t==="s")rows.push({t:"s"});else{if(off+r.size>u.length)throw new Error("El archivo está incompleto o dañado.");rows.push({t:"f",name:r.name,color:r.color||null,blob:new Blob([u.slice(off,off+r.size)],{type:r.type||""})});off+=r.size}}
+  return{name:meta.name||"Lista",rows}}
+$("pldlf").addEventListener("click",async()=>{
+  if(!PL.rows.length){note("La lista está vacía: no hay nada para descargar.","warn","pl",4000);return}
+  const name=($("plname").value.trim()||"Lista").replace(/[\\/:*?"<>|]/g,"").slice(0,60)||"Lista";
+  const b=await plsPack(name,plsRows());saveBlob(b,name+".botolista");note("Descargado: "+name+".botolista ("+fmtMB(b.size)+"). Incluye los audios; se abre con «Abrir archivo».","info","pl",6000)});
+$("plopenf").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
+  try{const l=await plsUnpack(f);$("plname").value=l.name;await plsApply(l.rows,l.name)}catch(x){note(String(x.message||x),"error","pl",8000)}});
 /* botón de la botonera: suena al soltar; si se mantiene y se arrastra, se puede soltar en la lista y no suena */
 function plWhereXY(x,y){const el=document.elementFromPoint(x,y);if(!el||!el.closest||!el.closest("#pl"))return null;
   const r=el.closest(".plr");if(!r)return{ins:PL.rows.length,el:null,after:true};
   const rc=r.getBoundingClientRect(),after=y>rc.top+rc.height/2;return{ins:plIdx(+r.dataset.id)+(after?1:0),el:r,after}}
+function selApply(){
+  items.forEach((it,i)=>{const el=$("p"+i);if(el)el.classList.toggle("sel",SEL.has(it))});
+  const n=items.filter(i=>SEL.has(i)).length,g=$("gsel");if(!g)return;g.hidden=!n;$("gselc").textContent=n+(n===1?" seleccionado":" seleccionados")}
+const selList=()=>items.filter(i=>SEL.has(i));
+function plAddItems(list){list.forEach(x=>PL.rows.push(plMk(x.name,x.blob,x.buffer)));plRender();plSave()}
 function padPress(e,idx,b){
-  const sx=e.clientX,sy=e.clientY,it=items[idx];if(!it)return;let drag=false,ghost=null;
+  const sx=e.clientX,sy=e.clientY,it=items[idx];if(!it)return;let drag=false,ghost=null,group=[it];
+  const ctrl=e.ctrlKey||e.metaKey;
+  if(ctrl){if(SEL.has(it))SEL.delete(it);else SEL.add(it);selApply()} // Ctrl+clic: suma o quita de la selección, no suena
   const clr=()=>document.querySelectorAll("#pll .da,#pll .db").forEach(x=>x.classList.remove("da","db"));
   const mv=ev=>{
-    if(!drag){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<6)return;drag=true;ghost=document.createElement("div");ghost.className="padghost";ghost.textContent=nice(it.name);document.body.appendChild(ghost);document.body.classList.add("paddrag");b.classList.add("dragsrc")}
+    if(!drag){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<6)return;drag=true;
+      group=SEL.has(it)?selList():[it];
+      ghost=document.createElement("div");ghost.className="padghost";ghost.textContent=group.length>1?group.length+" botones":nice(it.name);document.body.appendChild(ghost);document.body.classList.add("paddrag");
+      group.forEach(x=>{const el=$("p"+items.indexOf(x));if(el)el.classList.add("dragsrc")})}
     ghost.style.left=ev.clientX+14+"px";ghost.style.top=ev.clientY+14+"px";
     clr();const w=plWhereXY(ev.clientX,ev.clientY);$("pl").classList.toggle("dropfiles",!!w);if(w&&w.el)w.el.classList.add(w.after?"db":"da")};
   const up=ev=>{
     window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);
-    if(!drag){if(ev.type==="pointerup")toggle(idx);return}
-    ghost.remove();document.body.classList.remove("paddrag");b.classList.remove("dragsrc");clr();$("pl").classList.remove("dropfiles");
+    if(!drag){if(ev.type==="pointerup"&&!ctrl)toggle(idx);return}
+    ghost.remove();document.body.classList.remove("paddrag");document.querySelectorAll(".pad.dragsrc").forEach(x=>x.classList.remove("dragsrc"));clr();$("pl").classList.remove("dropfiles");
     if(ev.type==="pointerup"){const w=plWhereXY(ev.clientX,ev.clientY);
-      if(w){PL.rows.splice(w.ins,0,plMk(it.name,it.blob,it.buffer));plRender();plSave();note("Agregado a la lista: «"+nice(it.name)+"».","info","pl",2500)}}};
+      if(w){const rows=group.map(x=>plMk(x.name,x.blob,x.buffer));PL.rows.splice(w.ins,0,...rows);plRender();plSave();note("Agregado a la lista: "+(group.length>1?group.length+" botones.":"«"+nice(it.name)+"»."),"info","pl",2500)}}};
   window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)}
+/* recuadro de selección (líneas punteadas) sobre el fondo de la botonera */
+$("stage").addEventListener("pointerdown",e=>{
+  if(e.button!==0||!e.target.closest("#gcol")||e.target.closest(".pad,button,label,select,input,canvas,a"))return;
+  e.preventDefault();hideCm();
+  const sx=e.clientX,sy=e.clientY,add=e.ctrlKey||e.metaKey,base=add?new Set(SEL):new Set();let box=null,moved=false;
+  const mv=ev=>{
+    if(!moved){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<4)return;moved=true;box=document.createElement("div");box.className="marq";document.body.appendChild(box);document.body.classList.add("marqing")}
+    const x1=Math.min(sx,ev.clientX),x2=Math.max(sx,ev.clientX),y1=Math.min(sy,ev.clientY),y2=Math.max(sy,ev.clientY);
+    box.style.left=x1+"px";box.style.top=y1+"px";box.style.width=(x2-x1)+"px";box.style.height=(y2-y1)+"px";
+    SEL.clear();base.forEach(x=>SEL.add(x));
+    items.forEach((it,i)=>{const el=$("p"+i);if(!el)return;const r=el.getBoundingClientRect();if(r.right>x1&&r.left<x2&&r.bottom>y1&&r.top<y2)SEL.add(it)});
+    selApply()};
+  const up=()=>{window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);
+    if(box)box.remove();document.body.classList.remove("marqing");if(!moved&&!add){SEL.clear();selApply()}};
+  window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)});
+$("gselclr").addEventListener("click",()=>{SEL.clear();selApply()});
+$("gseladd").addEventListener("click",()=>{const l=selList();if(!l.length)return;plAddItems(l);note("Agregado a la lista: "+(l.length>1?l.length+" botones.":"«"+nice(l[0].name)+"».")+" Orden de la botonera.","info","pl",3000)});
 $("eddl").addEventListener("click",()=>{
   if(!ed.it||!ed.ch.length)return;
   let nm=($("edname").value.trim()||nice(ed.it.name)+(ed.dirty?" (editado)":"")).replace(/[\\/:*?"<>|]/g,"").slice(0,80)||"audio";
