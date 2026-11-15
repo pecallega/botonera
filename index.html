@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.16 · actualización n.º 16 · por @pecallega -->
+<!-- Botonera al aire · v1.17 · actualización n.º 17 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -219,6 +219,29 @@ h1{position:absolute;top:2px;right:0;margin:0}
 #edsb{position:relative;height:14px;margin-top:6px;background:rgba(255,255,255,.07);cursor:pointer;touch-action:none}
 #edth{position:absolute;top:2px;bottom:2px;left:0;width:100%;min-width:28px;background:rgba(255,255,255,.38);cursor:grab}
 #edth:hover{background:rgba(255,255,255,.6)}
+/* ---- v1.17: avisos, alineación de íconos, fuente de entrada ---- */
+#msg{position:fixed;left:50%;bottom:58px;top:auto;transform:translateX(-50%);z-index:40;width:min(700px,calc(100% - 24px));max-width:none;margin:0;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--line);border-left-width:3px;background:rgba(18,18,22,.97);color:#e9e9ee;font-size:.78rem;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#msg.n-warn{border-color:#f2c230;background:rgba(42,35,12,.97);color:#ffe9a6}
+#msg.n-error{border-color:var(--on);background:rgba(44,14,16,.97);color:#ffc9cb}
+#msg.n-info{border-color:rgba(255,255,255,.4)}
+#msg .ic{width:16px;height:16px;flex:none;margin-top:1px}
+#msg.n-warn>.ic{color:#f2c230}
+#msg.n-error>.ic{color:var(--on)}
+#msg span{flex:1}
+#msg .nx{display:flex;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:0;background:none;color:inherit;opacity:.65}
+#msg .nx:hover{opacity:1;background:rgba(255,255,255,.1)}
+button:not(.pad):not(.gear),label.btn,select{line-height:1}
+button:not(.pad):not(.gear) .ic,label.btn .ic{flex:none}
+.fx button,.fx .lbl{justify-content:flex-start;padding-left:12px}
+.fx .onmute{grid-column:2/4;justify-content:flex-start}
+.fx .onmute button{display:inline-flex;align-items:center;gap:5px}
+.fx #indev{grid-column:1/-1;padding-left:34px;background:rgba(255,255,255,.055) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bbb' stroke-width='2' stroke-linecap='round'><rect x='9' y='3' width='6' height='11' rx='3'/><path d='M5 11a7 7 0 0 0 14 0M12 18v3'/></svg>") no-repeat 11px center;background-size:15px}
+#ed:not(.open) .nmf{display:none}
+.nmf{display:inline-flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--mut)}
+.nmf:focus-within{border-color:var(--on)}
+.nmf input{width:210px;padding:7px 0;border:0;background:none;color:var(--ink);font:inherit;font-size:.8rem;outline:0}
+.row .key,.row .del,.row .restore{display:inline-flex;align-items:center;gap:7px}
+#menu .top button{display:inline-flex;align-items:center;justify-content:center}
 @media (prefers-reduced-motion:no-preference){
 .pad.hit{animation:hit .28s ease-out}
 .pad.on.hit{animation:hit .28s ease-out,glow 1.2s ease-in-out .28s infinite}
@@ -259,8 +282,8 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
           <input id="rev" type="range" min="0" max="100" step="1" value="0" aria-label="Cantidad de reverb">
           <span class="num"><input id="rnum" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" aria-label="Reverb en porcentaje (escribir valor exacto)"><i>%</i></span>
           <button id="mic" aria-pressed="false" title="Live audio FX: la entrada de la placa suena con delay y reverb. Arranca en MUTE para regular el nivel. Usá auriculares."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Live audio FX</button>
-          <select id="indev" aria-label="Entrada de audio"><option value="">Entrada predeterminada</option></select>
-          <div class="onmute"><button id="mutb">Mute</button><button id="onb">ON</button></div>
+          <div class="onmute"><button id="mutb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Mute</button><button id="onb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg>ON</button></div>
+          <select id="indev" aria-label="Fuente de entrada de audio"><option value="">Entrada predeterminada</option><option value="__system">🔊 Audio del sistema / pestaña</option></select>
           <div class="ins">
             <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Nivel</span>
             <input id="gain" type="range" min="0" max="40" step="1" value="0" aria-label="Nivel de entrada en decibeles">
@@ -270,7 +293,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
             <span id="clip" class="clip" role="status">CLIP</span>
           </div>
         </div>
-        <button id="burger" aria-label="Configurar teclas" title="Configurar teclas">☰</button>
+        <button id="burger" aria-label="Configurar teclas" title="Configurar teclas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       </div>
     </div>
   </div>
@@ -279,7 +302,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
 <div id="grid"></div>
 <section id="ed" aria-label="Editor de audio">
-  <div class="edh"><b>Editor de audio</b><span id="edn"></span><span class="sp"></span>
+  <div class="edh"><b>Editor de audio</b><span id="edn"></span><label class="nmf" title="Nombre del botón al guardar. Vacío = se mantiene el nombre actual."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg><input id="edname" type="text" maxlength="60" placeholder="Nombre del botón" autocomplete="off"></label><span class="sp"></span>
     <div class="edact"><button id="edsave" title="Guardar (modifica este botón)" aria-label="Guardar cambios en este botón"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="ednew" title="Guardar como botón nuevo (el botón original no cambia)" aria-label="Guardar como botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Nuevo botón</button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
   <p id="edhint">Clic derecho sobre un botón → Editar audio. Acá podés recortar el silencio inicial, normalizar y borrar partes.</p>
   <div class="edbody">
@@ -289,10 +312,10 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
   </div>
 </section>
 
-<footer id="sig" title="Versión 1.16 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.16</span></footer>
+<footer id="sig" title="Versión 1.17 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.17</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
-  <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
+  <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
   <p>Tocá "Cambiar", después apretá la letra o número que quieras. Backspace deja el botón sin tecla. Esc cancela.</p>
   <div id="list"></div>
   <img class="mlogo" src="logo.png" alt="" onerror="this.style.display='none'">
@@ -303,7 +326,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
     <button class="mi" id="mcol" role="menuitem" aria-haspopup="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>Color<svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
     <div class="sub" id="csub">
       <div class="sw" id="sw"></div>
-      <div class="ft"><label class="pk" title="Color personalizado"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg><input type="color" id="cpick"></label><button id="creset">Sin color</button></div>
+      <div class="ft"><label class="pk" title="Color personalizado"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg><input type="color" id="cpick"></label><button id="creset"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>Sin color</button></div>
     </div>
   </div>
   <button class="mi" id="cedit" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4"/></svg>Editar audio</button>
@@ -324,6 +347,17 @@ let items=[],colors={},waiting=null,cmIdx=null;
 const $=id=>document.getElementById(id);
 const grid=$("grid"),msg=$("msg"),menu=$("menu"),list=$("list"),cm=$("cm");
 const nice=n=>n.replace(/\.[^.]+$/,"");
+const SV=d=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>';
+const ICKB=SV('<rect x="2" y="6" width="20" height="12"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>'),
+  ICTR=SV('<path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/>'),
+  ICRS=SV('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>');
+const NI={info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/>',warn:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17v.01"/>',error:'<circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/>'};
+let noteT=0;
+function note(text,kind,tag,ms){kind=kind||"warn";msg.className="n-"+kind;msg.dataset.k=tag||kind;
+  msg.innerHTML=SV(NI[kind])+'<span></span><button class="nx" aria-label="Cerrar aviso">'+SV('<path d="M18 6 6 18M6 6l12 12"/>')+'</button>';
+  msg.querySelector("span").textContent=text;msg.querySelector(".nx").onclick=()=>clearNote();
+  clearTimeout(noteT);if(ms)noteT=setTimeout(()=>clearNote(tag||kind),ms)}
+function clearNote(tag){if(!tag||msg.dataset.k===tag){msg.innerHTML="";msg.className="";delete msg.dataset.k}}
 
 /* ---------- efectos: delay estéreo (ping-pong) + reverb ---------- */
 const dry=ctx.createGain(),dlyIn=ctx.createGain(),wet=ctx.createGain(),revSend=ctx.createGain(),reverb=ctx.createConvolver();
@@ -370,7 +404,13 @@ applyFx();
 /* ---------- entrada de la placa: en vivo + grabar ---------- */
 const mic={stream:null,src:null,live:false,rec:null,dev:"",gainDb:0,muted:true};
 try{mic.dev=localStorage.getItem("botonera_dev")||"";mic.gainDb=Math.min(40,Math.max(0,parseInt(localStorage.getItem("botonera_gain"),10)||0))}catch(e){}
-const MICFAIL="No pude acceder a la entrada de audio. Revisá el permiso del micrófono en la barra del navegador.",HEAD="Empieza en MUTE: regulá el nivel y apretá ON para salir al aire. Usá auriculares para evitar el acople.";
+if(mic.dev==="__system")$("indev").value="__system";
+const HEAD="LIVE AUDIO FX activo en MUTE: la señal NO sale a la salida. Ajustá NIVEL (pico objetivo: −6 a −3 dB) y pulsá ON para emitir. Con parlantes hay acople: usá auriculares.";
+const micErr=e=>{const n=e&&e.name||"";
+  if(e&&e.message==="noaudio")return"La captura no incluye audio. En el diálogo elegí una pestaña y marcá «Compartir audio de la pestaña» (o pantalla completa + «Compartir audio del sistema», solo Windows/ChromeOS).";
+  if(n==="NotAllowedError")return mic.dev==="__system"?"Captura cancelada: no se eligió ninguna pestaña o pantalla.":"Permiso de micrófono denegado. Habilitalo para este sitio (candado en la barra de direcciones) y reintentá.";
+  if(n==="NotFoundError"||n==="OverconstrainedError")return"No se encontró la entrada de audio. Verificá que la placa esté conectada y seleccionada en el sistema.";
+  return"No se pudo abrir la entrada de audio ("+(n||"error desconocido")+"). Cerrá otras apps que usen la placa y reintentá."};
 // cadena de entrada: placa -> nivel (inGain) -> vúmetro | monitoreo con efectos | grabación
 const inGain=ctx.createGain(),monGain=ctx.createGain(),an=ctx.createAnalyser(),recDest=ctx.createMediaStreamDestination(),mute=ctx.createGain();
 an.fftSize=2048;mute.gain.value=0;monGain.gain.value=0;
@@ -408,15 +448,22 @@ function syncIns(){
 async function openMic(){
   if(mic.stream)return mic.stream;
   const a={echoCancellation:false,noiseSuppression:false,autoGainControl:false};
-  try{mic.stream=await navigator.mediaDevices.getUserMedia({audio:mic.dev?Object.assign({deviceId:{exact:mic.dev}},a):a})}
-  catch(e){if(!mic.dev)throw e;mic.dev="";mic.stream=await navigator.mediaDevices.getUserMedia({audio:a})}
+  if(mic.dev==="__system"){
+    const st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:1},audio:Object.assign({suppressLocalAudioPlayback:true},a)});
+    if(!st.getAudioTracks().length){st.getTracks().forEach(t=>t.stop());throw new Error("noaudio")}
+    st.getAudioTracks()[0].addEventListener("ended",()=>{if(mic.stream!==st)return;if(mic.rec)mic.rec.mr.stop();mic.live=false;routeLive();dropStream();liveUI();note("Se detuvo la captura de audio del sistema (se cortó el uso compartido desde la barra del navegador).","warn","live",9000)});
+    mic.stream=st;
+  }else{
+    try{mic.stream=await navigator.mediaDevices.getUserMedia({audio:mic.dev?Object.assign({deviceId:{exact:mic.dev}},a):a})}
+    catch(e){if(!mic.dev)throw e;mic.dev="";mic.stream=await navigator.mediaDevices.getUserMedia({audio:a})}
+  }
   mic.src=ctx.createMediaStreamSource(mic.stream);mic.src.connect(inGain);
   fillDevs();return mic.stream;
 }
 async function fillDevs(){try{
   const l=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==="audioinput"),sel=$("indev");sel.innerHTML="";
   l.forEach((d,i)=>{const o=document.createElement("option");o.value=d.deviceId;o.textContent=d.label||("Entrada "+(i+1));sel.appendChild(o)});
-  const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId;if(cur)sel.value=cur}catch(e){}}
+  const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId;const o2=document.createElement("option");o2.value="__system";o2.textContent="🔊 Audio del sistema / pestaña";sel.appendChild(o2);sel.value=mic.dev==="__system"?"__system":(cur||sel.value)}catch(e){}}
 function dropStream(){if(mic.src){try{mic.src.disconnect()}catch(e){}mic.src=null}if(mic.stream){mic.stream.getTracks().forEach(t=>t.stop());mic.stream=null}}
 function routeLive(){monGain.gain.setTargetAtTime(mic.live&&mic.stream&&!mic.muted?1:0,ctx.currentTime,.01)}
 function closeMicIfIdle(){if(!mic.live&&!mic.rec)dropStream()}
@@ -426,15 +473,15 @@ function liveUI(){const L=mic.live,A=L&&!mic.muted;$("mic").classList.toggle("ac
 $("onb").addEventListener("click",()=>{mic.muted=false;routeLive();liveUI()});
 $("mutb").addEventListener("click",()=>{mic.muted=true;routeLive();liveUI()});
 $("mic").addEventListener("click",async()=>{
-  if(mic.live){mic.live=false;routeLive();closeMicIfIdle();liveUI();if(msg.textContent===HEAD)msg.textContent="";return}
-  try{if(ctx.state!=="running")ctx.resume();await openMic();mic.live=true;mic.muted=true;routeLive();liveUI();msg.textContent=HEAD}
-  catch(e){msg.textContent=MICFAIL}
+  if(mic.live){mic.live=false;routeLive();closeMicIfIdle();liveUI();clearNote("live");return}
+  try{if(ctx.state!=="running")ctx.resume();await openMic();mic.live=true;mic.muted=true;routeLive();liveUI();note(HEAD,"info","live")}
+  catch(e){note(micErr(e),"error","live")}
 });
 $("indev").addEventListener("change",async e=>{
   mic.dev=e.target.value;e.target.blur();try{localStorage.setItem("botonera_dev",mic.dev)}catch(x){}
   if(mic.rec||!mic.stream)return;
   dropStream();
-  if(mic.live){try{await openMic();routeLive()}catch(x){mic.live=false;liveUI();msg.textContent=MICFAIL}}
+  if(mic.live){try{await openMic();routeLive()}catch(x){mic.live=false;liveUI();note(micErr(x),"error","live")}}
 });
 function recCell(){
   const c=document.createElement("div");c.className="cell";
@@ -451,7 +498,7 @@ function recCell(){
 function tick(){const t=document.querySelector("#recpad .t");if(t&&mic.rec){const s=Math.floor((Date.now()-mic.rec.t0)/1000);t.textContent="tocá para parar · "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0")+" · "+mic.rec.marks.length+" marca"+(mic.rec.marks.length===1?"":"s")+" (tecla C)"}}
 async function recToggle(){
   if(mic.rec){mic.rec.mr.stop();return}
-  if(!window.MediaRecorder){msg.textContent="Este navegador no permite grabar. Probá con Chrome, Brave, Edge o Firefox.";return}
+  if(!window.MediaRecorder){note("Este navegador no implementa MediaRecorder: no se puede grabar. Usá Chrome, Brave, Edge o Firefox actualizados.","error","rec");return}
   try{
     if(ctx.state!=="running")ctx.resume();
     await openMic();const chunks=[],mr=new MediaRecorder(recDest.stream);
@@ -465,7 +512,7 @@ async function recToggle(){
       render();save();
     };
     mic.rec.t0=Date.now();mr.start();render();syncIns();
-  }catch(e){mic.rec=null;msg.textContent=MICFAIL}
+  }catch(e){mic.rec=null;note(micErr(e),"error","rec")}
 }
 
 /* ---------- almacenamiento (IndexedDB) ---------- */
@@ -490,7 +537,7 @@ async function add(name,blob,key,base){
   try{
     const buffer=await decode(await blob.arrayBuffer());
     items.push({name,blob,buffer,peaks:peaks(buffer,48),key:key===undefined?freeKey():key,base:!!base,playing:new Set()});
-  }catch(e){msg.textContent="No pude leer \""+name+"\". Probá con MP3 o WAV."}
+  }catch(e){note("No se pudo decodificar «"+name+"» (formato no soportado o archivo dañado). Formatos habituales: MP3, WAV, OGG, M4A/AAC, FLAC.","warn","dec")}
 }
 let padRaf=0;
 function padTick(){let any=false;
@@ -543,17 +590,17 @@ function renderMenu(){
   list.innerHTML="";
   items.forEach((it,idx)=>{
     const r=document.createElement("div");r.className="row";
-    r.innerHTML='<span class="nm"></span><button class="key"></button><button class="del" title="Quitar audio">🗑</button>';
+    r.innerHTML='<span class="nm"></span><button class="key"></button><button class="del" title="Quitar audio" aria-label="Quitar audio">'+ICTR+'</button>';
     r.querySelector(".nm").textContent=nice(it.name);
     const kb=r.querySelector(".key");
-    kb.textContent=waiting===idx?"Apretá una tecla…":(it.key?it.key+" · Cambiar":"Asignar");
+    kb.innerHTML=ICKB+(waiting===idx?"Apretá una tecla…":(it.key?it.key+" · Cambiar":"Asignar"));
     if(waiting===idx)kb.classList.add("wait");
     kb.addEventListener("click",()=>{waiting=waiting===idx?null:idx;renderMenu()});
     r.querySelector(".del").addEventListener("click",()=>askRemove(idx));
     list.appendChild(r);
   });
   if(!items.length)list.innerHTML="<p>Todavía no cargaste audios.</p>";
-  if(hidden.size){const b=document.createElement("button");b.className="restore";b.textContent="Restaurar ocultos ("+hidden.size+")";
+  if(hidden.size){const b=document.createElement("button");b.className="restore";b.innerHTML=ICRS+"Restaurar ocultos ("+hidden.size+")";
     b.addEventListener("click",()=>{hidden.clear();try{localStorage.removeItem("botonera_hidden")}catch(e){}location.reload()});list.appendChild(b)}
 }
 function mark(idx){const el=$("p"+idx);if(el&&items[idx])el.classList.toggle("on",items[idx].playing.size>0);document.body.classList.toggle("air",items.some(i=>i.playing.size>0))}
@@ -596,14 +643,14 @@ window.addEventListener("scroll",hideCm,true);window.addEventListener("resize",h
 $("file").addEventListener("change",async e=>{
   for(const f of e.target.files)await add(f.name,f);
   e.target.value="";render();save();
-  if(items.length&&msg.textContent.indexOf("Cargá")===0)msg.textContent="";
+  if(items.length)clearNote("empty");
 });
 $("stop").addEventListener("click",stopAll);
 $("burger").addEventListener("click",()=>{menu.classList.toggle("open");waiting=null;renderMenu()});
 $("close").addEventListener("click",()=>{menu.classList.remove("open");waiting=null;renderMenu()});
 document.addEventListener("keydown",e=>{
   if(e.ctrlKey||e.metaKey||e.altKey)return;
-  if(e.target&&(e.target.type==="number"||e.target.tagName==="SELECT"))return;
+  if(e.target&&(e.target.type==="number"||e.target.type==="text"||e.target.tagName==="SELECT"))return;
   if(mic.rec&&(e.key==="c"||e.key==="C")){e.preventDefault();if(!e.repeat){mic.rec.marks.push((Date.now()-mic.rec.t0)/1000);tick()}return}
   if(ed.it&&waiting===null){if(e.code==="Space"){e.preventDefault();if(!e.repeat)edPlay();return}if(e.key==="Delete"&&ed.sel){e.preventDefault();edDel();return}} // escribiendo un valor: no disparar botones
   if(waiting!==null){
@@ -640,7 +687,7 @@ const ed={it:null,ch:null,sr:44100,sel:null,cur:0,src:null,t0:0,from:0,raf:0},ed
 const edN=()=>ed.ch[0].length;
 function edOpen(idx){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
   edStop();ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
-  ed.marks=(it.marks||[]).map(q=>Math.round(q*ed.sr));ed.sel=null;ed.cur=0;ed.dirty=false;ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
+  ed.marks=(it.marks||[]).map(q=>Math.round(q*ed.sr));ed.sel=null;ed.cur=0;ed.dirty=false;ed.v0=0;ed.v1=edN();$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
 function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
 function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.max(300,edc.clientWidth*k),H=edc.height=150*k,n=edN(),mid=H/2,v0=ed.v0,sp=ed.v1-ed.v0,X=q=>(q-v0)/sp*W;
@@ -663,31 +710,36 @@ function edDel(){if(!ed.it||!ed.sel)return;edStop();const[a,b]=ed.sel;
   ed.ch=ed.ch.map(c=>{const o=new Float32Array(c.length-(b-a));o.set(c.subarray(0,a));o.set(c.subarray(b),a);return o});
   ed.marks=ed.marks.filter(q=>q<a||q>=b).map(q=>q>=b?q-(b-a):q);ed.cur=a;ed.sel=null;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
 function edTrim(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
-  const n=edN(),thr=Math.max(Math.pow(10,-66/20),pk*.01),pad=Math.round(ed.sr*.01);let a=0;
+  const n=edN(),thr=Math.max(Math.pow(10,-66/20),pk*.01),tdb=(20*Math.log10(thr)).toFixed(1),pad=Math.round(ed.sr*.01);let a=0;
   while(a<n&&!ed.ch.some(c=>Math.abs(c[a])>thr))a++;
-  if(a>=n){msg.textContent="Ese audio está en silencio total.";return}
-  a=Math.max(0,a-pad);if(a===0){msg.textContent="El audio ya empieza sin silencio.";return}
-  ed.ch=ed.ch.map(c=>c.slice(a));ed.marks=ed.marks.map(q=>q-a).filter(q=>q>=0);ed.sel=null;ed.cur=0;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw()}
+  if(a>=n){note("Recorte inicial: no hay señal sobre el umbral ("+tdb+" dBFS). El archivo es silencio o tiene un nivel demasiado bajo.","warn","",9000);return}
+  const a0=a;a=Math.max(0,a-pad);
+  if(a===0){note("Recorte inicial: sin cambios. La señal ya arranca a "+(a0/ed.sr*1000).toFixed(1)+" ms del inicio (umbral "+tdb+" dBFS, margen 10 ms).","warn","",9000);return}
+  ed.ch=ed.ch.map(c=>c.slice(a));ed.marks=ed.marks.map(q=>q-a).filter(q=>q>=0);ed.sel=null;ed.cur=0;ed.dirty=true;ed.v0=0;ed.v1=edN();edInfo();edDraw();
+  note("Recorte inicial: −"+(a/ed.sr*1000).toFixed(0)+" ms. Señal detectada a "+(a0/ed.sr*1000).toFixed(0)+" ms (umbral "+tdb+" dBFS). Duración "+(n/ed.sr).toFixed(2)+" s → "+(edN()/ed.sr).toFixed(2)+" s.","info","",8000)}
 function edNorm(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
-  if(!pk||Math.abs(pk-1)<1e-4)return;const k=1/pk;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++)c[i]*=k});ed.dirty=true;edInfo();edDraw()}
+  if(!pk){note("Normalizar: el audio es silencio digital (pico = 0). No hay nada que amplificar.","warn","",9000);return}
+  if(Math.abs(pk-1)<1e-4){note("Normalizar: sin cambios. El pico ya está en 0,0 dBFS.","info","",7000);return}
+  const k=1/pk,g=20*Math.log10(k);ed.ch.forEach(c=>{for(let i=0;i<c.length;i++)c[i]*=k});ed.dirty=true;edInfo();edDraw();
+  note("Normalizado: "+(g>=0?"+":"")+g.toFixed(1)+" dB (pico "+(20*Math.log10(pk)).toFixed(1)+" → 0,0 dBFS).","info","",7000)}
 function wavBlob(ch,sr){const n=ch[0].length,k=ch.length,d=new DataView(new ArrayBuffer(44+n*k*2)),w=(o,t)=>[...t].forEach((x,i)=>d.setUint8(o+i,x.charCodeAt(0)));
   w(0,"RIFF");d.setUint32(4,36+n*k*2,true);w(8,"WAVEfmt ");d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,k,true);d.setUint32(24,sr,true);d.setUint32(28,sr*k*2,true);d.setUint16(32,k*2,true);d.setUint16(34,16,true);w(36,"data");d.setUint32(40,n*k*2,true);
   let o=44;for(let i=0;i<n;i++)for(let c=0;c<k;c++){const v=Math.max(-1,Math.min(1,ch[c][i]));d.setInt16(o,v<0?v*32768:v*32767,true);o+=2}
   return new Blob([d],{type:"audio/wav"})}
-function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n){msg.textContent="El audio quedó vacío: no se guardó.";return}
-  if(!asNew)it.playing.forEach(s=>{try{s.stop()}catch(e){}});const old=it.name;let nn=nice(old)+(it.base?" (editado)":"")+".wav";
-  if(items.some(i=>i!==it&&i.name===nn))nn=nice(nn)+" (editado).wav";
+function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n){note("No se guardó: el audio editado no tiene muestras (se borró todo). Cerrá con ✕ para descartar y reabrí el original.","warn","",9000);return}
+  const custom=$("edname").value.trim().replace(/[\\/:*?"<>|]+/g,""),uniq=(b,skip)=>{let nm=b+".wav",c=2;while(items.some(i=>i!==skip&&i.name===nm))nm=b+" ("+(c++)+").wav";return nm};
+  if(!asNew)it.playing.forEach(s=>{try{s.stop()}catch(e){}});const old=it.name;const nn=uniq(custom||nice(old)+(it.base?" (editado)":""),it);
   const buf=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>buf.copyToChannel(c,i));
-  if(asNew){const k=nice(old);let nm=k+" (editado).wav",c=2;while(items.some(i=>i.name===nm))nm=k+" (editado "+(c++)+").wav";
+  if(asNew){const nm=uniq(custom||nice(old)+" (editado)",null);
     const n2={name:nm,blob:wavBlob(ed.ch,ed.sr),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:ed.marks.length?ed.marks.map(q=>q/ed.sr):undefined};
-    if(colors[old])colors[nm]=colors[old];items.splice(items.indexOf(it)+1,0,n2);edClose(true);render();save();return}
+    if(colors[old])colors[nm]=colors[old];items.splice(items.indexOf(it)+1,0,n2);const sec=(n/ed.sr).toFixed(2);edClose(true);render();save();note("Botón nuevo creado: «"+nice(nm)+"» ("+sec+" s). El botón original no se modificó.","info","",8000);return}
   if(it.base){hidden.add(old);try{localStorage.setItem("botonera_hidden",JSON.stringify([...hidden]))}catch(e){}it.base=false}
   if(colors[old]){colors[nn]=colors[old];delete colors[old]}
-  it.marks=ed.marks.length?ed.marks.map(q=>q/ed.sr):undefined;it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);edClose(true);render();save()}
+  it.marks=ed.marks.length?ed.marks.map(q=>q/ed.sr):undefined;it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);const sec2=(n/ed.sr).toFixed(2),sr2=ed.sr;edClose(true);render();save();note("Guardado en «"+nice(nn)+"» ("+sec2+" s, WAV 16-bit, "+sr2+" Hz). Se reemplazó el audio anterior de este botón.","info","",8000)}
 function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;$("ed").classList.remove("open")}
 const edSnap=p=>{const tol=16/edc.clientWidth*(ed.v1-ed.v0);let best=null,d=tol+1;ed.marks.forEach(q=>{const x=Math.abs(q-p);if(x<=tol&&x<d){best=q;d=x}});return best===null?p:best};
 let edDrag=null;const edPx=e=>{const r=edc.getBoundingClientRect();return Math.max(0,Math.min(edN(),Math.round(ed.v0+(e.clientX-r.left)/r.width*(ed.v1-ed.v0))))};
-edc.addEventListener("pointerdown",e=>{if(!ed.it)return;edc.setPointerCapture(e.pointerId);edDrag=edSnap(edPx(e));ed.cur=edDrag;ed.sel=null;edDraw()});
+edc.addEventListener("pointerdown",e=>{if(!ed.it)return;edc.setPointerCapture(e.pointerId);{const raw=edPx(e),sn=edSnap(raw);edDrag=(sn!==raw&&ed.cur===sn)?raw:sn}ed.cur=edDrag;ed.sel=null;edDraw()});
 edc.addEventListener("pointermove",e=>{if(edDrag===null)return;const p=edSnap(edPx(e));ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
 edc.addEventListener("pointerup",()=>{edDrag=null});
 edc.addEventListener("wheel",e=>{if(!ed.it)return;e.preventDefault();const n=edN(),r=edc.getBoundingClientRect(),f=(e.clientX-r.left)/r.width,sp=ed.v1-ed.v0;
@@ -703,12 +755,13 @@ thb.addEventListener("pointermove",e=>{if(sbD)edPan(sbD.v+(e.clientX-sbD.x)/sb.c
 thb.addEventListener("pointerup",()=>{sbD=null});
 sb.addEventListener("pointerdown",e=>{if(!ed.it||e.target===thb)return;const r=sb.getBoundingClientRect();edPan((e.clientX-r.left)/r.width*edN()-(ed.v1-ed.v0)/2)});
 sb.addEventListener("wheel",e=>{if(!ed.it)return;e.preventDefault();edPan(ed.v0+(e.deltaY>0?1:-1)*(ed.v1-ed.v0)*.2)},{passive:false});
+$("edname").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key==="Escape")e.target.blur()});
 edc.addEventListener("dblclick",()=>{if(ed.it){ed.v0=0;ed.v1=edN();edDraw()}});
 [["edplay",edPlay],["edtrim",edTrim],["ednorm",edNorm],["eddel",edDel],["edsave",()=>edSave(false)],["ednew",()=>edSave(true)],["edx",()=>edClose(false)]].forEach(([id,f])=>$(id).addEventListener("click",f));
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#ed button");if(b)b.blur()});
 window.addEventListener("resize",()=>edDraw());
 let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem("botonera_hidden")||"[]"))}catch(e){}
-if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{msg.textContent='La fuente Satoshi no cargó: revisá que la carpeta "fonts" esté junto a index.html en GitHub.'});
+if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{note("No se pudo cargar la tipografía Satoshi (no se encuentran los archivos de /fonts). La página funciona con tipografía de respaldo. Verificá que la carpeta «fonts» esté junto a index.html en el repo.","warn","font")});
 (async()=>{
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
   const saved=await load();
@@ -725,7 +778,7 @@ if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").c
   items.forEach(i=>{if(i.key===null)i.key=freeKey()});
   render();
   const sp=$("splash");setTimeout(()=>sp.classList.add("off"),Math.max(0,1000-performance.now()));
-  if(!items.length&&!msg.textContent)msg.textContent="Cargá tus audios (MP3, WAV, OGG) con el botón de arriba.";
+  if(!items.length&&!msg.dataset.k)note("Sin audios cargados. Usá CARGAR AUDIOS (MP3, WAV, OGG, M4A, FLAC) o grabá con GRABAR.","info","empty");
 })();
 </script>
 </body>
