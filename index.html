@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.57 · actualización n.º 57 · por @pecallega -->
+<!-- Botonera al aire · v1.58 · actualización n.º 58 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -475,7 +475,7 @@ button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-fa
 #plm .pls>span{display:block;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
 #plsws{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
 #plsws button{aspect-ratio:1;padding:0;border-radius:50%!important;border:2px solid rgba(255,255,255,.2);font-size:.7rem;line-height:1}
-@media (max-width:900px){#pl{position:static;width:100%;margin:14px 0 0;max-height:none}#pll{max-height:340px}}
+@media (max-width:900px){#pl,#pl.empty{position:static;width:100%;margin:14px 0 0;max-height:none}#pll{max-height:340px}}
 /* ---- v1.35: transporte con íconos, estados, hover global, arrastrar botones ---- */
 button:not(.pad):not(:disabled):hover,label.btn:hover,select:hover{background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16))!important}
 .seg button.sel:hover,#edsave:hover{background-image:linear-gradient(rgba(0,0,0,.14),rgba(0,0,0,.14))!important}
@@ -643,6 +643,21 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 #gcol.dropbtn{outline:none!important;background:rgba(255,241,168,.035)!important;box-shadow:inset 0 0 0 1px rgba(255,241,168,.4)}
 .cell.dins-b::before,.cell.dins-a::after{content:"";position:absolute;top:-4px;bottom:-4px;width:5px;background:#fff1a8;box-shadow:0 0 12px rgba(255,236,130,.9);z-index:70;pointer-events:none}
 .cell.dins-b::before{left:-9px}.cell.dins-a::after{right:-9px}
+/* ---- v1.58: lista más ancha (compacta si está vacía), onda con progreso y cues ---- */
+#pl{width:clamp(340px,27vw,430px);transition:width .25s ease}
+#pl.empty{width:260px}
+.plwf{display:flex;flex-direction:column;gap:5px;padding:6px 10px 8px;border:1px solid rgba(61,255,122,.18);background:rgba(0,0,0,.35);font-family:var(--f-txt);font-weight:300;font-size:.66rem;color:#3dff7a;text-shadow:0 0 6px rgba(61,255,122,.5);box-sizing:border-box}
+.plwf[hidden]{display:none}
+.plwf.on{border-color:rgba(61,255,122,.5)}
+.plwf .wfh{display:flex;align-items:center;gap:8px;min-width:0}
+.plwf .wfi{flex:none;width:11px;height:11px;color:rgba(61,255,122,.35);text-shadow:none}
+.plwf.on .wfi{color:#3dff7a;filter:drop-shadow(0 0 4px rgba(61,255,122,.7))}
+.plwf .wfn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+.plwf:not(.on) .wfn{color:rgba(61,255,122,.45);text-shadow:none}
+.plwf .wfq{flex:none;color:#fff1a8;text-shadow:none;font-size:.58rem;letter-spacing:.1em}
+.plwf .wft{flex:none;font-variant-numeric:tabular-nums;white-space:nowrap}
+#plwfc{display:block;width:100%;height:40px;cursor:crosshair;touch-action:none}
+.rcue{font-style:normal;flex:none;font-size:.5rem;letter-spacing:.1em;padding:1px 5px;border:1px solid #fff1a8;color:#fff1a8}
 #mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 #mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
@@ -735,10 +750,11 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
     <p class="plhint">Las listas guardadas viven en este navegador y las ven todos los usuarios de esta computadora. «Descargar» baja una copia para llevar a otra.</p>
   </div>
   <div class="pltm"><div><span>Total lista</span><b id="pltot">0:00</b></div><div><span>Resta del tema</span><b id="plrem">–:––</b></div></div>
+  <div id="plwf" class="plwf" hidden><div class="wfh"><svg class="ic wfi" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg><span class="wfn" id="plwfn"></span><span class="wfq" id="plwfq"></span><span class="wft" id="plwft">0:00.0 / 0:00.0</span></div><canvas id="plwfc" aria-label="Forma de onda del tema elegido: clic para saltar o para marcar un cue"></canvas></div>
   <canvas id="plvu" class="vu2" aria-label="Vúmetro de la lista (izquierdo y derecho)"></canvas>
   <div class="plc c5">
     <button id="plprev" title="Anterior (solo mientras suena; pasa con un fade corto)" aria-label="Anterior"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14L9 12z" fill="currentColor"/><path d="M6 5v14"/></svg></button>
-    <span class="plpair"><button id="plplay" title="Play" aria-label="Play"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></button><button id="plstop" title="Stop (vuelve al inicio del tema)" aria-label="Stop"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" fill="currentColor"/></svg></button></span>
+    <span class="plpair"><button id="plplay" title="Play" aria-label="Play"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg></button><button id="plstop" title="Stop (vuelve al inicio del tema). Con el tema detenido, cada toque borra su cue más antiguo" aria-label="Stop"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" fill="currentColor"/></svg></button></span>
     <button id="plpause" title="Pausa" aria-label="Pausa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
     <button id="plnext" title="Siguiente (solo mientras suena; pasa con un fade corto)" aria-label="Siguiente"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14l10-7z" fill="currentColor"/><path d="M18 5v14"/></svg></button>
   </div>
@@ -771,7 +787,7 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.57 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.57</span></footer>
+<footer id="sig" title="Versión 1.58 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.58</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1797,7 +1813,7 @@ const plIdx=id=>PL.rows.findIndex(r=>r.id===id),plRow=id=>PL.rows[plIdx(id)];
 const plAudio=f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba)$/i.test(f.name);
 const fmtM=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
 const plMk=(name,blob,buffer)=>({id:PL.uid++,t:"f",name,blob,buffer,color:null}),plMkStop=()=>({id:PL.uid++,t:"s"});
-const plClone=r=>{if(r.t==="s")return plMkStop();const c=plMk(r.name,r.blob,r.buffer);c.color=r.color;return c};
+const plClone=r=>{if(r.t==="s")return plMkStop();const c=plMk(r.name,r.blob,r.buffer);c.color=r.color;c.cues=(r.cues||[]).slice();return c};
 async function plDecode(b){try{return await decode(await b.arrayBuffer())}catch(e){return null}}
 async function plAddFiles(list,at){
   const fs=Array.from(list||[]),ok=fs.filter(plAudio);let pos=at===undefined||at<0?PL.rows.length:at,n=0;
@@ -1809,8 +1825,9 @@ const PL_FADE=.3; // s: fade corto entre temas (máx. 1 s)
 function plKill(fade){PL.gen++;if(PL.src){const s=PL.src,g=PL.gn;PL.src=null;PL.gn=null;
   if(fade&&g){try{const t=ctx.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+PL_FADE);s.stop(t+PL_FADE+.03)}catch(e){try{s.stop()}catch(x){}}}
   else{try{s.stop()}catch(e){}}}}
-function plStart(i,off,fade){
+function plStart(i,off,fade,noCue){
   const r=PL.rows[i];if(!r||r.t!=="f")return;
+  if(!off&&!noCue&&r.cues&&r.cues.length)off=Math.min(r.cues[0],Math.max(0,r.buffer.duration-.05)); // el tema arranca desde su cue más antiguo
   if(ctx.state!=="running")ctx.resume();
   plKill(fade);const s=ctx.createBufferSource(),gn=ctx.createGain();s.buffer=r.buffer;s.connect(gn);gn.connect(FXL.dry);gn.connect(FXL.dlyIn);gn.connect(FXL.revSend);
   if(fade){const t=ctx.currentTime;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(1,t+PL_FADE)}
@@ -1846,10 +1863,16 @@ function plPlay(){
   plStart(i,PL.off)}
 function plPause(){if(PL.state!=="play")return;PL.off=ctx.currentTime-PL.t0;plKill();PL.state="pause";plRender();plSt()}
 function plStop(){if(PL.state==="stop"&&!PL.src&&!PL.off)return;plKill();PL.state="stop";PL.off=0;plRender();plSt()}
+function plStopBtn(){ // 1.er toque: detiene (los cues quedan). Con el tema ya detenido, cada toque borra su cue más antiguo
+  const r=plRow(PL.curId);
+  if(PL.state==="stop"&&r&&r.t==="f"&&r.cues&&r.cues.length){const c=r.cues.shift();plRender();plSave();note("Cue borrado ("+fmtT(c)+")"+(r.cues.length?" · quedan "+r.cues.length:" · el tema ya no tiene cues"),"info","pl",3000);return}
+  plStop()}
+function plAddCue(r,t){r.cues=r.cues||[];if(r.cues.some(c=>Math.abs(c-t)<.15)){note("Ya hay un cue en ese punto.","info","pl",1800);return}
+  r.cues.push(t);plRender();plSave();note("Cue "+r.cues.length+" en "+fmtT(t)+" · Play arranca desde el más antiguo. Stop (con el tema detenido) los borra en orden.","info","pl",4500)}
 function plSeek(d){
   const i=plIdx(PL.curId);if(i<0||PL.rows[i].t!=="f")return;
   const pos=PL.state==="play"?ctx.currentTime-PL.t0:PL.off,np=Math.max(0,Math.min(PL.rows[i].buffer.duration-.05,pos+d));
-  if(PL.state==="play")plStart(i,np);else{PL.off=np;plSt()}}
+  if(PL.state==="play")plStart(i,np,false,true);else{PL.off=np;plSt()}}
 function plDbl(id){
   const r=plRow(id);if(!r)return;
   if(PL.state==="stop"){if(r.t!=="f")return;PL.curId=id;PL.off=0;PL.nxtId=null}
@@ -1861,6 +1884,7 @@ function plDel(id){
   if(PL.nxtId===id)PL.nxtId=null;
   PL.rows.splice(i,1)}
 function plSt(){
+  plWfDraw();
   const ci=plIdx(PL.curId),r=ci>=0?PL.rows[ci]:null,ni=plNextIdx(),nr=ni>=0?PL.rows[ni]:null;
   const nn=nr?(nr.t==="s"?"STOP":nice(nr.name)):"—";let t="";
   if(r&&PL.state==="play"){const p=Math.min(r.buffer.duration,ctx.currentTime-PL.t0);t="Suena: "+nice(r.name)+" · "+fmtM(p)+" / "+fmtM(r.buffer.duration)+" · Sigue: "+nn;const pg=document.querySelector("#pll .plr.playing .pg");if(pg)pg.style.setProperty("--p",r.buffer.duration?p/r.buffer.duration:0)}
@@ -1885,17 +1909,19 @@ function plRender(){
       const cb=document.createElement("i");cb.className="cb";d.appendChild(cb);
       const n=document.createElement("span");n.className="n";n.textContent=(i===ci&&PL.state==="play")?"▶":k;d.appendChild(n);
       const t=document.createElement("span");t.className="t";t.textContent=nice(r.name);t.title=r.name;d.appendChild(t);
+      if(r.cues&&r.cues.length){const q=document.createElement("i");q.className="rcue";q.textContent="CUE"+(r.cues.length>1?" "+r.cues.length:"");q.title=r.cues.length+(r.cues.length===1?" cue marcado":" cues marcados")+": el tema arranca desde el más antiguo";d.appendChild(q)}
       const du=document.createElement("span");du.className="d";du.textContent=fmtM(r.buffer.duration);d.appendChild(du);
       if(i===ci&&PL.state==="play"){const g=document.createElement("i");g.className="pg";d.appendChild(g)}}
     L.appendChild(d)});
   L.scrollTop=st0;
+  $("pl").classList.toggle("empty",!PL.rows.length);
   $("plcnt").textContent=PL.rows.length?k+(k===1?" tema":" temas")+(PL.rows.length>k?" · "+(PL.rows.length-k)+" stop":""):"";
   plSt()}
 let plSaveT=0;
-function plSave(){clearTimeout(plSaveT);plSaveT=setTimeout(async()=>{try{const d=await db();d.transaction("s","readwrite").objectStore("s").put({rows:PL.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color}),solo:PL.solo},PLK)}catch(e){}},150)}
+function plSave(){clearTimeout(plSaveT);plSaveT=setTimeout(async()=>{try{const d=await db();d.transaction("s","readwrite").objectStore("s").put({rows:PL.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[]}),solo:PL.solo},PLK)}catch(e){}},150)}
 async function plLoad(){
   try{const d=await db();const v=await new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(PLK);q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)});
-    if(v){PL.solo=!!v.solo;for(const x of v.rows||[]){if(x.t==="s"){PL.rows.push(plMkStop());continue}const b=x.blob&&await plDecode(x.blob);if(!b)continue;const r=plMk(x.name,x.blob,b);r.color=x.color||null;PL.rows.push(r)}}}
+    if(v){PL.solo=!!v.solo;for(const x of v.rows||[]){if(x.t==="s"){PL.rows.push(plMkStop());continue}const b=x.blob&&await plDecode(x.blob);if(!b)continue;const r=plMk(x.name,x.blob,b);r.color=x.color||null;r.cues=Array.isArray(x.cues)?x.cues.filter(n=>typeof n==="number"&&n>=0):[];PL.rows.push(r)}}}
   catch(e){console.warn(e)}
   plRender()}
 /* ---- vúmetros (L/R) para todo lo que suena: botones, editor y lista ---- */
@@ -2022,7 +2048,7 @@ outInit();
 const PLS_KEY="plists";
 async function plsGet(){try{const d=await db();return await new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(PLS_KEY);q.onsuccess=()=>ok(Array.isArray(q.result)?q.result:[]);q.onerror=()=>ok([])})}catch(e){return[]}}
 async function plsPut(a){const d=await db();return new Promise((ok,no)=>{const tx=d.transaction("s","readwrite");tx.objectStore("s").put(a,PLS_KEY);tx.oncomplete=()=>ok();tx.onerror=()=>no(tx.error);tx.onabort=()=>no(tx.error)})}
-const plsRows=()=>PL.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color});
+const plsRows=()=>PL.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[]});
 async function plsFill(keep){const a=await plsGet(),sel=$("plsel");sel.innerHTML="";
   if(!a.length){const o=document.createElement("option");o.value="";o.textContent="(no hay listas guardadas)";sel.appendChild(o)}
   a.forEach(l=>{const o=document.createElement("option");o.value=l.name;const n=l.rows.filter(r=>r.t==="f").length;o.textContent=l.name+" · "+n+(n===1?" tema":" temas");sel.appendChild(o)});
@@ -2032,7 +2058,7 @@ function twoStep(btn,label,fn){let t=0;const old=btn.textContent;
     clearTimeout(t);btn.classList.remove("ask");btn.textContent=old;fn()})}
 async function plsApply(rows,name){
   plKill();PL.state="stop";PL.off=0;PL.curId=null;PL.nxtId=null;PL.rows=[];let skipped=0;
-  for(const x of rows){if(x.t==="s"){PL.rows.push(plMkStop());continue}const b=x.blob&&await plDecode(x.blob);if(!b){skipped++;continue}const r=plMk(x.name,x.blob,b);r.color=x.color||null;PL.rows.push(r)}
+  for(const x of rows){if(x.t==="s"){PL.rows.push(plMkStop());continue}const b=x.blob&&await plDecode(x.blob);if(!b){skipped++;continue}const r=plMk(x.name,x.blob,b);r.color=x.color||null;r.cues=Array.isArray(x.cues)?x.cues.filter(n=>typeof n==="number"&&n>=0):[];PL.rows.push(r)}
   plRender();plSave();note("Lista «"+name+"» cargada: "+PL.rows.filter(r=>r.t==="f").length+" temas"+(skipped?" ("+skipped+" no se pudieron leer)":"")+".","info","pl",4000)}
 $("plsvb").addEventListener("click",async()=>{const v=$("plsv");v.hidden=!v.hidden;if(!v.hidden)await plsFill()});
 $("plname").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")$("plsaveb").click()});
@@ -2048,14 +2074,14 @@ twoStep($("plsvdel"),"¿Borrar?",async()=>{const n=$("plsel").value;if(!n)return
 $("plsel").addEventListener("change",()=>{$("plname").value=$("plsel").value});
 async function plsPack(name,rows){
   const parts=[],meta={v:1,name,rows:[]};
-  rows.forEach(r=>{if(r.t==="s")meta.rows.push({t:"s"});else{meta.rows.push({t:"f",name:r.name,color:r.color||null,size:r.blob.size,type:r.blob.type||""});parts.push(r.blob)}});
+  rows.forEach(r=>{if(r.t==="s")meta.rows.push({t:"s"});else{meta.rows.push({t:"f",name:r.name,color:r.color||null,cues:r.cues||[],size:r.blob.size,type:r.blob.type||""});parts.push(r.blob)}});
   const h=new TextEncoder().encode(JSON.stringify(meta)),len=new Uint8Array(4);new DataView(len.buffer).setUint32(0,h.length);
   return new Blob([new TextEncoder().encode("BTLS1\n"),len,h,...parts],{type:"application/octet-stream"})}
 async function plsUnpack(file){
   const buf=await file.arrayBuffer(),u=new Uint8Array(buf);
   if(u.length<10||new TextDecoder().decode(u.slice(0,6))!=="BTLS1\n")throw new Error("El archivo no es una lista de la botonera (.botolista).");
   const hl=new DataView(buf,6,4).getUint32(0),meta=JSON.parse(new TextDecoder().decode(u.slice(10,10+hl)));let off=10+hl;const rows=[];
-  for(const r of meta.rows){if(r.t==="s")rows.push({t:"s"});else{if(off+r.size>u.length)throw new Error("El archivo está incompleto o dañado.");rows.push({t:"f",name:r.name,color:r.color||null,blob:new Blob([u.slice(off,off+r.size)],{type:r.type||""})});off+=r.size}}
+  for(const r of meta.rows){if(r.t==="s")rows.push({t:"s"});else{if(off+r.size>u.length)throw new Error("El archivo está incompleto o dañado.");rows.push({t:"f",name:r.name,color:r.color||null,cues:Array.isArray(r.cues)?r.cues:[],blob:new Blob([u.slice(off,off+r.size)],{type:r.type||""})});off+=r.size}}
   return{name:meta.name||"Lista",rows}}
 $("pldlf").addEventListener("click",async()=>{
   if(!PL.rows.length){note("La lista está vacía: no hay nada para descargar.","warn","pl",4000);return}
@@ -2063,6 +2089,38 @@ $("pldlf").addEventListener("click",async()=>{
   const b=await plsPack(name,plsRows());saveBlob(b,name+".botolista");note("Descargado: "+name+".botolista ("+fmtMB(b.size)+"). Incluye los audios; se abre con «Abrir archivo».","info","pl",6000)});
 $("plopenf").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const l=await plsUnpack(f);$("plname").value=l.name;await plsApply(l.rows,l.name)}catch(x){note(String(x.message||x),"error","pl",8000)}});
+/* ---------- onda del tema elegido: progreso, salto con un clic y cues ---------- */
+var WFX=null;
+function plPeaks(r){if(r._wf)return r._wf;const d=r.buffer.getChannelData(0),d2=r.buffer.numberOfChannels>1?r.buffer.getChannelData(1):null,N=1400,size=Math.max(1,Math.floor(d.length/N)),st=Math.max(1,Math.floor(size/40)),out=new Float32Array(N);
+  for(let i=0;i<N;i++){let m=0;const a=i*size,b=Math.min(d.length,a+size);for(let k=a;k<b;k+=st){let v=Math.abs(d[k]);if(d2){const w=Math.abs(d2[k]);if(w>v)v=w}if(v>m)m=v}out[i]=m}
+  let mx=0;out.forEach(v=>{if(v>mx)mx=v});if(mx>0)for(let i=0;i<N;i++)out[i]=Math.pow(out[i]/mx,.75);return(r._wf=out)}
+function plWfDraw(){
+  const box=$("plwf"),c=$("plwfc");if(!box||!c)return;const r=plRow(PL.curId),ok=!!(r&&r.t==="f"&&r.buffer);
+  box.hidden=!PL.rows.some(x=>x.t==="f");if(box.hidden)return;box.classList.toggle("on",ok);
+  $("plwfn").textContent=ok?nice(r.name):"Doble clic en un tema para ver su onda";
+  const dur=ok?r.buffer.duration:0,pos=ok?(PL.state==="play"?Math.min(dur,Math.max(0,ctx.currentTime-PL.t0)):PL.state==="pause"?PL.off:0):0;
+  $("plwft").textContent=fmtT(pos)+" / "+fmtT(dur);const nq=ok&&r.cues?r.cues.length:0;$("plwfq").textContent=nq?"CUE "+nq:"";
+  const dpr=Math.min(2,window.devicePixelRatio||1),W=Math.round(c.clientWidth*dpr),H=Math.round(c.clientHeight*dpr);if(W<8||H<8)return;
+  if(c.width!==W||c.height!==H){c.width=W;c.height=H}
+  const g=c.getContext("2d");g.clearRect(0,0,W,H);const mid=H/2;
+  if(!ok){g.fillStyle="rgba(61,255,122,.25)";g.fillRect(0,mid-dpr/2,W,Math.max(1,dpr));return}
+  const pk=plPeaks(r),px=pos/dur*W,played=PL.state==="play"||PL.state==="pause",step=Math.max(2,Math.round(dpr*1.6)),bw=Math.max(1,Math.round(dpr));
+  for(let x=0;x<W;x+=step){const v=pk[Math.min(pk.length-1,Math.floor(x/W*pk.length))],h=Math.max(dpr,v*(mid-3*dpr));g.fillStyle=played&&x<=px?"#3dff7a":"rgba(61,255,122,.3)";g.fillRect(x,mid-h,bw,h*2)}
+  g.font=(9*dpr)+"px 'JetBrains Mono',monospace";g.textBaseline="top";
+  (r.cues||[]).forEach((q,i)=>{const x=Math.round(q/dur*W);g.fillStyle="#fff1a8";g.fillRect(x,0,Math.max(1,Math.round(dpr*1.5)),H);g.fillStyle="rgba(0,0,0,.75)";g.fillRect(x+2*dpr,0,10*dpr,11*dpr);g.fillStyle="#fff1a8";g.fillText(String(i+1),x+4*dpr,dpr)});
+  if(played||pos>0){g.fillStyle="#fff";g.fillRect(Math.round(px),0,Math.max(1,Math.round(dpr*1.5)),H)}
+  if(WFX!==null){g.fillStyle="rgba(255,255,255,.35)";g.fillRect(Math.round(WFX*dpr),0,Math.max(1,dpr),H)}}
+{const c=$("plwfc");
+  c.addEventListener("pointermove",e=>{WFX=e.clientX-c.getBoundingClientRect().left;if(PL.state!=="play")plWfDraw()});
+  c.addEventListener("pointerleave",()=>{WFX=null;if(PL.state!=="play")plWfDraw()});
+  c.addEventListener("pointerdown",e=>{
+    if(e.button!==0)return;const r=plRow(PL.curId);if(!r||r.t!=="f")return;e.preventDefault();ACT="pl";
+    const rc=c.getBoundingClientRect(),dur=r.buffer.duration,t=Math.max(0,Math.min(dur-.05,(e.clientX-rc.left)/rc.width*dur)),i=plIdx(PL.curId),mod=e.ctrlKey||e.altKey||e.metaKey;
+    if(PL.state==="play"&&!mod){plStart(i,t,false,true);return}   // suena: un clic y sigue desde ahí
+    if(PL.state==="pause"&&!mod){PL.off=t;plSt();return}         // en pausa: marca desde dónde sigue
+    plAddCue(r,t)});                                              // listo para reproducir (o Ctrl/Alt+clic): marca un cue
+  setInterval(()=>{if(PL.state==="play")plWfDraw()},66);
+  if(window.ResizeObserver)new ResizeObserver(()=>plWfDraw()).observe($("pl"));}
 /* ---------- selección en la lista: clic, Ctrl, Shift, recuadro, teclado ---------- */
 function plSelApply(){document.querySelectorAll("#pll .plr").forEach(d=>{const id=+d.dataset.id;d.classList.toggle("msel",PLS.includes(id)&&!PLBLINK.has(id))})}
 function plFlash(ids){ // tras soltar en la botonera: las filas titilan 2 segundos y se deseleccionan solas
@@ -2263,7 +2321,7 @@ function stopOldest(){
     if(!b.classList.contains("ask")){b.classList.add("ask");lb.textContent="¿Seguro?";t=setTimeout(reset,3000);return}
     reset();plKill();PL.state="stop";PL.off=0;PL.curId=null;PL.nxtId=null;const n=PL.rows.length;PL.rows=[];plRender();plSave();
     note("Lista vaciada ("+n+(n===1?" elemento":" elementos")+").","info","pl",3000)})}
-$("plplay").addEventListener("click",plPlay);$("plprev").addEventListener("click",plPrev);$("plnext").addEventListener("click",plNext);$("plpause").addEventListener("click",plPause);$("plstop").addEventListener("click",plStop);
+$("plplay").addEventListener("click",plPlay);$("plprev").addEventListener("click",plPrev);$("plnext").addEventListener("click",plNext);$("plpause").addEventListener("click",plPause);$("plstop").addEventListener("click",plStopBtn);
 $("plsolo").addEventListener("click",()=>{PL.solo=!PL.solo;plSt();plSave()});
 [["plb5",-5],["plb1",-1],["plf1",1],["plf5",5]].forEach(([id,d])=>$(id).addEventListener("click",()=>plSeek(d)));
 $("plfile").addEventListener("change",async e=>{const f=Array.from(e.target.files);e.target.value="";await plAddFiles(f)});
