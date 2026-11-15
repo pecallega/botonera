@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.13 · actualización n.º 13 · por @pecallega -->
+<!-- Botonera al aire · v1.14 · actualización n.º 14 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -146,8 +146,8 @@ label.btn{display:inline-flex;align-items:center;gap:8px}
 #cm .mw:hover>.sub,#cm .mw.open>.sub,#cm .mw:focus-within>.sub{display:block}
 #cm .pk{display:flex;align-items:center;gap:6px;color:var(--mut)}
 /* ---- Insert audio: nivel de entrada + vúmetro ---- */
-.fx{grid-template-columns:152px 150px 88px}
-.fx .ins{grid-column:1/-1;display:none;grid-template-columns:152px 150px 88px;gap:8px 10px;align-items:center;padding-top:6px;border-top:1px solid var(--line)}
+.fx{grid-template-columns:152px 150px 96px}
+.fx .ins{grid-column:1/-1;display:none;grid-template-columns:152px 150px 96px;gap:8px 10px;align-items:center;padding-top:6px;border-top:1px solid var(--line)}
 body.ins .fx .ins{display:grid}
 .gv{width:100%;text-align:right;font-size:.85rem;font-weight:700}
 .vu{position:relative;height:14px;margin-bottom:14px;border-radius:7px;background:rgba(255,255,255,.09)}
@@ -157,6 +157,33 @@ body.ins .fx .ins{display:grid}
 .vu i{position:absolute;top:100%;margin-top:3px;transform:translateX(-50%);font-style:normal;font-size:.58rem;color:var(--mut);white-space:nowrap}
 .clip{visibility:hidden;justify-self:start;margin-bottom:14px;padding:3px 8px;border-radius:6px;background:var(--on);color:#fff;font-weight:800;font-size:.68rem;letter-spacing:.1em}
 .clip.on{visibility:visible}
+/* ---- v1.14 ---- */
+.onmute{display:none;gap:4px;justify-content:flex-end}
+body.lfx .onmute{display:flex}
+.fx .onmute button{min-width:0;padding:4px 8px;font-size:.68rem;border-radius:8px;background:rgba(255,255,255,.1);color:var(--mut);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.fx .onmute button:hover{background:rgba(255,255,255,.2);color:#fff}
+.fx .onmute button.sel{background:var(--on);border-color:var(--on);color:#fff;box-shadow:0 0 14px rgba(232,35,42,.65)}
+.fx #rvb.active{background:#fff;border-color:#fff;color:#0b0b0d}
+.vu{height:12px;border-radius:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.1) 0 3px,transparent 3px 5px)}
+.vu.hot{filter:drop-shadow(0 0 6px rgba(232,35,42,.85))}
+.vfill{inset:0;width:100%;border-radius:0;box-shadow:none;background:linear-gradient(90deg,#2fd06a 0,#2fd06a 70%,#f2c230 80%,#ff8a2b 90%,#e8232a 93.75%,#e8232a 100%);clip-path:inset(0 calc(100% - var(--lv,0%)) 0 0);-webkit-mask-image:repeating-linear-gradient(90deg,#000 0 3px,transparent 3px 5px);mask-image:repeating-linear-gradient(90deg,#000 0 3px,transparent 3px 5px)}
+.pkh{position:absolute;top:0;bottom:0;left:0;width:2px;background:#fff}
+body.lfx .fx{border-color:rgba(232,35,42,.55);box-shadow:0 0 28px rgba(232,35,42,.25)}
+#ed{position:relative;z-index:1;margin-top:26px;padding:14px;border:1px solid var(--line);border-radius:18px;background:var(--glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+#ed .edh{display:flex;align-items:center;gap:10px}
+#ed .edh b{font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:.85rem}
+#ed #edn{color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ed .sp{flex:1}
+#ed .edbody,#ed .edact{display:none}
+#ed.open .edbody{display:block}
+#ed.open .edact{display:flex;gap:8px}
+#ed.open #edhint{display:none}
+#edhint{margin:8px 0 0;color:var(--mut)}
+#ed .edtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+#edinfo{margin-left:auto;color:var(--mut);font-size:.8rem}
+#edc{display:block;width:100%;height:150px;border-radius:12px;background:rgba(0,0,0,.35);cursor:crosshair;touch-action:none}
+#edsave{background:var(--on);border-color:transparent;color:#fff}
+#edsave,#edx{padding:8px 11px}
 @media (prefers-reduced-motion:no-preference){
 .pad,.logo{transition:transform .15s,background .15s,border-color .15s,box-shadow .2s}
 body.air .lamp::after,body.live .lamp::after{animation:ring 1.2s ease-out infinite}
@@ -191,18 +218,18 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
           <button id="dly" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.2" fill="currentColor"/><path d="M11 8a5.5 5.5 0 0 1 0 8"/><path d="M15 5a9.5 9.5 0 0 1 0 14"/></svg>Delay</button>
           <input id="dms" type="range" min="0" max="800" step="1" value="120" aria-label="Tiempo del delay en milisegundos">
           <span class="num"><input id="dnum" type="number" min="0" max="800" step="1" value="120" inputmode="numeric" aria-label="Delay en milisegundos (escribir valor exacto)"><i>ms</i></span>
-          <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="10" opacity=".55"/></svg>Reverb</span>
+          <button id="rvb" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="10" opacity=".55"/></svg>Reverb</button>
           <input id="rev" type="range" min="0" max="100" step="1" value="0" aria-label="Cantidad de reverb">
           <span class="num"><input id="rnum" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" aria-label="Reverb en porcentaje (escribir valor exacto)"><i>%</i></span>
-          <button id="mic" aria-pressed="false" title="Insert audio: la entrada de la placa suena en vivo con el delay y el reverb. Usá auriculares para evitar el acople. Lo que grabás también pasa por el nivel de entrada."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Insert audio</button>
+          <button id="mic" aria-pressed="false" title="Live audio FX: la entrada de la placa suena con delay y reverb. Arranca en MUTE para regular el nivel. Usá auriculares."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Live audio FX</button>
           <select id="indev" aria-label="Entrada de audio"><option value="">Entrada predeterminada</option></select>
-          <span id="mv" class="v"></span>
+          <div class="onmute"><button id="onb">ON</button><button id="mutb">Mute</button></div>
           <div class="ins">
             <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Nivel</span>
             <input id="gain" type="range" min="0" max="40" step="1" value="0" aria-label="Nivel de entrada en decibeles">
             <span id="gval" class="gv">+0 dB</span>
             <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M10 20V6M15 20v-10M20 20V4"/></svg>VU</span>
-            <div class="vu" aria-label="Vúmetro de entrada"><div class="vfill" id="vfill"></div><span class="m3"></span><i style="left:0">−48</i><i style="left:50%">−24</i><i style="left:75%">−12</i><i style="left:93.75%">−3</i></div>
+            <div class="vu" aria-label="Vúmetro de entrada"><div class="vfill" id="vfill"></div><span class="pkh" id="pkh"></span><span class="m3"></span><i style="left:0">−48</i><i style="left:50%">−24</i><i style="left:75%">−12</i><i style="left:93.75%">−3</i></div>
             <span id="clip" class="clip" role="status">CLIP</span>
           </div>
         </div>
@@ -214,8 +241,17 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 <p id="msg"></p>
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
 <div id="grid"></div>
+<section id="ed" aria-label="Editor de audio">
+  <div class="edh"><b>Editor de audio</b><span id="edn"></span><span class="sp"></span>
+    <div class="edact"><button id="edsave" title="Guardar cambios" aria-label="Guardar cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
+  <p id="edhint">Clic derecho sobre un botón → Editar audio. Acá podés recortar silencios, normalizar y borrar partes.</p>
+  <div class="edbody">
+    <div class="edtools"><button id="edplay"><svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play</button><button id="edtrim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Recortar silencios</button><button id="ednorm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg>Normalizar 0 dB</button><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><span id="edinfo"></span></div>
+    <canvas id="edc" height="150"></canvas>
+  </div>
+</section>
 
-<footer id="sig" title="Versión 1.13 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.13</span></footer>
+<footer id="sig" title="Versión 1.14 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.14</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar">✕</button></div>
@@ -232,6 +268,8 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
       <div class="ft"><label class="pk" title="Color personalizado"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg><input type="color" id="cpick"></label><button id="creset">Sin color</button></div>
     </div>
   </div>
+  <button class="mi" id="cedit" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4"/></svg>Editar audio</button>
+  <button class="mi" id="cdl" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>Descargar</button>
   <button class="mi del" id="cdel" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar botón</button>
 </div>
 
@@ -265,19 +303,20 @@ wet.gain.value=0;wet.connect(ctx.destination);dry.connect(ctx.destination);
   for(let c=0;c<2;c++){const d=b.getChannelData(c);let y=0;for(let i=0;i<len;i++){y+=((Math.random()*2-1)-y)*.45;d[i]=y*Math.pow(1-i/len,2.8)}}
   reverb.buffer=b})();
 revSend.gain.value=0;revSend.connect(reverb);reverb.connect(ctx.destination);
-let fx={on:false,ms:120,rev:0};
-try{const f=JSON.parse(localStorage.getItem("botonera_fx")||"null");if(f&&typeof f.ms==="number")fx={on:!!f.on,ms:Math.min(800,Math.max(0,f.ms)),rev:Math.min(100,Math.max(0,+f.rev||0))}}catch(e){}
+let fx={on:false,ms:120,rev:30,revOn:false};
+try{const f=JSON.parse(localStorage.getItem("botonera_fx")||"null");if(f&&typeof f.ms==="number")fx={on:!!f.on,ms:Math.min(800,Math.max(0,f.ms)),rev:+f.rev>0?Math.min(100,+f.rev):30,revOn:f.revOn===undefined?+f.rev>0:!!f.revOn}}catch(e){}
 function applyFx(){
   const t=ctx.currentTime;
   wet.gain.setTargetAtTime(fx.on?0.65:0,t,.01);
   dL.delayTime.setTargetAtTime(fx.ms/1000,t,.02);dR.delayTime.setTargetAtTime(fx.ms/1000,t,.02);
-  revSend.gain.setTargetAtTime(fx.rev/100*0.9,t,.02);
-  $("dly").classList.toggle("active",fx.on);$("dly").setAttribute("aria-pressed",fx.on);
+  revSend.gain.setTargetAtTime(fx.revOn?fx.rev/100*0.9:0,t,.02);
+  $("rvb").classList.toggle("active",fx.revOn);$("rvb").setAttribute("aria-pressed",fx.revOn);$("dly").classList.toggle("active",fx.on);$("dly").setAttribute("aria-pressed",fx.on);
   $("dms").value=fx.ms;if(document.activeElement!==$("dnum"))$("dnum").value=fx.ms;
   $("rev").value=fx.rev;if(document.activeElement!==$("rnum"))$("rnum").value=fx.rev;
   try{localStorage.setItem("botonera_fx",JSON.stringify(fx))}catch(e){}
 }
 $("dly").addEventListener("click",()=>{fx.on=!fx.on;applyFx()});
+$("rvb").addEventListener("click",()=>{fx.revOn=!fx.revOn;applyFx()});
 $("dms").addEventListener("input",e=>{fx.ms=+e.target.value;applyFx()});
 $("rev").addEventListener("input",e=>{fx.rev=+e.target.value;applyFx()});
 // campos para escribir el valor exacto
@@ -291,9 +330,9 @@ $("rev").addEventListener("input",e=>{fx.rev=+e.target.value;applyFx()});
 applyFx();
 
 /* ---------- entrada de la placa: en vivo + grabar ---------- */
-const mic={stream:null,src:null,live:false,rec:null,dev:"",gainDb:0};
+const mic={stream:null,src:null,live:false,rec:null,dev:"",gainDb:0,muted:true};
 try{mic.dev=localStorage.getItem("botonera_dev")||"";mic.gainDb=Math.min(40,Math.max(0,parseInt(localStorage.getItem("botonera_gain"),10)||0))}catch(e){}
-const MICFAIL="No pude acceder a la entrada de audio. Revisá el permiso del micrófono en la barra del navegador.",HEAD="Usá auriculares para evitar el acople (silbido).";
+const MICFAIL="No pude acceder a la entrada de audio. Revisá el permiso del micrófono en la barra del navegador.",HEAD="Empieza en MUTE: regulá el nivel y apretá ON para salir al aire. Usá auriculares para evitar el acople.";
 // cadena de entrada: placa -> nivel (inGain) -> vúmetro | monitoreo con efectos | grabación
 const inGain=ctx.createGain(),monGain=ctx.createGain(),an=ctx.createAnalyser(),recDest=ctx.createMediaStreamDestination(),mute=ctx.createGain();
 an.fftSize=2048;mute.gain.value=0;monGain.gain.value=0;
@@ -309,15 +348,16 @@ $("gain").addEventListener("input",e=>{mic.gainDb=+e.target.value;applyGain()});
 applyGain();
 // vúmetro: rojo por encima de -3 dB; CLIP al llegar a 0 dB y se queda 1,5 s después de que baja
 const vf=$("vfill"),clipEl=$("clip"),fbuf=new Float32Array(an.fftSize),bbuf=new Uint8Array(an.fftSize);
-let lvl=-100,clipUntil=0,raf=0;
+let lvl=-100,clipUntil=0,raf=0,ph=-100,phT=0;
 function meterLoop(){
   let pk=0;const f=!!an.getFloatTimeDomainData;
   if(f){an.getFloatTimeDomainData(fbuf);for(let i=0;i<fbuf.length;i++){const v=Math.abs(fbuf[i]);if(v>pk)pk=v}}
   else{an.getByteTimeDomainData(bbuf);for(let i=0;i<bbuf.length;i++){const v=Math.abs(bbuf[i]-128)/128;if(v>pk)pk=v}}
   const db=pk>0?20*Math.log10(pk):-100,now=performance.now();
   lvl=db>lvl?db:Math.max(db,lvl-.8);
-  vf.style.width=Math.max(0,Math.min(100,(lvl+48)/48*100))+"%";
-  vf.classList.toggle("hot",lvl>-3);
+  vf.style.setProperty("--lv",Math.max(0,Math.min(100,(lvl+48)/48*100))+"%");vf.parentNode.classList.toggle("hot",lvl>-3);
+  if(lvl>=ph){ph=lvl;phT=now+900}else if(now>phT)ph=Math.max(lvl,ph-.5);
+  $("pkh").style.left=Math.max(0,Math.min(99,(ph+48)/48*100))+"%";
   if(pk>=(f?.999:.99))clipUntil=now+1500;
   clipEl.classList.toggle("on",now<clipUntil);
   raf=requestAnimationFrame(meterLoop);
@@ -325,7 +365,7 @@ function meterLoop(){
 function syncIns(){
   const on=mic.live||!!mic.rec;document.body.classList.toggle("ins",on);
   if(on&&!raf)raf=requestAnimationFrame(meterLoop);
-  if(!on){cancelAnimationFrame(raf);raf=0;lvl=-100;clipUntil=0;vf.style.width="0";vf.classList.remove("hot");clipEl.classList.remove("on")}
+  if(!on){cancelAnimationFrame(raf);raf=0;lvl=-100;clipUntil=0;vf.style.setProperty("--lv","0%");vf.parentNode.classList.remove("hot");ph=-100;clipEl.classList.remove("on")}
 }
 async function openMic(){
   if(mic.stream)return mic.stream;
@@ -340,12 +380,16 @@ async function fillDevs(){try{
   l.forEach((d,i)=>{const o=document.createElement("option");o.value=d.deviceId;o.textContent=d.label||("Entrada "+(i+1));sel.appendChild(o)});
   const t=mic.stream&&mic.stream.getAudioTracks()[0],cur=t&&t.getSettings().deviceId;if(cur)sel.value=cur}catch(e){}}
 function dropStream(){if(mic.src){try{mic.src.disconnect()}catch(e){}mic.src=null}if(mic.stream){mic.stream.getTracks().forEach(t=>t.stop());mic.stream=null}}
-function routeLive(){monGain.gain.setTargetAtTime(mic.live&&mic.stream?1:0,ctx.currentTime,.01)}
+function routeLive(){monGain.gain.setTargetAtTime(mic.live&&mic.stream&&!mic.muted?1:0,ctx.currentTime,.01)}
 function closeMicIfIdle(){if(!mic.live&&!mic.rec)dropStream()}
-function liveUI(){$("mic").classList.toggle("active",mic.live);$("mic").setAttribute("aria-pressed",mic.live);$("mv").textContent=mic.live?"ON":"";document.body.classList.toggle("live",mic.live);syncIns()}
+function liveUI(){const L=mic.live,A=L&&!mic.muted;$("mic").classList.toggle("active",L);$("mic").setAttribute("aria-pressed",L);
+  $("onb").classList.toggle("sel",A);$("mutb").classList.toggle("sel",L&&mic.muted);
+  document.body.classList.toggle("lfx",L);document.body.classList.toggle("live",A);syncIns()}
+$("onb").addEventListener("click",()=>{mic.muted=false;routeLive();liveUI()});
+$("mutb").addEventListener("click",()=>{mic.muted=true;routeLive();liveUI()});
 $("mic").addEventListener("click",async()=>{
   if(mic.live){mic.live=false;routeLive();closeMicIfIdle();liveUI();if(msg.textContent===HEAD)msg.textContent="";return}
-  try{if(ctx.state!=="running")ctx.resume();await openMic();mic.live=true;routeLive();liveUI();msg.textContent=HEAD}
+  try{if(ctx.state!=="running")ctx.resume();await openMic();mic.live=true;mic.muted=true;routeLive();liveUI();msg.textContent=HEAD}
   catch(e){msg.textContent=MICFAIL}
 });
 $("indev").addEventListener("change",async e=>{
@@ -492,6 +536,9 @@ function setColor(c){if(cmIdx===null)return;const n=items[cmIdx].name;if(c)color
 $("cpick").addEventListener("change",e=>setColor(e.target.value));
 $("creset").addEventListener("click",()=>setColor(null));
 $("mcol").addEventListener("click",()=>$("mw").classList.toggle("open"));
+$("cdl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)return;
+  const a=document.createElement("a");a.href=URL.createObjectURL(it.blob);a.download=it.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)});
+$("cedit").addEventListener("click",()=>{const i=cmIdx;hideCm();edOpen(i)});
 $("cdel").addEventListener("click",()=>{const i=cmIdx;hideCm();if(i!==null)askRemove(i)});
 document.addEventListener("pointerdown",e=>{
   const t=e.target;
@@ -511,7 +558,8 @@ $("burger").addEventListener("click",()=>{menu.classList.toggle("open");waiting=
 $("close").addEventListener("click",()=>{menu.classList.remove("open");waiting=null;renderMenu()});
 document.addEventListener("keydown",e=>{
   if(e.ctrlKey||e.metaKey||e.altKey)return;
-  if(e.target&&(e.target.type==="number"||e.target.tagName==="SELECT"))return; // escribiendo un valor: no disparar botones
+  if(e.target&&(e.target.type==="number"||e.target.tagName==="SELECT"))return;
+  if(ed.it&&waiting===null){if(e.code==="Space"){e.preventDefault();if(!e.repeat)edPlay();return}if(e.key==="Delete"&&ed.sel){e.preventDefault();edDel();return}} // escribiendo un valor: no disparar botones
   if(waiting!==null){
     e.preventDefault();
     if(e.key==="Escape"){waiting=null;renderMenu();return}
@@ -538,6 +586,60 @@ async function repoList(){
 }
 setTimeout(()=>$("splash").classList.add("off"),8000);
 $("splash").addEventListener("click",()=>$("splash").classList.add("off"));
+[["dms",5],["rev",2],["gain",1]].forEach(([id,st])=>{const el=$(id);
+  el.addEventListener("wheel",e=>{e.preventDefault();el.value=+el.value+(e.deltaY<0?1:-1)*(e.shiftKey?1:st);el.dispatchEvent(new Event("input"))},{passive:false})});
+
+/* ---------- editor de audio ---------- */
+const ed={it:null,ch:null,sr:44100,sel:null,cur:0,src:null,t0:0,from:0,raf:0},edc=$("edc"),g2=edc.getContext("2d");
+const edN=()=>ed.ch[0].length;
+function edOpen(idx){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
+  edStop();ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
+  ed.sel=null;ed.cur=0;ed.dirty=false;$("ed").classList.add("open");$("edn").textContent=nice(it.name);edInfo();edDraw();$("ed").scrollIntoView({behavior:"smooth",block:"end"})}
+function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
+  $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
+function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.max(300,edc.clientWidth*k),H=edc.height=150*k,n=edN(),mid=H/2;
+  g2.fillStyle="rgba(255,255,255,.8)";
+  for(let x=0;x<W;x++){let mn=0,mx=0;const a=Math.floor(x/W*n),b=Math.max(a+1,Math.floor((x+1)/W*n)),st=Math.max(1,Math.floor((b-a)/48));
+    for(let i=a;i<b;i+=st)for(const c of ed.ch){const v=c[i];if(v<mn)mn=v;if(v>mx)mx=v}
+    g2.fillRect(x,mid-mx*mid,1,Math.max(1,(mx-mn)*mid))}
+  if(ed.sel){g2.fillStyle="rgba(232,35,42,.4)";g2.fillRect(ed.sel[0]/n*W,0,(ed.sel[1]-ed.sel[0])/n*W,H)}
+  const pos=ed.src?ed.from+(ctx.currentTime-ed.t0)*ed.sr:ed.cur;g2.fillStyle="#fff";g2.fillRect(Math.min(W-2,pos/n*W),0,2,H)}
+function edBtn(){$("edplay").innerHTML=ed.src?'<svg class="ic" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5" fill="currentColor"/></svg>Stop':'<svg class="ic" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play'}
+function edStop(){cancelAnimationFrame(ed.raf);if(ed.src){const s=ed.src;ed.src=null;try{s.stop()}catch(e){}}edBtn();edDraw()}
+function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;const n=edN(),b=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>b.copyToChannel(c,i));
+  let a=ed.sel?ed.sel[0]:ed.cur;const e=ed.sel?ed.sel[1]:n;if(a>=n-1)a=0;if(ctx.state!=="running")ctx.resume();
+  const s=ctx.createBufferSource();s.buffer=b;s.connect(ctx.destination);ed.src=s;ed.from=a;ed.t0=ctx.currentTime;
+  s.onended=()=>{if(ed.src===s){ed.src=null;edBtn();edDraw()}};s.start(0,a/ed.sr,(e-a)/ed.sr);edBtn();
+  const lp=()=>{if(ed.src){edDraw();ed.raf=requestAnimationFrame(lp)}};lp()}
+function edDel(){if(!ed.it||!ed.sel)return;edStop();const[a,b]=ed.sel;
+  ed.ch=ed.ch.map(c=>{const o=new Float32Array(c.length-(b-a));o.set(c.subarray(0,a));o.set(c.subarray(b),a);return o});
+  ed.cur=a;ed.sel=null;ed.dirty=true;edInfo();edDraw()}
+function edTrim(){if(!ed.it)return;edStop();const n=edN(),th=Math.pow(10,-48/20),pad=Math.round(ed.sr*.01),loud=i=>ed.ch.some(c=>Math.abs(c[i])>th);
+  let a=0,b=n-1;while(a<n&&!loud(a))a++;while(b>a&&!loud(b))b--;
+  if(a>=n){msg.textContent="Ese audio está en silencio total.";return}
+  a=Math.max(0,a-pad);b=Math.min(n,b+pad+1);if(a===0&&b===n){msg.textContent="No hay silencios para recortar.";return}
+  ed.ch=ed.ch.map(c=>c.slice(a,b));ed.sel=null;ed.cur=0;ed.dirty=true;edInfo();edDraw()}
+function edNorm(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
+  if(!pk||Math.abs(pk-1)<1e-4)return;const k=1/pk;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++)c[i]*=k});ed.dirty=true;edInfo();edDraw()}
+function wavBlob(ch,sr){const n=ch[0].length,k=ch.length,d=new DataView(new ArrayBuffer(44+n*k*2)),w=(o,t)=>[...t].forEach((x,i)=>d.setUint8(o+i,x.charCodeAt(0)));
+  w(0,"RIFF");d.setUint32(4,36+n*k*2,true);w(8,"WAVEfmt ");d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,k,true);d.setUint32(24,sr,true);d.setUint32(28,sr*k*2,true);d.setUint16(32,k*2,true);d.setUint16(34,16,true);w(36,"data");d.setUint32(40,n*k*2,true);
+  let o=44;for(let i=0;i<n;i++)for(let c=0;c<k;c++){const v=Math.max(-1,Math.min(1,ch[c][i]));d.setInt16(o,v<0?v*32768:v*32767,true);o+=2}
+  return new Blob([d],{type:"audio/wav"})}
+function edSave(){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n){msg.textContent="El audio quedó vacío: no se guardó.";return}
+  it.playing.forEach(s=>{try{s.stop()}catch(e){}});const old=it.name;let nn=nice(old)+(it.base?" (editado)":"")+".wav";
+  if(items.some(i=>i!==it&&i.name===nn))nn=nice(nn)+" (editado).wav";
+  const buf=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>buf.copyToChannel(c,i));
+  if(it.base){hidden.add(old);try{localStorage.setItem("botonera_hidden",JSON.stringify([...hidden]))}catch(e){}it.base=false}
+  if(colors[old]){colors[nn]=colors[old];delete colors[old]}
+  it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);edClose(true);render();save()}
+function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;$("ed").classList.remove("open")}
+let edDrag=null;const edPx=e=>{const r=edc.getBoundingClientRect();return Math.max(0,Math.min(edN(),Math.round((e.clientX-r.left)/r.width*edN())))};
+edc.addEventListener("pointerdown",e=>{if(!ed.it)return;edc.setPointerCapture(e.pointerId);edDrag=edPx(e);ed.cur=edDrag;ed.sel=null;edDraw()});
+edc.addEventListener("pointermove",e=>{if(edDrag===null)return;const p=edPx(e);ed.sel=Math.abs(p-edDrag)>ed.sr*.005?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
+edc.addEventListener("pointerup",()=>{edDrag=null});
+[["edplay",edPlay],["edtrim",edTrim],["ednorm",edNorm],["eddel",edDel],["edsave",edSave],["edx",()=>edClose(false)]].forEach(([id,f])=>$(id).addEventListener("click",f));
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#ed button");if(b)b.blur()});
+window.addEventListener("resize",()=>edDraw());
 let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem("botonera_hidden")||"[]"))}catch(e){}
 if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{msg.textContent='La fuente Satoshi no cargó: revisá que la carpeta "fonts" esté junto a index.html en GitHub.'});
 (async()=>{
