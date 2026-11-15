@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.27 · actualización n.º 27 · por @pecallega -->
+<!-- Botonera al aire · v1.28 · actualización n.º 28 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -347,6 +347,38 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 @keyframes pop{from{transform:scale(.4);opacity:0}}
 @keyframes float{50%{transform:translateY(-6px)}}
 }
+/* ---- v1.28: tipografías · JetBrains Mono Light (textos y dentro de botones/avisos) · Space Grotesk (títulos) · Space Mono (acciones) · menús: Satoshi ---- */
+@font-face{font-family:"JetBrains Mono";src:url(fonts/JetBrainsMono-Light.woff2) format("woff2"),url(JetBrainsMono-Light.woff2) format("woff2");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url(fonts/SpaceGrotesk-Medium.ttf) format("truetype"),url(SpaceGrotesk-Medium.ttf) format("truetype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url(fonts/SpaceGrotesk-Bold.ttf) format("truetype"),url(SpaceGrotesk-Bold.ttf) format("truetype");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Space Mono";src:url(fonts/SpaceMono-Regular.ttf) format("truetype"),url(SpaceMono-Regular.ttf) format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Space Mono";src:url(fonts/SpaceMono-Bold.ttf) format("truetype"),url(SpaceMono-Bold.ttf) format("truetype");font-weight:700;font-style:normal;font-display:swap}
+:root{--f-txt:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--f-act:"Space Mono",ui-monospace,Consolas,monospace;--f-ttl:"Space Grotesk","Satoshi",system-ui,sans-serif}
+body{font-family:var(--f-txt);font-weight:300;font-size:13.5px}
+input,textarea{font-family:var(--f-txt)!important;font-weight:300!important}
+h1,#air,#splash .tx,#ed .edh b,.sep,#vp h2,#vpt{font-family:var(--f-ttl)!important;font-weight:700!important;font-stretch:normal!important}
+button:not(.pad):not(.gear):not(.mv),label.btn,select,.fx .lbl,.ins .lbl{font-family:var(--f-act)!important;letter-spacing:.04em!important}
+.pad,.pad *,.recpad,.recpad *{font-family:var(--f-txt)!important;font-weight:300!important}
+#msg,#msg *,#edhint,#edinfo,#edz,#edlg,#empty,#empty *,#sig,.num i,.gv,.lkr .note,#lkst,.vpm{font-family:var(--f-txt)!important;font-weight:300!important}
+#menu,#menu *,#cm,#cm *,#mkm,#mkm *{font-family:"Satoshi",system-ui,-apple-system,"Segoe UI",sans-serif!important}
+/* buscador de links: input + BUSCAR + modos + HELPER en una sola línea (abajo solo resultados y estado) */
+.lk{flex-direction:row;flex-wrap:wrap;align-items:center;width:min(100%,880px)}
+.lk>.lkr:nth-child(1){flex:1 1 220px;min-width:0}
+.lk>.lkr:nth-child(2){flex:1 1 100%;min-width:0}
+.lk>#lkres,.lk>.lks{flex:0 0 100%}
+.lk .seg button,.lk #lkgo,.lk #lkh{white-space:nowrap}
+@media (min-width:901px){
+  .lk>.lkr:nth-child(2){flex:0 0 auto}
+  .lk .seg{display:flex;flex:none}
+  .lk .seg button{padding:7px 10px}
+}
+@media (max-width:520px){.edh{flex-wrap:wrap}.edh .sp{display:none}.nmf{flex:1 1 100%}.nmf input{width:100%}.edact{flex-wrap:wrap}}
+#mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
+#mkm .mkr button{padding:7px 0;font-size:.75rem;font-weight:700;border-radius:0}
+#mkm .mi{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:1px solid transparent;background:transparent;border-radius:0;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#ff7377}
+#mkm .mi:hover{background:rgba(232,35,42,.2);color:#fff}
 </style>
 </head>
 <body>
@@ -427,7 +459,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.27 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.27</span></footer>
+<footer id="sig" title="Versión 1.28 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.28</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -436,6 +468,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
   <img class="mlogo" src="logo.png" alt="" onerror="this.style.display='none'">
 </aside>
 
+<div id="mkm" role="menu" aria-label="Opciones de la marca"><div class="mkt" id="mkt"></div><div class="mkr" aria-label="Cambiar tipo de marca"><button data-k="m" style="color:#ff8a1f">M</button><button data-k="i" style="color:#8cf29a">I</button><button data-k="o" style="color:#e8232a">O</button><button data-k="c" style="color:#ff2d2d">C</button></div><button class="mi" id="mkdel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar marca</button></div>
 <div id="cm" role="menu" aria-label="Opciones del botón">
   <div class="mw" id="mw">
     <button class="mi" id="mcol" role="menuitem" aria-haspopup="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>Color<svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
@@ -946,8 +979,9 @@ function edDraw(){if(!ed.ch)return;const k=devicePixelRatio||1,W=edc.width=Math.
   if(ed.sel){g2.fillStyle="rgba(232,35,42,.4)";g2.fillRect(X(ed.sel[0]),0,(ed.sel[1]-ed.sel[0])/sp*W,H)}
   {const cnt={};ed.marks.forEach(m=>{const d=MK[m.k],x=X(m.p);cnt[m.k]=(cnt[m.k]||0)+1;if(x<-30||x>W+30)return;
     const lw=(m.k==="c"?3:2)*k;g2.fillStyle=d.c;g2.fillRect(x-lw/2,0,lw,H);
-    g2.beginPath();if(m.k==="c"){g2.moveTo(x,0);g2.lineTo(x+9*k,9*k);g2.lineTo(x,18*k);g2.lineTo(x-9*k,9*k)}else if(m.k==="o"){g2.rect(x,0,13*k,13*k)}else{g2.moveTo(x,0);g2.lineTo(x+13*k,0);g2.lineTo(x,13*k)}g2.fill();
-    g2.font="700 "+(12*k)+"px Satoshi,sans-serif";g2.fillStyle=d.c;g2.fillText(d.n+cnt[m.k],x+(m.k==="c"?12:16)*k,12*k+(m.k==="c"?4*k:0));})}
+    g2.fillStyle=d.c;g2.fillRect(x-11*k,0,22*k,19*k);if(m.k==="c"){g2.strokeStyle="#fff";g2.lineWidth=k;g2.strokeRect(x-11*k+.5*k,.5*k,21*k,18*k)}
+    g2.save();g2.translate(x-7.5*k,1.8*k);g2.scale(.62*k,.62*k);g2.lineWidth=2.6;g2.lineCap="round";g2.lineJoin="round";g2.strokeStyle="#111";g2.stroke(HAND);g2.restore();
+    g2.font="700 "+(12*k)+"px 'Space Mono',monospace";g2.fillStyle=d.c;g2.fillText(d.n+cnt[m.k],x+15*k,14*k)})}
   const padp=!ed.src&&!ed.dirty&&ed.it&&ed.it.playing.size?Math.min(n,Math.max(0,(ctx.currentTime-ed.it.t0)*ed.sr)):null;
   const pos=ed.src?ed.from+(ctx.currentTime-ed.t0)*ed.sr:(padp!==null?padp:ed.cur);
   if((ed.src||padp!==null)&&!sbD&&sp<n&&(pos>ed.v1||pos<ed.v0)){const a=Math.max(0,Math.min(n-sp,pos-sp*.1));ed.v0=a;ed.v1=a+sp;return edDraw()}
@@ -1015,6 +1049,14 @@ function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n
   if(colors[old]){colors[nn]=colors[old];delete colors[old]}
   it.marks=ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined;it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);const sec2=(n/ed.sr).toFixed(2),sr2=ed.sr;edClose(true);render();save();note("Guardado en «"+nice(nn)+"» ("+sec2+" s, WAV 16-bit, "+sr2+" Hz). Se reemplazó el audio anterior de este botón.","info","",8000)}
 function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;$("ed").classList.remove("open")}
+const HAND=new Path2D("M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15");
+let mkDrag=null;
+const edTabAt=e=>{const r=edc.getBoundingClientRect(),y=e.clientY-r.top;if(y<0||y>20)return null;const sp=ed.v1-ed.v0;let best=null,d=1e9;
+  ed.marks.forEach(m=>{const x=r.left+(m.p-ed.v0)/sp*r.width,dx=Math.abs(e.clientX-x);if(dx<=12&&dx<d){best=m;d=dx}});return best};
+const mkm=$("mkm");let mkTarget=null;
+const hideMkm=()=>{mkm.style.display="none";mkTarget=null};
+function showMkm(m,x,y){mkTarget=m;$("mkt").textContent="Marca "+MK[m.k].n+" · "+MK[m.k].t+" · "+fmtT(m.p/ed.sr);mkm.style.display="block";
+  const w=mkm.offsetWidth,h=mkm.offsetHeight;mkm.style.left=Math.max(6,Math.min(innerWidth-w-6,x))+"px";mkm.style.top=Math.max(6,Math.min(innerHeight-h-6,y))+"px"}
 const edMarkAt=(p,tol)=>{tol=tol===undefined?16/edc.clientWidth*(ed.v1-ed.v0):tol;let best=null,d=tol+1;ed.marks.forEach(m=>{const x=Math.abs(m.p-p);if(x<=tol&&x<d){best=m;d=x}});return best};
 const edSnap=p=>{const m=edMarkAt(p);return m?m.p:p};
 function edSaveMarks(){if(ed.it&&!ed.dirty){ed.it.marks=ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined;save()}}
@@ -1031,12 +1073,21 @@ function markNow(k){
   return false}
 function seekItem(it,off){const i=items.indexOf(it);if(i<0)return;it.playing.forEach(s=>{try{s.stop()}catch(e){}});play(i,off)}
 let edDrag=null;const edPx=e=>{const r=edc.getBoundingClientRect();return Math.max(0,Math.min(edN(),Math.round(ed.v0+(e.clientX-r.left)/r.width*(ed.v1-ed.v0))))};
-edc.addEventListener("pointerdown",e=>{if(!ed.it)return;
+edc.addEventListener("pointerdown",e=>{if(!ed.it||e.button!==0)return;hideMkm();
+  {const tm=edTabAt(e);if(tm){e.preventDefault();try{edc.setPointerCapture(e.pointerId)}catch(x){}mkDrag=tm;edc.style.cursor="grabbing";edDraw();return}}
   {const mk=edMarkAt(edPx(e));
    if(mk&&(ed.src||(!ed.dirty&&ed.it.playing.size))){e.preventDefault();ed.cur=mk.p;ed.sel=null;
      if(ed.src)edStart(mk.p,edN());else seekItem(ed.it,mk.p/ed.sr);edDraw();return}}edc.setPointerCapture(e.pointerId);{const raw=edPx(e),sn=edSnap(raw);edDrag=(sn!==raw&&ed.cur===sn)?raw:sn}ed.cur=edDrag;ed.sel=null;edDraw()});
-edc.addEventListener("pointermove",e=>{if(edDrag===null)return;const p=edSnap(edPx(e));ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
-edc.addEventListener("pointerup",()=>{edDrag=null});
+edc.addEventListener("pointermove",e=>{
+  if(mkDrag){mkDrag.p=edPx(e);edDraw();return}
+  if(edDrag===null){edc.style.cursor=edTabAt(e)?"grab":"crosshair";return}const p=edSnap(edPx(e));ed.sel=Math.abs(p-edDrag)>(ed.v1-ed.v0)/edc.clientWidth*3?[Math.min(p,edDrag),Math.max(p,edDrag)]:null;edDraw()});
+edc.addEventListener("pointerup",()=>{edDrag=null;if(mkDrag){const m=mkDrag;mkDrag=null;ed.marks.sort((a,b)=>a.p-b.p);edSaveMarks();edDraw();edc.style.cursor="crosshair";note("Marca "+MK[m.k].n+" movida a "+fmtT(m.p/ed.sr)+(ed.dirty?" · se guarda con el diskette":""),"info","mk",2200)}});
+edc.addEventListener("contextmenu",e=>{if(!ed.it)return;const m=edTabAt(e)||edMarkAt(edPx(e));if(!m)return;e.preventDefault();showMkm(m,e.clientX,e.clientY)});
+mkm.querySelectorAll(".mkr button").forEach(b=>b.addEventListener("click",()=>{if(mkTarget){mkTarget.k=b.dataset.k;edSaveMarks();edDraw()}hideMkm()}));
+$("mkdel").addEventListener("click",()=>{const m=mkTarget;if(m){ed.marks=ed.marks.filter(x=>x!==m);edSaveMarks();edDraw();note("Marca "+MK[m.k].n+" eliminada.","info","mk",2000)}hideMkm()});
+document.addEventListener("pointerdown",e=>{if(mkm.style.display==="block"&&!mkm.contains(e.target))hideMkm()},true);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hideMkm()});
+window.addEventListener("scroll",hideMkm,true);
 edc.addEventListener("wheel",e=>{if(!ed.it)return;e.preventDefault();const n=edN(),r=edc.getBoundingClientRect(),f=(e.clientX-r.left)/r.width,sp=ed.v1-ed.v0;
   if(e.shiftKey){const a=Math.max(0,Math.min(n-sp,ed.v0+(e.deltaY||e.deltaX)/r.width*sp));ed.v0=a;ed.v1=a+sp}
   else{const ns=Math.max(Math.min(n,64),Math.min(n,sp*(e.deltaY<0?.8:1.25))),c=ed.v0+f*sp,a=Math.max(0,Math.min(n-ns,c-f*ns));ed.v0=a;ed.v1=a+ns}
