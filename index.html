@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.46 · actualización n.º 46 · por @pecallega -->
+<!-- Botonera al aire · v1.47 · actualización n.º 47 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -604,6 +604,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 #pl .plh #plcnt{white-space:nowrap;flex:none}
 #pl .plh .plb{padding:5px 8px;flex:none;white-space:nowrap}
 #pl .plh .otag{flex:0 1 auto;min-width:0}
+.plr.mins{box-shadow:0 -3px 0 0 #fff}.plr.mins.minsb{box-shadow:0 3px 0 0 #fff}
 .plr.msel{outline:2px dashed #fff1a8;outline-offset:-3px;background:rgba(255,241,168,.1)}
 .plr.stp.msel{outline-offset:0}
 .plr.flash{animation:plflash .5s ease 3}
@@ -737,7 +738,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.46 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.46</span></footer>
+<footer id="sig" title="Versión 1.47 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.47</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1702,7 +1703,7 @@ $("ttlis").addEventListener("click",ttListen);$("ttnew").addEventListener("click
 
 /* --- lista de reproducción --- */
 const PLK="pl"+(PROF.active==="p0"?"":":"+PROF.active);
-const PL={rows:[],curId:null,nxtId:null,state:"stop",src:null,off:0,t0:0,ts:0,gen:0,solo:false,clip:[],uid:1,drag:null,dragIds:null,menuId:null};
+const PL={rows:[],curId:null,nxtId:null,state:"stop",src:null,off:0,t0:0,ts:0,gen:0,solo:false,clip:[],uid:1,drag:null,dragIds:null,menuId:null,menuIns:0};
 const PLS=[]; let PLANCH=null,PLC=null; // filas seleccionadas de la lista (en orden de selección), ancla para Shift y clic sobre grupo
 const plIdx=id=>PL.rows.findIndex(r=>r.id===id),plRow=id=>PL.rows[plIdx(id)];
 const plAudio=f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba)$/i.test(f.name);
@@ -2129,12 +2130,18 @@ setInterval(()=>{if(PL.state==="play")plSt()},200);
 $("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)return;PL.rows.push(plMk(it.name,it.blob,it.buffer));plRender();plSave();note("Agregado a la lista: «"+nice(it.name)+"».","info","pl",3000)});
 {const L=$("pll");
   L.addEventListener("dblclick",e=>{const r=e.target.closest(".plr");if(r){e.preventDefault();plDbl(+r.dataset.id)}});
-  const plm=$("plm"),hideP=()=>{plm.style.display="none";PL.menuId=null};
+  const plm=$("plm"),hideP=()=>{plm.style.display="none";PL.menuId=null;L.querySelectorAll(".mins").forEach(x=>x.classList.remove("mins","minsb"))};
   $("pl").addEventListener("contextmenu",e=>{
     if(e.target.closest("#plm")||!e.target.closest("#pll"))return;
     e.preventDefault();hideCm();hideMkm&&hideMkm();
     const r=e.target.closest(".plr");PL.menuId=r?+r.dataset.id:null;
     const row=r?plRow(PL.menuId):null;if(row&&!PLS.includes(row.id))plSelSet([row.id],row.id);
+    { // dónde cae un stop o un pegado: justo donde está el mouse (mitad superior de la fila = antes, mitad inferior = después; en un hueco, antes de la primera fila que quede debajo)
+      let ins=PL.rows.length;
+      if(r){const rc=r.getBoundingClientRect();ins=plIdx(PL.menuId)+(e.clientY>rc.top+rc.height/2?1:0)}
+      else{const nx=Array.from(L.querySelectorAll(".plr")).find(d=>{const rc=d.getBoundingClientRect();return e.clientY<rc.top+rc.height/2});ins=nx?plIdx(+nx.dataset.id):PL.rows.length}
+      PL.menuIns=ins;L.querySelectorAll(".mins").forEach(x=>x.classList.remove("mins","minsb"));
+      const rs=L.querySelectorAll(".plr");if(rs[ins])rs[ins].classList.add("mins");else if(rs.length)rs[rs.length-1].classList.add("mins","minsb")}
     plm.querySelector('[data-a=show]').disabled=plShowId()===null;plm.querySelector('[data-a=all]').disabled=!PL.rows.length;
     plm.querySelectorAll(".mi[data-a]").forEach(b=>{const a=b.dataset.a;b.style.display=(!row&&(a==="copy"||a==="cut"||a==="del"))?"none":"flex";if(a==="paste")b.disabled=!PL.clip.length});
     {const f=!!row&&row.t==="f";$("plsw").style.display="none";$("plcol").style.display=f?"flex":"none";$("plcol").setAttribute("aria-expanded","false");$("plsep").style.display=f?"block":"none"}
@@ -2147,10 +2154,10 @@ $("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)ret
     const a=b.dataset.a,id=PL.menuId,i=id===null?-1:plIdx(id);hideP();
     if(a==="show"){plShowCur();return}
     if(a==="all"){plSelSet(PL.rows.map(r=>r.id));return}
-    if(a==="stop"){PL.rows.splice(i<0?PL.rows.length:i+1,0,plMkStop())}
+    if(a==="stop"){const sr=plMkStop();PL.rows.splice(Math.min(PL.menuIns,PL.rows.length),0,sr);plSelSet([sr.id],sr.id)}
     else if(a==="copy"&&i>=0){plCopySel(false)}
     else if(a==="cut"&&i>=0){plCopySel(true)}
-    else if(a==="paste"&&PL.clip.length){const at=i<0?PL.rows.length:i+1;PL.rows.splice(at,0,...PL.clip.map(plClone))}
+    else if(a==="paste"&&PL.clip.length){const nr=PL.clip.map(plClone);PL.rows.splice(Math.min(PL.menuIns,PL.rows.length),0,...nr);plSelSet(nr.map(r=>r.id),nr[0].id)}
     else if(a==="del"&&i>=0){plDelSel()}
     plRender();plSave()}));
   document.addEventListener("pointerdown",e=>{if(plm.style.display==="block"&&!plm.contains(e.target))hideP()},true);
