@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.58 · actualización n.º 58 · por @pecallega -->
+<!-- Botonera al aire · v1.59 · actualización n.º 59 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -787,7 +787,7 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.58 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.58</span></footer>
+<footer id="sig" title="Versión 1.59 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.59</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1825,9 +1825,10 @@ const PL_FADE=.3; // s: fade corto entre temas (máx. 1 s)
 function plKill(fade){PL.gen++;if(PL.src){const s=PL.src,g=PL.gn;PL.src=null;PL.gn=null;
   if(fade&&g){try{const t=ctx.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+PL_FADE);s.stop(t+PL_FADE+.03)}catch(e){try{s.stop()}catch(x){}}}
   else{try{s.stop()}catch(e){}}}}
-function plStart(i,off,fade,noCue){
+function plStart(i,off,fade,noCue,cueIdx){
   const r=PL.rows[i];if(!r||r.t!=="f")return;
-  if(!off&&!noCue&&r.cues&&r.cues.length)off=Math.min(r.cues[0],Math.max(0,r.buffer.duration-.05)); // el tema arranca desde su cue más antiguo
+  PL.cueAt=cueIdx!==undefined?cueIdx:-1;
+  if(!off&&!noCue&&r.cues&&r.cues.length){off=Math.min(r.cues[0],Math.max(0,r.buffer.duration-.05));PL.cueAt=0} // el tema arranca desde su cue más antiguo
   if(ctx.state!=="running")ctx.resume();
   plKill(fade);const s=ctx.createBufferSource(),gn=ctx.createGain();s.buffer=r.buffer;s.connect(gn);gn.connect(FXL.dry);gn.connect(FXL.dlyIn);gn.connect(FXL.revSend);
   if(fade){const t=ctx.currentTime;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(1,t+PL_FADE)}
@@ -1845,18 +1846,22 @@ function plAdvance(manual){
   plStart(n,0,manual)}
 const plEnded=()=>plAdvance(false);
 // tema al que salta el Play mientras suena algo: el elegido con doble clic, o si no hay, el siguiente audio de la lista (salteando los stops)
-function plJumpTarget(){
-  if(PL.state!=="play")return -1;const c=plIdx(PL.curId);
-  if(PL.nxtId!==null&&PL.nxtId!==PL.curId){const n=plIdx(PL.nxtId);if(n>=0&&PL.rows[n].t==="f")return n}
-  if(c<0)return -1;for(let k=c+1;k<PL.rows.length;k++)if(PL.rows[k].t==="f")return k;return -1}
-function plJumpOk(){return plJumpTarget()>=0}
+function plJumpPlan(){
+  if(PL.state!=="play")return null;const c=plIdx(PL.curId);
+  if(PL.nxtId!==null&&PL.nxtId!==PL.curId){const n=plIdx(PL.nxtId);if(n>=0&&PL.rows[n].t==="f")return{k:"track",n}}
+  const r=PL.rows[c];
+  if(r&&r.cues&&r.cues.length){const pos=ctx.currentTime-PL.t0,ci=PL.cueAt>=0?(PL.cueAt+1<r.cues.length?PL.cueAt+1:-1):r.cues.findIndex(q=>q>pos+.3);if(ci>=0)return{k:"cue",ci}}
+  if(c<0)return null;for(let k=c+1;k<PL.rows.length;k++)if(PL.rows[k].t==="f")return{k:"track",n:k};return null}
+function plJumpOk(){return plJumpPlan()!==null}
 function plNext(){if(PL.state==="play")plAdvance(true)}
 function plPrev(){
   if(PL.state!=="play")return;const c=plIdx(PL.curId);if(c<0)return;
   let j=-1;for(let k=c-1;k>=0;k--)if(PL.rows[k].t==="f"){j=k;break}
   PL.nxtId=null;plStart(j>=0?j:c,0,true)}
 function plPlay(){
-  if(PL.state==="play"){const j=plJumpTarget();if(j<0)return;if(PL.nxtId!==null&&plIdx(PL.nxtId)===j)plAdvance(true);else{PL.nxtId=null;PL.off=0;plStart(j,0,true)}return}
+  if(PL.state==="play"){const j=plJumpPlan();if(!j)return;
+    if(j.k==="cue"){const i=plIdx(PL.curId),r=PL.rows[i];plStart(i,Math.min(r.cues[j.ci],Math.max(0,r.buffer.duration-.05)),true,true,j.ci);return}
+    if(PL.nxtId!==null&&plIdx(PL.nxtId)===j.n)plAdvance(true);else{PL.nxtId=null;PL.off=0;plStart(j.n,0,true)}return}
   let i=plIdx(PL.curId);
   if(i<0||PL.rows[i].t!=="f"){i=PL.rows.findIndex(x=>x.t==="f");PL.off=0}
   if(i<0){note("La lista no tiene audios.","warn","pl",3000);return}
@@ -1867,7 +1872,7 @@ function plStopBtn(){ // 1.er toque: detiene (los cues quedan). Con el tema ya d
   const r=plRow(PL.curId);
   if(PL.state==="stop"&&r&&r.t==="f"&&r.cues&&r.cues.length){const c=r.cues.shift();plRender();plSave();note("Cue borrado ("+fmtT(c)+")"+(r.cues.length?" · quedan "+r.cues.length:" · el tema ya no tiene cues"),"info","pl",3000);return}
   plStop()}
-function plAddCue(r,t){r.cues=r.cues||[];if(r.cues.some(c=>Math.abs(c-t)<.15)){note("Ya hay un cue en ese punto.","info","pl",1800);return}
+function plAddCue(r,t){r.cues=r.cues||[];const V=wfV(),dd=Math.min(.15,(V.v1-V.v0)*r.buffer.duration*.01);if(r.cues.some(c=>Math.abs(c-t)<dd)){note("Ya hay un cue en ese punto.","info","pl",1800);return}
   r.cues.push(t);plRender();plSave();note("Cue "+r.cues.length+" en "+fmtT(t)+" · Play arranca desde el más antiguo. Stop (con el tema detenido) los borra en orden.","info","pl",4500)}
 function plSeek(d){
   const i=plIdx(PL.curId);if(i<0||PL.rows[i].t!=="f")return;
@@ -1875,6 +1880,7 @@ function plSeek(d){
   if(PL.state==="play")plStart(i,np,false,true);else{PL.off=np;plSt()}}
 function plDbl(id){
   const r=plRow(id);if(!r)return;
+  if(PL.state==='stop'||id===PL.curId){PL.wf={v0:0,v1:1};PL.wfRow=PL.curId;plWfDraw()} // doble clic: vuelve a mostrar la onda completa
   if(PL.state==="stop"){if(r.t!=="f")return;PL.curId=id;PL.off=0;PL.nxtId=null}
   else{if(id===PL.curId)return;PL.nxtId=PL.nxtId===id?null:id}
   plRender();plSt()}
@@ -1893,7 +1899,7 @@ function plSt(){
   else t=PL.rows.length?"Doble clic en un tema para elegirlo · Play":"";
   $("plst").textContent=t;$("plst").title=t;
   const has=ci>=0&&r&&r.t==="f";
-  $("plplay").disabled=!PL.rows.some(x=>x.t==="f")||(PL.state==="play"&&!plJumpOk());$("plplay").title=PL.state==="play"?"Saltar al siguiente tema (fade corto)":"Play";
+  $("plplay").disabled=!PL.rows.some(x=>x.t==="f")||(PL.state==="play"&&!plJumpOk());$("plplay").title=PL.state==="play"?(((j=>j&&j.k==="cue")(plJumpPlan()))?"Saltar al próximo cue (fade corto)":"Saltar al siguiente tema (fade corto)"):"Play";
   $("plpause").disabled=PL.state!=="play";$("plstop").disabled=PL.state==="stop"&&!PL.off&&!PL.rows.length;$("plprev").disabled=$("plnext").disabled=PL.state!=="play";
   $("plplay").classList.toggle("lit",PL.state==="play");$("plpause").classList.toggle("lit",PL.state==="pause");$("plstop").classList.toggle("lit",PL.state==="stop");
   ["plb5","plb1","plf1","plf5"].forEach(k=>$(k).disabled=!has);
@@ -2089,36 +2095,69 @@ $("pldlf").addEventListener("click",async()=>{
   const b=await plsPack(name,plsRows());saveBlob(b,name+".botolista");note("Descargado: "+name+".botolista ("+fmtMB(b.size)+"). Incluye los audios; se abre con «Abrir archivo».","info","pl",6000)});
 $("plopenf").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const l=await plsUnpack(f);$("plname").value=l.name;await plsApply(l.rows,l.name)}catch(x){note(String(x.message||x),"error","pl",8000)}});
-/* ---------- onda del tema elegido: progreso, salto con un clic y cues ---------- */
-var WFX=null;
+/* ---------- onda del tema elegido: progreso, zoom con la rueda, salto con un clic y cues movibles ---------- */
+var WFX=null,WFD=null,WFL={t:0,x:0};
 function plPeaks(r){if(r._wf)return r._wf;const d=r.buffer.getChannelData(0),d2=r.buffer.numberOfChannels>1?r.buffer.getChannelData(1):null,N=1400,size=Math.max(1,Math.floor(d.length/N)),st=Math.max(1,Math.floor(size/40)),out=new Float32Array(N);
   for(let i=0;i<N;i++){let m=0;const a=i*size,b=Math.min(d.length,a+size);for(let k=a;k<b;k+=st){let v=Math.abs(d[k]);if(d2){const w=Math.abs(d2[k]);if(w>v)v=w}if(v>m)m=v}out[i]=m}
-  let mx=0;out.forEach(v=>{if(v>mx)mx=v});if(mx>0)for(let i=0;i<N;i++)out[i]=Math.pow(out[i]/mx,.75);return(r._wf=out)}
+  let mx=0;out.forEach(v=>{if(v>mx)mx=v});r._wfm=mx||1;if(mx>0)for(let i=0;i<N;i++)out[i]=Math.pow(out[i]/mx,.75);return(r._wf=out)}
+function plColPeaks(r,v0,v1,cols){const d=r.buffer.getChannelData(0),d2=r.buffer.numberOfChannels>1?r.buffer.getChannelData(1):null,n=d.length,out=new Float32Array(cols),mx=r._wfm||1;
+  for(let i=0;i<cols;i++){const a=Math.floor((v0+(v1-v0)*i/cols)*n),b=Math.max(a+1,Math.min(n,Math.floor((v0+(v1-v0)*(i+1)/cols)*n))),st=Math.max(1,Math.floor((b-a)/64));let m=0;
+    for(let k=a;k<b;k+=st){let v=Math.abs(d[k]);if(d2){const w=Math.abs(d2[k]);if(w>v)v=w}if(v>m)m=v}out[i]=Math.pow(m/mx,.75)}
+  return out}
+function wfReset(){PL.wf={v0:0,v1:1};PL.wfRow=PL.curId}   // vuelve a mostrar la onda completa
+function wfV(){return PL.wf||(PL.wf={v0:0,v1:1})}
 function plWfDraw(){
   const box=$("plwf"),c=$("plwfc");if(!box||!c)return;const r=plRow(PL.curId),ok=!!(r&&r.t==="f"&&r.buffer);
   box.hidden=!PL.rows.some(x=>x.t==="f");if(box.hidden)return;box.classList.toggle("on",ok);
+  if(PL.wfRow!==PL.curId)wfReset();
   $("plwfn").textContent=ok?nice(r.name):"Doble clic en un tema para ver su onda";
   const dur=ok?r.buffer.duration:0,pos=ok?(PL.state==="play"?Math.min(dur,Math.max(0,ctx.currentTime-PL.t0)):PL.state==="pause"?PL.off:0):0;
-  $("plwft").textContent=fmtT(pos)+" / "+fmtT(dur);const nq=ok&&r.cues?r.cues.length:0;$("plwfq").textContent=nq?"CUE "+nq:"";
+  const V=wfV();let span=V.v1-V.v0;
+  if(ok&&PL.state==="play"&&span<.999&&!WFD&&performance.now()-(PL.wfT||0)>2500){const f=pos/dur;if(f<V.v0||f>V.v1){V.v0=Math.min(1-span,Math.max(0,f-span*.1));V.v1=V.v0+span}}
+  $("plwft").textContent=fmtT(pos)+" / "+fmtT(dur);const nq=ok&&r.cues?r.cues.length:0;
+  $("plwfq").textContent=(nq?"CUE "+nq:"")+(ok&&span<.999?(nq?" · ":"")+"ZOOM ×"+(1/span).toFixed(1):"");
   const dpr=Math.min(2,window.devicePixelRatio||1),W=Math.round(c.clientWidth*dpr),H=Math.round(c.clientHeight*dpr);if(W<8||H<8)return;
   if(c.width!==W||c.height!==H){c.width=W;c.height=H}
   const g=c.getContext("2d");g.clearRect(0,0,W,H);const mid=H/2;
   if(!ok){g.fillStyle="rgba(61,255,122,.25)";g.fillRect(0,mid-dpr/2,W,Math.max(1,dpr));return}
-  const pk=plPeaks(r),px=pos/dur*W,played=PL.state==="play"||PL.state==="pause",step=Math.max(2,Math.round(dpr*1.6)),bw=Math.max(1,Math.round(dpr));
-  for(let x=0;x<W;x+=step){const v=pk[Math.min(pk.length-1,Math.floor(x/W*pk.length))],h=Math.max(dpr,v*(mid-3*dpr));g.fillStyle=played&&x<=px?"#3dff7a":"rgba(61,255,122,.3)";g.fillRect(x,mid-h,bw,h*2)}
-  g.font=(9*dpr)+"px 'JetBrains Mono',monospace";g.textBaseline="top";
-  (r.cues||[]).forEach((q,i)=>{const x=Math.round(q/dur*W);g.fillStyle="#fff1a8";g.fillRect(x,0,Math.max(1,Math.round(dpr*1.5)),H);g.fillStyle="rgba(0,0,0,.75)";g.fillRect(x+2*dpr,0,10*dpr,11*dpr);g.fillStyle="#fff1a8";g.fillText(String(i+1),x+4*dpr,dpr)});
+  const xo=t=>(t/dur-V.v0)/span*W,step=Math.max(2,Math.round(dpr*1.6)),bw=Math.max(1,Math.round(dpr)),px=xo(pos),played=PL.state==="play"||PL.state==="pause",full=span>=.999,cols=Math.ceil(W/step);
+  const pk=full?plPeaks(r):plColPeaks(r,V.v0,V.v1,cols);
+  for(let k=0;k<cols;k++){const x=k*step,v=full?pk[Math.min(pk.length-1,Math.floor(x/W*pk.length))]:pk[k],h=Math.max(dpr,v*(mid-14*dpr));g.fillStyle=played&&x<=px?"#3dff7a":"rgba(61,255,122,.3)";g.fillRect(x,mid-h,bw,h*2)}
+  g.font="bold "+(9*dpr)+"px 'JetBrains Mono',monospace";g.textBaseline="middle";g.textAlign="center";
+  (r.cues||[]).forEach((q,i)=>{const x=Math.round(xo(q));if(x<-8*dpr||x>W+8*dpr)return;const hot=WFD&&WFD.i===i;
+    g.fillStyle="#fff1a8";g.fillRect(x-Math.floor(dpr*.75),0,Math.max(1,Math.round(dpr*1.5)),H);
+    g.fillStyle=hot?"#fff":"#fff1a8";g.fillRect(x-6*dpr,0,12*dpr,12*dpr);g.fillStyle="#000";g.fillText(String(i+1),x,6.5*dpr);   // arriba: asa para mover
+    g.fillStyle="rgba(0,0,0,.85)";g.fillRect(x-6*dpr,H-12*dpr,12*dpr,12*dpr);g.strokeStyle="#fff1a8";g.lineWidth=dpr;g.strokeRect(x-6*dpr+.5*dpr,H-12*dpr+.5*dpr,11*dpr,11*dpr);g.fillStyle="#fff1a8";g.fillText("×",x,H-5.5*dpr)}); // abajo: borrar
+  g.textAlign="start";
   if(played||pos>0){g.fillStyle="#fff";g.fillRect(Math.round(px),0,Math.max(1,Math.round(dpr*1.5)),H)}
-  if(WFX!==null){g.fillStyle="rgba(255,255,255,.35)";g.fillRect(Math.round(WFX*dpr),0,Math.max(1,dpr),H)}}
+  if(WFX!==null&&!WFD){g.fillStyle="rgba(255,255,255,.35)";g.fillRect(Math.round(WFX*dpr),0,Math.max(1,dpr),H)}}
+function plDelCue(r,i){r.cues.splice(i,1);if(i<=PL.cueAt)PL.cueAt--;plRender();plSave();plSt();plWfDraw();note("Cue borrado.","info","pl",1500)}
 {const c=$("plwfc");
-  c.addEventListener("pointermove",e=>{WFX=e.clientX-c.getBoundingClientRect().left;if(PL.state!=="play")plWfDraw()});
+  const tAt=(e,r)=>{const rc=c.getBoundingClientRect(),V=wfV(),dur=r.buffer.duration;return Math.max(0,Math.min(dur-.05,(V.v0+(e.clientX-rc.left)/rc.width*(V.v1-V.v0))*dur))};
+  const hit=(e,r)=>{const rc=c.getBoundingClientRect(),V=wfV(),dur=r.buffer.duration,x=e.clientX-rc.left,y=e.clientY-rc.top,sp=V.v1-V.v0;let best=null,bd=1e9;
+    (r.cues||[]).forEach((q,i)=>{const cx=((q/dur)-V.v0)/sp*rc.width,d=Math.abs(x-cx);if(d<=7&&d<bd){const k=y<=14?"move":y>=rc.height-14?"del":null;if(k){best={i,k};bd=d}}});return best};
+  c.addEventListener("pointermove",e=>{const r=plRow(PL.curId),ok=r&&r.t==="f"&&r.buffer;WFX=e.clientX-c.getBoundingClientRect().left;
+    if(WFD&&ok){r.cues[WFD.i]=tAt(e,r);WFD.moved=true;plWfDraw();return}
+    if(ok){const h=hit(e,r);c.style.cursor=h?(h.k==="move"?"grab":"pointer"):"crosshair"}
+    if(PL.state!=="play")plWfDraw()});
   c.addEventListener("pointerleave",()=>{WFX=null;if(PL.state!=="play")plWfDraw()});
+  const endDrag=()=>{if(!WFD)return;WFD=null;c.style.cursor="crosshair";plSave();plRender();plWfDraw()};
+  c.addEventListener("pointerup",endDrag);c.addEventListener("pointercancel",endDrag);
+  c.addEventListener("wheel",e=>{const r=plRow(PL.curId);if(!r||r.t!=="f"||!r.buffer)return;e.preventDefault();
+    const rc=c.getBoundingClientRect(),V=wfV(),dur=r.buffer.duration,span=V.v1-V.v0,mn=Math.min(1,.1/dur);PL.wfT=performance.now();
+    if(e.shiftKey||Math.abs(e.deltaX)>Math.abs(e.deltaY)){const d=(e.deltaX||e.deltaY)/rc.width*span;V.v0=Math.max(0,Math.min(1-span,V.v0+d));V.v1=V.v0+span}
+    else{const fx=(e.clientX-rc.left)/rc.width,f=V.v0+fx*span,ns=Math.max(mn,Math.min(1,span*(e.deltaY<0?.8:1.25)));V.v0=Math.max(0,Math.min(1-ns,f-fx*ns));V.v1=V.v0+ns;if(ns>=.999){V.v0=0;V.v1=1}}
+    plWfDraw()},{passive:false});
   c.addEventListener("pointerdown",e=>{
     if(e.button!==0)return;const r=plRow(PL.curId);if(!r||r.t!=="f")return;e.preventDefault();ACT="pl";
-    const rc=c.getBoundingClientRect(),dur=r.buffer.duration,t=Math.max(0,Math.min(dur-.05,(e.clientX-rc.left)/rc.width*dur)),i=plIdx(PL.curId),mod=e.ctrlKey||e.altKey||e.metaKey;
-    if(PL.state==="play"&&!mod){plStart(i,t,false,true);return}   // suena: un clic y sigue desde ahí
-    if(PL.state==="pause"&&!mod){PL.off=t;plSt();return}         // en pausa: marca desde dónde sigue
-    plAddCue(r,t)});                                              // listo para reproducir (o Ctrl/Alt+clic): marca un cue
+    const h=hit(e,r);
+    if(h){if(h.k==="del"){plDelCue(r,h.i);return}WFD={i:h.i,moved:false};try{c.setPointerCapture(e.pointerId)}catch(_){}c.style.cursor="grabbing";plWfDraw();return}
+    const t=tAt(e,r),i=plIdx(PL.curId),mod=e.ctrlKey||e.altKey||e.metaKey,now=performance.now();
+    const dbl=now-WFL.t<350&&Math.abs(e.clientX-WFL.x)<6;WFL={t:dbl?0:now,x:e.clientX};
+    if(dbl){if(PL.state==="play")plAddCue(r,t);return}                // doble clic sonando: crea un cue
+    if(PL.state==="play"&&!mod){plStart(i,t,false,true);return}       // suena: un clic y sigue desde ahí
+    if(PL.state==="pause"&&!mod){PL.off=t;plSt();return}              // en pausa: marca desde dónde sigue
+    plAddCue(r,t)});                                                  // listo para reproducir (o Ctrl/Alt+clic): marca un cue
   setInterval(()=>{if(PL.state==="play")plWfDraw()},66);
   if(window.ResizeObserver)new ResizeObserver(()=>plWfDraw()).observe($("pl"));}
 /* ---------- selección en la lista: clic, Ctrl, Shift, recuadro, teclado ---------- */
