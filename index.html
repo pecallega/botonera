@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.17 · actualización n.º 17 · por @pecallega -->
+<!-- Botonera al aire · v1.18 · actualización n.º 18 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -242,6 +242,73 @@ button:not(.pad):not(.gear) .ic,label.btn .ic{flex:none}
 .nmf input{width:210px;padding:7px 0;border:0;background:none;color:var(--ink);font:inherit;font-size:.8rem;outline:0}
 .row .key,.row .del,.row .restore{display:inline-flex;align-items:center;gap:7px}
 #menu .top button{display:inline-flex;align-items:center;justify-content:center}
+/* ---- v1.18: buscador de links + reproductor lateral ---- */
+.lk{display:flex;flex-direction:column;gap:8px;width:440px;max-width:100%;margin-left:auto;padding:10px 12px;border:1px solid var(--line);background:var(--glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+@media (min-width:1460px){.lk{margin-top:34px}}
+.lk button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.lkr{display:flex;gap:8px;align-items:center}
+.lkr>.ic{flex:none;color:var(--mut)}
+.lkr input{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:.8rem;outline:0}
+.lkr input:focus{border-color:var(--on)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;flex:1}
+.seg button{padding:7px 6px;font-size:.62rem;white-space:nowrap}
+.seg button.sel{background:#fff;border-color:#fff;color:#0b0b0d}
+.seg button[aria-disabled="true"]{opacity:.35;cursor:not-allowed}
+.lkh{padding:7px 10px;font-size:.62rem;flex:none}
+.lkh .dot{width:8px;height:8px;border-radius:50%;background:#777;flex:none}
+.lkh.ok .dot{background:#2fd06a;box-shadow:0 0 8px #2fd06a}
+.lkh.warn .dot{background:#f2c230;box-shadow:0 0 8px #f2c230}
+.lkh.off .dot{background:var(--on)}
+.lkc{display:flex;gap:10px;align-items:flex-start}
+.lkc img,.lkc .ph{width:88px;height:50px;object-fit:cover;flex:none;background:rgba(255,255,255,.06)}
+.lkc.vert img,.lkc.vert .ph{width:50px;height:88px}
+.lkm{min-width:0;display:flex;flex-direction:column;gap:3px}
+.lkm b{font-weight:600;font-size:.82rem;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.lkm span{color:var(--mut);font-size:.72rem}
+.lka{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lka button{padding:7px 10px;font-size:.62rem}
+.lka button:disabled{opacity:.35;cursor:not-allowed}
+.lka .pri{background:var(--on);border-color:transparent;color:#fff}
+.lkl{display:flex;flex-direction:column;gap:4px;max-height:260px;overflow-y:auto}
+.lkl button{display:flex;justify-content:flex-start;text-align:left;gap:10px;width:100%;padding:6px;text-transform:none;letter-spacing:0;font-size:.78rem}
+.lkl button .lkm b{font-size:.78rem}
+.lks{display:none;align-items:center;gap:8px;font-size:.72rem;color:var(--mut)}
+body.vpopen #empty{display:none!important}
+.lks.on{display:flex}
+.lks #lkst{flex:1}
+.lks button{padding:5px 8px;font-size:.6rem}
+#stage{display:flex;align-items:flex-start;position:relative;z-index:1}
+#stage #grid{flex:1;min-width:0}
+#vp{position:sticky;top:12px;flex:none;width:0;margin-left:0;opacity:0;overflow:hidden;border:1px solid transparent;background:rgba(18,18,22,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);pointer-events:none;transition:width .65s cubic-bezier(.2,.9,.2,1),margin .65s cubic-bezier(.2,.9,.2,1),opacity .45s,box-shadow .65s,border-color .45s}
+#vp.open{opacity:1;margin-left:16px;border-color:var(--line);box-shadow:0 0 70px rgba(232,35,42,.25);pointer-events:auto}
+#vp.open.v{width:min(340px,calc((100vh - 150px)*9/16 + 2px))}
+#vp.open.h{width:460px}
+#vp.open.a{width:400px}
+.vph{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line)}
+.vph button{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;font-size:.6rem}
+.vpt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.72rem;color:var(--mut)}
+#vp.a #vpfs{display:none}
+.vbox{position:relative;width:100%;background:#000;overflow:hidden}
+.vbox iframe,.vbox video{display:block;width:100%;height:100%;border:0;object-fit:contain;background:#000}
+.vbox.au{background:#0e0e11;aspect-ratio:auto!important;padding:12px}
+.vbox.au audio{display:block;width:100%}
+.vbox:fullscreen{aspect-ratio:auto!important;width:100vw;height:100vh}
+.vbox:-webkit-full-screen{aspect-ratio:auto!important;width:100vw;height:100vh}
+@media (max-width:900px){
+  #stage{flex-direction:column}
+  #vp{position:static;width:100%!important;margin:0 0 14px!important;display:none;order:-1}
+  #vp.open{display:block}
+  #vp.open.v .vbox{width:min(100%,340px);margin:0 auto}
+}
+@media (max-width:520px){
+  .fx,.fx .ins{grid-template-columns:minmax(0,118px) minmax(0,1fr) 78px}
+  .fx button,.fx .lbl{min-width:0;padding-left:8px;padding-right:8px}
+  .bar,.fx,.main{width:100%;min-width:0}
+  .num input{width:48px}
+  .brand{gap:14px}
+  .seg{min-width:0}.seg button{padding:7px 3px;font-size:.56rem;gap:4px}.seg button .ic{display:none}
+  .lkh span{display:none}
+}
 @media (prefers-reduced-motion:no-preference){
 .pad.hit{animation:hit .28s ease-out}
 .pad.on.hit{animation:hit .28s ease-out,glow 1.2s ease-in-out .28s infinite}
@@ -297,10 +364,34 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
       </div>
     </div>
   </div>
+  <div class="lk" id="lk" role="search" aria-label="Buscador de links de video y audio">
+    <div class="lkr">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+      <input id="lkurl" type="text" inputmode="url" spellcheck="false" autocomplete="off" placeholder="Pegá un link o escribí para buscar" aria-label="Link o texto a buscar">
+      <button id="lkgo" aria-label="Buscar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Buscar</button>
+    </div>
+    <div class="lkr">
+      <div class="seg" id="lkmodes" role="group" aria-label="Qué reproducir">
+        <button data-m="a" aria-pressed="false" title="Solo el audio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>Audio</button>
+        <button data-m="v" aria-pressed="false" title="Solo la imagen (sin sonido)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="m10 9 5 3-5 3z"/></svg>Video</button>
+        <button data-m="av" aria-pressed="true" class="sel" title="Imagen y sonido"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/></svg>Audio + video</button>
+      </div>
+      <button id="lkh" class="lkh off" title="Estado del helper de descarga"><i class="dot"></i><span>Helper</span></button>
+    </div>
+    <div id="lkres"></div>
+    <div class="lks" id="lks"><span id="lkst" role="status" aria-live="polite"></span><button id="lkcancel" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Cancelar</button></div>
+  </div>
 </header>
 <p id="msg"></p>
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
-<div id="grid"></div>
+<div id="stage"><div id="grid"></div>
+<aside id="vp" aria-label="Reproductor">
+  <div class="vph"><span class="vpt" id="vpt"></span>
+    <button id="vpfs" title="Pantalla completa" aria-label="Pantalla completa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Pantalla completa</button>
+    <button id="vpx" title="Cerrar reproductor" aria-label="Cerrar reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="vbox" id="vbox"></div>
+</aside></div>
 <section id="ed" aria-label="Editor de audio">
   <div class="edh"><b>Editor de audio</b><span id="edn"></span><label class="nmf" title="Nombre del botón al guardar. Vacío = se mantiene el nombre actual."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg><input id="edname" type="text" maxlength="60" placeholder="Nombre del botón" autocomplete="off"></label><span class="sp"></span>
     <div class="edact"><button id="edsave" title="Guardar (modifica este botón)" aria-label="Guardar cambios en este botón"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="ednew" title="Guardar como botón nuevo (el botón original no cambia)" aria-label="Guardar como botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Nuevo botón</button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
@@ -312,7 +403,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
   </div>
 </section>
 
-<footer id="sig" title="Versión 1.17 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.17</span></footer>
+<footer id="sig" title="Versión 1.18 · 14 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.18</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -557,7 +648,7 @@ function play(idx){
 function toggle(idx){const it=items[idx];if(!it)return;
   if(it.playing.size){it.playing.forEach(s=>{try{s.stop()}catch(e){}});return}
   play(idx)}
-function stopAll(){items.forEach(i=>i.playing.forEach(s=>{try{s.stop()}catch(e){}}))}
+function stopAll(){items.forEach(i=>i.playing.forEach(s=>{try{s.stop()}catch(e){}}));if(typeof vpPause==="function")vpPause()}
 function stopFirst(){const i=items.find(i=>i.playing.size);if(i)i.playing.forEach(s=>{try{s.stop()}catch(e){}})}
 
 /* ---------- interfaz ---------- */
@@ -761,6 +852,189 @@ edc.addEventListener("dblclick",()=>{if(ed.it){ed.v0=0;ed.v1=edN();edDraw()}});
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#ed button");if(b)b.blur()});
 window.addEventListener("resize",()=>edDraw());
 let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem("botonera_hidden")||"[]"))}catch(e){}
+/* ---------- buscador de links + reproductor lateral + descarga (helper) ---------- */
+const HELPER=(()=>{try{return localStorage.getItem("botonera_helper")||"http://127.0.0.1:8765"}catch(e){return"http://127.0.0.1:8765"}})();
+document.querySelectorAll("#lkmodes button").forEach(x=>x.dataset.t=x.title);
+const LK={ok:false,h:null,mode:"av",p:null,info:null,src:"",cache:{},busy:null};
+const vpEl=$("vp"),vbEl=$("vbox");let vpMedia=null;
+const LI=p=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
+const LIC={play:'<path d="M7 4v16l13-8z" fill="currentColor"/>',dl:'<path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/>',pad:'<rect x="4" y="4" width="16" height="16"/><path d="M12 8v8M8 12h8"/>'};
+function fmtDur(s){if(!s&&s!==0)return"";s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return(h?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0")}
+function fmtMB(b){return(b/1048576).toFixed(b<10485760?2:1)+" MB"}
+function lkStatus(t){const b=$("lks");$("lkst").textContent=t||"";b.classList.toggle("on",!!t||!!LK.busy)}
+
+/* --- reconocimiento de links y reproductores oficiales incrustables --- */
+function parseLink(raw){
+  let u;try{u=new URL(raw)}catch(e){return null}
+  if(!/^https?:$/.test(u.protocol))return null;
+  const h=u.hostname.toLowerCase().replace(/^(www|m|mobile|music)\./,""),p=u.pathname,q=u.searchParams;let m;
+  const r={url:u.href,host:h,platform:h},ext=(p.match(/\.([a-z0-9]{2,5})$/i)||[])[1]||"";
+  const yt=(id,v)=>{r.platform="YouTube"+(v?" Shorts":"");r.embed={src:"https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id)+"?autoplay=1&rel=0&playsinline=1",ratio:v?"9/16":"16/9",cls:v?"v":"h"};return r};
+  if(/^(mp3|wav|ogg|oga|m4a|aac|flac|opus)$/i.test(ext)){r.direct="audio";r.platform="Archivo de audio";return r}
+  if(/^(mp4|webm|mov|m4v|ogv)$/i.test(ext)){r.direct="video";r.platform="Archivo de video";return r}
+  if(h==="youtu.be"&&(m=p.match(/^\/([\w-]{6,})/)))return yt(m[1],false);
+  if(/(^|\.)youtube(-nocookie)?\.com$/.test(h)){
+    if((m=p.match(/^\/shorts\/([\w-]+)/)))return yt(m[1],true);
+    if((m=p.match(/^\/(?:live|embed|v)\/([\w-]+)/)))return yt(m[1],false);
+    if(p==="/watch"&&q.get("v"))return yt(q.get("v"),false);
+    r.platform="YouTube";return r}
+  if(h.endsWith("tiktok.com")){r.platform="TikTok";if((m=p.match(/\/video\/(\d+)/)))r.embed={src:"https://www.tiktok.com/embed/v2/"+m[1],ratio:"9/16",cls:"v"};return r}
+  if(h.endsWith("instagram.com")){r.platform="Instagram";if((m=p.match(/\/(p|reel|reels|tv)\/([\w-]+)/)))r.embed={src:"https://www.instagram.com/"+(m[1]==="reels"?"reel":m[1])+"/"+m[2]+"/embed/",ratio:"9/16",cls:"v"};return r}
+  if(h==="x.com"||h==="twitter.com"){r.platform="X";if((m=p.match(/\/status(?:es)?\/(\d+)/)))r.embed={src:"https://platform.twitter.com/embed/Tweet.html?id="+m[1]+"&theme=dark&dnt=true",ratio:"460/540",cls:"h"};return r}
+  if(h==="fb.watch"||h.endsWith("facebook.com")||h==="fb.com"){r.platform="Facebook";const rl=/\/reel\//.test(p);r.embed={src:"https://www.facebook.com/plugins/video.php?href="+encodeURIComponent(u.href)+"&show_text=false&autoplay=true&width=560",ratio:rl?"9/16":"16/9",cls:rl?"v":"h"};return r}
+  if(h.endsWith("vimeo.com")&&(m=p.match(/\/(\d+)/))){r.platform="Vimeo";r.embed={src:"https://player.vimeo.com/video/"+m[1]+"?autoplay=1",ratio:"16/9",cls:"h"};return r}
+  if(h.endsWith("twitch.tv")){r.platform="Twitch";const par=location.hostname||"localhost";
+    if((m=p.match(/^\/videos\/(\d+)/)))r.embed={src:"https://player.twitch.tv/?video=v"+m[1]+"&parent="+par+"&autoplay=false",ratio:"16/9",cls:"h"};
+    else if((m=p.match(/^\/(\w+)\/?$/)))r.embed={src:"https://player.twitch.tv/?channel="+m[1]+"&parent="+par+"&autoplay=false",ratio:"16/9",cls:"h"};return r}
+  if(h==="kick.com"){r.platform="Kick";if((m=p.match(/^\/(\w+)\/?$/))&&m[1]!=="video")r.embed={src:"https://player.kick.com/"+m[1],ratio:"16/9",cls:"h"};return r}
+  if(h.endsWith("dailymotion.com")&&(m=p.match(/\/video\/(\w+)/))){r.platform="Dailymotion";r.embed={src:"https://geo.dailymotion.com/player.html?video="+m[1],ratio:"16/9",cls:"h"};return r}
+  if(h.endsWith("soundcloud.com")&&p.split("/").filter(Boolean).length>=2){r.platform="SoundCloud";r.embed={src:"https://w.soundcloud.com/player/?url="+encodeURIComponent(u.href)+"&auto_play=false&visual=false",ratio:"400/166",cls:"a"};return r}
+  if(h==="open.spotify.com"&&(m=p.match(/\/(track|episode|album|playlist|show|artist)\/(\w+)/))){r.platform="Spotify";r.embed={src:"https://open.spotify.com/embed/"+m[1]+"/"+m[2],ratio:/track|episode/.test(m[1])?"400/152":"400/352",cls:"a"};return r}
+  return r;
+}
+const looksUrl=s=>/^https?:\/\//i.test(s)||(!/\s/.test(s)&&/^[\w-]+(\.[\w-]+)+(\/|$)/.test(s));
+
+/* --- panel lateral --- */
+function vpShow(cls,ratio,title){document.body.classList.add("vpopen");vpEl.classList.remove("v","h","a");vpEl.classList.add("open",cls);vbEl.style.aspectRatio=ratio||"16/9";vbEl.classList.toggle("au",cls==="a"&&!ratio);$("vpt").textContent=title||""}
+function vpClear(){if(vpMedia){try{vpMedia.pause()}catch(e){}}vpMedia=null;vbEl.textContent=""}
+function vpClose(){if(document.fullscreenElement)try{document.exitFullscreen()}catch(e){}vpClear();vpEl.classList.remove("open");document.body.classList.remove("vpopen")}
+function vpPause(){if(vpMedia)try{vpMedia.pause()}catch(e){}}
+function playEmbed(p,title){vpClear();const f=document.createElement("iframe");f.src=p.embed.src;f.allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-write";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";f.title=title||p.platform;
+  vbEl.appendChild(f);vpShow(p.embed.cls,p.embed.ratio,p.platform+(title?" · "+title:""))}
+function playNative(src,kind,mode,title,vertHint){
+  vpClear();const aOnly=mode==="a"||kind==="audio",el=document.createElement(aOnly?"audio":"video");
+  el.src=src;el.controls=true;el.autoplay=true;el.preload="auto";if(!aOnly){el.playsInline=true;if(mode==="v")el.muted=true}
+  el.addEventListener("error",()=>note("El reproductor no pudo abrir el archivo (formato no soportado o enlace caído).","error","lk",9000));
+  vbEl.appendChild(el);vpMedia=el;
+  if(aOnly){vpShow("a",null,title);return}
+  vpShow(vertHint?"v":"h",vertHint?"9/16":"16/9",title);
+  el.addEventListener("loadedmetadata",()=>{const w=el.videoWidth,h=el.videoHeight;if(w&&h)vpShow(h>w?"v":"h",w+"/"+h,title)})}
+
+/* --- helper local --- */
+async function hping(){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),1500);
+  try{const r=await fetch(HELPER+"/ping",{signal:ac.signal}),j=await r.json();LK.ok=!!j.ok;LK.h=j}catch(e){LK.ok=false;LK.h=null}finally{clearTimeout(t)}
+  hui();return LK.ok}
+function hui(){const b=$("lkh"),j=LK.h;b.className="lkh "+(!LK.ok?"off":(j&&j.ytdlp&&j.ffmpeg?"ok":"warn"));
+  const stt=!LK.ok?"Helper: no detectado":(j&&j.ytdlp&&j.ffmpeg?"Helper: conectado":"Helper: faltan "+[!j.ytdlp&&"yt-dlp",!j.ffmpeg&&"ffmpeg"].filter(Boolean).join(" y "));
+  b.title=stt+" (clic para ver detalles)";b.setAttribute("aria-label",stt);
+  const need=!LK.ok&&!(LK.p&&LK.p.direct);
+  $("lkmodes").querySelectorAll("button").forEach(x=>{const dis=need&&x.dataset.m!=="av";x.setAttribute("aria-disabled",dis?"true":"false");x.title=dis?"Requiere el helper (el reproductor oficial de la red solo muestra audio + video)":x.dataset.t});
+  if(need&&LK.mode!=="av")setMode("av")}
+function setMode(m){LK.mode=m;$("lkmodes").querySelectorAll("button").forEach(x=>{const s=x.dataset.m===m;x.classList.toggle("sel",s);x.setAttribute("aria-pressed",s)})}
+function busyUI(on,ac){LK.busy=on?{ac}:null;$("lkcancel").hidden=!on;document.querySelectorAll("#lkres .lka button").forEach(b=>b.disabled=on||b.dataset.off==="1");if(!on)lkStatus("");else lkStatus(" ")}
+async function getMedia(kind){
+  const key=kind+"|"+LK.src;if(LK.cache[key])return LK.cache[key];
+  const ac=new AbortController();busyUI(true,ac);const t0=Date.now();
+  const tm=setInterval(()=>lkStatus("Procesando en el helper (bajar y convertir)… "+Math.round((Date.now()-t0)/1000)+" s"),500);lkStatus("Procesando en el helper (bajar y convertir)…");
+  try{
+    const res=await fetch(HELPER+"/get?kind="+kind+"&url="+encodeURIComponent(LK.src)+"&title="+encodeURIComponent(LK.info?LK.info.title:""),{signal:ac.signal});
+    clearInterval(tm);
+    if(!res.ok){let m="";try{m=(await res.json()).error}catch(e){}throw new Error(m||("HTTP "+res.status))}
+    const total=+res.headers.get("Content-Length")||0,rd=res.body.getReader(),parts=[];let got=0;
+    for(;;){const r=await rd.read();if(r.done)break;parts.push(r.value);got+=r.value.length;lkStatus("Recibiendo… "+(total?Math.round(got/total*100)+" % ("+fmtMB(got)+")":fmtMB(got)))}
+    const blob=new Blob(parts,{type:res.headers.get("Content-Type")||""});let fn="";try{fn=decodeURIComponent(res.headers.get("X-Filename")||"")}catch(e){}
+    return LK.cache[key]={blob,name:fn||("descarga."+(kind==="audio"?"mp3":"mp4")),url:URL.createObjectURL(blob)};
+  }finally{clearInterval(tm);busyUI(false)}
+}
+function lkErr(e){
+  if(e&&e.name==="AbortError"){note("Descarga cancelada.","info","lk",4000);return}
+  if(e instanceof TypeError){hping();note("No se pudo hablar con el helper ("+HELPER+"). ¿Sigue abierta su ventana? Si el navegador pidió permiso de red local, aceptalo.","error","lk",12000);return}
+  note("Helper: "+(e&&e.message?e.message:e),"error","lk",14000)}
+function saveBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2500)}
+function lkReset(){Object.values(LK.cache).forEach(m=>{try{URL.revokeObjectURL(m.url)}catch(e){}});LK.cache={};LK.p=null;LK.info=null;LK.src="";$("lkres").textContent="";lkStatus("")}
+
+/* --- acciones --- */
+async function lkPlay(){
+  const p=LK.p;if(!p)return;const mode=LK.mode,title=LK.info?LK.info.title:"",vert=LK.info&&LK.info.width&&LK.info.height?LK.info.height>LK.info.width:(p.embed&&p.embed.cls==="v");
+  try{
+    if(p.direct){if(p.direct==="audio"&&mode==="v")note("Ese archivo es solo audio: no tiene imagen para mostrar. Se reproduce el audio.","warn","lk",7000);playNative(p.url,p.direct,mode,title||p.platform);return}
+    if(mode==="av"&&p.embed){playEmbed(p,title);return}
+    if(!LK.ok){note("Sin el helper no se puede reproducir «"+p.host+"»: no tiene reproductor oficial incrustable. Iniciá el helper.","warn","lk",10000);return}
+    const audioOnly=mode==="a"||(LK.info&&LK.info.has_video===false);
+    const m=await getMedia(audioOnly?"audio":"video");playNative(m.url,audioOnly?"audio":"video",audioOnly?"a":mode,title||p.platform,vert);
+  }catch(e){lkErr(e)}
+}
+async function lkDl(kind){
+  const p=LK.p;if(!p)return;
+  try{
+    if(!LK.ok){ // sin helper: solo archivos directos
+      if(!p.direct){note("Descargar de «"+p.host+"» requiere el helper.","warn","lk",8000);return}
+      lkStatus("Bajando archivo…");const r=await fetch(p.url);if(!r.ok)throw new Error("HTTP "+r.status);const b=await r.blob();lkStatus("");
+      const nm=decodeURIComponent(p.url.split("?")[0].split("/").pop())||"descarga";saveBlob(b,nm);note("Descargado: "+nm+" ("+fmtMB(b.size)+"). Archivo original, sin conversión.","info","lk",8000);return}
+    const m=await getMedia(kind);saveBlob(m.blob,m.name);
+    note("Descargado: "+m.name+" ("+fmtMB(m.blob.size)+"). "+(kind==="audio"?"MP3 128 kbps · 44.100 Hz · estéreo.":"MP4 H.264 + AAC, hasta 1080p."),"info","lk",9000);
+  }catch(e){if(e instanceof TypeError&&!LK.ok)note("El sitio no permite bajar ese archivo desde el navegador (bloqueo CORS). Con el helper sí se puede.","error","lk",10000);else lkErr(e)}
+}
+async function lkToPad(){
+  const p=LK.p;if(!p)return;
+  try{
+    let blob,base;
+    if(LK.ok){const m=await getMedia("audio");blob=m.blob;base=nice(m.name)}
+    else if(p.direct==="audio"){lkStatus("Bajando archivo…");const r=await fetch(p.url);if(!r.ok)throw new Error("HTTP "+r.status);blob=await r.blob();lkStatus("");base=nice(decodeURIComponent(p.url.split("?")[0].split("/").pop())||"audio")}
+    else{note("Crear un botón desde «"+p.host+"» requiere el helper.","warn","lk",8000);return}
+    let nm=base+".mp3",c=2;if(!LK.ok&&p.direct==="audio"){const e=(p.url.split("?")[0].match(/\.([a-z0-9]+)$/i)||[])[1];nm=base+"."+(e||"mp3")}
+    const ext=nm.slice(nm.lastIndexOf("."));while(items.some(i=>i.name===nm))nm=base+" ("+(c++)+")"+ext;
+    const before=items.length;await add(nm,blob);if(items.length===before)return;render();save();
+    const it=items[items.length-1];note("Botón creado: «"+nice(nm)+"» ("+fmtMB(blob.size)+")"+(it.key?" · tecla "+it.key:"")+".","info","lk",8000);
+  }catch(e){if(e instanceof TypeError&&!LK.ok)note("El sitio no permite bajar ese archivo desde el navegador (bloqueo CORS). Con el helper sí se puede.","error","lk",10000);else lkErr(e);lkStatus("")}
+}
+
+/* --- tarjeta de resultado y búsqueda --- */
+function lkCard(){
+  const res=$("lkres");res.textContent="";const p=LK.p,i=LK.info,vert=i&&i.width&&i.height?i.height>i.width:(p.embed&&p.embed.cls==="v");
+  const c=document.createElement("div");c.className="lkc"+(vert?" vert":"");
+  if(i&&i.thumbnail){const im=document.createElement("img");im.src=i.thumbnail;im.alt="";im.referrerPolicy="no-referrer";im.onerror=()=>im.remove();c.appendChild(im)}
+  const m=document.createElement("div");m.className="lkm";const b=document.createElement("b");b.textContent=i?i.title:p.platform;m.appendChild(b);
+  const s=document.createElement("span");s.textContent=i?[i.platform||p.platform,i.uploader,i.duration?fmtDur(i.duration):"",vert?"vertical":""].filter(Boolean).join(" · "):[p.embed?"Reproductor oficial":"Sin reproductor oficial",vert?"vertical":"",LK.ok?"":"sin datos (helper desconectado)"].filter(Boolean).join(" · ");m.appendChild(s);c.appendChild(m);res.appendChild(c);
+  const a=document.createElement("div");a.className="lka";
+  const mk=(cls,ic,txt,fn,off,tt)=>{const x=document.createElement("button");x.className=cls||"";x.innerHTML=LI(ic)+txt;x.onclick=fn;if(off){x.disabled=true;x.dataset.off="1"}if(tt)x.title=tt;a.appendChild(x)};
+  mk("pri",LIC.play,"Reproducir",lkPlay);
+  if(LK.ok||p.direct){
+    if(LK.ok){mk("",LIC.dl,"MP3",()=>lkDl("audio"),false,"MP3 · 128 kbps · 44.100 Hz · estéreo · 16 bits");mk("",LIC.dl,"MP4",()=>lkDl("video"),i&&i.has_video===false,i&&i.has_video===false?"Este contenido no tiene video":"MP4 · H.264 + AAC · hasta 1080p")}
+    else mk("",LIC.dl,"Descargar",()=>lkDl("audio"),false,"Archivo original, sin conversión");
+    if(LK.ok||p.direct==="audio")mk("",LIC.pad,"Al botón",lkToPad,false,"Crea un botón nuevo con este audio")}
+  else{mk("",LIC.dl,"Descargar",()=>{},true,"Requiere el helper");mk("",LIC.pad,"Al botón",()=>{},true,"Requiere el helper")}
+  res.appendChild(a);
+}
+function lkList(list,q){
+  const res=$("lkres");res.textContent="";
+  if(!list.length){note("Sin resultados para «"+q+"».","warn","lk",6000);return}
+  const w=document.createElement("div");w.className="lkl";
+  list.forEach(r=>{const x=document.createElement("button");const c=document.createElement("div");c.className="lkc";
+    if(r.thumbnail){const im=document.createElement("img");im.src=r.thumbnail;im.alt="";im.referrerPolicy="no-referrer";im.onerror=()=>im.remove();c.appendChild(im)}
+    const m=document.createElement("div");m.className="lkm";const b=document.createElement("b");b.textContent=r.title;const s=document.createElement("span");s.textContent=[r.uploader,r.duration?fmtDur(r.duration):""].filter(Boolean).join(" · ");m.append(b,s);c.appendChild(m);x.appendChild(c);
+    x.onclick=()=>{$("lkurl").value=r.url;lkGo()};w.appendChild(x)});
+  res.appendChild(w)}
+async function lkGo(){
+  const q=$("lkurl").value.trim();if(!q){note("Buscador: pegá un link o escribí qué buscar.","warn","lk",5000);return}
+  if(/^[a-z][a-z0-9+.-]*:\/\//i.test(q)&&!/^https?:/i.test(q)){note("Link no válido: solo se aceptan direcciones http(s). Recibido: «"+q.slice(0,60)+"».","error","lk",7000);return}
+  lkReset();lkStatus("Buscando…");await hping();
+  if(!looksUrl(q)){
+    if(!LK.ok){lkStatus("");note("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.","warn","lk",9000);return}
+    try{const r=await fetch(HELPER+"/search?q="+encodeURIComponent(q)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);lkStatus("");lkList(j.results||[],q)}catch(e){lkStatus("");lkErr(e)}
+    return}
+  const link=/^https?:\/\//i.test(q)?q:"https://"+q;LK.p=parseLink(link);
+  if(!LK.p){lkStatus("");note("El link no es válido: «"+q.slice(0,80)+"».","error","lk",7000);return}
+  LK.src=link;hui();
+  if(LK.ok&&!LK.p.direct){
+    try{const r=await fetch(HELPER+"/info?url="+encodeURIComponent(link)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);LK.info=j;LK.src=j.url||link}
+    catch(e){if(!(e instanceof TypeError))note("No se pudo leer ese link: "+e.message+(LK.p.embed?" Se muestra el reproductor oficial.":""),"warn","lk",12000)}}
+  lkStatus("");lkCard();
+  if((LK.mode==="av"&&LK.p.embed)||LK.p.direct)lkPlay();
+  else if(!LK.ok&&!LK.p.embed)note("«"+LK.p.host+"» no tiene reproductor oficial incrustable. Iniciá el helper para reproducirlo y descargarlo.","warn","lk",10000);
+}
+$("lkgo").addEventListener("click",lkGo);
+$("lkurl").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lkGo()}});
+$("lkurl").addEventListener("focus",e=>{e.target.select();hping()});
+$("lkmodes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.getAttribute("aria-disabled")==="true"){note("Sin el helper solo está disponible AUDIO + VIDEO (reproductor oficial de la red).","info","lk",6000);return}setMode(b.dataset.m);if(LK.p)lkPlay()});
+$("lkh").addEventListener("click",async()=>{await hping();
+  if(!LK.ok)note("Helper no detectado en "+HELPER+". Abrí iniciar-helper.bat (carpeta del helper) y dejá esa ventana abierta. Si el navegador pide permiso de red local, aceptalo. Brave: bajá el escudo del sitio.","info","lk",14000);
+  else if(!(LK.h.ytdlp&&LK.h.ffmpeg))note("Helper conectado, pero faltan componentes: "+[!LK.h.ytdlp&&"yt-dlp",!LK.h.ffmpeg&&"ffmpeg"].filter(Boolean).join(" y ")+". Ejecutá iniciar-helper.bat para instalarlos.","warn","lk",14000);
+  else note("Helper v"+LK.h.v+" · yt-dlp "+LK.h.ytdlp+" · ffmpeg OK.","info","lk",6000)});
+$("lkcancel").addEventListener("click",()=>{if(LK.busy)LK.busy.ac.abort()});
+$("vpx").addEventListener("click",vpClose);
+$("vpfs").addEventListener("click",()=>{if(document.fullscreenElement){document.exitFullscreen();return}const f=vbEl.requestFullscreen||vbEl.webkitRequestFullscreen;if(f)f.call(vbEl);else note("Este navegador no permite pantalla completa en el reproductor.","warn","lk",6000)});
+hping();
 if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{note("No se pudo cargar la tipografía Satoshi (no se encuentran los archivos de /fonts). La página funciona con tipografía de respaldo. Verificá que la carpeta «fonts» esté junto a index.html en el repo.","warn","font")});
 (async()=>{
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
