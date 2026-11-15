@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.24 · actualización n.º 24 · por @pecallega -->
+<!-- Botonera al aire · v1.25 · actualización n.º 25 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -420,7 +420,7 @@ body.air #air,body.live #air{animation:onair 1s steps(1) infinite}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.24 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.24</span></footer>
+<footer id="sig" title="Versión 1.25 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.25</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -688,9 +688,10 @@ function stopFirst(){const i=items.find(i=>i.playing.size);if(i)i.playing.forEac
 function tint(h,a){const n=parseInt(h.slice(1),16);return"rgba("+(n>>16)+","+(n>>8&255)+","+(n&255)+","+a+")"}
 function fg(h){const n=parseInt(h.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return(r*299+g*587+b*114)/1000>150?"#111":"#fff"}
 const isCort=n=>/^\s*cortinas?(?![a-záéíóúüñ])/i.test(n);
+const grp=i=>(isCort(i.name)?2:0)+(i.base?0:1); // 0 fijo normal · 1 propio normal · 2 fijo cortina · 3 propio cortina
 function normalizeOrder(){
-  const a=items.filter(i=>!isCort(i.name)),b=items.filter(i=>isCort(i.name));
-  items.splice(0,items.length,...a,...b);
+  const out=[[],[],[],[]];items.forEach(i=>out[grp(i)].push(i));
+  items.splice(0,items.length,...out[0],...out[1],...out[2],...out[3]);
 }
 const MVSVG='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M12 2v20M2 12h20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/></svg>';
 function moveItem(from,to,after){
@@ -702,9 +703,9 @@ function moveItem(from,to,after){
 function startMove(e,idx,cell){
   if(e.button!==undefined&&e.button!==0)return;
   e.preventDefault();e.stopPropagation();hideCm();
-  const cort=isCort(items[idx].name);
+  const g0=grp(items[idx]);
   const sx=e.clientX,sy=e.clientY;let moved=false,tgt=null,after=false;
-  const cells=()=>Array.from(grid.querySelectorAll(".cell")).filter(c=>c!==cell&&c.dataset.idx!==undefined&&isCort(items[+c.dataset.idx].name)===cort);
+  const cells=()=>Array.from(grid.querySelectorAll(".cell")).filter(c=>c!==cell&&c.dataset.idx!==undefined&&grp(items[+c.dataset.idx])===g0);
   const clr=()=>grid.querySelectorAll(".ins-a,.ins-b").forEach(c=>c.classList.remove("ins-a","ins-b"));
   const mv=ev=>{
     const dx=ev.clientX-sx,dy=ev.clientY-sy;
@@ -759,7 +760,7 @@ function render(){
     m.addEventListener("pointerdown",e=>startMove(e,idx,cell));
     m.addEventListener("click",e=>e.stopPropagation());
     m.addEventListener("keydown",e=>{
-      const cort=isCort(it.name);const same=i=>isCort(items[i].name)===cort;
+      const g0=grp(it);const same=i=>grp(items[i])===g0;
       let t=-1;
       if(e.key==="ArrowLeft"||e.key==="ArrowUp"){for(let i=idx-1;i>=0;i--)if(same(i)){t=i;break}}
       else if(e.key==="ArrowRight"||e.key==="ArrowDown"){for(let i=idx+1;i<items.length;i++)if(same(i)){t=i;break}}
@@ -876,6 +877,7 @@ async function repoList(){
     const h=location.hostname;if(!/\.github\.io$/.test(h))return [];
     const u=h.split(".")[0];let r=location.pathname.split("/")[1]||"";if(!r||r.indexOf(".")>-1)r=h;
     const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),6000);let res;try{res=await fetch("https://api.github.com/repos/"+u+"/"+r+"/contents/audios",{signal:ac.signal})}finally{clearTimeout(tm)}
+    if(res.status===404){try{localStorage.removeItem("botonera_repo")}catch(e){}return []}
     if(!res.ok)throw new Error("HTTP "+res.status);
     const l=(await res.json()).filter(f=>f.type==="file"&&/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i.test(f.name)).map(f=>f.name);
     try{localStorage.setItem("botonera_repo",JSON.stringify(l))}catch(e){}
