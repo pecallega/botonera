@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.49 · actualización n.º 49 · por @pecallega -->
+<!-- Botonera al aire · v1.51 · actualización n.º 51 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -617,6 +617,16 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 #dlg li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #dlg li em{font-style:normal;color:#fff;white-space:nowrap}
 .pad.dupmark{outline:3px solid #e8232a;outline-offset:-3px}
+#dlg .dok:disabled{opacity:.4;cursor:not-allowed}
+#dlg li .dli{width:100%;display:flex;justify-content:space-between;gap:12px;padding:6px 9px;border:1px solid #e8232a;background:rgba(232,35,42,.14);color:#ff7377;font:inherit;text-align:left;cursor:pointer;border-radius:0;text-transform:none;letter-spacing:0}
+#dlg li .dli span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dlg li .dli em{font-style:normal;color:#fff;white-space:nowrap}
+#dlg li .dli.off{border-color:var(--line);background:rgba(255,255,255,.04);color:var(--mut)}
+#dlg li .dli.off span{text-decoration:line-through}
+#dlg li .dli.off em{color:var(--mut)}
+#dlg li:has(.dli){padding:0;border:0;background:none}
+@keyframes plblink{0%,100%{background:rgba(255,241,168,.3);border-color:#fff1a8}50%{background:rgba(255,255,255,.04);border-color:var(--line)}}
+.plr.blink{animation:plblink .5s ease-in-out 4}
 #mkm{position:fixed;display:none;z-index:400;width:190px;padding:6px;background:rgba(24,24,28,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #mkm .mkt{padding:6px 8px 8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 #mkm .mkr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 0 6px}
@@ -745,7 +755,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.49 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.49</span></footer>
+<footer id="sig" title="Versión 1.51 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.51</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -783,7 +793,7 @@ body.marqing,body.marqing *{user-select:none;-webkit-user-select:none;cursor:cro
   <button class="mi" id="cedit" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4"/></svg>Editar audio</button>
   <button class="mi" id="cdl" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>Descargar</button>
   <button class="mi" id="cpl" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>Enviar a la lista</button>
-  <button class="mi del" id="cdel" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Eliminar botón</button>
+  <button class="mi del" id="cdel" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg><span id="cdelt">Eliminar botón</span></button>
   <div class="msep"></div>
   <div class="mw" id="mw">
     <button class="mi" id="mcol" role="menuitem" aria-haspopup="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>Color<svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
@@ -1166,7 +1176,7 @@ function renderMenu(){
     kb.innerHTML=ICKB+(waiting===idx?"Apretá una tecla…":(it.key?it.key+" · Cambiar":"Asignar"));
     if(waiting===idx)kb.classList.add("wait");
     kb.addEventListener("click",()=>{waiting=waiting===idx?null:idx;renderMenu()});
-    r.querySelector(".del").addEventListener("click",()=>askRemove(idx));
+    r.querySelector(".del").addEventListener("click",()=>askRemove(idx,true));
     list.appendChild(r);
   });
   if(!items.length)list.innerHTML="<p>Todavía no cargaste audios.</p>";
@@ -1176,9 +1186,18 @@ function renderMenu(){
 function mark(idx){const el=$("p"+idx);if(el&&items[idx])el.classList.toggle("on",items[idx].playing.size>0);document.body.classList.toggle("air",items.some(i=>i.playing.size>0))}
 function remove(idx){const it=items[idx];it.playing.forEach(s=>{try{s.stop()}catch(e){}});
   if(it.base){hidden.add(it.name);try{localStorage.setItem(HK,JSON.stringify([...hidden]))}catch(e){}}
-  delete colors[it.name];items.splice(idx,1);waiting=null;render();save()}
-function askRemove(idx){const it=items[idx];if(!it)return;
-  if(confirm("¿Eliminar el botón «"+nice(it.name)+"»?"+(it.base?"\n\nEl archivo sigue en GitHub: solo se oculta en este navegador.":"")))remove(idx)}
+  delete colors[it.name];items.splice(idx,1);waiting=null;SEL.clear();BLINK.clear();render();save()}
+async function askRemove(idx,only){const it=items[idx];if(!it)return;
+  const many=!only&&SEL.has(it)&&selList().length>1;
+  if(many)return askRemoveMany(selList());
+  const ok=await askDlg("Eliminar botón","¿Eliminar el botón «"+nice(it.name)+"»?"+(it.base?" El archivo sigue en GitHub: solo se oculta en este navegador.":""),"Eliminar");
+  if(ok){const k=items.indexOf(it);if(k>=0){SEL.delete(it);remove(k)}}}
+async function askRemoveMany(list){
+  const base=list.filter(i=>i.base).length;
+  const ok=await askDlg("Eliminar botones","¿Seguro que querés eliminar los "+list.length+" botones seleccionados?"+(base?" De ellos, "+base+(base===1?" es un archivo":" son archivos")+" de GitHub: solo se ocultan en este navegador.":""),"Eliminar ("+list.length+")",list.map(i=>({t:nice(i.name),g:i.key?"tecla "+i.key:"sin tecla"})));
+  if(!ok)return;
+  list.forEach(it=>{it.playing.forEach(x=>{try{x.stop()}catch(e){}});if(it.base){hidden.add(it.name);try{localStorage.setItem(HK,JSON.stringify([...hidden]))}catch(e){}}delete colors[it.name];SEL.delete(it)});
+  items=items.filter(i=>!list.includes(i));waiting=null;SEL.clear();BLINK.clear();render();save();note(list.length+" botones eliminados.","info","",3500)}
 function assign(idx,k){
   const o=items.findIndex((i,n)=>n!==idx&&i.key===k);
   if(o>=0)items[o].key=items[idx].key;
@@ -1192,7 +1211,8 @@ function openCm(x,y,idx){cmIdx=idx;cm.style.display="block";
   const w=cm.offsetWidth,h=cm.offsetHeight,L=Math.max(4,Math.min(x,innerWidth-w-8));
   cm.style.left=L+"px";cm.style.top=Math.max(4,Math.min(y,innerHeight-h-8))+"px";
   cm.classList.toggle("flip",L+w+216>innerWidth);$("mw").classList.remove("open");
-  $("cpick").value=colors[items[idx].name]||"#2f80ed"}
+  $("cpick").value=colors[items[idx].name]||"#2f80ed";
+  {const n=SEL.has(items[idx])?selList().length:0;$("cdelt").textContent=n>1?"Eliminar botones ("+n+")":"Eliminar botón"}}
 function hideCm(){cm.style.display="none";cmIdx=null}
 function setColor(c){if(cmIdx===null)return;const n=items[cmIdx].name;if(c)colors[n]=c;else delete colors[n];hideCm();render();save()}
 $("cpick").addEventListener("change",e=>setColor(e.target.value));
@@ -1296,7 +1316,7 @@ $("usradd").addEventListener("click",()=>{
   const id="u"+Date.now().toString(36);PROF.list.push({id,name:n});PROF.active=id;profSave();location.reload()});
 $("usrdel").addEventListener("click",async()=>{
   if(PROF.active==="p0")return;const u=PROF.list.find(x=>x.id===PROF.active);
-  if(!confirm("¿Eliminar el usuario «"+(u?u.name:"")+"» y todos sus botones guardados? No se puede deshacer."))return;
+  if(!await askDlg("Eliminar usuario","¿Eliminar el usuario «"+(u?u.name:"")+"» y todos sus botones guardados? No se puede deshacer.","Eliminar"))return;
   try{const d=await db();await new Promise(ok=>{const t=d.transaction("s","readwrite");t.objectStore("s").delete(IK);t.oncomplete=ok;t.onerror=ok;t.onabort=ok})}catch(e){}
   try{localStorage.removeItem(HK)}catch(e){}
   PROF.list=PROF.list.filter(x=>x.id!==PROF.active);PROF.active="p0";profSave();location.reload()});
@@ -1712,7 +1732,7 @@ $("ttlis").addEventListener("click",ttListen);$("ttnew").addEventListener("click
 /* --- lista de reproducción --- */
 const PLK="pl"+(PROF.active==="p0"?"":":"+PROF.active);
 const PL={rows:[],curId:null,nxtId:null,state:"stop",src:null,off:0,t0:0,ts:0,gen:0,solo:false,clip:[],uid:1,drag:null,dragIds:null,menuId:null,menuIns:0};
-const PLS=[]; let PLANCH=null,PLC=null; // filas seleccionadas de la lista (en orden de selección), ancla para Shift y clic sobre grupo
+const PLS=[],PLBLINK=new Set(); let PLANCH=null,PLC=null; // filas seleccionadas de la lista (en orden de selección), ancla para Shift y clic sobre grupo
 const plIdx=id=>PL.rows.findIndex(r=>r.id===id),plRow=id=>PL.rows[plIdx(id)];
 const plAudio=f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba)$/i.test(f.name);
 const fmtM=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
@@ -1793,7 +1813,7 @@ function plRender(){
   const L=$("pll"),st0=L.scrollTop;L.textContent="";const ci=plIdx(PL.curId),ni=plNextIdx();let k=0;
   for(let q=PLS.length-1;q>=0;q--)if(plIdx(PLS[q])<0)PLS.splice(q,1);
   PL.rows.forEach((r,i)=>{const d=document.createElement("div");
-    d.className="plr"+(r.t==="s"?" stp":"")+(i===ci?" cur":"")+(i===ni?" nxt":"")+(i===ci&&PL.state==="play"?" playing":"")+(PLS.includes(r.id)?" msel":"");
+    d.className="plr"+(r.t==="s"?" stp":"")+(i===ci?" cur":"")+(i===ni?" nxt":"")+(i===ci&&PL.state==="play"?" playing":"")+(PLBLINK.has(r.id)?" blink":(PLS.includes(r.id)?" msel":""));
     d.dataset.id=r.id;d.draggable=true;d.setAttribute("role","option");
     if(r.t==="s"){const s=document.createElement("span");s.textContent="STOP";d.appendChild(s)}
     else{k++;if(r.color)d.style.setProperty("--c",r.color);
@@ -1979,7 +1999,10 @@ $("pldlf").addEventListener("click",async()=>{
 $("plopenf").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const l=await plsUnpack(f);$("plname").value=l.name;await plsApply(l.rows,l.name)}catch(x){note(String(x.message||x),"error","pl",8000)}});
 /* ---------- selección en la lista: clic, Ctrl, Shift, recuadro, teclado ---------- */
-function plSelApply(){document.querySelectorAll("#pll .plr").forEach(d=>d.classList.toggle("msel",PLS.includes(+d.dataset.id)))}
+function plSelApply(){document.querySelectorAll("#pll .plr").forEach(d=>{const id=+d.dataset.id;d.classList.toggle("msel",PLS.includes(id)&&!PLBLINK.has(id))})}
+function plFlash(ids){ // tras soltar en la botonera: las filas titilan 2 segundos y se deseleccionan solas
+  ids.forEach(i=>PLBLINK.add(i));plRender();
+  setTimeout(()=>{ids.forEach(i=>{PLBLINK.delete(i);const q=PLS.indexOf(i);if(q>=0)PLS.splice(q,1)});plRender()},2000)}
 function plSelSet(ids,anchor){PLS.length=0;ids.forEach(i=>PLS.push(i));if(anchor!==undefined)PLANCH=anchor;plSelApply()}
 const plSelRows=()=>PL.rows.filter(r=>PLS.includes(r.id));
 function plCopySel(cut){const rows=plSelRows();if(!rows.length)return;PL.clip=rows.map(plClone);
@@ -2019,6 +2042,9 @@ function plMarquee(e0){
   L.addEventListener("click",e=>{if(PLC!==null&&!e.ctrlKey&&!e.shiftKey&&!e.metaKey){const row=e.target.closest(".plr");if(row&&+row.dataset.id===PLC)plSelSet([PLC],PLC)}PLC=null})}
 document.addEventListener("pointerdown",e=>{const t=e.target;ACT=t.closest?(t.closest("#pl,#plm")?"pl":t.closest("#ed")?"ed":t.closest("#gcol")?"pad":null):null},true);
 const kTyping=e=>{const t=e.target;return !!t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.tagName==="SELECT"||t.isContentEditable)};
+document.addEventListener("keydown",e=>{ // botonera: Supr con botones seleccionados
+  if(ACT!=="pad"||kTyping(e)||e.ctrlKey||e.metaKey||e.altKey||e.key!=="Delete"||(typeof waiting!=="undefined"&&waiting!==null)||document.getElementById("dlg"))return;
+  const l=selList();if(!l.length)return;e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)l.length>1?askRemoveMany(l):askRemove(items.indexOf(l[0]),true)},true);
 document.addEventListener("keydown",e=>{ // lista: Ctrl+A/C/X/V, Supr, Inicio, Fin
   if(ACT!=="pl"||kTyping(e)||e.altKey||(typeof waiting!=="undefined"&&waiting!==null)||document.getElementById("dlg"))return;
   const mod=e.ctrlKey||e.metaKey,k=(e.key||"").toLowerCase(),eat=()=>{e.preventDefault();e.stopImmediatePropagation()};
@@ -2037,13 +2063,17 @@ document.addEventListener("keydown",e=>{ // editor: Inicio / Fin llevan el curso
   ed.cur=to;edPan(to===0?0:n);if(typeof edInfo==="function")edInfo()},true);
 $("plshow").addEventListener("click",plShowCur);
 /* ---------- diálogo de confirmación ---------- */
-function askDlg(title,msg,okLabel,list){return new Promise(res=>{
+function askDlg(title,msg,okLabel,list,opt){opt=opt||{};return new Promise(res=>{
   const w=document.createElement("div");w.id="dlg";w.innerHTML='<div class="dbox" role="alertdialog" aria-modal="true"><b></b><p></p><div class="drow"><button class="dno">Cancelar</button><button class="dok"></button></div></div>';
-  w.querySelector("b").textContent=title;w.querySelector("p").textContent=msg;
-  if(list&&list.length){const ul=document.createElement("ul");list.forEach(x=>{const li=document.createElement("li"),a=document.createElement("span"),b=document.createElement("em");a.textContent=x.t;b.textContent=x.g;li.append(a,b);ul.appendChild(li)});w.querySelector("p").after(ul)}w.querySelector(".dok").textContent=okLabel||"Aceptar";document.body.appendChild(w);
+  w.querySelector("b").textContent=title;w.querySelector("p").textContent=msg;const ok=w.querySelector(".dok");ok.textContent=okLabel||"Aceptar";
+  const refresh=()=>{if(!opt.toggle)return;const n=list.filter(x=>x.on).length;ok.textContent=(okLabel||"Aceptar")+" ("+n+")";ok.disabled=n+(opt.extra||0)===0};
+  if(list&&list.length){const ul=document.createElement("ul");list.forEach(x=>{const li=document.createElement("li"),a=document.createElement("span"),b=document.createElement("em");a.textContent=x.t;b.textContent=x.g;
+    if(opt.toggle){const bt=document.createElement("button");bt.type="button";bt.className="dli on";bt.setAttribute("aria-pressed","true");bt.title="Tocá para elegir si se duplica o no";
+      bt.append(a,b);bt.onclick=()=>{x.on=!x.on;bt.classList.toggle("on",x.on);bt.classList.toggle("off",!x.on);bt.setAttribute("aria-pressed",x.on);b.textContent=x.on?x.g:"no se duplica";if(opt.onToggle)opt.onToggle(x);refresh()};li.appendChild(bt)}
+    else li.append(a,b);ul.appendChild(li)});w.querySelector("p").after(ul)}
   const end=v=>{document.removeEventListener("keydown",kd,true);w.remove();res(v)};
-  const kd=e=>{if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();end(false)}else if(e.key==="Enter"){e.preventDefault();e.stopImmediatePropagation();end(true)}};
-  document.addEventListener("keydown",kd,true);w.querySelector(".dno").onclick=()=>end(false);w.querySelector(".dok").onclick=()=>end(true);w.addEventListener("pointerdown",e=>{if(e.target===w)end(false)});w.querySelector(".dok").focus()})}
+  const kd=e=>{if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();end(false)}else if(e.key==="Enter"){e.preventDefault();e.stopImmediatePropagation();if(!ok.disabled)end(true)}};
+  document.addEventListener("keydown",kd,true);w.querySelector(".dno").onclick=()=>end(false);ok.onclick=()=>{if(!ok.disabled)end(true)};w.addEventListener("pointerdown",e=>{if(e.target===w)end(false)});document.body.appendChild(w);refresh();ok.focus()})}
 /* ---------- fila de la lista → botón nuevo ---------- */
 const plSameItem=r=>items.find(i=>i.blob===r.blob||(i.name===r.name&&i.blob&&r.blob&&i.blob.size===r.blob.size));
 async function plToButton(row,at,quiet){
@@ -2056,29 +2086,34 @@ async function plToButton(row,at,quiet){
   if(!quiet)note((ex?"Botón duplicado: «":"Botón nuevo desde la lista: «")+nice(name)+"».","info","",5000);return pos}
 // varios temas de la lista → botonera: una sola pregunta para todos los que ya existen, mostrándolos en rojo con su tecla y su lugar
 async function plDropRows(rows,at){
-  rows=rows.filter(r=>r&&r.t==="f");if(!rows.length)return;
-  const dups=rows.map(r=>({r,ex:plSameItem(r)})).filter(x=>x.ex),mark=dups.map(d=>$("p"+items.indexOf(d.ex))).filter(Boolean);
+  rows=rows.filter(r=>r&&r.t==="f");if(!rows.length)return false;
+  const dups=rows.map(r=>({r,ex:plSameItem(r)})).filter(x=>x.ex),nuevos=rows.length-dups.length;let skip=new Set();
   if(dups.length){
-    mark.forEach(el=>el.classList.add("dupmark"));
-    const lst=dups.map(d=>({t:nice(d.ex.name),g:(d.ex.key?"tecla "+d.ex.key:"sin tecla")+" · lugar "+(items.indexOf(d.ex)+1)}));
+    const lst=dups.map(d=>({t:nice(d.ex.name),g:(d.ex.key?"tecla "+d.ex.key:"sin tecla")+" · lugar "+(items.indexOf(d.ex)+1),on:true,r:d.r,el:$("p"+items.indexOf(d.ex))}));
+    lst.forEach(x=>x.el&&x.el.classList.add("dupmark"));
     const ok=await askDlg(dups.length===1?"Ese botón ya existe":dups.length+" botones ya existen",
-      (dups.length===1?"Ya hay un botón con ese audio (en rojo).":"Estos audios ya están en la botonera (en rojo).")+" Si aceptás se crea una copia de cada uno"+(rows.length>dups.length?(rows.length-dups.length===1?" y además se agrega 1 nuevo":" y además se agregan "+(rows.length-dups.length)+" nuevos"):"")+". Si cancelás no se crea ninguno.","Duplicar",lst);
-    mark.forEach(el=>el.classList.remove("dupmark"));if(!ok)return}
-  let pos=at,n=0;for(const r of rows){const q=await plToButton(r,pos,true);if(q!=null){pos=q;n++}}
-  note(n===1&&rows.length===1?"Botón "+(dups.length?"duplicado":"nuevo")+" desde la lista.":"Botones creados desde la lista: "+n+(dups.length?" ("+dups.length+" duplicados)":"")+".","info","",5000)}
+      (dups.length===1?"Ya hay un botón con ese audio (en rojo).":"Estos audios ya están en la botonera (en rojo).")+" Tocá cada nombre para elegir cuáles se duplican y cuáles no."+(nuevos?(nuevos===1?" El tema nuevo se agrega igual.":" Los "+nuevos+" temas nuevos se agregan igual."):"")+" Si cancelás no se crea ninguno.","Duplicar",lst,
+      {toggle:true,extra:nuevos,onToggle:x=>x.el&&x.el.classList.toggle("dupmark",x.on)});
+    lst.forEach(x=>x.el&&x.el.classList.remove("dupmark"));if(!ok)return false;
+    lst.forEach(x=>{if(!x.on)skip.add(x.r)})}
+  const go=rows.filter(r=>!skip.has(r));let pos=at,n=0;for(const r of go){const q=await plToButton(r,pos,true);if(q!=null){pos=q;n++}}
+  const d=dups.filter(x=>!skip.has(x.r)).length;
+  note(n===1&&go.length===1?"Botón "+(d?"duplicado":"nuevo")+" desde la lista.":"Botones creados desde la lista: "+n+(d?" ("+d+" duplicados)":"")+(skip.size?" · "+skip.size+" sin duplicar":"")+".","info","",5000);
+  return n>0}
 (function(){const g=$("gcol");let on=false;
   const idxAt=e=>{const c=e.target.closest&&e.target.closest("#grid .cell"),pad=c&&c.querySelector(".pad");const m=pad&&/^p(\d+)$/.exec(pad.id);return m?+m[1]:-1};
   const off=()=>{on=false;g.classList.remove("dropbtn")};
   const okDrag=()=>{if(PL.drag===null)return false;return (PL.dragIds||[PL.drag]).some(id=>{const r=plRow(id);return !!r&&r.t==="f"})}; // los stops no se pueden soltar en la botonera
   ["dragenter","dragover"].forEach(ev=>g.addEventListener(ev,e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect="move";if(!on){on=true;g.classList.add("dropbtn")}}));
   g.addEventListener("dragleave",e=>{if(okDrag()&&!g.contains(e.relatedTarget))off()});
-  g.addEventListener("drop",e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();off();const ids=PL.dragIds||[PL.drag],rows=PL.rows.filter(r=>ids.includes(r.id)&&r.t==="f"),at=idxAt(e);PL.drag=null;PL.dragIds=null;plDropRows(rows,at)});
+  g.addEventListener("drop",e=>{if(!okDrag())return;e.preventDefault();e.stopPropagation();off();const ids=PL.dragIds||[PL.drag],rows=PL.rows.filter(r=>ids.includes(r.id)&&r.t==="f"),at=idxAt(e);PL.drag=null;PL.dragIds=null;plDropRows(rows,at).then(ok=>{if(ok)plFlash(ids)})});
   document.addEventListener("dragend",off)})();
 /* botón de la botonera: suena al soltar; si se mantiene y se arrastra, se puede soltar en la lista y no suena */
 function plWhereXY(x,y){const el=document.elementFromPoint(x,y);if(!el||!el.closest||!el.closest("#pl"))return null;
   const r=el.closest(".plr");if(!r)return{ins:PL.rows.length,el:null,after:true};
   const rc=r.getBoundingClientRect(),after=y>rc.top+rc.height/2;return{ins:plIdx(+r.dataset.id)+(after?1:0),el:r,after}}
 function selApply(){
+  Array.from(SEL).forEach(x=>{if(!items.includes(x))SEL.delete(x)});Array.from(BLINK).forEach(x=>{if(!items.includes(x))BLINK.delete(x)});
   items.forEach((it,i)=>{const el=$("p"+i);if(el){el.classList.toggle("sel",SEL.has(it)&&!BLINK.has(it));el.classList.toggle("blink",BLINK.has(it))}});
   const ord=selList();items.forEach((it,i)=>{const el=$("p"+i);if(!el)return;let b=el.querySelector(".selno");const k=ord.indexOf(it);
     if(k<0){if(b)b.remove();return}if(!b){b=document.createElement("span");b.className="selno";el.appendChild(b)}b.textContent=k+1});
