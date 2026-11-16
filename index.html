@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.75 · actualización n.º 75 · por @pecallega -->
+<!-- Botonera al aire · v1.76 · actualización n.º 76 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -906,7 +906,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.75 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.75</span></footer>
+<footer id="sig" title="Versión 1.76 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.76</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -2832,11 +2832,12 @@ $("lkurl").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault()
 $("lkurl").addEventListener("focus",e=>{e.target.select();hping()});
 $("lkmodes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.getAttribute("aria-disabled")==="true"){note("Sin el helper solo está disponible AUDIO + VIDEO (reproductor oficial de la red).","info","lk",6000);return}setMode(b.dataset.m);if(LK.p)lkPlay()});
 $("lkh").addEventListener("click",async()=>{await hping();
+  if(!LK.ok){hRed();return}
   if(!LK.ok)note("Helper no detectado en "+HELPER+". Abrí iniciar-helper.bat (carpeta del helper) y dejá esa ventana abierta. Si el helper está en otra compu: clic derecho en HELPER para poner su dirección y clave. Si el navegador pide permiso de red local, aceptalo. Brave: bajá el escudo del sitio.","info","lk",14000);
   else if(!(LK.h.ytdlp&&LK.h.ffmpeg))note("Helper conectado, pero faltan componentes: "+[!LK.h.ytdlp&&"yt-dlp",!LK.h.ffmpeg&&"ffmpeg"].filter(Boolean).join(" y ")+". Ejecutá iniciar-helper.bat para instalarlos.","warn","lk",14000);
-  else note("Helper v"+LK.h.v+" · yt-dlp "+LK.h.ytdlp+" · ffmpeg OK.","info","lk",6000)});
+  else note("Helper v"+LK.h.v+" · yt-dlp "+LK.h.ytdlp+" · ffmpeg OK."+(HREMOTE?" Estás usando un helper remoto; para cambiarlo, clic derecho o mantené apretado el botón HELPER.":""),"info","lk",8000)});
 /* helper remoto: clic derecho en HELPER para poner la dirección del túnel y la clave (vacío = helper de esta compu) */
-$("lkh").addEventListener("contextmenu",async e=>{e.preventDefault();
+async function hCfg(){
   const cur=HREMOTE?HELPER:"";
   const url=await askName("Helper remoto","Dirección del helper (ej. https://algo.trycloudflare.com). Escribí «local» para volver a usar el helper de esta compu.",cur,"Siguiente",200);if(url===null)return;
   const clean=(url||"").trim().replace(/\/+$/,"");
@@ -2844,7 +2845,15 @@ $("lkh").addEventListener("contextmenu",async e=>{e.preventDefault();
   if(!/^https:\/\/[^\s/]+/i.test(clean)){note("La dirección tiene que empezar con https:// (la que te muestra el túnel).","error","hcfg",8000);return}
   const tk=await askName("Clave del helper","Pegá la clave que muestra la ventana del helper (o el archivo token.txt).",HTOK,"Guardar",80);if(tk===null)return;
   try{localStorage.setItem("botonera_helper",clean);localStorage.setItem("botonera_htoken",(tk||"").trim())}catch(x){}
-  note("Helper remoto guardado en este navegador. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900)});
+  note("Helper remoto guardado en este navegador. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900)}
+/* HELPER en rojo (clic izquierdo, derecho o toque): primero busca el helper de esta compu; si no está, pide la dirección del túnel */
+async function hRed(){
+  note("Buscando el helper de esta compu…","info","hcfg",3000);
+  const ac=new AbortController(),t=setTimeout(()=>ac.abort(),2500);let ok=false;
+  try{const r=await fetch("http://127.0.0.1:8765/ping",{signal:ac.signal}),j=await r.json();ok=!!(j&&j.ok&&!j.need_token)}catch(e){}finally{clearTimeout(t)}
+  if(ok){try{localStorage.removeItem("botonera_helper");localStorage.removeItem("botonera_htoken")}catch(x){}note("Se encontró el helper de esta compu. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900);return}
+  clearNote("hcfg");await hCfg()}
+$("lkh").addEventListener("contextmenu",async e=>{e.preventDefault();await hping();if(!LK.ok)hRed();else hCfg()});
 $("lkcancel").addEventListener("click",()=>{if(LK.busy)LK.busy.ac.abort()});
 $("vpx").addEventListener("click",vpClose);
 $("vpmu").addEventListener("click",()=>setVpMute(!(vpMedia?vpMedia.muted:EMB.muted)));
