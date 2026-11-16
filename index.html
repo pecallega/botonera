@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.74 · actualización n.º 74 · por @pecallega -->
+<!-- Botonera al aire · v1.75 · actualización n.º 75 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -906,7 +906,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.74 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.74</span></footer>
+<footer id="sig" title="Versión 1.75 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.75</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1590,9 +1590,9 @@ function edSelData(){
   const mk=ed.marks.filter(m=>m.p>=a&&m.p<b).map(m=>({t:(m.p-a)/sr,k:m.k}));
   return{ch,sr,buf,mk,len:b-a,src:ed.it}}
 const edGenName=()=>{let c=1,d="Selección de material";const ex=n=>items.some(i=>nice(i.name)===n)||PLISTS.some(L=>L.rows.some(r=>r.t==="f"&&nice(r.name)===n));while(ex(d))d="Selección de material "+(++c);return d};
-function askName(title,msg,def,okLabel){return new Promise(res=>{
+function askName(title,msg,def,okLabel,maxLen){return new Promise(res=>{
   const w=document.createElement("div");w.id="dlg";w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b></b><p></p><input type="text" maxlength="60" autocomplete="off" spellcheck="false" aria-label="Nombre"><div class="drow"><button class="dno">Cancelar</button><button class="dok"></button></div></div>';
-  w.querySelector("b").textContent=title;w.querySelector("p").textContent=msg;const inp=w.querySelector("input");inp.value=def;w.querySelector(".dok").textContent=okLabel||"Aceptar";
+  w.querySelector("b").textContent=title;w.querySelector("p").textContent=msg;const inp=w.querySelector("input");if(maxLen)inp.maxLength=maxLen;inp.value=def;w.querySelector(".dok").textContent=okLabel||"Aceptar";
   const end=v=>{w.remove();res(v)};
   inp.addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();end(inp.value.trim()||def)}else if(e.key==="Escape"){e.preventDefault();end(null)}});
   w.querySelector(".dno").onclick=()=>end(null);w.querySelector(".dok").onclick=()=>end(inp.value.trim()||def);w.addEventListener("pointerdown",e=>{if(e.target===w)end(null)});
@@ -1744,6 +1744,9 @@ let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem(HK)||"[]
 /* ---------- buscador de links + reproductor lateral + descarga (helper) ---------- */
 const HELPER=(()=>{try{return localStorage.getItem("botonera_helper")||"http://127.0.0.1:8765"}catch(e){return"http://127.0.0.1:8765"}})();
 document.querySelectorAll("#lkmodes button").forEach(x=>x.dataset.t=x.title);
+const HTOK=(()=>{try{return localStorage.getItem("botonera_htoken")||""}catch(e){return""}})();
+const HREMOTE=!/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/|$)/i.test(HELPER);
+function hfetch(u,o){o=o||{};if(HTOK&&HREMOTE)o.headers=Object.assign({},o.headers,{"X-Botonera-Token":HTOK});return fetch(u,o)}
 const LK={ok:false,h:null,mode:"av",p:null,info:null,src:"",cache:{},busy:null};
 const vpEl=$("vp"),vbEl=$("vbox");let vpMedia=null;
 const LI=p=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
@@ -1861,7 +1864,7 @@ async function monGo(q,title){q=(q||"").trim();monErr("");
   if(p.embed&&!monSrcOf(p)){monFail("Esa plataforma no permite garantizar el mute. Usá YouTube, Kick, Twitch o Vimeo.");return}
   if(!p.embed){ // por ejemplo @canal/live o una página de canal: el helper averigua el video en vivo
     await hping();if(!LK.ok){monFail("Ese link no se puede abrir directo. Pegá el link del video en vivo, o iniciá el helper para resolver canales.");return}
-    try{const r=await fetch(HELPER+"/info?url="+encodeURIComponent(link)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);
+    try{const r=await hfetch(HELPER+"/info?url="+encodeURIComponent(link)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);
       const q2=parseLink(j.url||"");if(q2&&monSrcOf(q2)){p=q2;title=title||j.title}else{monFail("No se encontró una transmisión en vivo en ese link.");return}}
     catch(e){monFail(e instanceof TypeError?"No se pudo hablar con el helper. ¿Sigue abierta su ventana?":"No se pudo leer ese link: "+e.message);return}}
   if(!monSet(p,title)){monFail("Esa plataforma no permite garantizar el mute. Usá YouTube, Kick, Twitch o Vimeo.");return}
@@ -1870,7 +1873,7 @@ function monFail(t){monErr(t);$("monsrc").hidden=false;$("monin").value="";monRe
 function monReady(){$("mongo").classList.toggle("ready",$("monin").value.trim().length>0)}
 async function monSearch(q){await hping();if(!LK.ok){monFail("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.");return}
   const res=$("monres");res.textContent="";const st=document.createElement("span");st.textContent="Buscando transmisiones en vivo…";st.style.cssText="color:var(--mut);font-size:.68rem";res.appendChild(st);
-  try{const r=await fetch(HELPER+"/search?q="+encodeURIComponent(q)+"&live=1"),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);
+  try{const r=await hfetch(HELPER+"/search?q="+encodeURIComponent(q)+"&live=1"),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);
     res.textContent="";const list=(j.results||[]).slice().sort((a,b)=>(b.live?1:0)-(a.live?1:0));
     if(!list.length){monFail("Sin resultados para «"+q+"».");return}
     list.forEach(x=>{const b=document.createElement("button");const t=document.createElement("b");t.textContent=x.title;const sp=document.createElement("span");
@@ -1926,10 +1929,10 @@ function playNative(src,kind,mode,title,vertHint){
 
 /* --- helper local --- */
 async function hping(){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),5000);
-  try{const r=await fetch(HELPER+"/ping",{signal:ac.signal}),j=await r.json();LK.ok=!!j.ok;LK.h=j}catch(e){LK.ok=false;LK.h=null}finally{clearTimeout(t)}
+  try{const r=await hfetch(HELPER+"/ping",{signal:ac.signal}),j=await r.json();LK.ok=!!j.ok&&!j.need_token;LK.h=j.need_token?{need:true}:j}catch(e){LK.ok=false;LK.h=null}finally{clearTimeout(t)}
   hui();return LK.ok}
 function hui(){const b=$("lkh"),j=LK.h;b.className="lkh "+(!LK.ok?"off":(j&&j.ytdlp&&j.ffmpeg?"ok":"warn"));
-  const stt=!LK.ok?"Helper: no detectado":(j&&j.ytdlp&&j.ffmpeg?"Helper: conectado":"Helper: faltan "+[!j.ytdlp&&"yt-dlp",!j.ffmpeg&&"ffmpeg"].filter(Boolean).join(" y "));
+  const stt=!LK.ok?(j&&j.need?"Helper: falta o es incorrecta la clave (clic derecho en HELPER para cambiarla)":"Helper: no detectado"):(j&&j.ytdlp&&j.ffmpeg?"Helper: conectado":"Helper: faltan "+[!j.ytdlp&&"yt-dlp",!j.ffmpeg&&"ffmpeg"].filter(Boolean).join(" y "));
   b.title=stt+" (clic para ver detalles)";b.setAttribute("aria-label",stt);
   const need=!LK.ok&&!(LK.p&&LK.p.direct);
   $("lkmodes").querySelectorAll("button").forEach(x=>{const dis=need&&x.dataset.m!=="av";x.setAttribute("aria-disabled",dis?"true":"false");x.title=dis?"Requiere el helper (el reproductor oficial de la red solo muestra audio + video)":x.dataset.t});
@@ -1941,7 +1944,7 @@ async function getMedia(kind){
   const ac=new AbortController();busyUI(true,ac);const t0=Date.now();
   const tm=setInterval(()=>lkStatus("Procesando en el helper (bajar y convertir)… "+Math.round((Date.now()-t0)/1000)+" s"),500);lkStatus("Procesando en el helper (bajar y convertir)…");
   try{
-    const res=await fetch(HELPER+"/get?kind="+kind+"&url="+encodeURIComponent(LK.src)+"&title="+encodeURIComponent(LK.info?LK.info.title:""),{signal:ac.signal});
+    const res=await hfetch(HELPER+"/get?kind="+kind+"&url="+encodeURIComponent(LK.src)+"&title="+encodeURIComponent(LK.info?LK.info.title:""),{signal:ac.signal});
     clearInterval(tm);
     if(!res.ok){let m="";try{m=(await res.json()).error}catch(e){}throw new Error(m||("HTTP "+res.status))}
     const total=+res.headers.get("Content-Length")||0,rd=res.body.getReader(),parts=[];let got=0;
@@ -2006,7 +2009,7 @@ async function ttGet(){
   const text=ttText(),voice=TTV[TT.l][TT.g],key=voice+"|"+text;
   if(TT.cache[key])return TT.cache[key];
   const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),100000);
-  try{const res=await fetch(HELPER+"/tts?voice="+encodeURIComponent(voice)+"&text="+encodeURIComponent(text),{signal:ac.signal});
+  try{const res=await hfetch(HELPER+"/tts?voice="+encodeURIComponent(voice)+"&text="+encodeURIComponent(text),{signal:ac.signal});
     if(!res.ok){let m="";try{m=(await res.json()).error}catch(e){}throw new Error(m||("HTTP "+res.status))}
     const blob=await res.blob();return TT.cache[key]={blob,url:URL.createObjectURL(blob)}}
   finally{clearTimeout(tm)}}
@@ -2811,13 +2814,13 @@ async function lkGo(){
   lkReset();lkStatus("Buscando…");await hping();
   if(!looksUrl(q)){
     if(!LK.ok){lkFail("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.",true);return}
-    try{const r=await fetch(HELPER+"/search?q="+encodeURIComponent(q)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);lkStatus("");lkList(j.results||[],q)}catch(e){lkStatus("");lkErr(e,true)}
+    try{const r=await hfetch(HELPER+"/search?q="+encodeURIComponent(q)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);lkStatus("");lkList(j.results||[],q)}catch(e){lkStatus("");lkErr(e,true)}
     return}
   const link=/^https?:\/\//i.test(q)?q:"https://"+q;LK.p=parseLink(link);
   if(!LK.p){lkFail("El link no es válido: «"+q.slice(0,80)+"».",true);return}
   LK.src=link;hui();
   if(LK.ok&&!LK.p.direct){
-    try{const r=await fetch(HELPER+"/info?url="+encodeURIComponent(link)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);LK.info=j;LK.src=j.url||link}
+    try{const r=await hfetch(HELPER+"/info?url="+encodeURIComponent(link)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);LK.info=j;LK.src=j.url||link}
     catch(e){if(!(e instanceof TypeError)){if(!LK.p.embed){lkReset();lkFail("No se encontró o no se pudo leer ese link: "+e.message,true);return}note("No se pudo leer ese link: "+e.message+" Se muestra el reproductor oficial.","warn","lk",12000)}}}
   lkStatus("");lkCard();
   if((LK.mode==="av"&&LK.p.embed)||LK.p.direct)lkPlay();
@@ -2829,9 +2832,19 @@ $("lkurl").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault()
 $("lkurl").addEventListener("focus",e=>{e.target.select();hping()});
 $("lkmodes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.getAttribute("aria-disabled")==="true"){note("Sin el helper solo está disponible AUDIO + VIDEO (reproductor oficial de la red).","info","lk",6000);return}setMode(b.dataset.m);if(LK.p)lkPlay()});
 $("lkh").addEventListener("click",async()=>{await hping();
-  if(!LK.ok)note("Helper no detectado en "+HELPER+". Abrí iniciar-helper.bat (carpeta del helper) y dejá esa ventana abierta. Si el navegador pide permiso de red local, aceptalo. Brave: bajá el escudo del sitio.","info","lk",14000);
+  if(!LK.ok)note("Helper no detectado en "+HELPER+". Abrí iniciar-helper.bat (carpeta del helper) y dejá esa ventana abierta. Si el helper está en otra compu: clic derecho en HELPER para poner su dirección y clave. Si el navegador pide permiso de red local, aceptalo. Brave: bajá el escudo del sitio.","info","lk",14000);
   else if(!(LK.h.ytdlp&&LK.h.ffmpeg))note("Helper conectado, pero faltan componentes: "+[!LK.h.ytdlp&&"yt-dlp",!LK.h.ffmpeg&&"ffmpeg"].filter(Boolean).join(" y ")+". Ejecutá iniciar-helper.bat para instalarlos.","warn","lk",14000);
   else note("Helper v"+LK.h.v+" · yt-dlp "+LK.h.ytdlp+" · ffmpeg OK.","info","lk",6000)});
+/* helper remoto: clic derecho en HELPER para poner la dirección del túnel y la clave (vacío = helper de esta compu) */
+$("lkh").addEventListener("contextmenu",async e=>{e.preventDefault();
+  const cur=HREMOTE?HELPER:"";
+  const url=await askName("Helper remoto","Dirección del helper (ej. https://algo.trycloudflare.com). Escribí «local» para volver a usar el helper de esta compu.",cur,"Siguiente",200);if(url===null)return;
+  const clean=(url||"").trim().replace(/\/+$/,"");
+  if(!clean||/^local$/i.test(clean)){try{localStorage.removeItem("botonera_helper");localStorage.removeItem("botonera_htoken")}catch(x){}note("Se usará el helper de esta compu. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900);return}
+  if(!/^https:\/\/[^\s/]+/i.test(clean)){note("La dirección tiene que empezar con https:// (la que te muestra el túnel).","error","hcfg",8000);return}
+  const tk=await askName("Clave del helper","Pegá la clave que muestra la ventana del helper (o el archivo token.txt).",HTOK,"Guardar",80);if(tk===null)return;
+  try{localStorage.setItem("botonera_helper",clean);localStorage.setItem("botonera_htoken",(tk||"").trim())}catch(x){}
+  note("Helper remoto guardado en este navegador. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900)});
 $("lkcancel").addEventListener("click",()=>{if(LK.busy)LK.busy.ac.abort()});
 $("vpx").addEventListener("click",vpClose);
 $("vpmu").addEventListener("click",()=>setVpMute(!(vpMedia?vpMedia.muted:EMB.muted)));
