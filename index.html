@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.63 · actualización n.º 63 · por @pecallega -->
+<!-- Botonera al aire · v1.64 · actualización n.º 64 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -809,7 +809,7 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.63 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.63</span></footer>
+<footer id="sig" title="Versión 1.64 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.64</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1086,7 +1086,7 @@ function db(){return new Promise((ok,no)=>{try{const r=indexedDB.open("botonera"
   r.onupgradeneeded=()=>r.result.createObjectStore("s");
   r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}})}
 async function save(){try{const d=await db();const keys={};items.forEach(i=>keys[i.name]=i.key);
-  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks})).concat((window.__lostOwn||[]).filter(l=>!items.some(i=>i.name===l.name))),keys,colors,order:items.map(i=>i.name),bmarks:(()=>{const o={};items.forEach(i=>{if(i.base&&i.marks&&i.marks.length)o[i.name]=i.marks});return o})()},IK)}catch(e){console.warn("No se pudo guardar",e)}}
+  d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks,prot:isProt(i.blob)})).concat((window.__lostOwn||[]).filter(l=>!items.some(i=>i.name===l.name))),keys,colors,order:items.map(i=>i.name),bmarks:(()=>{const o={};items.forEach(i=>{if(i.base&&i.marks&&i.marks.length)o[i.name]=i.marks});return o})()},IK)}catch(e){console.warn("No se pudo guardar",e)}}
 async function load(){try{const d=await db();return await new Promise(ok=>{
   const q=d.transaction("s").objectStore("s").get(IK);q.onsuccess=()=>ok(q.result||{});q.onerror=()=>ok({})})}catch(e){return {}}}
 
@@ -1100,6 +1100,7 @@ function waveSVG(p){let r="";p.forEach((v,i)=>{const h=Math.max(1.5,v*22);r+='<r
 function freeKey(){return KEYS.find(k=>!items.some(i=>i.key===k))||""}
 async function add(name,blob,key,base){
   if(items.some(i=>i.name===name))return;
+  if(base)PROT.add(blob);
   try{
     const buffer=await decode(await blob.arrayBuffer());
     items.push({name,blob,buffer,peaks:peaks(buffer,48),key:key===undefined?freeKey():key,base:!!base,playing:new Set()});
@@ -1137,6 +1138,10 @@ function tint(h,a){const n=parseInt(h.slice(1),16);return"rgba("+(n>>16)+","+(n>
 function fg(h){const n=parseInt(h.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return(r*299+g*587+b*114)/1000>150?"#111":"#fff"}
 const isCort=n=>/(^|[^a-záéíóúüñ])cortinas?(?![a-záéíóúüñ])/i.test(n);
 const isMsg=n=>/^\s*(whats\s*app|whastapp|telegram)/i.test(n); // audios de WhatsApp / Telegram
+/* PROTEGIDO: todo audio que viene de las carpetas del repositorio (audios, cortinas, mensajes), entero o recortado, solo se puede reproducir/usar en la app: nunca descargar */
+const PROT=new WeakSet(),isProt=b=>!!b&&PROT.has(b);
+const protNote=()=>note("Audio protegido: viene de las carpetas del repositorio (audios, cortinas o mensajes). Se puede reproducir, recortar en botones nuevos y usar en la lista, pero no descargar.","warn","prot",6000);
+const protMark=(blob,name,flag)=>{if(!blob)return;if(flag||items.some(i=>i.base&&i.name===name&&i.blob&&i.blob.size===blob.size))PROT.add(blob)}; // al restaurar guardados
 const REPOD={}; // nombre → carpeta del repositorio (cortinas / mensajes) para los botones que vienen de GitHub
 const catOf=i=>{const d=i.base?REPOD[i.name]:null;return d==="mensajes"||isMsg(i.name)?2:d==="cortinas"||isCort(i.name)?1:0}; // 0 normal · 1 cortina · 2 mensaje
 const grp=i=>catOf(i)*2+(i.base?0:1); // por categoría: fijo (GitHub) primero, después los propios
@@ -1279,7 +1284,7 @@ function setColor(c){if(cmIdx===null)return;const n=items[cmIdx].name;if(c)color
 $("cpick").addEventListener("change",e=>setColor(e.target.value));
 $("creset").addEventListener("click",()=>setColor(null));
 $("mcol").addEventListener("click",()=>$("mw").classList.toggle("open"));
-$("cdl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)return;
+$("cdl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)return;if(isProt(it.blob)){protNote();return}
   const a=document.createElement("a");a.href=URL.createObjectURL(it.blob);a.download=it.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)});
 $("cedit").addEventListener("click",()=>{const i=cmIdx;hideCm();edOpen(i)});
 $("cdel").addEventListener("click",()=>{const i=cmIdx;hideCm();if(i!==null)askRemove(i)});
@@ -1349,19 +1354,26 @@ document.addEventListener("keydown",e=>{
 /* ---------- arranque ---------- */
 // Lee la carpeta "audios" del repositorio (solo funciona en GitHub Pages; si falla, se ignora sin mostrar error).
 async function repoList(){
-  const AUD=/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i,cacheGet=()=>{let c=[];try{c=JSON.parse(localStorage.getItem("botonera_repo")||"[]")}catch(x){}return Array.isArray(c)?c:[]},
-    parse=l=>l.filter(x=>typeof x==="string").map(x=>x.includes("/")?{d:x.split("/")[0],n:x.slice(x.indexOf("/")+1)}:{d:"audios",n:x});
+  const AUD=/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i,DIRS=["audios","cortinas","mensajes"];
+  let cache=[];try{cache=JSON.parse(localStorage.getItem("botonera_repo")||"[]")}catch(x){}if(!Array.isArray(cache))cache=[];
+  const parse=l=>l.filter(x=>typeof x==="string").map(x=>x.includes("/")?{d:x.split("/")[0],n:x.slice(x.indexOf("/")+1)}:{d:"audios",n:x});
+  const cached=d=>parse(cache).filter(x=>x.d===d);
   try{
     const h=location.hostname;if(!/\.github\.io$/.test(h))return [];
     const u=h.split(".")[0];let r=location.pathname.split("/")[1]||"";if(!r||r.indexOf(".")>-1)r=h;
-    // una sola consulta trae las carpetas audios/, cortinas/ y mensajes/ (lo que subas o borres allá se refleja al recargar)
-    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),6000);let res;try{res=await fetch("https://api.github.com/repos/"+u+"/"+r+"/git/trees/HEAD?recursive=1",{signal:ac.signal})}finally{clearTimeout(tm)}
-    if(res.status===404||res.status===409){try{localStorage.removeItem("botonera_repo")}catch(e){}return []}
-    if(!res.ok)throw new Error("HTTP "+res.status);
-    const l=((await res.json()).tree||[]).filter(f=>f.type==="blob").map(f=>f.path).filter(pt=>/^(audios|cortinas|mensajes)\/[^/]+$/.test(pt)&&AUD.test(pt));
-    try{localStorage.setItem("botonera_repo",JSON.stringify(l))}catch(e){}
-    return parse(l);
-  }catch(e){window.__repoStale=true;return parse(cacheGet())}
+    const out=[];let anyErr=false;
+    for(const d of DIRS){ // cada carpeta por separado: si una falla (límite de consultas, red) se usa lo último guardado de esa carpeta
+      try{
+        const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),6000);let res;try{res=await fetch("https://api.github.com/repos/"+u+"/"+r+"/contents/"+d,{signal:ac.signal})}finally{clearTimeout(tm)}
+        if(res.status===404)continue;
+        if(!res.ok)throw new Error("HTTP "+res.status);
+        (await res.json()).filter(f=>f.type==="file"&&AUD.test(f.name)).forEach(f=>out.push({d,n:f.name}));
+      }catch(e){anyErr=true;cached(d).forEach(x=>out.push(x))}
+    }
+    if(anyErr)window.__repoStale=true;
+    else{try{localStorage.setItem("botonera_repo",JSON.stringify(out.map(x=>x.d+"/"+x.n)))}catch(e){}}
+    return out;
+  }catch(e){window.__repoStale=true;return parse(cache)}
 }
 setTimeout(()=>$("splash").classList.add("off"),8000);
 $("splash").addEventListener("click",()=>$("splash").classList.add("off"));
@@ -1483,13 +1495,13 @@ async function edSelToButton(at){
   const d=edSelData();if(!d){note("Selección → botón: primero hacé una selección en la forma de onda.","warn","cp",3500);return}
   edStop();const nm=await edSelAsk("botón");if(nm===null)return;
   let fin=nm+".wav",k=2;while(items.some(i=>i.name===fin))fin=nm+" ("+(k++)+").wav";
-  const it={name:fin,blob:wavBlob(d.ch,d.sr),buffer:d.buf,peaks:peaks(d.buf,48),key:freeKey(),base:false,playing:new Set(),marks:d.mk.length?d.mk:undefined};
+  const it={name:fin,blob:wavP(d.ch,d.sr,ed.it.blob),buffer:d.buf,peaks:peaks(d.buf,48),key:freeKey(),base:false,playing:new Set(),marks:d.mk.length?d.mk:undefined};
   const pos=at!=null&&at>=0?Math.min(at,items.length):Math.max(0,items.indexOf(d.src))+1;items.splice(pos,0,it);render();save();
   note("Botón nuevo «"+nice(fin)+"» con la selección ("+edDur(d.len)+"). El audio original no cambió.","info","",7000)}
 async function edSelToList(ins){
   const d=edSelData();if(!d){note("Primero hacé una selección en la forma de onda.","warn","cp",3500);return}
   edStop();const nm=await edSelAsk("tema");if(nm===null)return;
-  const r=plMk(nm+".wav",wavBlob(d.ch,d.sr),d.buf);PL.rows.splice(ins==null?PL.rows.length:Math.min(ins,PL.rows.length),0,r);plRender();plSave();
+  const r=plMk(nm+".wav",wavP(d.ch,d.sr,ed.it.blob),d.buf);PL.rows.splice(ins==null?PL.rows.length:Math.min(ins,PL.rows.length),0,r);plRender();plSave();
   const el=$p("pll").querySelector('.plr[data-id="'+r.id+'"]');if(el)el.scrollIntoView({block:"nearest"});
   note("Tema nuevo «"+nm+"» en la lista con la selección ("+edDur(d.len)+"). El audio original no cambió.","info","pl",6000)}
 function edSelNew(){return edSelToButton(null)}
@@ -1537,6 +1549,7 @@ function edFade(dir){if(!ed.it)return;edStop();const n=edN(),a=ed.sel?ed.sel[0]:
   edPush();edClone();ed.ch.forEach(c=>{for(let i=0;i<L;i++){const t=i/(L-1);c[a+i]*=dir==="in"?t:1-t}});
   ed.dirty=true;edInfo();edDraw();
   note("Fade "+(dir==="in"?"in":"out")+" aplicado "+(ed.sel?"a la selección":"a todo el audio")+" ("+(L/ed.sr).toFixed(2)+" s). Guardá con el diskette para aplicar al botón.","info","",7000)}
+const wavP=(ch,sr,src)=>{const b=wavBlob(ch,sr);if(isProt(src))PROT.add(b);return b}; // el recorte hereda la protección del original
 function wavBlob(ch,sr){const n=ch[0].length,k=ch.length,d=new DataView(new ArrayBuffer(44+n*k*2)),w=(o,t)=>[...t].forEach((x,i)=>d.setUint8(o+i,x.charCodeAt(0)));
   w(0,"RIFF");d.setUint32(4,36+n*k*2,true);w(8,"WAVEfmt ");d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,k,true);d.setUint32(24,sr,true);d.setUint32(28,sr*k*2,true);d.setUint16(32,k*2,true);d.setUint16(34,16,true);w(36,"data");d.setUint32(40,n*k*2,true);
   let o=44;for(let i=0;i<n;i++)for(let c=0;c<k;c++){const v=Math.max(-1,Math.min(1,ch[c][i]));d.setInt16(o,v<0?v*32768:v*32767,true);o+=2}
@@ -1546,11 +1559,11 @@ function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n
   if(!asNew)it.playing.forEach(s=>{try{s.stop()}catch(e){}});const old=it.name;const nn=uniq(custom||nice(old)+(it.base?" (editado)":""),it);
   const buf=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>buf.copyToChannel(c,i));
   if(asNew){const nm=uniq(custom||nice(old)+" (editado)",null);
-    const n2={name:nm,blob:wavBlob(ed.ch,ed.sr),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined};
+    const n2={name:nm,blob:wavP(ed.ch,ed.sr,it.blob),buffer:buf,peaks:peaks(buf,48),key:freeKey(),base:false,playing:new Set(),marks:ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined};
     if(colors[old])colors[nm]=colors[old];items.splice(items.indexOf(it)+1,0,n2);const sec=(n/ed.sr).toFixed(2);edClose(true);render();save();note("Botón nuevo creado: «"+nice(nm)+"» ("+sec+" s). El botón original no se modificó.","info","",8000);return}
   if(it.base){hidden.add(old);try{localStorage.setItem(HK,JSON.stringify([...hidden]))}catch(e){}it.base=false}
   if(colors[old]){colors[nn]=colors[old];delete colors[old]}
-  it.marks=ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined;it.name=nn;it.blob=wavBlob(ed.ch,ed.sr);it.buffer=buf;it.peaks=peaks(buf,48);const sec2=(n/ed.sr).toFixed(2),sr2=ed.sr;edClose(true);render();save();note("Guardado en «"+nice(nn)+"» ("+sec2+" s, WAV 16-bit, "+sr2+" Hz). Se reemplazó el audio anterior de este botón.","info","",8000)}
+  it.marks=ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined;it.name=nn;it.blob=wavP(ed.ch,ed.sr,it.blob);it.buffer=buf;it.peaks=peaks(buf,48);const sec2=(n/ed.sr).toFixed(2),sr2=ed.sr;edClose(true);render();save();note("Guardado en «"+nice(nn)+"» ("+sec2+" s, WAV 16-bit, "+sr2+" Hz). Se reemplazó el audio anterior de este botón.","info","",8000)}
 function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;ed.hist=[];ed.redo=[];$("ed").classList.remove("open")}
 const HAND=new Path2D("M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15");
 let mkDrag=null;
@@ -1727,7 +1740,7 @@ function lkErr(e){
   if(e&&e.name==="AbortError"){note("Descarga cancelada.","info","lk",4000);return}
   if(e instanceof TypeError){hping();note("No se pudo hablar con el helper ("+HELPER+"). ¿Sigue abierta su ventana? Si el navegador pidió permiso de red local, aceptalo.","error","lk",12000);return}
   note("Helper: "+(e&&e.message?e.message:e),"error","lk",14000)}
-function saveBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2500)}
+function saveBlob(blob,name){if(isProt(blob)){protNote();return}const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2500)}
 function lkReset(){Object.values(LK.cache).forEach(m=>{try{URL.revokeObjectURL(m.url)}catch(e){}});LK.cache={};LK.p=null;LK.info=null;LK.src="";$("lkres").textContent="";lkStatus("")}
 
 /* --- acciones --- */
@@ -1970,10 +1983,10 @@ function plRender(){
   $p("pl").classList.toggle("empty",!PL.rows.length);
   $p("plcnt").textContent=PL.rows.length?k+(k===1?" tema":" temas")+(PL.rows.length>k?" · "+(PL.rows.length-k)+" stop":""):"";
   plSt()}
-function plSave(){const L=PL;clearTimeout(L.saveT);L.saveT=setTimeout(async()=>{try{const d=await db();d.transaction("s","readwrite").objectStore("s").put({rows:L.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[]}),solo:L.solo},plKeyOf(L))}catch(e){}},150)}
+function plSave(){const L=PL;clearTimeout(L.saveT);L.saveT=setTimeout(async()=>{try{const d=await db();d.transaction("s","readwrite").objectStore("s").put({rows:L.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[],prot:isProt(r.blob)}),solo:L.solo},plKeyOf(L))}catch(e){}},150)}
 async function plLoad(){
   const _L=PL;try{const d=await db();const v=await new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(plKeyOf(_L));q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)});plAct(_L);
-    if(v){PL.solo=!!v.solo;for(const x of v.rows||[]){if(x.t==="s"){PL.rows.push(plMkStop());continue}const b=x.blob&&await plDecode(x.blob);plAct(_L);if(!b)continue;const r=plMk(x.name,x.blob,b);r.color=x.color||null;r.cues=Array.isArray(x.cues)?x.cues.filter(n=>typeof n==="number"&&n>=0):[];PL.rows.push(r)}}}
+    if(v){PL.solo=!!v.solo;for(const x of v.rows||[]){if(x.t==="s"){PL.rows.push(plMkStop());continue}protMark(x.blob,x.name,x.prot);const b=x.blob&&await plDecode(x.blob);plAct(_L);if(!b)continue;const r=plMk(x.name,x.blob,b);r.color=x.color||null;r.cues=Array.isArray(x.cues)?x.cues.filter(n=>typeof n==="number"&&n>=0):[];PL.rows.push(r)}}}
   catch(e){console.warn(e)}
   plAct(_L);plRender()}
 /* ---- vúmetros (L/R) para todo lo que suena: botones, editor y lista ---- */
@@ -2103,7 +2116,7 @@ outInit();
 const PLS_KEY="plists";
 async function plsGet(){try{const d=await db();return await new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(PLS_KEY);q.onsuccess=()=>ok(Array.isArray(q.result)?q.result:[]);q.onerror=()=>ok([])})}catch(e){return[]}}
 async function plsPut(a){const d=await db();return new Promise((ok,no)=>{const tx=d.transaction("s","readwrite");tx.objectStore("s").put(a,PLS_KEY);tx.oncomplete=()=>ok();tx.onerror=()=>no(tx.error);tx.onabort=()=>no(tx.error)})}
-const plsRows=()=>PL.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[]});
+const plsRows=()=>PL.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[],prot:isProt(r.blob)});
 async function plsFill(keep){const a=await plsGet(),sel=$p("plsel");sel.innerHTML="";
   if(!a.length){const o=document.createElement("option");o.value="";o.textContent="(no hay listas guardadas)";sel.appendChild(o)}
   a.forEach(l=>{const o=document.createElement("option");o.value=l.name;const n=l.rows.filter(r=>r.t==="f").length;o.textContent=l.name+" · "+n+(n===1?" tema":" temas");sel.appendChild(o)});
@@ -2113,7 +2126,7 @@ function twoStep(btn,label,fn){let t=0;const old=btn.textContent;
     clearTimeout(t);btn.classList.remove("ask");btn.textContent=old;fn()})}
 async function plsApply(rows,name){
   const _L=PL;plKill();PL.state="stop";PL.off=0;PL.curId=null;PL.nxtId=null;PL.rows=[];let skipped=0;
-  for(const x of rows){if(x.t==="s"){PL.rows.push(plMkStop());continue}const b=x.blob&&await plDecode(x.blob);plAct(_L);if(!b){skipped++;continue}const r=plMk(x.name,x.blob,b);r.color=x.color||null;r.cues=Array.isArray(x.cues)?x.cues.filter(n=>typeof n==="number"&&n>=0):[];PL.rows.push(r)}
+  for(const x of rows){if(x.t==="s"){PL.rows.push(plMkStop());continue}protMark(x.blob,x.name,x.prot);const b=x.blob&&await plDecode(x.blob);plAct(_L);if(!b){skipped++;continue}const r=plMk(x.name,x.blob,b);r.color=x.color||null;r.cues=Array.isArray(x.cues)?x.cues.filter(n=>typeof n==="number"&&n>=0):[];PL.rows.push(r)}
   plRender();plSave();note("Lista «"+name+"» cargada: "+PL.rows.filter(r=>r.t==="f").length+" temas"+(skipped?" ("+skipped+" no se pudieron leer)":"")+".","info","pl",4000)}
 PLWIRE.push(()=>{$p("plsvb").addEventListener("click",async()=>{const v=$p("plsv");v.hidden=!v.hidden;if(!v.hidden)await plsFill()});
 $p("plname").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")$p("plsaveb").click()});
@@ -2141,7 +2154,7 @@ async function plsUnpack(file){
 PLWIRE.push(()=>{$p("pldlf").addEventListener("click",async()=>{
   if(!PL.rows.length){note("La lista está vacía: no hay nada para descargar.","warn","pl",4000);return}
   const name=($p("plname").value.trim()||"Lista").replace(/[\\/:*?"<>|]/g,"").slice(0,60)||"Lista";
-  const b=await plsPack(name,plsRows());saveBlob(b,name+".botolista");note("Descargado: "+name+".botolista ("+fmtMB(b.size)+"). Incluye los audios; se abre con «Abrir archivo».","info","pl",6000)});
+  if(PL.rows.some(r=>r.t==="f"&&isProt(r.blob))){protNote();return}const b=await plsPack(name,plsRows());saveBlob(b,name+".botolista");note("Descargado: "+name+".botolista ("+fmtMB(b.size)+"). Incluye los audios; se abre con «Abrir archivo».","info","pl",6000)});
 $p("plopenf").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const l=await plsUnpack(f);$p("plname").value=l.name;await plsApply(l.rows,l.name)}catch(x){note(String(x.message||x),"error","pl",8000)}});});
 /* ---------- onda del tema elegido: progreso, zoom con la rueda, doble clic = cue, cue arrastrable y borrable con botón derecho ---------- */
@@ -2399,7 +2412,7 @@ $("gseladd").addEventListener("click",()=>{const l=selList();if(!l.length)return
 $("eddl").addEventListener("click",()=>{
   if(!ed.it||!ed.ch.length)return;
   let nm=($("edname").value.trim()||nice(ed.it.name)+(ed.dirty?" (editado)":"")).replace(/[\\/:*?"<>|]/g,"").slice(0,80)||"audio";
-  const blob=wavBlob(ed.ch,ed.sr);saveBlob(blob,nm+".wav");
+  if(isProt(ed.it.blob)){protNote();return}const blob=wavBlob(ed.ch,ed.sr);saveBlob(blob,nm+".wav");
   note("Descargado: "+nm+".wav ("+fmtMB(blob.size)+") · WAV 16 bits · "+(ed.sr/1000)+" kHz.","info","ed",6000)});
 /* orden: el más viejo primero con Esc */
 function stopOldest(){
@@ -2602,7 +2615,7 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
       await add(n,await r.blob(),keys[n]===undefined?null:keys[n],true);
     }catch(e){console.warn("Se omitió",n)}
   }
-  for(const s of own){await add(s.name,s.blob,s.key);const it=items.find(i=>i.name===s.name);if(it){if(s.marks&&s.marks.length)it.marks=s.marks}else if(s.blob&&!items.some(i=>i.name===s.name))window.__lostOwn.push(s)}
+  for(const s of own){protMark(s.blob,s.name,s.prot);await add(s.name,s.blob,s.key);const it=items.find(i=>i.name===s.name);if(it){if(s.marks&&s.marks.length)it.marks=s.marks}else if(s.blob&&!items.some(i=>i.name===s.name))window.__lostOwn.push(s)}
   if(saved.bmarks)items.forEach(i=>{if(i.base&&saved.bmarks[i.name])i.marks=saved.bmarks[i.name]});
   let rk=false;items.forEach(i=>{if(i.key&&!KEYS.includes(i.key)){i.key=null;rk=true}});
   items.forEach(i=>{if(i.key===null)i.key=freeKey()});if(rk)save();
