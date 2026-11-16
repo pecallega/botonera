@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.66 · actualización n.º 66 · por @pecallega -->
+<!-- Botonera al aire · v1.67 · actualización n.º 67 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -821,7 +821,7 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.66 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.66</span></footer>
+<footer id="sig" title="Versión 1.67 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.67</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1154,7 +1154,11 @@ const isMsg=n=>/^\s*(whats\s*app|whastapp|telegram)/i.test(n); // audios de What
 const PROT=new WeakSet(),isProt=b=>!!b&&PROT.has(b);
 const protNote=()=>note("Audio protegido: viene de las carpetas del repositorio (audios, cortinas o mensajes). Se puede reproducir, recortar en botones nuevos y usar en la lista, pero no descargar.","warn","prot",6000);
 const protMark=(blob,name,flag)=>{if(!blob)return;if(flag||items.some(i=>i.base&&i.name===name&&i.blob&&i.blob.size===blob.size))PROT.add(blob)}; // al restaurar guardados
-const REPOD={}; // nombre → carpeta del repositorio (cortinas / mensajes) para los botones que vienen de GitHub
+const REPOD={},REPOM={}; // carpeta y huella (sha/tamaño) de cada audio del repositorio
+/* caché local de los audios del repositorio: si no cambiaron (mismo sha) se leen del disco y no se vuelven a bajar (ni con Ctrl+F5) */
+async function acGet(n){try{const d=await db();return await new Promise(ok=>{const q=d.transaction("s").objectStore("s").get("ac:"+n);q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)})}catch(e){return null}}
+async function acPut(n,v){try{const d=await db();await new Promise(ok=>{const tx=d.transaction("s","readwrite");tx.objectStore("s").put(v,"ac:"+n);tx.oncomplete=ok;tx.onerror=ok;tx.onabort=ok})}catch(e){}}
+async function acPrune(keep){try{const d=await db();const ks=await new Promise(ok=>{const q=d.transaction("s").objectStore("s").getAllKeys();q.onsuccess=()=>ok(q.result||[]);q.onerror=()=>ok([])});const del=ks.filter(k=>typeof k==="string"&&k.startsWith("ac:")&&!keep.has(k.slice(3)));if(del.length){const tx=d.transaction("s","readwrite");del.forEach(k=>tx.objectStore("s").delete(k))}}catch(e){}} // nombre → carpeta del repositorio (cortinas / mensajes) para los botones que vienen de GitHub
 const catOf=i=>{const d=i.base?REPOD[i.name]:null;return d==="mensajes"||isMsg(i.name)?2:d==="cortinas"||isCort(i.name)?1:0}; // 0 normal · 1 cortina · 2 mensaje
 const grp=i=>catOf(i)*2+(i.base?0:1); // por categoría: fijo (GitHub) primero, después los propios
 function normalizeOrder(){
@@ -1368,7 +1372,7 @@ document.addEventListener("keydown",e=>{
 async function repoList(){
   const AUD=/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i,DIRS=["audios","cortinas","mensajes"];
   let cache=[];try{cache=JSON.parse(localStorage.getItem("botonera_repo")||"[]")}catch(x){}if(!Array.isArray(cache))cache=[];
-  const parse=l=>l.filter(x=>typeof x==="string").map(x=>x.includes("/")?{d:x.split("/")[0],n:x.slice(x.indexOf("/")+1)}:{d:"audios",n:x});
+  const parse=l=>l.filter(x=>typeof x==="string").map(x=>{const [pt,sha,sz]=x.split("|"),k=pt.indexOf("/");return k>0?{d:pt.slice(0,k),n:pt.slice(k+1),sha:sha||"",size:+sz||0}:{d:"audios",n:pt,sha:"",size:0}});
   const cached=d=>parse(cache).filter(x=>x.d===d);
   try{
     const h=location.hostname;if(!/\.github\.io$/.test(h))return [];
@@ -1379,12 +1383,12 @@ async function repoList(){
         const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),6000);let res;try{res=await fetch("https://api.github.com/repos/"+u+"/"+r+"/contents/"+d,{signal:ac.signal})}finally{clearTimeout(tm)}
         if(res.status===404)return o;
         if(!res.ok)throw new Error("HTTP "+res.status);
-        (await res.json()).filter(f=>f.type==="file"&&AUD.test(f.name)).forEach(f=>o.push({d,n:f.name}));
+        (await res.json()).filter(f=>f.type==="file"&&AUD.test(f.name)).forEach(f=>o.push({d,n:f.name,sha:f.sha||"",size:f.size||0}));
       }catch(e){anyErr=true;cached(d).forEach(x=>o.push(x))}
       return o}));
     const out=[].concat(...res3);
     if(anyErr)window.__repoStale=true;
-    else{try{localStorage.setItem("botonera_repo",JSON.stringify(out.map(x=>x.d+"/"+x.n)))}catch(e){}}
+    else{try{localStorage.setItem("botonera_repo",JSON.stringify(out.map(x=>x.d+"/"+x.n+"|"+(x.sha||"")+"|"+(x.size||0))))}catch(e){}}
     return out;
   }catch(e){window.__repoStale=true;return parse(cache)}
 }
@@ -1725,7 +1729,7 @@ function playNative(src,kind,mode,title,vertHint){
   el.addEventListener("loadedmetadata",()=>{const w=el.videoWidth,h=el.videoHeight;if(w&&h)vpShow(h>w?"v":"h",w+"/"+h,title)})}
 
 /* --- helper local --- */
-async function hping(){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),1500);
+async function hping(){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),5000);
   try{const r=await fetch(HELPER+"/ping",{signal:ac.signal}),j=await r.json();LK.ok=!!j.ok;LK.h=j}catch(e){LK.ok=false;LK.h=null}finally{clearTimeout(t)}
   hui();return LK.ok}
 function hui(){const b=$("lkh"),j=LK.h;b.className="lkh "+(!LK.ok?"off":(j&&j.ytdlp&&j.ffmpeg?"ok":"warn"));
@@ -2620,14 +2624,18 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
   try{render()}catch(e){console.error(e)}
   const saved=await load();
   const own=saved.own||[],keys=saved.keys||{};window.__lostOwn=[];colors=saved.colors||{};
-  const rl=await repoList();rl.forEach(x=>{if(x.d!=="audios"&&!BASE.includes(x.n))REPOD[x.n]=x.d});
+  const rl=await repoList();rl.forEach(x=>{if(x.d!=="audios"&&!BASE.includes(x.n))REPOD[x.n]=x.d;if(x.sha)REPOM[x.n]={sha:x.sha,size:x.size}});
   const names=Array.from(new Set(BASE.concat(rl.map(x=>x.n))));
   const todo=names.filter(n=>!hidden.has(n)),total=todo.length+own.length;let done=0;
   setProg(0,total||1,"Cargando audios…");
   const ORD={};todo.forEach((n,i)=>ORD[n]=i);let qi=0; // 4 archivos a la vez: se bajan y decodifican en paralelo
   await Promise.all([0,1,2,3].map(async()=>{while(qi<todo.length){const n=todo[qi++];
-    try{const r=await fetch((REPOD[n]||"audios")+"/"+encodeURIComponent(n));if(!r.ok)throw new Error(r.status);await add(n,await r.blob(),keys[n]===undefined?null:keys[n],true)}catch(e){console.warn("Se omitió",n)}
+    try{const m=REPOM[n];let blob=null;
+      if(m){const ent=await acGet(n);if(ent&&ent.sha===m.sha&&ent.blob&&(!m.size||ent.blob.size===m.size))blob=ent.blob}
+      if(!blob){const r=await fetch((REPOD[n]||"audios")+"/"+encodeURIComponent(n));if(!r.ok)throw new Error(r.status);blob=await r.blob();if(m&&(!m.size||blob.size===m.size))acPut(n,{sha:m.sha,blob})}
+      await add(n,blob,keys[n]===undefined?null:keys[n],true)}catch(e){console.warn("Se omitió",n)}
     setProg(++done,total,"Cargando audios… "+done+"/"+total)}}));
+  if(Object.keys(REPOM).length&&!window.__repoStale)acPrune(new Set(todo));
   {const bs=items.filter(i=>i.base).sort((x,y)=>ORD[x.name]-ORD[y.name]),os=items.filter(i=>!i.base);items.splice(0,items.length,...bs,...os)}
   for(const s of own){setProg(++done,total,"Cargando audios… "+done+"/"+total);protMark(s.blob,s.name,s.prot);await add(s.name,s.blob,s.key);const it=items.find(i=>i.name===s.name);if(it){if(s.marks&&s.marks.length)it.marks=s.marks}else if(s.blob&&!items.some(i=>i.name===s.name))window.__lostOwn.push(s)}
   if(saved.bmarks)items.forEach(i=>{if(i.base&&saved.bmarks[i.name])i.marks=saved.bmarks[i.name]});
