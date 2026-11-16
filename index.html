@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.62 · actualización n.º 62 · por @pecallega -->
+<!-- Botonera al aire · v1.63 · actualización n.º 63 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -809,7 +809,7 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.62 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.62</span></footer>
+<footer id="sig" title="Versión 1.63 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="ver">v1.63</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1135,11 +1135,14 @@ function stopFirst(){const i=items.find(i=>i.playing.size);if(i)i.playing.forEac
 /* ---------- interfaz ---------- */
 function tint(h,a){const n=parseInt(h.slice(1),16);return"rgba("+(n>>16)+","+(n>>8&255)+","+(n&255)+","+a+")"}
 function fg(h){const n=parseInt(h.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return(r*299+g*587+b*114)/1000>150?"#111":"#fff"}
-const isCort=n=>/^\s*cortinas?(?![a-záéíóúüñ])/i.test(n);
-const grp=i=>(isCort(i.name)?2:0)+(i.base?0:1); // 0 fijo normal · 1 propio normal · 2 fijo cortina · 3 propio cortina
+const isCort=n=>/(^|[^a-záéíóúüñ])cortinas?(?![a-záéíóúüñ])/i.test(n);
+const isMsg=n=>/^\s*(whats\s*app|whastapp|telegram)/i.test(n); // audios de WhatsApp / Telegram
+const REPOD={}; // nombre → carpeta del repositorio (cortinas / mensajes) para los botones que vienen de GitHub
+const catOf=i=>{const d=i.base?REPOD[i.name]:null;return d==="mensajes"||isMsg(i.name)?2:d==="cortinas"||isCort(i.name)?1:0}; // 0 normal · 1 cortina · 2 mensaje
+const grp=i=>catOf(i)*2+(i.base?0:1); // por categoría: fijo (GitHub) primero, después los propios
 function normalizeOrder(){
-  const out=[[],[],[],[]];items.forEach(i=>out[grp(i)].push(i));
-  items.splice(0,items.length,...out[0],...out[1],...out[2],...out[3]);
+  const out=[[],[],[],[],[],[]];items.forEach(i=>out[grp(i)].push(i));
+  items.splice(0,items.length,...[].concat(...out));
 }
 const MVSVG='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M12 2v20M2 12h20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/></svg>';
 function moveItem(from,to,after){
@@ -1184,10 +1187,10 @@ function render(){
   grid.innerHTML="";
   normalizeOrder();
   let sepDone=false;
-  const closeNormal=()=>{if(sepDone)return;sepDone=true;grid.appendChild(recCell());
-    if(items.some(i=>isCort(i.name))){const sp=document.createElement("div");sp.className="sep";sp.textContent="Cortinas";grid.appendChild(sp)}};
+  const closeNormal=()=>{if(sepDone)return;sepDone=true;grid.appendChild(recCell())};
+  const sepDone2=new Set(),sepFor=c=>{if(c<1||sepDone2.has(c))return;sepDone2.add(c);const sp=document.createElement("div");sp.className="sep";sp.textContent=c===1?"Cortinas":"Mensajes";grid.appendChild(sp)};
   items.forEach((it,idx)=>{
-    if(isCort(it.name))closeNormal();
+    if(catOf(it)>0){closeNormal();sepFor(catOf(it))}
     try{
     const cell=document.createElement("div");cell.className="cell";cell.dataset.idx=idx;
     const b=document.createElement("button");
@@ -1346,18 +1349,19 @@ document.addEventListener("keydown",e=>{
 /* ---------- arranque ---------- */
 // Lee la carpeta "audios" del repositorio (solo funciona en GitHub Pages; si falla, se ignora sin mostrar error).
 async function repoList(){
+  const AUD=/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i,cacheGet=()=>{let c=[];try{c=JSON.parse(localStorage.getItem("botonera_repo")||"[]")}catch(x){}return Array.isArray(c)?c:[]},
+    parse=l=>l.filter(x=>typeof x==="string").map(x=>x.includes("/")?{d:x.split("/")[0],n:x.slice(x.indexOf("/")+1)}:{d:"audios",n:x});
   try{
     const h=location.hostname;if(!/\.github\.io$/.test(h))return [];
     const u=h.split(".")[0];let r=location.pathname.split("/")[1]||"";if(!r||r.indexOf(".")>-1)r=h;
-    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),6000);let res;try{res=await fetch("https://api.github.com/repos/"+u+"/"+r+"/contents/audios",{signal:ac.signal})}finally{clearTimeout(tm)}
-    if(res.status===404){try{localStorage.removeItem("botonera_repo")}catch(e){}return []}
+    // una sola consulta trae las carpetas audios/, cortinas/ y mensajes/ (lo que subas o borres allá se refleja al recargar)
+    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),6000);let res;try{res=await fetch("https://api.github.com/repos/"+u+"/"+r+"/git/trees/HEAD?recursive=1",{signal:ac.signal})}finally{clearTimeout(tm)}
+    if(res.status===404||res.status===409){try{localStorage.removeItem("botonera_repo")}catch(e){}return []}
     if(!res.ok)throw new Error("HTTP "+res.status);
-    const l=(await res.json()).filter(f=>f.type==="file"&&/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i.test(f.name)).map(f=>f.name);
+    const l=((await res.json()).tree||[]).filter(f=>f.type==="blob").map(f=>f.path).filter(pt=>/^(audios|cortinas|mensajes)\/[^/]+$/.test(pt)&&AUD.test(pt));
     try{localStorage.setItem("botonera_repo",JSON.stringify(l))}catch(e){}
-    return l;
-  }catch(e){
-    let c=[];try{c=JSON.parse(localStorage.getItem("botonera_repo")||"[]")}catch(x){}
-    window.__repoStale=true;return Array.isArray(c)?c:[]}
+    return parse(l);
+  }catch(e){window.__repoStale=true;return parse(cacheGet())}
 }
 setTimeout(()=>$("splash").classList.add("off"),8000);
 $("splash").addEventListener("click",()=>$("splash").classList.add("off"));
@@ -2589,11 +2593,12 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
   try{render()}catch(e){console.error(e)}
   const saved=await load();
   const own=saved.own||[],keys=saved.keys||{};window.__lostOwn=[];colors=saved.colors||{};
-  const names=Array.from(new Set(BASE.concat(await repoList())));
+  const rl=await repoList();rl.forEach(x=>{if(x.d!=="audios"&&!BASE.includes(x.n))REPOD[x.n]=x.d});
+  const names=Array.from(new Set(BASE.concat(rl.map(x=>x.n))));
   for(const n of names){
     if(hidden.has(n))continue;
     try{
-      const r=await fetch("audios/"+encodeURIComponent(n));if(!r.ok)throw new Error(r.status);
+      const r=await fetch((REPOD[n]||"audios")+"/"+encodeURIComponent(n));if(!r.ok)throw new Error(r.status);
       await add(n,await r.blob(),keys[n]===undefined?null:keys[n],true);
     }catch(e){console.warn("Se omitió",n)}
   }
