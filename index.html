@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.70 · actualización n.º 70 · por @pecallega -->
+<!-- Botonera al aire · v1.71 · actualización n.º 71 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -695,6 +695,12 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 #mkm .mi:hover{background:rgba(232,35,42,.2);color:#fff}
 </style>
 <style id="perf">
+.lk #lkgo.ready{background:rgba(59,130,246,.24)!important;border-color:#4c9aff!important;color:#fff!important;box-shadow:0 0 0 1px rgba(76,154,255,.55),0 0 16px rgba(59,130,246,.4);transition:background .18s,border-color .18s,box-shadow .18s}
+.lk #lkgo.ready:hover{background:rgba(59,130,246,.38)!important}
+.lk .lkr:first-child{flex-wrap:wrap}
+.lk .lkerr{flex:0 0 100%;order:9;display:flex;align-items:flex-start;gap:6px;margin:0;color:#ff5a5f;font-size:.68rem;line-height:1.35;font-family:var(--f-txt);font-weight:300}
+.lk .lkerr[hidden]{display:none}
+.lkerr svg{flex:none;width:14px;height:14px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* v1.69 rendimiento máximo: nada de vidrio/desenfoque ni animaciones infinitas (la placa de video queda quieta) */
 *,*::before,*::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 #menu,#cm,#cm .sub,#selm,#plm,#wfm,#mkm{background:#141418!important}
@@ -751,6 +757,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
       <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
       <input id="lkurl" type="text" inputmode="url" spellcheck="false" autocomplete="off" placeholder="Pegá un link o buscá…" aria-label="Link o texto a buscar">
       <button id="lkgo" aria-label="Buscar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Buscar</button>
+      <div class="lkerr" id="lkerr" role="alert" hidden></div>
     </div>
     <div class="lkr">
       <div class="seg" id="lkmodes" role="group" aria-label="Qué reproducir">
@@ -834,7 +841,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.70 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.70</span></footer>
+<footer id="sig" title="Versión 1.71 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.71</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1678,6 +1685,11 @@ const LI=p=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>'
 const LIC={play:'<path d="M7 4v16l13-8z" fill="currentColor"/>',dl:'<path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/>',pad:'<rect x="4" y="4" width="16" height="16"/><path d="M12 8v8M8 12h8"/>'};
 function fmtDur(s){if(!s&&s!==0)return"";s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return(h?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0")}
 function fmtMB(b){return(b/1048576).toFixed(b<10485760?2:1)+" MB"}
+function lkErrHide(){const e=$("lkerr");e.hidden=true;e.textContent=""}
+/* error del buscador: aviso rojo chico debajo del campo; con clear=true además deja el campo vacío y enfocado para pegar otro link */
+function lkFail(text,clear){const e=$("lkerr");e.innerHTML=SV(NI.warn)+"<span></span>";e.querySelector("span").textContent=text;e.hidden=false;lkStatus("");clearNote("lk");
+  if(clear){const u=$("lkurl");u.value="";lkReady();u.focus()}}
+function lkReady(){$("lkgo").classList.toggle("ready",$("lkurl").value.trim().length>0)}
 function lkStatus(t){const b=$("lks");$("lkst").textContent=t||"";b.classList.toggle("on",!!t||!!LK.busy)}
 
 /* --- reconocimiento de links y reproductores oficiales incrustables --- */
@@ -1772,10 +1784,10 @@ async function getMedia(kind){
     return LK.cache[key]={blob,name:fn||("descarga."+(kind==="audio"?"mp3":"mp4")),url:URL.createObjectURL(blob)};
   }finally{clearInterval(tm);busyUI(false)}
 }
-function lkErr(e){
+function lkErr(e,inl){
   if(e&&e.name==="AbortError"){note("Descarga cancelada.","info","lk",4000);return}
-  if(e instanceof TypeError){hping();note("No se pudo hablar con el helper ("+HELPER+"). ¿Sigue abierta su ventana? Si el navegador pidió permiso de red local, aceptalo.","error","lk",12000);return}
-  note("Helper: "+(e&&e.message?e.message:e),"error","lk",14000)}
+  if(e instanceof TypeError){hping();const t="No se pudo hablar con el helper ("+HELPER+"). ¿Sigue abierta su ventana? Si el navegador pidió permiso de red local, aceptalo.";if(inl)lkFail(t,true);else note(t,"error","lk",12000);return}
+  const t="Helper: "+(e&&e.message?e.message:e);if(inl)lkFail(t,true);else note(t,"error","lk",14000)}
 function saveBlob(blob,name){if(isProt(blob)){protNote();return}const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2500)}
 function lkReset(){Object.values(LK.cache).forEach(m=>{try{URL.revokeObjectURL(m.url)}catch(e){}});LK.cache={};LK.p=null;LK.info=null;LK.src="";$("lkres").textContent="";lkStatus("")}
 
@@ -2601,7 +2613,7 @@ function lkCard(){
 }
 function lkList(list,q){
   const res=$("lkres");res.textContent="";
-  if(!list.length){note("Sin resultados para «"+q+"».","warn","lk",6000);return}
+  if(!list.length){lkFail("Sin resultados para «"+q+"».",true);return}
   const w=document.createElement("div");w.className="lkl";
   list.forEach(r=>{const x=document.createElement("button");const c=document.createElement("div");c.className="lkc";
     if(r.thumbnail){const im=document.createElement("img");im.src=r.thumbnail;im.alt="";im.referrerPolicy="no-referrer";im.onerror=()=>im.remove();c.appendChild(im)}
@@ -2609,24 +2621,25 @@ function lkList(list,q){
     x.onclick=()=>{$("lkurl").value=r.url;lkGo()};w.appendChild(x)});
   res.appendChild(w)}
 async function lkGo(){
-  const q=$("lkurl").value.trim();if(!q){note("Buscador: pegá un link o escribí qué buscar.","warn","lk",5000);return}
-  if(/^[a-z][a-z0-9+.-]*:\/\//i.test(q)&&!/^https?:/i.test(q)){note("Link no válido: solo se aceptan direcciones http(s). Recibido: «"+q.slice(0,60)+"».","error","lk",7000);return}
+  const q=$("lkurl").value.trim();lkErrHide();if(!q){lkFail("Pegá un link o escribí qué buscar.",false);return}
+  if(/^[a-z][a-z0-9+.-]*:\/\//i.test(q)&&!/^https?:/i.test(q)){lkFail("Link no válido: solo se aceptan direcciones http(s). Recibido: «"+q.slice(0,60)+"».",true);return}
   lkReset();lkStatus("Buscando…");await hping();
   if(!looksUrl(q)){
-    if(!LK.ok){lkStatus("");note("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.","warn","lk",9000);return}
-    try{const r=await fetch(HELPER+"/search?q="+encodeURIComponent(q)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);lkStatus("");lkList(j.results||[],q)}catch(e){lkStatus("");lkErr(e)}
+    if(!LK.ok){lkFail("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.",true);return}
+    try{const r=await fetch(HELPER+"/search?q="+encodeURIComponent(q)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);lkStatus("");lkList(j.results||[],q)}catch(e){lkStatus("");lkErr(e,true)}
     return}
   const link=/^https?:\/\//i.test(q)?q:"https://"+q;LK.p=parseLink(link);
-  if(!LK.p){lkStatus("");note("El link no es válido: «"+q.slice(0,80)+"».","error","lk",7000);return}
+  if(!LK.p){lkFail("El link no es válido: «"+q.slice(0,80)+"».",true);return}
   LK.src=link;hui();
   if(LK.ok&&!LK.p.direct){
     try{const r=await fetch(HELPER+"/info?url="+encodeURIComponent(link)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);LK.info=j;LK.src=j.url||link}
-    catch(e){if(!(e instanceof TypeError))note("No se pudo leer ese link: "+e.message+(LK.p.embed?" Se muestra el reproductor oficial.":""),"warn","lk",12000)}}
+    catch(e){if(!(e instanceof TypeError)){if(!LK.p.embed){lkReset();lkFail("No se encontró o no se pudo leer ese link: "+e.message,true);return}note("No se pudo leer ese link: "+e.message+" Se muestra el reproductor oficial.","warn","lk",12000)}}}
   lkStatus("");lkCard();
   if((LK.mode==="av"&&LK.p.embed)||LK.p.direct)lkPlay();
   else if(!LK.ok&&!LK.p.embed)note("«"+LK.p.host+"» no tiene reproductor oficial incrustable. Iniciá el helper para reproducirlo y descargarlo.","warn","lk",10000);
 }
 $("lkgo").addEventListener("click",lkGo);
+$("lkurl").addEventListener("input",()=>{lkReady();lkErrHide()});
 $("lkurl").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lkGo()}});
 $("lkurl").addEventListener("focus",e=>{e.target.select();hping()});
 $("lkmodes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.getAttribute("aria-disabled")==="true"){note("Sin el helper solo está disponible AUDIO + VIDEO (reproductor oficial de la red).","info","lk",6000);return}setMode(b.dataset.m);if(LK.p)lkPlay()});
