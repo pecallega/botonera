@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Botonera al aire · v1.72 · actualización n.º 72 · por @pecallega -->
+<!-- Botonera al aire · v1.73 · actualización n.º 73 · por @pecallega -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -695,6 +695,43 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 #mkm .mi:hover{background:rgba(232,35,42,.2);color:#fff}
 </style>
 <style id="perf">
+#lkmon span{display:none}
+@media (min-width:1200px){.lk .lkr:nth-child(2){gap:5px}.lk .lkr:nth-child(2) .seg button,.lk #lkh,.lk #lkmon{padding-left:9px;padding-right:9px}}
+#lkmon.ready{background:rgba(59,130,246,.24)!important;border-color:#4c9aff!important;color:#fff!important}
+#rcol{position:sticky;top:12px;flex:none;align-self:flex-start;display:flex;flex-direction:column}
+#vp{position:relative;top:auto;max-height:0;border-width:0}
+#vp.open{max-height:none;border-width:1px}
+#mon{flex:none;width:0;max-height:0;margin-left:0;opacity:0;overflow:hidden;border:1px solid transparent;background:rgba(18,18,22,.96);pointer-events:none;transition:width .5s cubic-bezier(.2,.9,.2,1),margin .5s cubic-bezier(.2,.9,.2,1),opacity .35s,border-color .35s}
+#mon.open{opacity:1;width:460px;max-height:none;margin-left:16px;border-color:var(--line);pointer-events:auto}
+#vp.open+#mon.open{margin-top:12px}
+#mon .mtag{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-txt);font-weight:300;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#3dff7a}
+#mon .mtag i{width:7px;height:7px;border-radius:50%;background:#3dff7a}
+#mon .vph button{padding:6px 8px}
+#mon .vph button.sel{background:rgba(59,130,246,.24)!important;border-color:#4c9aff!important;color:#fff}
+#mon.min #monbox{aspect-ratio:auto!important;height:1px;opacity:.02;pointer-events:none}
+#monbox{aspect-ratio:16/9}
+.monsrc{display:flex;flex-direction:column;gap:8px;padding:8px;border-top:1px solid var(--line)}
+.monsrc[hidden],.monerr[hidden]{display:none}
+.monrow{display:flex;gap:8px}
+.monrow input{flex:1;min-width:0}
+#mongo.ready{background:rgba(59,130,246,.24)!important;border-color:#4c9aff!important;color:#fff!important;box-shadow:0 0 0 1px rgba(76,154,255,.55),0 0 16px rgba(59,130,246,.4)}
+.monerr{display:flex;align-items:flex-start;gap:6px;color:#ff5a5f;font-size:.68rem;line-height:1.35;font-family:var(--f-txt);font-weight:300}
+.monerr svg{flex:none;width:14px;height:14px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.monfav{display:flex;flex-wrap:wrap;gap:6px}
+.monfav:empty{display:none}
+.monfav .chip{display:inline-flex;align-items:center;max-width:100%;border:1px solid var(--line);background:#050506;font-family:var(--f-txt);font-weight:300;font-size:.66rem}
+.monfav .chip button{border:0;background:none;padding:5px 8px;font-size:.66rem;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.monfav .chip .rm{padding:5px 7px;color:var(--mut)}
+.monres{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow:auto}
+.monres button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:7px 9px;font-size:.7rem;text-transform:none;letter-spacing:0}
+.monres button b{font-weight:500}
+.monres button span{color:var(--mut);font-size:.62rem}
+.monres button .lv{color:#ff5a5f}
+@media (max-width:900px){
+  #rcol{position:static;order:-1}
+  #mon{width:100%!important;margin:0 0 14px!important;display:none}
+  #mon.open{display:block}
+}
 .vmx{display:flex;align-items:center;gap:10px;padding:6px 8px;border-bottom:1px solid var(--line);font-family:var(--f-txt);font-weight:300;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#3dff7a}
 .vmx[hidden]{display:none}
 .vmx .t{white-space:nowrap;min-width:92px}
@@ -776,6 +813,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
         <button data-m="av" aria-pressed="true" class="sel" title="Imagen y sonido"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/></svg>Audio + video</button>
       </div>
       <button id="lkh" class="lkh off" title="Estado del helper de descarga"><i class="dot"></i><span>Helper</span></button>
+      <button id="lkmon" title="Monitor en vivo: un canal siempre en mute para ver el aire o la competencia"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="1"/><path d="M8 21h8M12 17v4"/></svg><span>Monitor</span></button>
     </div>
     <div class="lktts" id="tts">
       <div class="lkr"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
@@ -829,7 +867,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
   <div id="plst" role="status"></div>
   <div id="pll" role="listbox" aria-label="Temas de la lista"></div>
 </aside>
-<aside id="vp" aria-label="Reproductor">
+<div id="rcol"><aside id="vp" aria-label="Reproductor">
   <div class="vph"><span class="vpt" id="vpt"></span>
     <button id="vpmu" aria-pressed="false" title="Silenciar / activar sonido del reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg><span>Mute</span></button>
     <button id="vprs" title="Reiniciar: vuelve a empezar y se puede reproducir de nuevo, siempre en esta misma ventana" aria-label="Reiniciar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span>Reiniciar</span></button>
@@ -838,7 +876,23 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
   </div>
   <div class="vmx" id="vmx" hidden title="Indicador de sonido del reproductor"><span class="t" id="vmt"></span><div class="b"><div class="f" id="vmf"></div></div></div>
   <div class="vbox" id="vbox"></div>
-</aside></div>
+</aside>
+<aside id="mon" aria-label="Monitor en vivo">
+  <div class="vph"><span class="mtag" title="Siempre en mute: es solo para ver el aire y comparar el retraso"><i></i>Monitor</span><span class="vpt" id="mont"></span>
+    <button id="monsr" title="Buscar o cambiar de canal" aria-label="Buscar o cambiar de canal"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    <button id="monfv" title="Guardar este canal en favoritos" aria-label="Guardar en favoritos"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/></svg></button>
+    <button id="monhd" title="Esconder el video (sigue corriendo)" aria-label="Esconder o mostrar el video"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <button id="monx" title="Quitar el monitor" aria-label="Quitar el monitor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="vmx" id="monst"><span class="t" id="monsl"></span><div class="b"><div class="f"></div></div></div>
+  <div class="vbox" id="monbox"></div>
+  <div class="monsrc" id="monsrc" hidden>
+    <div class="monrow"><input id="monin" type="text" inputmode="url" spellcheck="false" autocomplete="off" placeholder="Link del canal en vivo o buscá…" aria-label="Link o búsqueda del monitor"><button id="mongo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Buscar</button></div>
+    <div class="monerr" id="monerr" role="alert" hidden></div>
+    <div id="monfav" class="monfav"></div>
+    <div id="monres" class="monres"></div>
+  </div>
+</aside></div></div>
 <section id="ed" aria-label="Editor de audio">
   <div class="edh"><b>Editor de audio</b><span id="edn"></span><label class="nmf" title="Nombre del botón al guardar. Vacío = se mantiene el nombre actual."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg><input id="edname" type="text" maxlength="60" placeholder="Nombre del botón" autocomplete="off"></label><button type="button" class="otag" id="otg-ed"></button><canvas id="edvu" class="vu2" aria-label="Vúmetro del editor (izquierdo y derecho)"></canvas><span class="sp"></span>
     <div class="edact"><button id="edundo" title="Deshacer (Ctrl+Z)" aria-label="Deshacer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg></button><button id="edredo" title="Rehacer (Ctrl+Y)" aria-label="Rehacer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg></button><button id="edsave" title="Guardar (modifica este botón)" aria-label="Guardar cambios en este botón"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></button><button id="ednew" title="Guardar como botón nuevo (el botón original no cambia)" aria-label="Guardar como botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Nuevo botón</button><button id="eddl" title="Descargar el audio con las ediciones actuales como archivo WAV (guardar como…)" aria-label="Descargar archivo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>Descargar</button><button id="edx" title="Cerrar sin cambios" aria-label="Cerrar sin cambios"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
@@ -852,7 +906,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,#vp,.gear,.clip
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.72 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.72</span></footer>
+<footer id="sig" title="Versión 1.73 · 15 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.73</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1772,6 +1826,80 @@ function vmTick(){if(document.hidden)return;const x=$("vmx"),t=$("vmt"),f=$("vmf
   if(sc!==null)f.style.transform="scaleX("+sc+")";else f.style.transform="";
   x.className=cls;t.textContent=txt}
 setInterval(vmTick,60);
+/* ---------- MONITOR EN VIVO: un canal (YouTube, Kick, Twitch, Vimeo) corriendo SIEMPRE en mute, para ver el aire o la competencia ---------- */
+const MONK="botonera_mon:"+PROF.active,MONP=["YouTube","Kick","Twitch","Vimeo"];
+const MON={cur:null,min:false,favs:[],k:null,st:-1,res:[]};
+const monEl=$("mon"),monBox=$("monbox");
+function monSave(){try{localStorage.setItem(MONK,JSON.stringify({cur:MON.cur,min:MON.min,favs:MON.favs}))}catch(e){}}
+function monCmd(m){const f=monBox.querySelector("iframe");if(f&&f.contentWindow)try{f.contentWindow.postMessage(typeof m==="string"?m:JSON.stringify(m),"*")}catch(e){}}
+function monMute(){if(MON.k==="yt")monCmd({event:"command",func:"mute",args:[]});else if(MON.k==="vimeo")monCmd({method:"setVolume",value:0})}
+/* arma la dirección del reproductor ya en mute; devuelve null si la plataforma no permite garantizar el mute */
+function monSrcOf(p){if(!p||!p.embed||!MONP.includes(p.platform.replace(/ Shorts$/,"")))return null;let u=p.embed.src;
+  if(p.platform==="Twitch")u=u.replace("autoplay=false","autoplay=true&muted=true");
+  else if(p.platform==="Kick")u+=(u.includes("?")?"&":"?")+"autoplay=true&muted=true";
+  return u}
+function monUI(){const f=MON.cur&&MON.favs.some(x=>x.url===MON.cur.url);$("monfv").classList.toggle("sel",!!f);$("monfv").disabled=!MON.cur;
+  monEl.classList.toggle("min",MON.min);$("monhd").classList.toggle("sel",MON.min);$("monhd").title=MON.min?"Mostrar el video":"Esconder el video (sigue corriendo)";
+  $("lkmon").classList.toggle("ready",monEl.classList.contains("open"))}
+function monErr(t){const e=$("monerr");if(!t){e.hidden=true;e.textContent="";return}e.innerHTML=SV(NI.warn)+"<span></span>";e.querySelector("span").textContent=t;e.hidden=false}
+function monFavs(){const w=$("monfav");w.textContent="";MON.favs.forEach((x,i)=>{const c=document.createElement("span");c.className="chip";const b=document.createElement("button");b.textContent=x.title||x.url;b.title=x.url;b.onclick=()=>monGo(x.url,x.title);const r=document.createElement("button");r.className="rm";r.setAttribute("aria-label","Quitar de favoritos");r.innerHTML=SV('<path d="M18 6 6 18M6 6l12 12"/>');r.onclick=()=>{MON.favs.splice(i,1);monSave();monFavs();monUI()};c.append(b,r);w.appendChild(c)})}
+function monSet(p,title,quiet){const src=monSrcOf(p);if(!src)return false;
+  monBox.textContent="";const f=document.createElement("iframe");f.src=src;f.allow="autoplay; encrypted-media; picture-in-picture";f.referrerPolicy="strict-origin-when-cross-origin";f.title="Monitor en vivo";
+  f.setAttribute("sandbox","allow-scripts allow-same-origin allow-presentation");
+  MON.k=/^YouTube/.test(p.platform)?"yt":(p.platform==="Vimeo"?"vimeo":null);MON.st=-1;
+  f.addEventListener("load",()=>{if(MON.k==="yt"){monCmd({event:"listening",id:2})}monMute()});
+  monBox.appendChild(f);monBox.style.aspectRatio=p.embed.ratio||"16/9";
+  MON.cur={url:p.url,title:title||p.platform,platform:p.platform};$("mont").textContent=p.platform+(title?" · "+title:"");
+  monEl.classList.add("open");monSave();monUI();return true}
+function monClose(){monBox.textContent="";MON.cur=null;MON.k=null;MON.st=-1;monEl.classList.remove("open");$("monsrc").hidden=true;monSave();monUI()}
+/* acepta un link (con o sin helper) y lo deja corriendo en el monitor; si no se puede, avisa abajo y deja el campo libre */
+async function monGo(q,title){q=(q||"").trim();monErr("");
+  if(!q){monErr("Pegá un link o escribí qué buscar.");return}
+  if(!looksUrl(q)){await monSearch(q);return}
+  const link=/^https?:\/\//i.test(q)?q:"https://"+q;let p=parseLink(link);
+  if(!p){monFail("El link no es válido: «"+q.slice(0,80)+"».");return}
+  if(p.embed&&!monSrcOf(p)){monFail("Esa plataforma no permite garantizar el mute. Usá YouTube, Kick, Twitch o Vimeo.");return}
+  if(!p.embed){ // por ejemplo @canal/live o una página de canal: el helper averigua el video en vivo
+    await hping();if(!LK.ok){monFail("Ese link no se puede abrir directo. Pegá el link del video en vivo, o iniciá el helper para resolver canales.");return}
+    try{const r=await fetch(HELPER+"/info?url="+encodeURIComponent(link)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);
+      const q2=parseLink(j.url||"");if(q2&&monSrcOf(q2)){p=q2;title=title||j.title}else{monFail("No se encontró una transmisión en vivo en ese link.");return}}
+    catch(e){monFail(e instanceof TypeError?"No se pudo hablar con el helper. ¿Sigue abierta su ventana?":"No se pudo leer ese link: "+e.message);return}}
+  if(!monSet(p,title)){monFail("Esa plataforma no permite garantizar el mute. Usá YouTube, Kick, Twitch o Vimeo.");return}
+  $("monin").value="";monReady();$("monres").textContent="";$("monsrc").hidden=true}
+function monFail(t){monErr(t);$("monsrc").hidden=false;$("monin").value="";monReady();$("monin").focus()}
+function monReady(){$("mongo").classList.toggle("ready",$("monin").value.trim().length>0)}
+async function monSearch(q){await hping();if(!LK.ok){monFail("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.");return}
+  const res=$("monres");res.textContent="";const st=document.createElement("span");st.textContent="Buscando transmisiones en vivo…";st.style.cssText="color:var(--mut);font-size:.68rem";res.appendChild(st);
+  try{const r=await fetch(HELPER+"/search?q="+encodeURIComponent(q)+"&live=1"),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);
+    res.textContent="";const list=(j.results||[]).slice().sort((a,b)=>(b.live?1:0)-(a.live?1:0));
+    if(!list.length){monFail("Sin resultados para «"+q+"».");return}
+    list.forEach(x=>{const b=document.createElement("button");const t=document.createElement("b");t.textContent=x.title;const sp=document.createElement("span");
+      if(x.live){const lv=document.createElement("span");lv.className="lv";lv.textContent="● EN VIVO";sp.append(lv,document.createTextNode(x.uploader?" · "+x.uploader:""))}else sp.textContent=[x.uploader,x.duration?fmtDur(x.duration):""].filter(Boolean).join(" · ");
+      b.append(t,sp);b.onclick=()=>monGo(x.url,x.title);res.appendChild(b)});$("monin").value="";monReady()}
+  catch(e){res.textContent="";monFail(e instanceof TypeError?"No se pudo hablar con el helper. ¿Sigue abierta su ventana?":"Helper: "+e.message)}}
+$("monin").addEventListener("input",()=>{monReady();monErr("")});
+$("monin").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();monGo($("monin").value)}});
+$("mongo").addEventListener("click",()=>monGo($("monin").value));
+$("monsr").addEventListener("click",()=>{const h=$("monsrc");h.hidden=!h.hidden;if(!h.hidden)$("monin").focus()});
+$("monhd").addEventListener("click",()=>{MON.min=!MON.min;monSave();monUI()});
+$("monx").addEventListener("click",monClose);
+$("monfv").addEventListener("click",()=>{if(!MON.cur)return;const i=MON.favs.findIndex(x=>x.url===MON.cur.url);if(i>=0)MON.favs.splice(i,1);else{if(MON.favs.length>=8){MON.favs.shift()}MON.favs.push({url:MON.cur.url,title:MON.cur.title})}monSave();monFavs();monUI()});
+$("lkmon").addEventListener("click",()=>{if(monEl.classList.contains("open")){monClose();return}monEl.classList.add("open");$("monsrc").hidden=false;$("monst").hidden=true;monUI();$("monin").focus()});
+/* estado real de reproducción (YouTube lo informa a la página) y mute asegurado cada vez que algo lo cambie */
+window.addEventListener("message",e=>{const fr=monBox.querySelector("iframe");if(!fr||e.source!==fr.contentWindow||MON.k!=="yt")return;let d=e.data;if(typeof d==="string"){try{d=JSON.parse(d)}catch(x){return}}if(!d||typeof d!=="object")return;
+  if(d.event==="onStateChange"&&typeof d.info==="number")MON.st=d.info;
+  else if(d.info&&typeof d.info==="object"){if(typeof d.info.playerState==="number")MON.st=d.info.playerState;if(d.info.muted===false)monMute()}});
+setInterval(()=>{if(!MON.cur||document.hidden)return;monMute();const x=$("monst"),t=$("monsl");
+  if(!monEl.classList.contains("open")){return}
+  x.hidden=!MON.cur;let cls="vmx",txt="Mute · activo";
+  if(MON.k==="yt"){if(MON.st===1){cls+=" ind";txt="En vivo · mute"}else if(MON.st===3){cls+=" ps";txt="Cargando · mute"}else if(MON.st!==-1){cls+=" ps";txt=MON.st===0?"Terminó":"Pausa"}else{cls+=" ps";txt="Conectando…"}}
+  else cls+=" ind";
+  if(x.className!==cls)x.className=cls;if(t.textContent!==txt)t.textContent=txt},2000);
+(function monInit(){let j=null;try{j=JSON.parse(localStorage.getItem(MONK)||"null")}catch(e){}
+  if(j){MON.favs=Array.isArray(j.favs)?j.favs.slice(0,8):[];MON.min=!!j.min;monFavs();
+    if(j.cur&&j.cur.url){const p=parseLink(j.cur.url);if(p)setTimeout(()=>{monSet(p,j.cur.title,true);monUI()},1800)}}
+  monUI()})();
+
 window.addEventListener("message",e=>{const fr=vbEl.querySelector("iframe");if(!fr||e.source!==fr.contentWindow||EMB.k!=="yt")return;let d=e.data;if(typeof d==="string"){try{d=JSON.parse(d)}catch(x){return}}if(!d||typeof d!=="object")return;
   if(d.event==="onStateChange"&&typeof d.info==="number")VM.st=d.info;
   else if(d.info&&typeof d.info==="object"){if(typeof d.info.playerState==="number")VM.st=d.info.playerState;if(typeof d.info.muted==="boolean"&&d.info.muted!==EMB.muted){EMB.muted=d.info.muted;muUI()}}});
