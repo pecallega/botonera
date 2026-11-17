@@ -927,6 +927,17 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .recbox .rr button svg{width:12px;height:12px}
 .recbox .rr .pp.on{background:#c4151c!important;border-color:#ff2a2a!important;color:#fff!important}
 .recbox .rr .rx{color:#ff6b70}
+.recx .rlv{display:grid;grid-template-columns:34px minmax(0,1fr) 96px 46px 64px;align-items:center;gap:8px}
+.recx .rvu{width:100%;flex:none;height:22px}
+.recx .rlmb{width:64px;min-width:0;box-sizing:border-box;text-align:center}
+.recx .rlsp{display:block;visibility:hidden;height:1px}
+.recbox .rr .re{display:inline-flex;align-items:center;gap:4px;font-size:.52rem;text-transform:uppercase;line-height:1}
+.recx{gap:4px!important}
+.recx .rvu{height:20px}
+.recx .rlv{gap:6px}
+.recstat .rs{padding:3px 8px}
+.recbox{gap:3px}
+@media (min-width:901px){.lk{align-self:flex-start!important}.lk #ttxt{min-height:150px}}
 </style>
 </head>
 <body class="booting">
@@ -959,8 +970,8 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
           <select id="indev" aria-label="Fuente de entrada de audio"><option value="">Entrada predeterminada</option><option value="__player">▶ Reproductor del buscador (sin micrófono)</option><option value="__system">🔊 Audio del sistema / pestaña</option></select>
           <div class="recx" id="recx">
             <div class="rlrow"><span class="rll" title="Entrada de línea de REC LIVE (independiente de la entrada del live)">Entrada REC LIVE</span><select id="rlin" aria-label="Entrada de línea para REC LIVE"><option value="">— elegí la entrada de línea —</option></select></div>
-            <div class="rlv"><span class="rlt">Live</span><canvas id="vum-live" class="rvu" aria-label="Vúmetro de REC LIVE"></canvas><input id="rlg" type="range" min="-24" max="24" step="1" value="0" aria-label="Nivel de REC LIVE en decibeles" title="Nivel de grabación de REC LIVE (doble clic: 0 dB)"><b id="rlgv" class="rldb">0 dB</b><button type="button" id="rlm" class="rlmb" aria-pressed="false" title="Ver el nivel de la entrada elegida para acomodarlo antes de grabar">Medir</button></div>
-            <div class="rlv"><span class="rlt">Back</span><canvas id="vum-back" class="rvu" aria-label="Vúmetro de REC BACK"></canvas><input id="rbg" type="range" min="-24" max="24" step="1" value="0" aria-label="Nivel de REC BACK en decibeles" title="Nivel de grabación de REC BACK: entrada + botonera (doble clic: 0 dB)"><b id="rbgv" class="rldb">0 dB</b></div>
+            <div class="rlv"><span class="rlt">Live</span><canvas id="vum-live" class="rvu" aria-label="Vúmetro de REC LIVE"></canvas><input id="rlg" type="range" min="-24" max="24" step="1" value="0" aria-label="Nivel de REC LIVE en decibeles" title="Nivel de REC LIVE (doble clic: 0 dB)"><b id="rlgv" class="rldb">0 dB</b><button type="button" id="rlm" class="rlmb" aria-pressed="false" title="Probar nivel: enciende la entrada elegida solo para ver el vúmetro y acomodar el nivel, sin grabar nada">Probar</button></div>
+            <div class="rlv"><span class="rlt">Back</span><canvas id="vum-back" class="rvu" aria-label="Vúmetro de REC BACK"></canvas><input id="rbg" type="range" min="-24" max="24" step="1" value="0" aria-label="Nivel de REC BACK en decibeles" title="Nivel de REC BACK (doble clic: 0 dB)"><b id="rbgv" class="rldb">0 dB</b><span class="rlmb rlsp" aria-hidden="true"></span></div>
             <div class="recstat" id="recstat" hidden></div>
             <div class="recbox" id="recbox" aria-label="Últimas grabaciones REC"></div>
           </div>
@@ -2307,7 +2318,7 @@ $("rlin").addEventListener("change",async e=>{const v=e.target.value;
   const o=e.target.selectedOptions[0];RL={id:v,label:o&&o.dataset.label||""};try{localStorage.setItem("botonera_rlin",JSON.stringify(RL))}catch(x){}
   if(BACK.live){note("Frená REC LIVE antes de cambiar la entrada.","warn","rec",5000);e.target.value=RLN?RL.id:"";return}
   rlClose();RLMEAS=!!v;rlMeasUI();if(v){if(ctx.state!=="running")ctx.resume();try{await rlOpen()}catch(x){if(x&&x.message!=="bad"&&x.message!=="noin")note(micErr(x),"error","rec");RLMEAS=false;rlMeasUI()}}});
-function rlMeasUI(){const b=$("rlm");b.classList.toggle("on",RLMEAS);b.setAttribute("aria-pressed",RLMEAS);b.textContent=RLMEAS?"Midiendo":"Medir"}
+function rlMeasUI(){const b=$("rlm");b.classList.toggle("on",RLMEAS);b.setAttribute("aria-pressed",RLMEAS);b.textContent=RLMEAS?"Probando":"Probar"}
 $("rlm").addEventListener("click",async()=>{if(BACK.live)return;RLMEAS=!RLMEAS;rlMeasUI();
   if(RLMEAS){if(ctx.state!=="running")ctx.resume();try{await rlOpen()}catch(x){if(x&&x.message!=="bad"&&x.message!=="noin")note(micErr(x),"error","rec");RLMEAS=false;rlMeasUI()}}else rlClose()});
 rlFill();if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener)navigator.mediaDevices.addEventListener("devicechange",()=>setTimeout(rlFill,300));
@@ -2315,7 +2326,7 @@ rlFill();if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener)navi
 function backInit(){if(BACK.mix)return;const M=BACK.mix=ctx.createGain();M.gain.value=dbv(RLG.back);BACK.dest=ctx.createMediaStreamDestination();M.connect(BACK.dest);BACK.meter=mkMeter(M);
   BACK.inG=ctx.createGain();inGain.connect(BACK.inG);BACK.inG.connect(M);
   BACK.tap=n=>{try{n.connect(M)}catch(e){}};BACK.tap(FXP.dry);PLFX.forEach(F=>BACK.tap(F.dry));BACK.tap(busEd)}
-function backSync(){if(!BACK.mix)return;BACK.inG.gain.setTargetAtTime(mic.live&&mic.stream&&!mic.muted?0:1,ctx.currentTime,.01);try{busEd.connect(BACK.mix)}catch(e){}} // si el live suena, su voz ya entra por la mezcla
+function backSync(){if(!BACK.mix)return;BACK.inG.gain.setTargetAtTime(mic.dev[0]==="_"||(mic.live&&mic.stream&&!mic.muted)?0:1,ctx.currentTime,.01);try{busEd.connect(BACK.mix)}catch(e){}} // si el live suena, su voz ya entra por la mezcla
 setInterval(backSync,700);
 function setGain(k,d){RLG[k]=d;const v=dbv(d);if(k==="live"&&RLN)RLN.g.gain.setTargetAtTime(v,ctx.currentTime,.01);if(k==="back"&&BACK.mix)BACK.mix.gain.setTargetAtTime(v,ctx.currentTime,.01);
   $(k==="live"?"rlgv":"rbgv").textContent=dbTxt(d);try{localStorage.setItem(k==="live"?"botonera_rlg":"botonera_rbg",String(d))}catch(e){}}
@@ -2345,12 +2356,12 @@ async function recLiveToggle(){
 async function recBackToggle(){
   if(BACK.rec){BACK.rec.mr.stop();return}
   if(!window.MediaRecorder){note("Este navegador no puede grabar. Usá Chrome, Brave o Edge actualizados.","error","rec");return}
-  try{if(ctx.state!=="running")ctx.resume();await openMic();backInit();backSync();
+  try{if(ctx.state!=="running")ctx.resume();if(mic.dev[0]!=="_")await openMic();backInit();backSync();
     const chunks=[],mr=new MediaRecorder(BACK.dest.stream),prot=items.some(i=>i.playing.size&&isProt(i.blob))||PLISTS.some(L=>L.src);
     BACK.rec={mr,t0:Date.now(),prot};
     mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
-    mr.onstop=async()=>{const pr=BACK.rec.prot;BACK.rec=null;closeMicIfIdle();syncIns();recBtnUI();await recSave("back",chunks,mr.mimeType,pr)};
-    mr.start(1000);recBtnUI();syncIns();note("REC BACK grabando: entrada + todo lo que suena en la botonera.","info","rec",4000)
+    mr.onstop=async()=>{const pr=BACK.rec.prot;BACK.rec=null;if(mic.dev[0]!=="_")closeMicIfIdle();syncIns();recBtnUI();await recSave("back",chunks,mr.mimeType,pr)};
+    mr.start(1000);recBtnUI();syncIns();note(mic.dev[0]==="_"?"REC BACK grabando todo lo de la botonera. La entrada «"+(mic.dev==="__player"?"reproductor del buscador":"sistema")+"» es captura de pantalla y no se mezcla (duplicaría el sonido); para sumar tu voz elegí un micrófono o línea como entrada.":"REC BACK grabando: entrada + todo lo que suena en la botonera.","info","rec",9000)
   }catch(e){BACK.rec=null;recBtnUI();note(micErr(e),"error","rec")}}
 $("reclive").addEventListener("click",recLiveToggle);$("recback").addEventListener("click",recBackToggle);
 /* caja con las últimas 2 grabaciones REC: play/stop, eliminar y descargar (el resto está en la botonera) */
@@ -2366,7 +2377,8 @@ function recBoxRender(){const box=$("recbox");if(!box)return;box.textContent="";
     dl.addEventListener("click",()=>{if(isProt(it.blob)){protNote();return}exportDlg({name:nice(it.name),ch:bufChans(it.buffer),sr:it.buffer.sampleRate,blob:it.blob,orig:true,origName:it.name})});
     const de=document.createElement("button");de.type="button";de.className="rx";de.innerHTML=IC_DEL;de.title="Eliminar esta grabación";de.setAttribute("aria-label","Eliminar grabación");
     de.addEventListener("click",()=>{const k=items.indexOf(it);if(k>=0)askRemove(k,true)});
-    r.append(dot,nm,pp,dl,de);box.appendChild(r)})}
+    const ed=document.createElement("button");ed.type="button";ed.className="re";ed.innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4"/></svg><span>Editar</span>';ed.title="Abrir en el editor de audio";ed.setAttribute("aria-label","Editar");ed.addEventListener("click",()=>{const k=items.indexOf(it);if(k>=0)edOpen(k)});
+    r.append(dot,nm,pp,ed,dl,de);box.appendChild(r)})}
 setInterval(()=>{document.querySelectorAll("#recbox .pp").forEach(b=>{const on=!!(b._it&&b._it.playing.size);if(b._on!==on){b._on=on;b.innerHTML=on?IC_STOP:IC_PLAY;b.classList.toggle("on",on)}})},200);
 {const _r=render;render=function(){_r.apply(this,arguments);try{recBoxRender()}catch(e){}}}
 /* ---------- v1.91 · descargar en WAV 44,1 kHz (16 bits) o MP3 con elección de calidad. Solo audio que NO es de las carpetas protegidas ---------- */
