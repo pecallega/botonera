@@ -799,10 +799,54 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 #hpan .hpm.ok{color:#3dff7a}#hpan .hpm.err{color:#ff5a5f}
 #hpan .hpk{display:flex;gap:6px;flex-wrap:wrap}
 #hpan .hpgo{background:rgba(59,130,246,.24)!important;border-color:#4c9aff!important;color:#fff}
+
+#lkst.sp{color:#3dff7a;font-family:var(--f-txt);font-weight:300;white-space:pre;letter-spacing:.03em}
+.lkl{max-height:320px}
+.lkl button{padding:4px 6px;gap:8px}
+.lkc{align-items:center;gap:8px}
+.lkc img,.lkc .ph{width:64px;height:36px}
+.lkm{gap:1px}
+.lkm b{-webkit-line-clamp:1;line-clamp:1;font-size:.74rem;font-weight:500}
+.lkm span{font-size:.62rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lkm span .lv{font-style:normal;color:#ff5a5f}
+.lkl .lkmore{justify-content:center;text-align:center;color:#4c9aff;border-color:#4c9aff;margin-top:2px}
+#lksug{position:fixed;z-index:460;overflow-y:auto;background:#141418;border:1px solid var(--line);box-shadow:0 12px 36px rgba(0,0,0,.6)}
+#lksug .sg{display:flex;align-items:center;gap:10px;width:100%;padding:7px 10px;border:0;border-bottom:1px solid rgba(255,255,255,.06);background:transparent;text-align:left;text-transform:none;letter-spacing:0;font-family:var(--f-txt);font-weight:300;font-size:.74rem}
+#lksug .sg.on,#lksug .sg:hover{background:rgba(59,130,246,.22)}
+#lksug .sgt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#lksug .sg em{font-style:normal;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.lkc{width:100%}
+.lkm{flex:1;align-items:flex-start;text-align:left}
+.lkm b,.lkm span{text-align:left;width:100%}
+
+#sesbar{position:fixed;top:5px;right:14px;z-index:300;display:flex;gap:6px}
+#sesbar button{padding:4px 9px!important;font-size:.56rem!important;gap:6px}
+#sesbar .ic{width:12px;height:12px}
+@media (max-width:900px){#sesbar{position:static;justify-content:flex-end;margin:6px 0 0}}
+
+#hpan .hpi{display:flex;align-items:center;gap:7px}
+#hpan .hpdot{width:7px;height:7px;border-radius:50%;background:#6b6b73;flex:none}
+#hpan .hpdot.ok{background:#3dff7a;box-shadow:0 0 6px rgba(61,255,122,.8)}
+#hpan .hpa{color:var(--mut)}
+#hpan .hpdot.ok~#hpit,#hpan .hpdot.ok+span{color:#3dff7a}
+#hpan:has(.hpdot.ok) .hpa{color:#3dff7a}
+#hpan #hpe{padding:0 10px}
+#hpan #hpe .ic{width:16px;height:16px}
+
+.vph .vout{background:#12c45a!important;border-color:#3dff7a!important;color:#03140a!important;font-weight:700!important;box-shadow:0 0 12px rgba(61,255,122,.35)}
+.vph .vout:hover:not(:disabled){background:#2be573!important}
+.vph .vout:disabled{opacity:.4;box-shadow:none}
+.vph .vout svg{width:14px;height:14px}
+.vph button[hidden]{display:none!important}
+.vchat{height:300px;min-height:120px;max-height:80vh;resize:vertical;overflow:hidden;background:#000;border-top:1px solid var(--line)}
+.vchat iframe{display:block;width:100%;height:100%;border:0;background:#000}
+.mon.min .vchat{display:none}
+.vchb.sel{color:#3dff7a;border-color:#3dff7a}
 </style>
 </head>
 <body class="booting">
 <div id="splash"><img class="lg" src="logo.png" alt="" onerror="this.parentNode.style.display='none'"><div class="spin" aria-hidden="true"></div><div class="pbar" aria-hidden="true"><i id="spbar"></i></div><div class="tx" id="sptx">Cargando…</div></div>
+<div id="sesbar"><button type="button" id="sesave" title="Guarda en un archivo los botones, posiciones, colores, teclas, listas y ajustes. No incluye audios: se vuelven a tomar de la carpeta"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Guardar sesión</button><button type="button" id="sesopen" title="Abre una sesión guardada y restaura botones, posiciones, colores y listas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Abrir sesión</button><input type="file" id="sesfile" accept=".json,application/json" hidden></div>
 <header>
   <div class="brand">
     <div class="lb"><img class="logo" src="logo.png" alt="" onerror="this.style.display='none'">
@@ -921,7 +965,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.80 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.80</span></footer>
+<footer id="sig" title="Versión 1.84 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.84</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1204,7 +1248,7 @@ async function recToggle(){
 function db(){return new Promise((ok,no)=>{try{const r=indexedDB.open("botonera",1);
   r.onupgradeneeded=()=>r.result.createObjectStore("s");
   r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}})}
-async function save(){try{const d=await db();const keys={};items.forEach(i=>keys[i.name]=i.key);
+async function save(){if(window.__sesLock)return;try{const d=await db();const keys={};items.forEach(i=>keys[i.name]=i.key);
   d.transaction("s","readwrite").objectStore("s").put({own:items.filter(i=>!i.base).map(i=>({name:i.name,blob:i.blob,key:i.key,marks:i.marks,prot:isProt(i.blob)})).concat((window.__lostOwn||[]).filter(l=>!items.some(i=>i.name===l.name))),keys,colors,order:items.map(i=>i.name),bmarks:(()=>{const o={};items.forEach(i=>{if(i.base&&i.marks&&i.marks.length)o[i.name]=i.marks});return o})()},IK)}catch(e){console.warn("No se pudo guardar",e)}}
 async function load(){try{const d=await db();return await new Promise(ok=>{
   const q=d.transaction("s").objectStore("s").get(IK);q.onsuccess=()=>ok(q.result||{});q.onerror=()=>ok({})})}catch(e){return {}}}
@@ -1786,14 +1830,15 @@ let HTOK=(()=>{try{return localStorage.getItem("botonera_htoken")||""}catch(e){r
 let HREMOTE=!/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/|$)/i.test(HELPER);
 function hfetch(u,o){o=o||{};if(HTOK&&HREMOTE)o.headers=Object.assign({},o.headers,{"X-Botonera-Token":HTOK});
   return fetch(u,o).catch(async e=>{if(e&&e.name==="AbortError")throw e;await new Promise(r=>setTimeout(r,1200));if(o.signal&&o.signal.aborted)throw e;return fetch(u,o)})} // un corte breve de red se reintenta solo
-const LK={ok:false,h:null,mode:"av",p:null,info:null,src:"",cache:{},busy:null};
-let vpEl=$("vp"),vbEl=null,vpMedia=null;
+const LK={ok:false,h:null,mode:"av",p:null,info:null,src:"",cache:{},busy:null,sid:0,sac:null,more:null,site:""};
+let vpEl=$("vp"),vbEl=null,vpMedia=null,vpCh=null;
 const VPIN=[]; // videos conservados (máximo 1 además del principal = 2 en total)
 function VPTPL(){return `<div class="vph"><span class="vpt" id="vpt"></span>
+    <button id="vpch" class="vchb" hidden title="Mostrar / ocultar el chat en vivo (y las encuestas) debajo del video" aria-label="Chat en vivo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><span>Chat</span></button>
     <button id="vppin" title="Conservar este video y buscar otro: el nuevo se muestra debajo (máximo 2 videos)" aria-label="Conservar este video"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"/><path d="M12 14v7"/></svg></button>
     <button id="vpmu" aria-pressed="false" title="Silenciar / activar sonido del reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg><span>Mute</span></button>
     <button id="vprs" title="Reiniciar: vuelve a empezar y se puede reproducir de nuevo, siempre en esta misma ventana" aria-label="Reiniciar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span>Reiniciar</span></button>
-    <button id="vpout" title="Enviar a una pantalla (física o virtual, para OBS / vMix). Shift+clic o clic derecho: elegir pantalla y audio" aria-label="Enviar a una pantalla"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/><path d="m10 8 4 2-4 2z" fill="currentColor"/></svg></button>
+    <button id="vpout" class="vout" title="Enviar a una pantalla (física o virtual, para OBS / vMix). Shift+clic o clic derecho: elegir pantalla y audio" aria-label="Enviar a una pantalla"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/><path d="m10 8 4 2-4 2z" fill="currentColor"/></svg><span>Pantalla</span></button>
     <button id="vpfs" class="vfsb" title="Pantalla completa" aria-label="Pantalla completa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button id="vpx" title="Cerrar reproductor" aria-label="Cerrar reproductor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
@@ -1806,6 +1851,7 @@ function vpBind(a){const q=x=>a.querySelector(x);
   q("#vprs").addEventListener("click",vpRestart);
   q("#vpfs").addEventListener("click",()=>{if(document.fullscreenElement){document.exitFullscreen();return}const f=vbEl.requestFullscreen||vbEl.webkitRequestFullscreen;if(f)f.call(vbEl);else note("Este navegador no permite pantalla completa en el reproductor.","warn","lk",6000)});
   q("#vppin").addEventListener("click",()=>{vpPinCore(true)});
+  {const cc=vpCh=chatCtl(q("#vpch"),q("#vbox"),()=>EMB.last&&EMB.last.p,"botonera_chat");q("#vpch").addEventListener("click",()=>cc.toggle())}
   q("#vpout").addEventListener("click",e=>vpSend(null,e.shiftKey));
   q("#vpout").addEventListener("contextmenu",e=>{e.preventDefault();vpSend(null,true)})}
 vpBuild(vpEl);
@@ -1818,7 +1864,15 @@ function lkErrHide(){const e=$("lkerr");e.hidden=true;e.textContent=""}
 function lkFail(text,clear){const e=$("lkerr");e.innerHTML=SV(NI.warn)+"<span></span>";e.querySelector("span").textContent=text;e.hidden=false;lkStatus("");clearNote("lk");
   if(clear){const u=$("lkurl");u.value="";lkReady();u.focus()}}
 function lkReady(){$("lkgo").classList.toggle("ready",$("lkurl").value.trim().length>0)}
-function lkStatus(t){const b=$("lks");$("lkst").textContent=t||"";b.classList.toggle("on",!!t||!!LK.busy)}
+const SPF=["/","-","\\","|"];let spT=null,spI=0,spTxt="",spT0=0;
+function spRender(){const el=$("lkst");spI=(spI+1)%SPF.length;const m=/(\d+)\s*%/.exec(spTxt);let bar;
+  if(m){const n=Math.round(Math.min(100,+m[1])/10);bar="["+"#".repeat(n)+"-".repeat(10-n)+"]"}
+  else{const pos=Math.floor((Date.now()-spT0)/140)%12;let r="";for(let i=0;i<10;i++){const d=(i-pos+12)%12;r+=d<3?"=":" "}bar="["+r+"]"}
+  el.textContent="["+SPF[spI]+"] "+(spTxt||"Trabajando…")+" "+bar+(m?"":" "+Math.round((Date.now()-spT0)/1000)+" s")}
+function lkStatus(t){const b=$("lks"),el=$("lkst");spTxt=(t||"").trim();
+  if(spTxt||LK.busy){if(!spT){spT0=Date.now();spI=0;spT=setInterval(spRender,120)}el.classList.add("sp");spRender()}
+  else{if(spT){clearInterval(spT);spT=null}el.textContent="";el.classList.remove("sp")}
+  b.classList.toggle("on",!!t||!!LK.busy)}
 
 /* --- reconocimiento de links y reproductores oficiales incrustables --- */
 function parseLink(raw){
@@ -1864,7 +1918,7 @@ function setVpMute(on){
   else if(EMB.k==="yt"){embedCmd({event:"command",func:on?"mute":"unMute",args:[]});EMB.muted=on}
   else if(EMB.k==="vimeo"){embedCmd({method:"setVolume",value:on?0:1});EMB.muted=on}
   muUI()}
-function vpClear(){if(vpMedia){try{vpMedia.pause()}catch(e){}}vpMedia=null;EMB.k=null;EMB.last=null;EMB.muted=false;vbEl.textContent="";muUI();vmReset()}
+function vpClear(){if(vpMedia){try{vpMedia.pause()}catch(e){}}vpMedia=null;EMB.k=null;EMB.last=null;EMB.muted=false;vbEl.textContent="";muUI();vmReset();if(vpCh)vpCh.ui()}
 /* indicador de sonido del reproductor: nivel real si suena desde el helper; en un embed (YouTube) el navegador no deja medir el audio, así que muestra el estado real de reproducción */
 const VM={st:-1,an:null,src:null,buf:null,lvl:-100};
 function vmReset(){try{if(VM.src)VM.src.disconnect()}catch(e){}VM.src=null;VM.an=null;VM.st=-1;VM.lvl=-100;const x=$("vmx");x.hidden=true;x.className="vmx"}
@@ -1897,19 +1951,37 @@ function monSrcOf(p){if(!p||!p.embed||!MONP.includes(p.platform.replace(/ Shorts
   if(p.platform==="Twitch")u=u.replace("autoplay=false","autoplay=true&muted=true");
   else if(p.platform==="Kick")u+=(u.includes("?")?"&":"?")+"autoplay=true&muted=true";
   return u}
+/* v1.84 · chat en vivo (y encuestas) debajo del video: YouTube, Twitch y Kick. Se elige si se ve o no */
+function chatSrcOf(p){if(!p||!p.embed||!p.embed.src)return null;const s=p.embed.src,h=encodeURIComponent(location.hostname||"localhost");let m;
+  if(/^YouTube$/.test(p.platform)&&(m=s.match(/youtube-nocookie\.com\/embed\/([\w-]+)/)))return"https://www.youtube.com/live_chat?v="+m[1]+"&embed_domain="+h+"&dark_theme=1";
+  if(p.platform==="Twitch"&&(m=s.match(/[?&]channel=(\w+)/)))return"https://www.twitch.tv/embed/"+m[1]+"/chat?parent="+h+"&darkpopout";
+  if(p.platform==="Kick"&&(m=s.match(/player\.kick\.com\/(\w+)/)))return"https://kick.com/popout/"+m[1]+"/chat";
+  return null}
+function chatCtl(btn,box,getP,key){let on=false;if(key)try{on=localStorage.getItem(key)==="1"}catch(e){}
+  const c={getP,get on(){return on},set on(v){on=!!v},div:null,src:""};
+  c.ui=()=>{const src=chatSrcOf(c.getP());btn.hidden=!src;btn.classList.toggle("sel",!!src&&on);btn.setAttribute("aria-pressed",!!src&&on);
+    if(!src||!on){if(c.div){c.div.remove();c.div=null;c.src=""}return}
+    if(c.div&&c.src===src)return;
+    if(c.div)c.div.remove();
+    const d=document.createElement("div");d.className="vchat";d.title="Chat en vivo · se puede agrandar tirando de la esquina";
+    const f=document.createElement("iframe");f.src=src;f.title="Chat en vivo";f.loading="lazy";f.referrerPolicy="strict-origin-when-cross-origin";
+    f.setAttribute("sandbox","allow-scripts allow-same-origin allow-forms");d.appendChild(f);box.after(d);c.div=d;c.src=src};
+  c.toggle=()=>{on=!on;if(key)try{localStorage.setItem(key,on?"1":"0")}catch(e){}c.ui()};
+  return c}
 const MONG={hid:false,favs:[]},MONS=[];
 const MIC=d=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>';
 const MONTPL=n=>'<div class="vph"><span class="mtag" title="Siempre en mute: es solo para ver el aire y comparar el retraso"><i></i>Monitor '+n+'</span><span class="vpt" id="mont'+n+'"></span>'+
   '<button id="monfv'+n+'" title="Guardar este canal en favoritos (quedan fijos)" aria-label="Guardar en favoritos">'+MIC('<path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/>')+'</button>'+
   '<button id="monad'+n+'" title="Agregar otro monitor (máximo 2)" aria-label="Agregar otro monitor">'+MIC('<path d="M12 5v14M5 12h14"/>')+'</button>'+
+  '<button id="monch'+n+'" class="vchb" hidden title="Mostrar / ocultar el chat en vivo (y las encuestas) debajo del monitor" aria-label="Chat en vivo">'+MIC('<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>')+'<span>Chat</span></button>'+
   '<button id="monhd'+n+'" title="Esconder el video (sigue corriendo)" aria-label="Esconder o mostrar el video">'+MIC('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>')+'</button>'+
-  '<button id="monpo'+n+'" title="Enviar a una pantalla (física o virtual, para OBS / vMix). Sigue en mute" aria-label="Enviar a una pantalla">'+MIC('<rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/><path d="m10 8 4 2-4 2z" fill="currentColor"/>')+'</button>'+
+  '<button id="monpo'+n+'" class="vout" title="Enviar a una pantalla (física o virtual, para OBS / vMix). Sigue en mute" aria-label="Enviar a una pantalla">'+MIC('<rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/><path d="m10 8 4 2-4 2z" fill="currentColor"/>')+'<span>Pantalla</span></button>'+
   '<button id="monx'+n+'" title="Quitar este monitor" aria-label="Quitar este monitor">'+MIC('<path d="M18 6 6 18M6 6l12 12"/>')+'</button></div>'+
   '<div class="vmx" id="monst'+n+'"><span class="t" id="monsl'+n+'"></span><div class="b"><div class="f"></div></div></div>'+
   '<div class="vbox monbox" id="monbox'+n+'"></div>'+
   '<div class="monsrc" id="monsrc'+n+'"><div class="monrow"><input id="monin'+n+'" type="text" inputmode="search" enterkeyhint="search" autocapitalize="none" spellcheck="false" autocomplete="off" placeholder="Pegá el link del canal en vivo o buscá…" aria-label="Link o búsqueda del monitor"><button id="mongo'+n+'" class="mongo">'+MIC('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>')+'Buscar</button></div>'+
   '<div class="monerr" id="monerr'+n+'" role="alert" hidden></div><div id="monfav'+n+'" class="monfav"></div><div id="monres'+n+'" class="monres"></div></div>';
-function monSave(){try{localStorage.setItem(MONK,JSON.stringify({v:2,hid:MONG.hid,favs:MONG.favs,mons:MONS.map(m=>({cur:m.cur,min:m.min}))}))}catch(e){}}
+function monSave(){try{localStorage.setItem(MONK,JSON.stringify({v:2,hid:MONG.hid,favs:MONG.favs,mons:MONS.map(m=>({cur:m.cur,min:m.min,ch:m.ch.on}))}))}catch(e){}}
 const monOpenAny=()=>MONS.some(m=>m.el.classList.contains("open"));
 function monAllUI(){MONS.forEach(m=>m.ui());const op=MONS.filter(m=>m.el.classList.contains("open"));
   const b=$("lkmon");b.classList.toggle("ready",op.length>0&&!MONG.hid);b.classList.toggle("run",MONG.hid&&op.some(m=>m.cur));
@@ -1919,9 +1991,10 @@ function monFavs(){MONS.forEach(m=>{const w=$("monfav"+m.n);w.textContent="";MON
 function mkMon(n){
   const el=document.createElement("aside");el.className="mon";el.id="mon"+n;el.setAttribute("aria-label","Monitor en vivo "+n);el.innerHTML=MONTPL(n);$("rcol").appendChild(el);
   const g=x=>$(x+n),box=g("monbox"),m={n,el,box,cur:null,k:null,st:-1,min:false,pop:null};
+  m.ch=chatCtl(g("monch"),box,()=>m.cur&&parseLink(m.cur.url));g("monch").addEventListener("click",()=>{m.ch.toggle();monSave()});
   m.cmd=x=>{const f=box.querySelector("iframe");if(f&&f.contentWindow)try{f.contentWindow.postMessage(typeof x==="string"?x:JSON.stringify(x),"*")}catch(e){}};
   m.mute=()=>{if(m.k==="yt")m.cmd({event:"command",func:"mute",args:[]});else if(m.k==="vimeo")m.cmd({method:"setVolume",value:0})};
-  m.ui=()=>{const f=m.cur&&MONG.favs.some(x=>x.url===m.cur.url);g("monfv").classList.toggle("sel",!!f);g("monfv").disabled=!m.cur;
+  m.ui=()=>{m.ch.ui();const f=m.cur&&MONG.favs.some(x=>x.url===m.cur.url);g("monfv").classList.toggle("sel",!!f);g("monfv").disabled=!m.cur;
     el.classList.toggle("min",m.min);el.classList.toggle("hid",MONG.hid&&el.classList.contains("open"));g("monhd").classList.toggle("sel",m.min);g("monhd").title=m.min?"Mostrar el video":"Esconder el video (sigue corriendo)";
     const other=MONS.find(x=>x!==m);g("monad").style.display=other&&!other.el.classList.contains("open")&&el.classList.contains("open")?"":"none";g("monpo").disabled=!m.cur};
   m.err=t=>{const e=g("monerr");if(!t){e.hidden=true;e.textContent="";return}e.innerHTML=SV(NI.warn)+"<span></span>";e.querySelector("span").textContent=t;e.hidden=false};
@@ -1995,7 +2068,7 @@ window.addEventListener("pagehide",()=>{MONS.forEach(m=>{try{if(m.pop)m.pop.clos
 (function monInit(){let j=null;try{j=JSON.parse(localStorage.getItem(MONK)||"null")}catch(e){}
   if(j){MONG.favs=Array.isArray(j.favs)?j.favs.filter(x=>x&&x.url).slice(0,12):[];MONG.hid=!!j.hid;
     const arr=Array.isArray(j.mons)?j.mons:[{cur:j.cur,min:j.min}]; // formato anterior: un solo monitor
-    arr.slice(0,2).forEach((x,i)=>{const m=MONS[i];if(!m||!x)return;m.min=!!x.min;
+    arr.slice(0,2).forEach((x,i)=>{const m=MONS[i];if(!m||!x)return;m.min=!!x.min;m.ch.on=!!x.ch;
       if(x.cur&&x.cur.url){const p=parseLink(x.cur.url);if(p)setTimeout(()=>{m.set(p,x.cur.title);m.min=!!x.min;m.ui()},1800+i*600)}})}
   monFavs();monAllUI()})();
 
@@ -2012,7 +2085,7 @@ function playEmbed(p,title){vpClear();const f=document.createElement("iframe");f
   EMB.last={p,title};
   EMB.k=/^YouTube/.test(p.platform)?"yt":(p.platform==="Vimeo"?"vimeo":null);EMB.muted=!!EMB.k; // arrancan en silencio: se activa el sonido cuando termina la publicidad
   f.addEventListener("load",()=>{if(EMB.k==="yt"){embedCmd({event:"listening",id:1});embedCmd({event:"command",func:EMB.muted?"mute":"unMute",args:[]})}else if(EMB.k==="vimeo")embedCmd({method:"setVolume",value:EMB.muted?0:1})});
-  vbEl.appendChild(f);muUI();vpShow(p.embed.cls,p.embed.ratio,p.platform+(title?" · "+title:""))}
+  vbEl.appendChild(f);muUI();vpShow(p.embed.cls,p.embed.ratio,p.platform+(title?" · "+title:""));vpCh.ui()}
 function playNative(src,kind,mode,title,vertHint){
   vpClear();const aOnly=mode==="a"||kind==="audio",el=document.createElement(aOnly?"audio":"video");
   el.src=src;el.controls=true;el.autoplay=true;el.preload="auto";if(!aOnly){el.playsInline=true;if(mode==="v")el.muted=true}
@@ -2069,8 +2142,9 @@ function vpHas(){return !!vpMedia||!!EMB.k||!!(vbEl&&vbEl.querySelector("iframe"
 function vpPinCore(announce){
   if(!vpHas()){note("Primero reproducí un video para poder conservarlo.","info","vp",3500);return null}
   if(VPIN.length>=1){note("Ya hay 2 videos del helper (el máximo). Cerrá uno con su X.","warn","vp",5000);return null}
+  const ch=vpCh;ch.p=EMB.last&&EMB.last.p;ch.getP=()=>ch.p;
   const a=vpEl,box=vbEl,rec={el:a,box,media:vpMedia,k:EMB.k,muted:EMB.muted,title:$("vpt").textContent,url:vpMedia?vpMedia.src:"",pop:null};
-  ["vpt","vpmu","vprs","vpfs","vpx","vmx","vmt","vmf","vbox","vppin","vpout"].forEach(id=>{const e=a.querySelector("#"+id);if(e)e.id=id+"-pin"});
+  ["vpt","vpmu","vprs","vpfs","vpx","vmx","vmt","vmf","vbox","vppin","vpout","vpch"].forEach(id=>{const e=a.querySelector("#"+id);if(e)e.id=id+"-pin"});
   a.id="vp-pin";a.classList.add("pin");
   ["vpx","vpmu","vpfs","vpout"].forEach(id=>{const b=a.querySelector("#"+id+"-pin");if(b){const c=b.cloneNode(true);b.replaceWith(c)}});
   ["vprs","vppin","vmx"].forEach(id=>{const e=a.querySelector("#"+id+"-pin");if(e)e.remove()});
@@ -2121,6 +2195,98 @@ async function vpSend(rec,choose){
 setInterval(()=>{VPIN.slice().forEach(r=>{if(r.pop&&r.pop.closed)vpPinClose(r)})},2000);
 window.addEventListener("pagehide",()=>{VPIN.forEach(r=>{try{if(r.pop)r.pop.close()}catch(e){}})});
 $("o-vo").addEventListener("click",()=>vOutDlg(false));voSum();
+
+/* ---------- v1.81 · predictivo: sugerencias que corrigen el tipeo rápido (YouTube vía helper + historial propio) ---------- */
+const HISTK="botonera_hist";let HIST=[];try{HIST=JSON.parse(localStorage.getItem(HISTK)||"[]");if(!Array.isArray(HIST))HIST=[]}catch(e){HIST=[]}
+function histAdd(q){q=(q||"").trim();if(!q||q.length<2||looksUrl(q)||/^[@#]/.test(q))return;HIST=HIST.filter(x=>x.toLowerCase()!==q.toLowerCase());HIST.unshift(q);HIST=HIST.slice(0,80);try{localStorage.setItem(HISTK,JSON.stringify(HIST))}catch(e){}}
+const nrm=t=>(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9ñ ]/g," ").replace(/\s+/g," ").trim();
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let prev=Array.from({length:n+1},(_,j)=>j);
+  for(let i=1;i<=m;i++){const cur=[i];for(let j=1;j<=n;j++){let v=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])v=Math.min(v,prev2[j-2]+1);cur[j]=v}prev2=prev;prev=cur}return prev[n]}
+let prev2=[];
+/* coincidencia aproximada: cada palabra escrita debe parecerse (con tolerancia a letras cambiadas, faltantes o invertidas) al comienzo de alguna palabra del candidato */
+function fzMatch(q,cand){const qw=nrm(q).split(" ").filter(Boolean),cw=nrm(cand).split(" ").filter(Boolean);if(!qw.length||!cw.length)return false;
+  return qw.every((w,i)=>{const tol=w.length>=7?2:w.length>=4?1:0;return cw.some(c=>{if(c.startsWith(w))return true;if(!tol)return false;prev2=[];return lev(w,c.slice(0,w.length+1))<=tol||lev(w,c)<=tol})})}
+let sugEl=null,sugItems=[],sugSel=-1,sugTmr=0,sugAc=null,sugQ="";
+function sugHide(){if(sugEl){sugEl.remove();sugEl=null}sugItems=[];sugSel=-1;sugQ=""}
+function sugPlace(){if(!sugEl)return;const r=$("lkurl").getBoundingClientRect(),w=Math.max(r.width,300);sugEl.style.left=Math.max(6,Math.min(innerWidth-w-6,r.left))+"px";sugEl.style.top=(r.bottom+2)+"px";sugEl.style.width=w+"px";
+  const room=innerHeight-r.bottom-12;sugEl.style.maxHeight=Math.max(120,Math.min(320,room))+"px"}
+function sugPick(it){sugHide();LK.site=it.site||"";$("lkurl").value=it.text;lkReady();lkErrHide();lkGo()}
+function sugRender(){if(!sugItems.length){sugHide();return}
+  if(!sugEl){sugEl=document.createElement("div");sugEl.id="lksug";sugEl.setAttribute("role","listbox");document.body.appendChild(sugEl)}
+  sugEl.textContent="";sugItems.forEach((it,i)=>{const b=document.createElement("button");b.type="button";b.setAttribute("role","option");b.className="sg"+(i===sugSel?" on":"");
+    const t=document.createElement("span");t.className="sgt";t.textContent=it.text;const k=document.createElement("em");k.textContent=it.tag;b.append(t,k);
+    b.addEventListener("pointerdown",e=>{e.preventDefault();sugPick(it)});sugEl.appendChild(b)});sugPlace()}
+function sugBuild(q,remote){const out=[],seen=new Set();const add=(text,tag,site)=>{const k=nrm(text)+"|"+(site||"");if(seen.has(k)||out.length>=8)return;seen.add(k);out.push({text,tag,site})};
+  if(/^[@#]/.test(q)){const nm=q.replace(/^[@#]+/,"");if(nm){add(q,"TikTok","tiktok");add(q,"Instagram","instagram");if(q[0]==="@")add(q,"Facebook","facebook")}return out}
+  HIST.filter(h=>nrm(h)!==nrm(q)&&fzMatch(q,h)).slice(0,3).forEach(h=>add(h,"historial"));
+  (remote||[]).forEach(r=>add(r,"YouTube"));return out}
+function sugUpdate(){const q=$("lkurl").value.trim();sugQ=q;
+  if(q.length<2||looksUrl(q)||document.activeElement!==$("lkurl")){sugHide();return}
+  const local=sugBuild(q,[]);sugItems=local;sugSel=-1;sugRender();
+  if(/^[@#]/.test(q)||!LK.ok)return;
+  clearTimeout(sugTmr);sugTmr=setTimeout(async()=>{if(sugAc)sugAc.abort();const ac=sugAc=new AbortController();
+    try{const r=await hfetch(HELPER+"/suggest?q="+encodeURIComponent(q),{signal:ac.signal}),j=await r.json();if(sugQ!==q||document.activeElement!==$("lkurl"))return;
+      sugItems=sugBuild(q,j.s||[]);sugSel=-1;sugRender()}catch(e){}},220)}
+$("lkurl").addEventListener("input",sugUpdate);
+$("lkurl").addEventListener("blur",()=>setTimeout(sugHide,150));
+$("lkurl").addEventListener("keydown",e=>{if(!sugEl)return;
+  if(e.key==="ArrowDown"){e.preventDefault();e.stopImmediatePropagation();sugSel=(sugSel+1)%sugItems.length;sugRender()}
+  else if(e.key==="ArrowUp"){e.preventDefault();e.stopImmediatePropagation();sugSel=(sugSel-1+sugItems.length)%sugItems.length;sugRender()}
+  else if(e.key==="Escape"){e.stopImmediatePropagation();sugHide()}
+  else if(e.key==="Enter"&&sugSel>=0){e.preventDefault();e.stopImmediatePropagation();sugPick(sugItems[sugSel])}},true);
+window.addEventListener("resize",sugPlace);
+
+/* ---------- v1.82 · guardar / abrir sesión: SOLO datos (nombres, orden, colores, teclas, marcas, listas, ajustes). Nunca incluye audio ---------- */
+const SES_SKIP=/^botonera_(htoken|helper|repo|users|user|vout)$|^botonera_hidden/;
+function sesBuild(){
+  const lists=PLISTS.map(L=>({n:L.n,solo:!!L.solo,rows:L.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,color:r.color||null,cues:r.cues||[]})}));
+  const ls={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^botonera_/.test(k)&&!SES_SKIP.test(k))ls[k]=localStorage.getItem(k)}}catch(e){}
+  const pr=PROF.list.find(u=>u.id===PROF.active);
+  return{app:"botonera-sesion",v:1,saved:new Date().toISOString(),ver:(document.querySelector("#sig .ver")||{}).textContent||"",profile:pr?pr.name:"",pid:PROF.active,
+    items:items.map(i=>({name:i.name,key:i.key,base:!!i.base,prot:isProt(i.blob),color:colors[i.name]||null,marks:i.marks&&i.marks.length?i.marks:null})),
+    hidden:[...hidden],lists,ls}}
+async function sesSave(){
+  const d=sesBuild(),nm="botonera-sesion-"+new Date().toISOString().slice(0,16).replace("T","_").replace(":","")+".json",blob=new Blob([JSON.stringify(d)],{type:"application/json"});
+  try{if(window.showSaveFilePicker){const h=await window.showSaveFilePicker({suggestedName:nm,types:[{description:"Sesión de la botonera",accept:{"application/json":[".json"]}}]});const w=await h.createWritable();await w.write(blob);await w.close();
+      note("Sesión guardada: "+d.items.length+" botones y "+d.lists.length+" lista"+(d.lists.length===1?"":"s")+". Dejala en la misma carpeta que tus audios.","info","ses",9000);return}}
+  catch(e){if(e&&e.name==="AbortError")return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nm;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2500);
+  note("Sesión guardada ("+nm+"): "+d.items.length+" botones y "+d.lists.length+" lista"+(d.lists.length===1?"":"s")+". Dejala en la misma carpeta que tus audios.","info","ses",9000)}
+function sesPickFolder(){return new Promise(res=>{const f=document.createElement("input");f.type="file";f.multiple=true;f.setAttribute("webkitdirectory","");f.style.display="none";document.body.appendChild(f);
+  f.addEventListener("change",()=>{const m=new Map();Array.from(f.files).forEach(x=>m.set(x.name.toLowerCase(),x));f.remove();res(m)});
+  f.addEventListener("cancel",()=>{f.remove();res(new Map())});f.click()})}
+async function sesOpenFile(file){
+  let S;try{S=JSON.parse(await file.text())}catch(e){S=null}
+  if(!S||S.app!=="botonera-sesion"||!Array.isArray(S.items)){note("Ese archivo no es una sesión de la botonera.","error","ses",7000);return}
+  const have=n=>items.some(i=>i.name===n&&i.blob);
+  const need=new Set();S.items.forEach(i=>{if(!i.base&&!have(i.name))need.add(i.name)});
+  (S.lists||[]).forEach(L=>L.rows.forEach(r=>{if(r.t==="f"&&!have(r.name)&&!REPOM[r.name]&&!BASE.includes(r.name))need.add(r.name)}));
+  const fecha=S.saved?new Date(S.saved).toLocaleString("es-AR"):"";
+  const ok=await askDlg("Abrir sesión","Sesión del "+fecha+(S.profile?" · escritorio «"+S.profile+"»":"")+": "+S.items.length+" botones y "+(S.lists||[]).length+" lista(s). Reemplaza los botones, posiciones, colores, teclas y listas actuales. Los audios de las carpetas audios, cortinas y mensajes se cargan solos.","Abrir",null);
+  if(!ok)return;
+  let files=new Map();
+  if(need.size){const lst=[...need].slice(0,8).map(n=>({t:nice(n),g:"falta"}));if(need.size>8)lst.push({t:"… y "+(need.size-8)+" más",g:""});
+    const go=await askDlg("Faltan audios propios",need.size+" audio(s) de la sesión no están cargados ahora. Elegí la carpeta donde están (con el mismo nombre de archivo).","Elegir carpeta",lst);
+    if(go)files=await sesPickFolder()}
+  await sesApply(S,files)}
+async function sesApply(S,files){
+  window.__sesLock=true;PLISTS.forEach(L=>clearTimeout(L.saveT));
+  const memBlob=n=>{const i=items.find(x=>x.name===n);return i&&i.blob?i.blob:null},blobFor=n=>memBlob(n)||files.get(n.toLowerCase())||null;
+  const own=[],lost=[];
+  S.items.forEach(it=>{if(it.base)return;const b=blobFor(it.name);if(!b){lost.push(it.name);return}own.push({name:it.name,blob:b,key:it.key,marks:it.marks||undefined,prot:isProt(b)})});
+  const keys={},cols={},bm={};S.items.forEach(i=>{if(i.key)keys[i.name]=i.key;if(i.color)cols[i.name]=i.color;if(i.base&&i.marks)bm[i.name]=i.marks});
+  const d=await db();const put=(v,k)=>new Promise(ok=>{const t=d.transaction("s","readwrite");t.objectStore("s").put(v,k);t.oncomplete=()=>ok(true);t.onerror=()=>ok(false);t.onabort=()=>ok(false)});
+  await put({own,keys,colors:cols,order:S.items.map(i=>i.name),bmarks:bm},IK);
+  let skipped=0;
+  for(const L of (S.lists||[])){const rows=[];L.rows.forEach(r=>{if(r.t==="s"){rows.push({t:"s"});return}const b=blobFor(r.name);if(!b){skipped++;return}rows.push({t:"f",name:r.name,blob:b,color:r.color||null,cues:Array.isArray(r.cues)?r.cues:[],prot:isProt(b)})});
+    await put({rows,solo:!!L.solo},PLK+(L.n>1?"#"+L.n:""))}
+  try{localStorage.setItem(HK,JSON.stringify(S.hidden||[]))}catch(e){}
+  try{Object.keys(S.ls||{}).forEach(k=>{if(!/^botonera_/.test(k)||SES_SKIP.test(k))return;if(S.pid!==PROF.active&&/:p\d+$/.test(k))return;localStorage.setItem(k,S.ls[k])})}catch(e){}
+  note("Sesión restaurada"+(lost.length||skipped?" · no se pudieron recuperar "+(lost.length+skipped)+" audio(s) (no estaban en la carpeta o derivan de audios protegidos)":"")+". Recargando…","info","ses",4000);
+  setTimeout(()=>location.reload(),1200)}
+$("sesave").addEventListener("click",sesSave);
+$("sesopen").addEventListener("click",()=>$("sesfile").click());
+$("sesfile").addEventListener("change",e=>{const f=e.target.files[0];e.target.value="";if(f)sesOpenFile(f)});
 /* --- helper local --- */
 let hpBusy=null,hpFail=0,hpWasOk=null,hpLast=0;
 function hping(){if(hpBusy)return hpBusy;hpBusy=(async()=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),8000);let ok=false,h=null,need=false;
@@ -2166,13 +2332,14 @@ function hui(){const b=$("lkh"),j=LK.h;b.className="lkh "+(!LK.ok?"off":(j&&j.yt
   b.title=stt+" (clic para ver detalles)";b.setAttribute("aria-label",stt);
   const need=!LK.ok&&!(LK.p&&LK.p.direct);
   $("lkmodes").querySelectorAll("button").forEach(x=>{const dis=need&&x.dataset.m!=="av";x.setAttribute("aria-disabled",dis?"true":"false");x.title=dis?"Requiere el helper (el reproductor oficial de la red solo muestra audio + video)":x.dataset.t});
-  if(need&&LK.mode!=="av")setMode("av")}
+  if(need&&LK.mode!=="av")setMode("av");
+  try{if(hPan&&hPan.ui)hPan.ui()}catch(e){}}
 function setMode(m){LK.mode=m;$("lkmodes").querySelectorAll("button").forEach(x=>{const s=x.dataset.m===m;x.classList.toggle("sel",s);x.setAttribute("aria-pressed",s)})}
-function busyUI(on,ac){LK.busy=on?{ac}:null;$("lkcancel").hidden=!on;document.querySelectorAll("#lkres .lka button").forEach(b=>b.disabled=on||b.dataset.off==="1");if(!on)lkStatus("");else lkStatus(" ")}
+function busyUI(on,ac){LK.busy=on?{ac}:null;$("lkcancel").hidden=!on;document.querySelectorAll("#lkres .lka button").forEach(b=>b.disabled=on||b.dataset.off==="1");if(!on){if(!LK.srch)lkStatus("")}else lkStatus(" ")}
 async function getMedia(kind){
   const key=kind+"|"+LK.src;if(LK.cache[key])return LK.cache[key];
   const ac=new AbortController();busyUI(true,ac);const t0=Date.now();
-  const tm=setInterval(()=>lkStatus("Procesando en el helper (bajar y convertir)… "+Math.round((Date.now()-t0)/1000)+" s"),500);lkStatus("Procesando en el helper (bajar y convertir)…");
+  const tm=0;lkStatus("Procesando en el helper (bajar y convertir)…");
   try{
     const res=await hfetch(HELPER+"/get?kind="+kind+"&url="+encodeURIComponent(LK.src)+"&title="+encodeURIComponent(LK.info?LK.info.title:""),{signal:ac.signal});
     clearInterval(tm);
@@ -2432,7 +2599,7 @@ function plRender(){
   $p("pl").classList.toggle("empty",!PL.rows.length);
   $p("plcnt").textContent=PL.rows.length?k+(k===1?" tema":" temas")+(PL.rows.length>k?" · "+(PL.rows.length-k)+" stop":""):"";
   plSt()}
-function plSave(){const L=PL;clearTimeout(L.saveT);L.saveT=setTimeout(async()=>{try{const d=await db();d.transaction("s","readwrite").objectStore("s").put({rows:L.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[],prot:isProt(r.blob)}),solo:L.solo},plKeyOf(L))}catch(e){}},150)}
+function plSave(){if(window.__sesLock)return;const L=PL;clearTimeout(L.saveT);L.saveT=setTimeout(async()=>{if(window.__sesLock)return;try{const d=await db();d.transaction("s","readwrite").objectStore("s").put({rows:L.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,blob:r.blob,color:r.color,cues:r.cues||[],prot:isProt(r.blob)}),solo:L.solo},plKeyOf(L))}catch(e){}},150)}
 async function plLoad(){
   const _L=PL;try{const d=await db();const v=await new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(plKeyOf(_L));q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)});plAct(_L);
     if(v){PL.solo=!!v.solo;const rws=v.rows||[],dec=await Promise.all(rws.map(x=>x.t==='s'||!x.blob?null:plDecode(x.blob,x.name)));plAct(_L);for(let q=0;q<rws.length;q++){const x=rws[q];if(x.t==="s"){PL.rows.push(plMkStop());continue}protMark(x.blob,x.name,x.prot);const b=dec[q];if(!b)continue;const r=plMk(x.name,x.blob,b);r.color=x.color||null;r.cues=Array.isArray(x.cues)?x.cues.filter(n=>typeof n==="number"&&n>=0):[];PL.rows.push(r)}}}
@@ -3047,23 +3214,42 @@ function lkCard(){
   else{mk("",LIC.dl,"Descargar",()=>{},true,"Requiere el helper");mk("",LIC.pad,"Al botón",()=>{},true,"Requiere el helper")}
   res.appendChild(a);
 }
-function lkList(list,q){
-  const res=$("lkres");res.textContent="";
+const fmtViews=n=>n==null?"":(n>=1e6?(n/1e6).toFixed(n>=1e7?0:1).replace(".",",")+" M":n>=1e3?(n/1e3).toFixed(n>=1e4?0:1).replace(".",",")+" mil":String(n))+" vistas";
+const fmtDate=d=>{if(!d||String(d).length!==8)return"";const y=+String(d).slice(0,4),m=+String(d).slice(4,6)-1,dd=+String(d).slice(6,8),df=(Date.now()-new Date(y,m,dd).getTime())/864e5;
+  return df<1?"hoy":df<31?"hace "+Math.round(df)+" d":df<365?"hace "+Math.round(df/30)+" m":"hace "+Math.round(df/365)+" a"};
+function lkList(list,q,keepFrom){
+  const res=$("lkres"),prev=res.querySelector(".lkl"),st=prev?prev.scrollTop:0;res.textContent="";
   if(!list.length){lkFail("Sin resultados para «"+q+"».",true);return}
-  const w=document.createElement("div");w.className="lkl";
-  list.forEach(r=>{const x=document.createElement("button");const c=document.createElement("div");c.className="lkc";
-    if(r.thumbnail){const im=document.createElement("img");im.src=r.thumbnail;im.alt="";im.referrerPolicy="no-referrer";im.onerror=()=>im.remove();c.appendChild(im)}
-    const m=document.createElement("div");m.className="lkm";const b=document.createElement("b");b.textContent=r.title;const s=document.createElement("span");s.textContent=[r.uploader,r.duration?fmtDur(r.duration):""].filter(Boolean).join(" · ");m.append(b,s);c.appendChild(m);x.appendChild(c);
-    x.onclick=()=>{$("lkurl").value=r.url;lkGo()};w.appendChild(x)});
-  res.appendChild(w)}
+  const w=document.createElement("div");w.className="lkl";let first=null;
+  list.forEach((r,i)=>{const x=document.createElement("button");x.title=r.title;const c=document.createElement("div");c.className="lkc";
+    if(r.thumbnail){const im=document.createElement("img");im.src=r.thumbnail;im.alt="";im.loading="lazy";im.referrerPolicy="no-referrer";im.onerror=()=>im.remove();c.appendChild(im)}
+    const m=document.createElement("div");m.className="lkm";const b=document.createElement("b");b.textContent=r.title;const sp=document.createElement("span");
+    if(r.live){const lv=document.createElement("em");lv.className="lv";lv.textContent="● EN VIVO";sp.appendChild(lv);sp.appendChild(document.createTextNode(" "))}
+    sp.appendChild(document.createTextNode([r.uploader,r.duration?fmtDur(r.duration):"",fmtViews(r.views),fmtDate(r.date)].filter(Boolean).join(" · ")));m.append(b,sp);c.appendChild(m);x.appendChild(c);
+    x.onclick=()=>{$("lkurl").value=r.url;LK.site="";lkGo()};w.appendChild(x);if(keepFrom!==undefined&&i===keepFrom)first=x});
+  res.appendChild(w);
+  const mo=LK.more;
+  if(mo&&list.length>=mo.n&&mo.n<40){const bt=document.createElement("button");bt.className="lkmore";bt.type="button";bt.textContent="Buscar más ("+Math.min(40,mo.n+10)+")";
+    bt.onclick=()=>lkRunSearch(mo.q,mo.site,Math.min(40,mo.n+10),list.length);w.appendChild(bt)}
+  if(first)w.scrollTop=Math.max(0,first.offsetTop-6);else w.scrollTop=st}
+async function lkRunSearch(q,site,n,keepFrom){
+  const id=++LK.sid;if(LK.sac)LK.sac.abort();const ac=LK.sac=new AbortController();
+  lkStatus(keepFrom!==undefined?"Buscando más…":(site?"Buscando en "+({tiktok:"TikTok",instagram:"Instagram",facebook:"Facebook"}[site]||site)+"…":"Buscando…"));$("lkcancel").hidden=false;
+  try{const r=await hfetch(HELPER+"/search?q="+encodeURIComponent(q)+"&n="+n+(site?"&site="+site:""),{signal:ac.signal}),j=await r.json();
+    if(id!==LK.sid)return;if(!r.ok)throw new Error(j.error||"HTTP "+r.status);
+    const lst=j.results||[];LK.more={q,site,n};lkStatus("");lkList(lst,q,keepFrom);if(lst.length)histAdd(q)}
+  catch(e){if(id!==LK.sid)return;lkStatus("");if(e&&e.name==="AbortError")return;lkErr(e,true)}
+  finally{if(id===LK.sid){$("lkcancel").hidden=true;LK.srch=false}}}
 async function lkGo(){
   const q=$("lkurl").value.trim();lkErrHide();if(!q){lkFail("Pegá un link o escribí qué buscar.",false);return}
   if(/^[a-z][a-z0-9+.-]*:\/\//i.test(q)&&!/^https?:/i.test(q)){lkFail("Link no válido: solo se aceptan direcciones http(s). Recibido: «"+q.slice(0,60)+"».",true);return}
-  lkReset();lkStatus("Buscando…");await hping();
+  sugHide();if(LK.busy)LK.busy.ac.abort();
+  LK.srch=!looksUrl(q);
+  lkReset();lkStatus("Buscando…");if(!LK.ok||!looksUrl(q))await hping();
   if(!looksUrl(q)){
-    if(!LK.ok){lkFail("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.",true);return}
-    try{const r=await hfetch(HELPER+"/search?q="+encodeURIComponent(q)),j=await r.json();if(!r.ok)throw new Error(j.error||"HTTP "+r.status);lkStatus("");lkList(j.results||[],q)}catch(e){lkStatus("");lkErr(e,true)}
-    return}
+    if(!LK.ok){LK.srch=false;lkStatus("");lkFail("Buscar por texto requiere el helper (no detectado). Pegá un link o iniciá el helper.",true);return}
+    const site=LK.site||(/^[@#]/.test(q)?"tiktok":"");LK.site="";
+    await lkRunSearch(q,site,10);return}
   const link=/^https?:\/\//i.test(q)?q:"https://"+q;LK.p=parseLink(link);
   if(!LK.p){lkFail("El link no es válido: «"+q.slice(0,80)+"».",true);return}
   LK.src=link;hui();
@@ -3096,22 +3282,25 @@ async function hTry(url,tok){const ac=new AbortController(),t=setTimeout(()=>ac.
   catch(e){return{ok:false,err:e&&e.name==="AbortError"?"No respondió en 8 s":"No se pudo llegar"}}finally{clearTimeout(t)}}
 let hPan=null;
 function hPanClose(){if(hPan){hPan.remove();hPan=null}document.removeEventListener("keydown",hPanKey,true)}
-function hPanKey(e){if(e.key==="Escape"&&hPan){e.stopImmediatePropagation();hPanClose()}}
-function hPanPlace(){if(!hPan)return;const r=$("lkh").getBoundingClientRect(),w=hPan.offsetWidth,h=hPan.offsetHeight;
+function hPanKey(e){if(e.key==="Escape"&&hPan&&hPan.contains(document.activeElement)){e.stopImmediatePropagation();hPanClose()}} // Esc solo cierra si estás escribiendo en el panel
+function hPanPlace(){if(!hPan||hPan.dataset.moved)return;const r=$("lkh").getBoundingClientRect(),w=hPan.offsetWidth,h=hPan.offsetHeight;
   hPan.style.left=Math.max(8,Math.min(innerWidth-w-8,r.right-w))+"px";const below=r.bottom+6;hPan.style.top=Math.max(8,below+h>innerHeight-8?Math.max(8,r.top-h-6):below)+"px"}
 function hOpen(){
   if(hPan){hPanClose();return}
   const remote=HREMOTE?HELPER:(()=>{try{return localStorage.getItem("botonera_helper")}catch(e){return null}})()||HREM_DEF;
   let addr=remote;
   const w=document.createElement("div");w.id="hpan";w.setAttribute("role","dialog");w.setAttribute("aria-modal","false");w.setAttribute("aria-label","Conectar al helper");
-  w.innerHTML='<div class="hph"><b>Helper</b><span class="hps" id="hps"></span><button type="button" id="hpx" aria-label="Cerrar">×</button></div>'+
-    '<div class="hpb"><div class="hpi">Se va a conectar a:</div><div class="hpa" id="hpa"></div>'+
-    '<label for="hpt">Clave de seguridad (token)</label><div class="hpr"><input id="hpt" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Pegá la clave"><button type="button" id="hpe" aria-label="Mostrar u ocultar la clave" title="Mostrar / ocultar">◉</button></div>'+
+  w.innerHTML='<div class="hph"><b>Helper</b><button type="button" id="hpx" aria-label="Cerrar">×</button></div>'+
+    '<div class="hpb"><div class="hpi"><i class="hpdot" id="hpdot"></i><span id="hpit"></span></div><div class="hpa" id="hpa"></div>'+
+    '<label for="hpt">Clave de seguridad (token)</label><div class="hpr"><input id="hpt" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Pegá la clave"><button type="button" id="hpe" aria-label="Mostrar u ocultar la clave" title="Mostrar la clave"></button></div>'+
     '<div class="hpm" id="hpm" role="status"></div>'+
     '<div class="hpk"><button type="button" id="hpc" class="hpgo">Conectar</button><button type="button" id="hpl" title="Buscar y usar el helper de esta misma compu">Esta compu</button><button type="button" id="hpd" title="Revisa por qué no conecta">Diagnóstico</button></div></div>';
   document.body.appendChild(w);hPan=w;document.addEventListener("keydown",hPanKey,true);
   const q=x=>w.querySelector(x),msg=(t,k)=>{const m=q("#hpm");m.textContent=t||"";m.className="hpm"+(k?" "+k:"")};
-  const ui=()=>{q("#hpa").textContent=addr;q("#hps").textContent=LK.ok?"conectado a "+(HREMOTE?"remoto":"esta compu"):"sin conexión";q("#hps").className="hps "+(LK.ok?"ok":"off");q("#hpl").style.display=HREMOTE||!LK.ok?"":"none"};
+  const EYE='<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>';
+  const eyeUI=()=>{const t=q("#hpt"),hid=t.type==="password";q("#hpe").innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+EYE+(hid?'<path d="M3 3l18 18"/>':'')+'</svg>';q("#hpe").title=hid?"Mostrar la clave":"Ocultar la clave";q("#hpe").setAttribute("aria-pressed",hid?"false":"true")};
+  const ui=()=>{q("#hpa").textContent=LK.ok?HELPER:addr;q("#hpit").textContent=LK.ok?"Conectado a":"Se va a conectar a:";q("#hpdot").className="hpdot"+(LK.ok?" ok":"");q("#hpl").style.display=HREMOTE||!LK.ok?"":"none"};
+  w.ui=ui;
   q("#hpt").value=HTOK||(()=>{try{return localStorage.getItem("botonera_htoken")||""}catch(e){return""}})();
   const done=ok=>{hpFail=0;hpWasOk=ok?true:null;hping().then(()=>{ui();if(ok){note("Helper conectado: "+(HREMOTE?addr:"esta compu")+".","info","hcfg",4000);setTimeout(hPanClose,900)}})};
   const connect=async()=>{const tok=q("#hpt").value.trim();q("#hpc").disabled=true;msg("Conectando a "+addr+"…");const r=await hTry(addr,tok);q("#hpc").disabled=false;
@@ -3122,11 +3311,17 @@ function hOpen(){
   q("#hpc").addEventListener("click",connect);
   q("#hpt").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();connect()}});
   q("#hpx").addEventListener("click",hPanClose);
-  q("#hpe").addEventListener("click",()=>{const t=q("#hpt");t.type=t.type==="password"?"text":"password"});
+  q("#hpe").addEventListener("click",()=>{const t=q("#hpt");t.type=t.type==="password"?"text":"password";eyeUI()});
   q("#hpl").addEventListener("click",async()=>{msg("Buscando el helper de esta compu…");const r=await hTry("http://127.0.0.1:8765","");if(!hPan)return;
     if(r.ok){hSet("http://127.0.0.1:8765",undefined,true);addr=remote;msg("Usando el helper de esta compu.","ok");done(true)}else msg("No hay un helper abierto en esta compu (abrí iniciar-helper.bat).","err")});
   q("#hpd").addEventListener("click",async()=>{const pu=HELPER,pt=HTOK;hSet(addr,q("#hpt").value.trim(),false);try{await hDiag()}finally{hSet(pu,pt,false)}});
-  ui();hPanPlace();
+  ui();eyeUI();hPanPlace();
+  { // se puede arrastrar desde el título para apartarlo; nunca se cierra por hacer clic afuera
+    const hd=q(".hph");hd.style.cursor="move";hd.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;e.preventDefault();
+      const r=w.getBoundingClientRect(),ox=e.clientX-r.left,oy=e.clientY-r.top;w.dataset.moved="1";
+      const mv=ev=>{w.style.left=Math.max(0,Math.min(innerWidth-60,ev.clientX-ox))+"px";w.style.top=Math.max(0,Math.min(innerHeight-40,ev.clientY-oy))+"px"};
+      const up=()=>{document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up)};
+      document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up)})}
   const tk=q("#hpt").value;
   if(!LK.ok){ // primero busca el helper de esta compu; si no está y hay clave guardada, conecta solo al remoto
     (async()=>{msg("Buscando el helper de esta compu…");const l=await hTry("http://127.0.0.1:8765","");if(!hPan)return;
@@ -3137,7 +3332,7 @@ function hOpen(){
 async function hCfg(){hOpen()}
 async function hRed(){hOpen()}
 $("lkh").addEventListener("contextmenu",e=>{e.preventDefault();hOpen()});
-$("lkcancel").addEventListener("click",()=>{if(LK.busy)LK.busy.ac.abort()});
+$("lkcancel").addEventListener("click",()=>{if(LK.busy){LK.busy.ac.abort();return}if(LK.sac){LK.sid++;LK.sac.abort();lkStatus("");$("lkcancel").hidden=true;note("Búsqueda cancelada.","info","lk",2500)}});
 muUI();
 hping();
 if(document.fonts&&document.fonts.load)document.fonts.load("700 16px Satoshi").catch(()=>{note("No se pudo cargar la tipografía Satoshi (no se encuentran los archivos de /fonts). La página funciona con tipografía de respaldo. Verificá que la carpeta «fonts» esté junto a index.html en el repo.","warn","font")});
