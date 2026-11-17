@@ -894,6 +894,23 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .bcin:placeholder-shown{text-indent:.7em}
 .bcin{caret-color:#3dff7a;caret-shape:underscore}
 .mon.hid{position:fixed!important;right:0;bottom:0;width:460px!important;z-index:-1} /* escondido: sigue corriendo pero ya no ocupa lugar en la pantalla */
+.micr{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:flex-end}
+.fx .micr button{min-width:0;padding:6px 8px;font-size:.62rem}
+.fx .micr .recb{gap:6px;letter-spacing:.08em}
+.recb svg{color:#e0262d}
+.recb.on{background:#c4151c!important;border-color:#ff2a2a!important;color:#fff!important;animation:recp 1.2s ease-in-out infinite}
+.recb.on svg{color:#fff}
+@keyframes recp{50%{box-shadow:0 0 0 3px rgba(255,42,42,.4)}}
+@media (prefers-reduced-motion:reduce){.recb.on{animation:none}}
+.recx{grid-column:1/-1;display:flex;flex-direction:column;gap:6px}
+.recx .rlrow{display:flex;gap:8px;align-items:center}
+.recx .rll{flex:none;font:300 .54rem var(--f-act);letter-spacing:.12em;text-transform:uppercase;color:var(--mut,#9a9aa2)}
+.recx .rlrow select{flex:1 1 0;min-width:0}
+.recbox{display:flex;flex-direction:column;gap:4px}
+.recbox .rr{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--line);background:#0a0a0c}
+.recbox .rr i{flex:none;width:8px;height:8px;border-radius:50%}
+.recbox .rn{flex:1 1 0;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:300 .6rem var(--f-txt);color:#3dff7a}
+.recbox .rr button{flex:none;min-width:0!important;padding:3px 7px!important;font-size:.52rem!important;text-transform:uppercase}
 </style>
 </head>
 <body class="booting">
@@ -918,8 +935,16 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
           <input id="rev" type="range" min="0" max="100" step="1" value="0" aria-label="Cantidad de reverb">
           <span class="num"><input id="rnum" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" aria-label="Reverb en porcentaje (escribir valor exacto)"><i>%</i></span>
           <button id="mic" aria-pressed="false" title="Live audio FX: la entrada de la placa suena con delay y reverb. Arranca en MUTE para regular el nivel. Usá auriculares."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>Live audio FX</button>
-          <div class="onmute"><button id="mutb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Mute</button><button id="onb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg>ON</button></div>
+          <div class="micr" id="micr">
+            <button type="button" id="reclive" class="recb" title="REC LIVE: graba SOLO lo que entra por la entrada de línea elegida abajo (nunca el micrófono de la compu). No incluye botonera, lista, editor ni YouTube: es la cinta testigo."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M3 9v6M6 6v12M18 6v12M21 9v6"/></svg><span>REC LIVE</span></button>
+            <button type="button" id="recback" class="recb" title="REC BACK: graba la entrada (línea o micrófono) más todo lo que suene en la botonera, la lista y el editor. Si suena algo de audios, cortinas o mensajes, la grabación queda protegida (no se puede descargar)."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg><span>REC BACK</span></button>
+                      <div class="onmute"><button id="mutb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Mute</button><button id="onb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg>ON</button></div>
+          </div>
           <select id="indev" aria-label="Fuente de entrada de audio"><option value="">Entrada predeterminada</option><option value="__player">▶ Reproductor del buscador (sin micrófono)</option><option value="__system">🔊 Audio del sistema / pestaña</option></select>
+          <div class="recx" id="recx">
+            <div class="rlrow"><span class="rll" title="Entrada de línea de REC LIVE (independiente de la entrada del live)">Entrada REC LIVE</span><select id="rlin" aria-label="Entrada de línea para REC LIVE"><option value="">— elegí la entrada de línea —</option></select></div>
+            <div class="recbox" id="recbox" aria-label="Últimas grabaciones REC"></div>
+          </div>
           <div class="ins">
             <span class="lbl"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Nivel</span>
             <input id="gain" type="range" min="0" max="40" step="1" value="0" aria-label="Nivel de entrada en decibeles">
@@ -1018,7 +1043,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.89 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.89</span></footer>
+<footer id="sig" title="Versión 1.90 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.90</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1336,7 +1361,7 @@ function padTick(){const _n=performance.now();if(_n-padLast<45){padRaf=requestAn
   padRaf=any?requestAnimationFrame(padTick):0}
 let lastPlay=null;
 function play(idx,off){
-  const it=items[idx];if(!it)return;off=off||0;lastPlay=it;
+  const it=items[idx];if(!it)return;off=off||0;lastPlay=it;backNote(it.blob);
   if(ctx.state!=="running")ctx.resume();
   const s=ctx.createBufferSource();s.buffer=it.buffer;s.connect(dry);s.connect(dlyIn);s.connect(revSend);
   if(!it.playing.size)it.ts=performance.now();it.playing.add(s);it.t0=ctx.currentTime-off;mark(idx);{const el=$("p"+idx);if(el){el.style.setProperty("--p",0);el.classList.remove("hit");void el.offsetWidth;el.classList.add("hit")}}if(!padRaf)padTick();
@@ -1697,7 +1722,7 @@ function edPlay(){if(ed.src){edStop();return}if(!ed.it)return;
 function edStart(a,e){const n=edN(),b=ctx.createBuffer(ed.ch.length,n,ed.sr);ed.ch.forEach((c,i)=>b.copyToChannel(c,i));
   if(ctx.state!=="running")ctx.resume();cancelAnimationFrame(ed.raf);
   if(ed.src){const o=ed.src;ed.src=null;try{o.stop()}catch(x){}}
-  const s=ctx.createBufferSource();s.buffer=b;s.connect(busEd);ed.src=s;ed.from=a;ed.t0=ctx.currentTime;ed.ts=performance.now();
+  backNote(ed.it&&ed.it.blob);const s=ctx.createBufferSource();s.buffer=b;s.connect(busEd);ed.src=s;ed.from=a;ed.t0=ctx.currentTime;ed.ts=performance.now();
   s.onended=()=>{if(ed.src===s){ed.src=null;edBtn();edDraw()}};s.start(0,a/ed.sr,(e-a)/ed.sr);edBtn();
   let _le=0;const lp=()=>{if(ed.src){const n=performance.now();if(n-_le>=45){_le=n;edDraw()}ed.raf=requestAnimationFrame(lp)}};lp()}
 const edSnapState=()=>({ch:ed.ch,marks:ed.marks.map(m=>({p:m.p,k:m.k})),dirty:ed.dirty});
@@ -2221,6 +2246,86 @@ function playNative(src,kind,mode,title,vertHint){
   vpShow(vertHint?"v":"h",vertHint?"9/16":"16/9",title);
   el.addEventListener("loadedmetadata",()=>{const w=el.videoWidth,h=el.videoHeight;if(w&&h)vpShow(h>w?"v":"h",w+"/"+h,title)})}
 
+
+/* ---------- v1.90 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena) ---------- */
+const BACK={rec:null,live:null,dest:null,inG:null,taps:new Set()};
+function backNote(blob){if(BACK.rec&&isProt(blob))BACK.rec.prot=true}
+const RL_BAD=/(micr[oó]fono|microphone|mic)\s*(array|interno|integrad|incorporad|internal|built)|array de micr|micr[oó]fono (interno|integrado|incorporado)|internal mic|built-?in|integrated|webcam|c[aá]mara|camera|laptop|realtek.*(mic|micr[oó]fono)(?!.*line)/i;
+let RL={id:"",label:""};try{RL=JSON.parse(localStorage.getItem("botonera_rlin")||"null")||RL}catch(e){}
+async function rlFill(){const sel=$("rlin");if(!sel)return;let list=[];
+  try{list=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==="audioinput"&&d.deviceId&&d.deviceId!=="default"&&d.deviceId!=="communications")}catch(e){}
+  const keep=RL.id;sel.innerHTML="";const o0=document.createElement("option");o0.value="";o0.textContent="— elegí la entrada de línea —";sel.appendChild(o0);
+  list.forEach((d,i)=>{const o=document.createElement("option");o.value=d.deviceId;const lb=d.label||("Entrada "+(i+1));
+    const bad=!d.label||RL_BAD.test(d.label);o.textContent=(bad?(d.label?"✕ ":"? "):"")+lb+(bad?(d.label?" · micrófono interno (bloqueado)":" · sin nombre (no se puede comprobar)"):(/bluetooth|bt |airpods|hands-free|manos libres/i.test(d.label)?" · Bluetooth":(/usb/i.test(d.label)?" · USB":"")));
+    o.disabled=bad;o.dataset.label=d.label||"";sel.appendChild(o)});
+  if(!list.some(d=>d.label)){const o=document.createElement("option");o.value="__detect";o.textContent="🔄 Detectar entradas… (pide permiso una vez)";sel.appendChild(o)}
+  sel.value=Array.from(sel.options).some(o=>o.value===keep&&!o.disabled)?keep:""}
+$("rlin").addEventListener("change",async e=>{const v=e.target.value;
+  if(v==="__detect"){e.target.blur();try{const st=await navigator.mediaDevices.getUserMedia({audio:true});st.getTracks().forEach(t=>t.stop())}catch(x){note(micErr(x),"error","rec",7000)}await rlFill();return}
+  const o=e.target.selectedOptions[0];RL={id:v,label:o&&o.dataset.label||""};try{localStorage.setItem("botonera_rlin",JSON.stringify(RL))}catch(x){}});
+rlFill();if(navigator.mediaDevices&&navigator.mediaDevices.addEventListener)navigator.mediaDevices.addEventListener("devicechange",()=>setTimeout(rlFill,300));
+const RECCOL={live:"#1fb35a",back:"#e0a21a"};
+function recName(kind){const d=new Date(),z=n=>String(n).padStart(2,"0");return "REC "+(kind==="live"?"LIVE":"BACK")+" "+z(d.getDate())+"-"+z(d.getMonth()+1)+" "+z(d.getHours())+"."+z(d.getMinutes())+"."+z(d.getSeconds())+".webm"}
+function recBtnUI(){const l=BACK.live,b=BACK.rec,tm=r=>{const s=Math.floor((Date.now()-r.t0)/1000);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+  const bl=$("reclive"),bb=$("recback");bl.classList.toggle("on",!!l);bb.classList.toggle("on",!!b);
+  bl.querySelector("span").textContent=l?"REC "+tm(l):"REC LIVE";bb.querySelector("span").textContent=b?"REC "+tm(b):"REC BACK";
+  bl.setAttribute("aria-pressed",!!l);bb.setAttribute("aria-pressed",!!b)}
+setInterval(()=>{if(BACK.live||BACK.rec)recBtnUI()},500);
+async function recSave(kind,chunks,type,prot){
+  const blob=new Blob(chunks,{type:type||"audio/webm"});if(!chunks.length||blob.size<200){note("La grabación quedó vacía: no se creó ningún botón.","warn","rec",6000);return}
+  const nm=recName(kind);if(prot)PROT.add(blob);await add(nm,blob);colors[nm]=RECCOL[kind];render();save();
+  note((kind==="live"?"REC LIVE":"REC BACK")+" guardado como botón verde/ámbar: «"+nm.replace(/\.webm$/,"")+"»."+(prot?" Sonó audio de las carpetas protegidas: se puede escuchar y editar, pero no descargar.":""),"info","rec",8000)}
+/* REC LIVE: stream propio de la entrada elegida, directo al grabador. No pasa por el AudioContext: nada de la botonera puede colarse */
+async function recLiveToggle(){
+  if(BACK.live){BACK.live.mr.stop();return}
+  if(!window.MediaRecorder){note("Este navegador no puede grabar. Usá Chrome, Brave o Edge actualizados.","error","rec");return}
+  if(!RL.id){note("REC LIVE graba solo la entrada de línea. Elegí primero la entrada en «Entrada REC LIVE».","warn","rec",7000);$("rlin").focus();return}
+  let st=null;
+  try{
+    st=await navigator.mediaDevices.getUserMedia({audio:{deviceId:{exact:RL.id},echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:{ideal:2}}});
+    const tr=st.getAudioTracks()[0],lb=tr.label||"";
+    if(!tr||(tr.getSettings().deviceId&&tr.getSettings().deviceId!==RL.id)||!lb||RL_BAD.test(lb)){st.getTracks().forEach(t=>t.stop());note("REC LIVE no usa micrófonos internos ni entradas que no se pueden comprobar. Elegí otra entrada.","error","rec",9000);return}
+    const chunks=[],mr=new MediaRecorder(st);BACK.live={mr,t0:Date.now(),st};
+    mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+    tr.addEventListener("ended",()=>{if(mr.state!=="inactive")mr.stop()});
+    mr.onstop=async()=>{st.getTracks().forEach(t=>t.stop());BACK.live=null;recBtnUI();await recSave("live",chunks,mr.mimeType,false)};
+    mr.start(1000);recBtnUI();note("REC LIVE grabando solo «"+lb+"».","info","rec",4000)
+  }catch(e){if(st)st.getTracks().forEach(t=>t.stop());BACK.live=null;recBtnUI();note(micErr(e),"error","rec")}}
+/* REC BACK: entrada (con su nivel) + todos los buses de sonido (botonera, lista, editor). Se vuelven a conectar cada 0,5 s porque cambiar de salida los desconecta */
+function backWire(){if(!BACK.dest)return;[busPad,busPl,busEd].concat(PLISTS.map(L=>L.bus)).forEach(b=>{if(b)try{b.connect(BACK.dest)}catch(e){}});
+  try{BACK.inG.connect(BACK.dest)}catch(e){}}
+async function recBackToggle(){
+  if(BACK.rec){BACK.rec.mr.stop();return}
+  if(!window.MediaRecorder){note("Este navegador no puede grabar. Usá Chrome, Brave o Edge actualizados.","error","rec");return}
+  try{
+    if(ctx.state!=="running")ctx.resume();
+    await openMic();
+    if(!BACK.dest){BACK.dest=ctx.createMediaStreamDestination();BACK.inG=ctx.createGain()}
+    // la entrada va directo (sin efectos) salvo que el live esté sonando: en ese caso ya entra, con sus efectos, por el bus
+    try{inGain.connect(BACK.inG)}catch(e){}
+    const chunks=[],mr=new MediaRecorder(BACK.dest.stream);
+    const prot=items.some(i=>i.playing.size&&isProt(i.blob))||PLISTS.some(L=>L.src);
+    BACK.rec={mr,t0:Date.now(),prot};
+    const sync=()=>BACK.inG.gain.setTargetAtTime(mic.live&&mic.stream&&!mic.muted?0:1,ctx.currentTime,.01);sync();
+    BACK.rec.wire=setInterval(()=>{backWire();sync()},500);backWire();
+    mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+    mr.onstop=async()=>{clearInterval(BACK.rec.wire);const pr=BACK.rec.prot;
+      [busPad,busPl,busEd].concat(PLISTS.map(L=>L.bus)).forEach(b=>{if(b)try{b.disconnect(BACK.dest)}catch(e){}});try{BACK.inG.disconnect(BACK.dest)}catch(e){}
+      BACK.rec=null;closeMicIfIdle();syncIns();recBtnUI();await recSave("back",chunks,mr.mimeType,pr)};
+    mr.start(1000);recBtnUI();syncIns();note("REC BACK grabando: entrada + todo lo que suena en la botonera.","info","rec",4000)
+  }catch(e){BACK.rec=null;recBtnUI();note(micErr(e),"error","rec")}}
+$("reclive").addEventListener("click",recLiveToggle);$("recback").addEventListener("click",recBackToggle);
+/* caja con las últimas 2 grabaciones REC (el resto está en la botonera) */
+function recBoxRender(){const box=$("recbox");if(!box)return;box.textContent="";
+  const list=items.map((it,idx)=>({it,idx})).filter(x=>/^REC (LIVE|BACK) /.test(x.it.name)).slice(-2).reverse();
+  list.forEach(({it,idx})=>{const kind=/^REC LIVE/.test(it.name)?"live":"back",pr=isProt(it.blob);
+    const r=document.createElement("div");r.className="rr "+kind;const dot=document.createElement("i");dot.style.background=RECCOL[kind];
+    const nm=document.createElement("span");nm.className="rn";nm.textContent=it.name.replace(/\.webm$/,"");nm.title=it.name+(pr?" · protegido":"");
+    const e=document.createElement("button");e.type="button";e.textContent="Editar";e.addEventListener("click",()=>edOpen(items.indexOf(it)));
+    const d=document.createElement("button");d.type="button";d.textContent=pr?"Protegido":"Descargar";d.disabled=pr;d.title=pr?"Contiene audio de las carpetas protegidas: no se puede descargar":"Descargar esta grabación";
+    d.addEventListener("click",()=>saveBlob(it.blob,it.name));
+    r.append(dot,nm,e,d);box.appendChild(r)});}
+{const _r=render;render=function(){_r.apply(this,arguments);try{recBoxRender()}catch(e){}}}
 /* ---------- v1.79 · conservar videos del helper, salida a pantallas (físicas o virtuales) ---------- */
 const VOUT={set:false,screen:"",screenL:"",audio:"",audioL:""};
 try{const j=JSON.parse(localStorage.getItem("botonera_vout")||"null");if(j&&typeof j==="object"){VOUT.set=!!j.set;VOUT.screen=j.screen||"";VOUT.screenL=j.screenL||"";VOUT.audio=j.audio||"";VOUT.audioL=j.audioL||""}}catch(e){}
@@ -2649,7 +2754,7 @@ function plStart(i,off,fade,noCue,cueIdx){
   PL.cueAt=cueIdx!==undefined?cueIdx:-1;
   if(!off&&!noCue&&r.cues&&r.cues.length){off=Math.min(r.cues[0],Math.max(0,r.buffer.duration-.05));PL.cueAt=0} // el tema arranca desde su cue más antiguo
   if(ctx.state!=="running")ctx.resume();
-  plKill(fade);const s=ctx.createBufferSource(),gn=ctx.createGain();s.buffer=r.buffer;s.connect(gn);gn.connect(PL.fx.dry);gn.connect(PL.fx.dlyIn);gn.connect(PL.fx.revSend);
+  backNote(r.blob);plKill(fade);const s=ctx.createBufferSource(),gn=ctx.createGain();s.buffer=r.buffer;s.connect(gn);gn.connect(PL.fx.dry);gn.connect(PL.fx.dlyIn);gn.connect(PL.fx.revSend);
   if(fade){const t=ctx.currentTime;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(1,t+PL_FADE)}
   const g=++PL.gen;PL.src=s;PL.gn=gn;PL.curId=r.id;PL.off=off||0;PL.t0=ctx.currentTime-PL.off;if(PL.state!=="play")PL.ts=performance.now();PL.state="play";
   if(PL.nxtId===r.id)PL.nxtId=null;
@@ -3300,7 +3405,7 @@ function plCssClone(n){ // copia las reglas de #pl… para los ids de la lista n
 function plHook(root,L){["pointerdown","pointermove","pointerup","pointerleave","click","dblclick","contextmenu","dragstart","dragenter","dragover","dragleave","drop","dragend","wheel","change","input","keydown","focusin"].forEach(ev=>root.addEventListener(ev,()=>{
   plAct(L);if(ev==="pointerdown"||ev==="contextmenu"||ev==="keydown"||ev==="focusin"||ev==="click"||ev==="change"||ev==="dragstart"||ev==="drop")PLUSER=L},true))}
 function plBuild(n){
-  const L=plMake(n);L.bus=ctx.createGain();L.bus.connect(ctx.destination);L.fx=mkFx(L.bus);PLFX.push(L.fx);
+  const L=plMake(n);L.bus=ctx.createGain();L.bus.connect(ctx.destination);if(BACK.dest&&BACK.rec)try{L.bus.connect(BACK.dest)}catch(e){}L.fx=mkFx(L.bus);PLFX.push(L.fx);
   const root=PLTPL.cloneNode(true),sfx="_"+n,k="pl"+n;
   [root].concat(Array.from(root.querySelectorAll("[id]"))).forEach(e=>{e.id=e.id==="otg-pl"?"otg-pl"+n:e.id+sfx});
   root.classList.add("plp");root._L=L;root.querySelector(".plh b").textContent="Lista "+n;root.querySelector("#plrm"+sfx).hidden=false;
