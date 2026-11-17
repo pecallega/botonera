@@ -944,7 +944,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .recx .rtog .rch{width:12px;height:12px;transition:transform .15s}
 .recx.open .rtog .rch{transform:rotate(180deg)}
 .recx:not(.open)>:not(.rtog):not(.recstat){display:none!important}
-/* v2.18 · Principal con la misma estética que Helper */
+/* v2.19 · Principal con la misma estética que Helper */
 .fx{padding:10px!important}
 .fx select,.usr select,#indev,#rlin{background-color:#050506!important;background-image:none;border:1px solid rgba(255,255,255,.1)!important;color:var(--tx,#f4f4f6);font:500 .7rem "Space Mono",monospace!important;letter-spacing:.04em;text-transform:uppercase;padding:8px 28px 8px 10px!important;border-radius:0!important;min-height:36px}
 #indev{padding-left:34px!important}
@@ -988,7 +988,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .fx .fxtop button,.fx .fxtop select{width:auto!important;min-width:0;flex:0 0 auto;grid-column:auto}
 .fx .fxtop .usr select{width:140px!important;max-width:140px}
 .fx .fxtop #outb{margin-left:4px}
-/* v2.18 · Botonera con el mismo recuadro que Principal y Helper */
+/* v2.19 · Botonera con el mismo recuadro que Principal y Helper */
 #gcol{border:1px solid rgba(255,255,255,.16);background-image:linear-gradient(rgba(255,255,255,.055),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(0,0,0,.65),inset 0 0 26px rgba(0,0,0,.35),0 6px 22px rgba(0,0,0,.35);padding:10px;box-sizing:border-box}
 #gcol #gbar{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
 #ed.recover{outline:2px dashed #ff2a2a;outline-offset:-4px}
@@ -1011,7 +1011,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .tbar .tsb::-moz-range-thumb{width:8px;height:18px;background:#d8d8dc;border:1px solid #000;border-radius:0}
 .tbar .tvl{flex:0 0 70px}
 #sesclr{color:#ff7b80}
-/* v2.18 · celular */
+/* v2.19 · celular */
 @media (max-width:700px){
   #sig,footer#sig{position:static!important;margin:14px auto 18px!important;transform:none!important}
   .fx .micr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
@@ -1023,7 +1023,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
   .pad,.gear,.mv,button{touch-action:manipulation}
   .pad{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
 }
-/* v2.18 · diseño */
+/* v2.19 · diseño */
 html{padding:0 var(--lmr,0px) 0 var(--lml,0px)}
 body{padding-top:calc(20px + var(--lmt,0px))}
 @media (min-width:901px){
@@ -1076,13 +1076,18 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 #stage.mpl{overflow:visible;padding-bottom:6px}
 @media (min-width:901px){
   #stage{gap:16px}
-  #stage > .plp{margin-left:0}
-  #stage.mpl{flex-wrap:wrap;gap:14px}
-  #stage.mpl #gcol{flex:1 1 440px;min-width:min(100%,400px);margin-bottom:0;padding-bottom:10px}
-  #stage.mpl > .plp,#stage.mpl > .plp.empty{flex:0 0 auto;width:clamp(250px,17.5vw,340px);min-width:0;max-width:100%}
+  #stage .plp{margin-left:0}
+  #stage.mpl{flex-wrap:nowrap;gap:16px}
+  #stage.mpl #gcol{flex:1 1 500px;min-width:496px;margin-bottom:0;padding-bottom:10px}
+  #stage.mpl #lstL,#stage.mpl #lstR{display:flex;flex-wrap:wrap;gap:14px;flex:0 1 auto;min-width:0;align-items:flex-start;align-content:flex-start;align-self:stretch}
+  #stage.mpl .plp,#stage.mpl .plp.empty{flex:0 0 auto;width:clamp(250px,17.5vw,340px);min-width:0;max-width:100%}
 }
 .plp.plclosed{display:none!important}
-#stage.wrapped > .plp{position:relative!important;top:auto!important;max-height:none!important}
+#lstL{order:-1}
+#lstR{order:1}
+#lstL,#lstR{display:contents}
+#lstL[hidden],#lstR[hidden]{display:none!important}
+.wrapped .plp{position:relative!important;top:auto!important;max-height:none!important}
 #ed .edh{cursor:grab}
 #ed .edh input,#ed .edh button{cursor:auto}
 .laymk{position:fixed;z-index:9600;pointer-events:none;background:#ff2a2a;box-shadow:0 0 10px #ff2a2a}
@@ -1090,7 +1095,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 .layzone{z-index:9400;opacity:.5}
 .layzone.on{opacity:1;background:rgba(255,42,42,.26);border-style:solid}
 #gbar,.plp .plh,#ed .edh{touch-action:none}
-/* v2.18 · cuadro del helper: botones solo con ícono (el nombre sale al pasar el mouse) para que el buscador sea más ancho */
+/* v2.19 · cuadro del helper: botones solo con ícono (el nombre sale al pasar el mouse) para que el buscador sea más ancho */
 @media (min-width:901px){
   .lk #lkgo .bt,.lk #lkmodes button .bt,.lk #lkh span,.lk #lkmon span{display:none}
   .lk #lkgo,.lk #lkmodes button,.lk #lkh,.lk #lkmon{width:38px;min-width:38px;height:36px;padding:0!important;gap:0}
@@ -1193,8 +1198,8 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </header>
 <p id="msg"></p>
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
-<div id="stage"><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*" multiple></label></div><div id="grid"></div></div>
-<aside id="pl" class="plp" aria-label="Lista de reproducción">
+<div id="stage"><div id="lstL"></div><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*" multiple></label></div><div id="grid"></div></div>
+<div id="lstR"><aside id="pl" class="plp" aria-label="Lista de reproducción">
   <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span><button type="button" id="plnew" class="plb plnb" title="Agregar otra lista a la derecha (cada lista puede salir por su propia placa de sonido)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Lista</span></button><button type="button" id="plrm" class="plb plnb" hidden title="Quitar esta lista"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><button type="button" id="plshow" class="plb" title="Play actual: lleva la lista hasta el tema que suena o el que quedó elegido para reproducirse (Ctrl+A)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Play actual</span></button><button type="button" class="otag" id="otg-pl"></button></div>
   <div class="plact">
     <button id="plsvb" class="plb" title="Guardar la lista, abrir una guardada o pasarla de/ a un archivo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg><span>Listas</span></button>
@@ -1222,7 +1227,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
   <button id="plsolo" class="plsw" role="switch" aria-checked="false" title="Opción: reproducir un solo archivo por vez. Activada, al terminar el tema no suena el siguiente: queda listo."><span class="trk"><i></i></span><span class="lb">Solo 1 archivo por vez</span><em>OFF</em></button>
   <div id="plst" role="status"></div>
   <div id="pll" role="listbox" aria-label="Temas de la lista"></div>
-</aside>
+</aside></div>
 <div id="rcol"><aside id="vp" class="vpa" aria-label="Reproductor"></aside></div></div>
 <section id="ed" aria-label="Editor de audio">
   <div class="edh"><b>Editor de audio</b><span id="edn"></span><label class="nmf" title="Nombre del botón al guardar. Vacío = se mantiene el nombre actual."><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg><input id="edname" type="text" maxlength="60" placeholder="Nombre del botón" autocomplete="off"></label><button type="button" class="otag" id="otg-ed"></button><canvas id="edvu" class="vu2" aria-label="Vúmetro del editor (izquierdo y derecho)"></canvas><span class="sp"></span>
@@ -1237,7 +1242,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.18 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.18</span></footer>
+<footer id="sig" title="Versión 2.19 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.19</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1309,7 +1314,7 @@ const KEYS="1234567890QWERTYUPASDFGHJKLZXVBN".split(""); // C, M, I, O reservada
 const PALETTE=["#e8232a","#a3141a","#ff5a36","#f2c230","#4a90f2","#3a3a3a","#6b6b6b","#9a9a9a","#c4c4c4","#ffffff"];
 const AC=window.AudioContext||window.webkitAudioContext;
 const ctx=new AC({latencyHint:"interactive"});
-/* ---------- v2.18 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
+/* ---------- v2.19 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 let SILA=null;
 function unlockAudio(){
@@ -2463,7 +2468,7 @@ function playNative(src,kind,mode,title,vertHint){
 
 /* ---------- app de escritorio: señal de vida para que el programa se cierre solo al cerrar la ventana ---------- */
 if(window.BOTONERA_LOCAL){const hb=()=>fetch("/app/ping",{cache:"no-store"}).catch(()=>{});hb();setInterval(hb,15000)}
-/* ---------- v2.18 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
+/* ---------- v2.19 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
 const LAYK="botonera_layout",LAYD={list:"r",head:"n",ml:0,mr:0,mt:0,ed:"b",edh:150,sides:{},order:[]};let LAY=Object.assign({},LAYD,{sides:{},order:[]});
 try{const j=JSON.parse(localStorage.getItem(LAYK)||"null");if(j&&typeof j==="object")Object.keys(LAYD).forEach(k=>{if(j[k]!==undefined)LAY[k]=j[k]});if(!LAY.sides||typeof LAY.sides!=="object")LAY.sides={};if(!Array.isArray(LAY.order))LAY.order=[]}catch(e){}
 function layApply(){const h=document.documentElement,c=v=>Math.max(0,Math.min(400,+v||0));
@@ -2476,20 +2481,23 @@ function layEd(){const e=$("ed"),st=$("stage");if(!e||!st)return;const top=LAY.e
   e.classList.toggle("edtop",top);if(typeof edDraw==="function"&&window.ed&&0){}
   try{if(typeof ed==="object"&&ed.ch)edDraw()}catch(x){}}
 /* orden de la botonera y de cada lista: se acomodan entre sí en cualquier lugar (la lista 3 donde está la 1, etc.) */
-function layIds(){const st=$("stage"),ids=[...st.children].filter(e=>e.id==="gcol"||e.classList.contains("plp")).map(e=>e.id);
+function layIds(){const st=$("stage"),ids=[...st.querySelectorAll("#gcol,.plp")].map(e=>e.id);
   let ord=(Array.isArray(LAY.order)?LAY.order:[]).filter(i=>ids.includes(i));
   if(!ord.length){const lists=ids.filter(i=>i!=="gcol"),side=i=>(LAY.sides&&LAY.sides[i])||LAY.list||"r"; // sin orden guardado: se parte de los lados de antes
     ord=lists.filter(i=>side(i)==="l").concat(["gcol"],lists.filter(i=>side(i)!=="l"))}
   else ids.forEach(i=>{if(!ord.includes(i))ord.push(i)}); // lista nueva: va al final
   return ord}
-function laySides(){const st=$("stage");if(!st)return;layIds().forEach((id,i)=>{const e=document.getElementById(id);if(e){e.style.order=i}});layWrap()}
-/* si las listas no entran en una sola fila y bajan a otra, dejan de «pegarse» arriba al hacer scroll (si no, tapan a las de abajo) */
-function layWrap(){const st=$("stage");if(!st)return;const ls=[...st.children].filter(e=>e.classList.contains("plp")&&e.offsetParent!==null);
-  const need=(ls.length?400:0)+ls.reduce((a,e)=>a+e.offsetWidth,0)+14*ls.length;st.classList.toggle("wrapped",window.innerWidth>=901&&ls.length>=2&&need>st.clientWidth+1)}
+function laySides(){const st=$("stage");if(!st)return;const ids=layIds(),g=ids.indexOf("gcol"),L=$("lstL"),R=$("lstR");
+  ids.forEach((id,i)=>{const e=document.getElementById(id);if(!e)return;e.style.order=id==="gcol"?0:i-g;if(id==="gcol")return; /* orden relativo a la botonera: sirve dentro de las cajas y también cuando se apilan en el celular */const t=i<g?L:R;if(e.parentNode!==t)t.appendChild(e)});
+  [L,R].forEach(c=>{c.hidden=![...c.children].some(e=>e.classList.contains("plp")&&!e.classList.contains("plclosed"))});layWrap()}
+/* las listas van en dos cajas (a la izquierda y a la derecha de la botonera) y, si no entran en una fila, se acomodan en filas DENTRO de su caja,
+   pegadas a las de arriba. Cuando hay más de una fila dejan de «pegarse» arriba al hacer scroll (si no, se tapan entre sí) */
+function layWrap(){[$("lstL"),$("lstR")].forEach(c=>{if(!c)return;const ls=[...c.children].filter(e=>e.classList.contains("plp")&&!e.classList.contains("plclosed"));
+  const need=ls.reduce((a,e)=>a+e.offsetWidth,0)+14*Math.max(0,ls.length-1);c.classList.toggle("wrapped",window.innerWidth>=901&&ls.length>=2&&need>c.clientWidth+1)})}
 window.addEventListener("resize",()=>layWrap());
 function laySave(){try{localStorage.setItem(LAYK,JSON.stringify(LAY))}catch(e){}}
 layApply();
-new MutationObserver(laySides).observe($("stage"),{childList:true});
+{const mo=new MutationObserver(laySides);[$("stage"),$("lstL"),$("lstR")].forEach(x=>mo.observe(x,{childList:true}))}
 /* modo diseño: se arrastran los bordes (palito con flechas) para los márgenes, y la botonera o la lista de su título para cambiarlas de lado */
 let LDM=false,LDH=null;
 function layHandles(){
@@ -2523,7 +2531,7 @@ function layMode(on){LDM=on;document.body.classList.toggle("laymode",on);$("sesd
 $("sesdis").addEventListener("click",()=>layMode(!LDM));
 document.addEventListener("keydown",e=>{if(LDM&&e.key==="Escape")layMode(false)});
 /* arrastrar de su título: la botonera y cada lista se acomodan entre sí; el editor va arriba o abajo de todo. Funciona siempre (no hace falta el modo Diseño) */
-function layKids(except){return [...$("stage").children].filter(e=>e!==except&&(e.id==="gcol"||e.classList.contains("plp"))&&e.offsetParent!==null)}
+function layKids(except){return [...$("stage").querySelectorAll("#gcol,.plp")].filter(e=>e!==except&&e.offsetParent!==null)}
 function layTarget(src,x,y){
   const col=getComputedStyle($("stage")).flexDirection.indexOf("column")===0,kids=layKids(src);if(!kids.length)return null;
   let best=null,bd=1e9;kids.forEach(el=>{const r=el.getBoundingClientRect(),dx=Math.max(r.left-x,0,x-r.right),dy=Math.max(r.top-y,0,y-r.bottom),d=Math.hypot(dx,dy);if(d<bd){bd=d;best=el}});
@@ -2560,7 +2568,7 @@ document.addEventListener("pointerdown",e=>{
     else if(tg){const ids=layIds().filter(i=>i!==src.id),k=ids.indexOf(tg.el.id);ids.splice(tg.after?k+1:k,0,src.id);LAY.order=ids;layApply();laySave()}
     const stop=x=>{x.stopPropagation();x.preventDefault()};document.addEventListener("click",stop,{capture:true,once:true});setTimeout(()=>document.removeEventListener("click",stop,true),50)};
   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)},true);
-/* ---------- v2.18 · limpiar la botonera (doble advertencia) ---------- */
+/* ---------- v2.19 · limpiar la botonera (doble advertencia) ---------- */
 $("sesclr").addEventListener("click",async()=>{
   const keep=it=>(it.base&&catOf(it)>0)||isRecOrig(it);
   const gone=items.filter(it=>!keep(it)),nl=PLISTS.reduce((a,L)=>a+(L.rows?L.rows.length:0),0);
@@ -2575,7 +2583,7 @@ $("sesclr").addEventListener("click",async()=>{
   items=items.filter(keep);STASH.clear();items.forEach(it=>{if(it.hid&&isRecOrig(it)){STASH.add(it.name)}else it.hid=false});stashSave();
   PLISTS.forEach(L=>{try{plAct(L);PL.rows=[];plRender();plSave()}catch(e){}});
   waiting=null;SEL.clear();BLINK.clear();render();save();note("Botonera y listas en cero.","info","",5000)});
-/* ---------- v2.18 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
+/* ---------- v2.19 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
 const TI={play:'<path d="M7 4v16l13-8z" fill="currentColor"/>',pause:'<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>',vol:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12"/>',mute:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/>',back:'<path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>',fwd:'<path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>'};
 function mkTransport(el){
   const bar=document.createElement("div");bar.className="tbar";
@@ -2598,7 +2606,7 @@ function mkTransport(el){
   mu.addEventListener("click",()=>{el.muted=!el.muted});
   vl.addEventListener("input",()=>{el.muted=false;el.volume=vl.value/100;paint(vl)});
   upd();return bar}
-/* ---------- v2.18 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
+/* ---------- v2.19 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
 const BACK={rec:null,live:null,mix:null,dest:null,inG:null,meter:null};
 function backNote(blob){if(BACK.rec&&isProt(blob))BACK.rec.prot=true}
 const RL_BAD=/(micr[oó]fono|microphone|mic)\s*(array|interno|integrad|incorporad|internal|built)|array de micr|micr[oó]fono (interno|integrado|incorporado)|internal mic|built-?in|integrated|webcam|c[aá]mara|camera|laptop|realtek.*(mic|micr[oó]fono)(?!.*line)/i;
@@ -3887,7 +3895,7 @@ function plBuild(n){
   const root=PLTPL.cloneNode(true),sfx="_"+n,k="pl"+n;
   [root].concat(Array.from(root.querySelectorAll("[id]"))).forEach(e=>{e.id=e.id==="otg-pl"?"otg-pl"+n:e.id+sfx});
   root.classList.add("plp");root._L=L;root.querySelector(".plh b").textContent="Lista "+n;root.querySelector("#plrm"+sfx).hidden=false;
-  Array.from(document.querySelectorAll(".plp")).pop().after(root);
+  $("lstR").appendChild(root);
   L.style=plCssClone(n);PLISTS.push(L);plMplUpdate();
   OUTK[k]="Lista "+n;let sv={};try{sv=JSON.parse(localStorage.getItem("botonera_out")||"{}")}catch(e){}
   OUT[k]={bus:L.bus,id:typeof sv[k]==="string"?sv[k]:"",label:typeof sv[k+"L"]==="string"?sv[k+"L"]:"",el:null};
