@@ -942,7 +942,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .recx .rtog .rch{width:12px;height:12px;transition:transform .15s}
 .recx.open .rtog .rch{transform:rotate(180deg)}
 .recx:not(.open)>:not(.rtog):not(.recstat){display:none!important}
-/* v2.12 · Principal con la misma estética que Helper */
+/* v2.14 · Principal con la misma estética que Helper */
 .fx{padding:10px!important}
 .fx select,.usr select,#indev,#rlin{background-color:#050506!important;background-image:none;border:1px solid rgba(255,255,255,.1)!important;color:var(--tx,#f4f4f6);font:500 .7rem "Space Mono",monospace!important;letter-spacing:.04em;text-transform:uppercase;padding:8px 28px 8px 10px!important;border-radius:0!important;min-height:36px}
 #indev{padding-left:34px!important}
@@ -986,7 +986,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .fx .fxtop button,.fx .fxtop select{width:auto!important;min-width:0;flex:0 0 auto;grid-column:auto}
 .fx .fxtop .usr select{width:140px!important;max-width:140px}
 .fx .fxtop #outb{margin-left:4px}
-/* v2.12 · Botonera con el mismo recuadro que Principal y Helper */
+/* v2.14 · Botonera con el mismo recuadro que Principal y Helper */
 #gcol{border:1px solid rgba(255,255,255,.16);background-image:linear-gradient(rgba(255,255,255,.055),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(0,0,0,.65),inset 0 0 26px rgba(0,0,0,.35),0 6px 22px rgba(0,0,0,.35);padding:10px;box-sizing:border-box}
 #gcol #gbar{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
 #ed.recover{outline:2px dashed #ff2a2a;outline-offset:-4px}
@@ -1009,7 +1009,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .tbar .tsb::-moz-range-thumb{width:8px;height:18px;background:#d8d8dc;border:1px solid #000;border-radius:0}
 .tbar .tvl{flex:0 0 70px}
 #sesclr{color:#ff7b80}
-/* v2.12 · celular */
+/* v2.14 · celular */
 @media (max-width:700px){
   #sig,footer#sig{position:static!important;margin:14px auto 18px!important;transform:none!important}
   .fx .micr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
@@ -1021,11 +1021,10 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
   .pad,.gear,.mv,button{touch-action:manipulation}
   .pad{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
 }
-/* v2.12 · diseño */
+/* v2.14 · diseño */
 html{padding:0 var(--lmr,0px) 0 var(--lml,0px)}
 body{padding-top:calc(20px + var(--lmt,0px))}
 @media (min-width:901px){
-  body.lay-listl #stage{flex-direction:row-reverse}
   body.lay-heads header{flex-direction:row-reverse}
   body.lay-heads header .lk{margin-left:0;margin-right:auto}
 }
@@ -1074,6 +1073,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 .plp .plh b.plnm:hover{text-decoration:underline dotted}
 #stage.mpl{overflow-x:auto;padding-bottom:6px}
 @media (min-width:901px){#stage.mpl #gcol{flex:1 0 620px}#stage.mpl .plp{flex:0 0 auto}}
+@media (min-width:901px){#stage > .plp{order:var(--ord,1)}#stage > #gcol{order:0}}
 </style>
 </head>
 <body class="booting">
@@ -1214,7 +1214,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.12 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.12</span></footer>
+<footer id="sig" title="Versión 2.14 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.14</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1286,7 +1286,7 @@ const KEYS="1234567890QWERTYUPASDFGHJKLZXVBN".split(""); // C, M, I, O reservada
 const PALETTE=["#e8232a","#a3141a","#ff5a36","#f2c230","#4a90f2","#3a3a3a","#6b6b6b","#9a9a9a","#c4c4c4","#ffffff"];
 const AC=window.AudioContext||window.webkitAudioContext;
 const ctx=new AC({latencyHint:"interactive"});
-/* ---------- v2.12 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
+/* ---------- v2.14 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 let SILA=null;
 function unlockAudio(){
@@ -1832,6 +1832,10 @@ async function repoList(){
   let cache=[];try{cache=JSON.parse(localStorage.getItem("botonera_repo")||"[]")}catch(x){}if(!Array.isArray(cache))cache=[];
   const parse=l=>l.filter(x=>typeof x==="string").map(x=>{const [pt,sha,sz]=x.split("|"),k=pt.indexOf("/");return k>0?{d:pt.slice(0,k),n:pt.slice(k+1),sha:sha||"",size:+sz||0}:{d:"audios",n:pt,sha:"",size:0}});
   const cached=d=>parse(cache).filter(x=>x.d===d);
+  if(window.BOTONERA_LOCAL){ // app de escritorio: las carpetas audios / cortinas / mensajes están junto al programa (sin internet)
+    try{const r=await fetch("/local/list",{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const out=(await r.json()).filter(x=>x&&typeof x.n==="string"&&AUD.test(x.n)).map(x=>({d:x.d,n:x.n,sha:x.sha||"",size:x.size||0}));
+      try{localStorage.setItem("botonera_repo",JSON.stringify(out.map(x=>x.d+"/"+x.n+"|"+(x.sha||"")+"|"+(x.size||0))))}catch(e){}return out}
+    catch(e){window.__repoStale=true;return parse(cache)}}
   try{
     const h=location.hostname;if(!/\.github\.io$/.test(h))return [];
     const u=h.split(".")[0];let r=location.pathname.split("/")[1]||"";if(!r||r.indexOf(".")>-1)r=h;
@@ -2110,7 +2114,7 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 window.addEventListener("resize",()=>edDraw());
 let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem(HK)||"[]"))}catch(e){}
 /* ---------- buscador de links + reproductor lateral + descarga (helper) ---------- */
-let HELPER=(()=>{try{return localStorage.getItem("botonera_helper")||"http://127.0.0.1:8765"}catch(e){return"http://127.0.0.1:8765"}})();
+let HELPER=window.BOTONERA_LOCAL?location.origin:(()=>{try{return localStorage.getItem("botonera_helper")||"http://127.0.0.1:8765"}catch(e){return"http://127.0.0.1:8765"}})();
 document.querySelectorAll("#lkmodes button").forEach(x=>x.dataset.t=x.title);
 let HTOK=(()=>{try{return localStorage.getItem("botonera_htoken")||""}catch(e){return""}})();
 let HREMOTE=!/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/|$)/i.test(HELPER);
@@ -2434,14 +2438,19 @@ function playNative(src,kind,mode,title,vertHint){
   el.addEventListener("loadedmetadata",()=>{const w=el.videoWidth,h=el.videoHeight;if(w&&h)vpShow(h>w?"v":"h",w+"/"+h,title)})}
 
 
-/* ---------- v2.12 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
-const LAYK="botonera_layout",LAYD={list:"r",head:"n",ml:0,mr:0,mt:0};let LAY=Object.assign({},LAYD);
-try{const j=JSON.parse(localStorage.getItem(LAYK)||"null");if(j&&typeof j==="object")Object.keys(LAYD).forEach(k=>{if(j[k]!==undefined)LAY[k]=j[k]})}catch(e){}
+/* ---------- app de escritorio: señal de vida para que el programa se cierre solo al cerrar la ventana ---------- */
+if(window.BOTONERA_LOCAL){const hb=()=>fetch("/app/ping",{cache:"no-store"}).catch(()=>{});hb();setInterval(hb,15000)}
+/* ---------- v2.14 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
+const LAYK="botonera_layout",LAYD={list:"r",head:"n",ml:0,mr:0,mt:0,sides:{}};let LAY=Object.assign({},LAYD,{sides:{}});
+try{const j=JSON.parse(localStorage.getItem(LAYK)||"null");if(j&&typeof j==="object")Object.keys(LAYD).forEach(k=>{if(j[k]!==undefined)LAY[k]=j[k]});if(!LAY.sides||typeof LAY.sides!=="object")LAY.sides={}}catch(e){}
 function layApply(){const h=document.documentElement,c=v=>Math.max(0,Math.min(400,+v||0));
   h.style.setProperty("--lml",c(LAY.ml)+"px");h.style.setProperty("--lmr",c(LAY.mr)+"px");h.style.setProperty("--lmt",c(LAY.mt)+"px");
-  document.body.classList.toggle("lay-listl",LAY.list==="l");document.body.classList.toggle("lay-heads",LAY.head==="s")}
+  document.body.classList.toggle("lay-heads",LAY.head==="s");laySides()}
+/* cada lista tiene su propio lado: izquierda (antes de la botonera) o derecha */
+function laySides(){document.querySelectorAll("#stage > .plp").forEach(r=>{const side=(LAY.sides&&LAY.sides[r.id])||LAY.list;r.style.setProperty("--ord",side==="l"?-1:1);r.dataset.side=side})}
 function laySave(){try{localStorage.setItem(LAYK,JSON.stringify(LAY))}catch(e){}}
 layApply();
+new MutationObserver(laySides).observe($("stage"),{childList:true});
 /* modo diseño: se arrastran los bordes (palito con flechas) para los márgenes, y la botonera o la lista de su título para cambiarlas de lado */
 let LDM=false,LDH=null;
 function layHandles(){
@@ -2461,7 +2470,7 @@ function layBar(){let b=$("laybar");if(b)return b;b=document.createElement("div"
   b.innerHTML='<b>Diseño</b><span>Arrastrá los bordes para los márgenes y el título de «Botonera» o «Lista» para cambiarlas de lado.</span><button type="button" id="lysw">Intercambiar Principal / Helper</button><button type="button" id="lyrs">Restablecer</button><button type="button" id="lyok" class="ok">Listo</button>';
   document.body.appendChild(b);
   $("lysw").onclick=()=>{LAY.head=LAY.head==="s"?"n":"s";layApply();laySave()};
-  $("lyrs").onclick=()=>{LAY=Object.assign({},LAYD);layApply();laySave();layPos()};
+  $("lyrs").onclick=()=>{LAY=Object.assign({},LAYD,{sides:{}});layApply();laySave();layPos()};
   $("lyok").onclick=()=>layMode(false);return b}
 function layMode(on){LDM=on;document.body.classList.toggle("laymode",on);$("sesdis").classList.toggle("on",on);
   if(on){layHandles();layBar();layPos();LDH.root.hidden=false;$("laybar").hidden=false}else{if(LDH)LDH.root.hidden=true;const b=$("laybar");if(b)b.hidden=true}}
@@ -2481,9 +2490,9 @@ document.addEventListener("pointerdown",e=>{
     if(!drag)return;document.body.classList.remove("laydrag");src.classList.remove("laysrc");if(ghost)ghost.remove();if(zl)zl.remove();
     if(ev.type==="pointercancel")return;
     const r=stage.getBoundingClientRect(),left=ev.clientX<r.left+r.width/2;
-    LAY.list=isG?(left?"r":"l"):(left?"l":"r");layApply();laySave()};
+    if(isG){LAY.list=left?"r":"l";LAY.sides={}}else{LAY.sides=LAY.sides||{};LAY.sides[src.id]=left?"l":"r"}layApply();laySave()};
   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)},true);
-/* ---------- v2.12 · limpiar la botonera (doble advertencia) ---------- */
+/* ---------- v2.14 · limpiar la botonera (doble advertencia) ---------- */
 $("sesclr").addEventListener("click",async()=>{
   const keep=it=>(it.base&&catOf(it)>0)||isRecOrig(it);
   const gone=items.filter(it=>!keep(it)),nl=PLISTS.reduce((a,L)=>a+(L.rows?L.rows.length:0),0);
@@ -2498,7 +2507,7 @@ $("sesclr").addEventListener("click",async()=>{
   items=items.filter(keep);STASH.clear();items.forEach(it=>{if(it.hid&&isRecOrig(it)){STASH.add(it.name)}else it.hid=false});stashSave();
   PLISTS.forEach(L=>{try{plAct(L);PL.rows=[];plRender();plSave()}catch(e){}});
   waiting=null;SEL.clear();BLINK.clear();render();save();note("Botonera y listas en cero.","info","",5000)});
-/* ---------- v2.12 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
+/* ---------- v2.14 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
 const TI={play:'<path d="M7 4v16l13-8z" fill="currentColor"/>',pause:'<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>',vol:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12"/>',mute:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/>',back:'<path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>',fwd:'<path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>'};
 function mkTransport(el){
   const bar=document.createElement("div");bar.className="tbar";
@@ -2521,7 +2530,7 @@ function mkTransport(el){
   mu.addEventListener("click",()=>{el.muted=!el.muted});
   vl.addEventListener("input",()=>{el.muted=false;el.volume=vl.value/100;paint(vl)});
   upd();return bar}
-/* ---------- v2.12 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
+/* ---------- v2.14 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
 const BACK={rec:null,live:null,mix:null,dest:null,inG:null,meter:null};
 function backNote(blob){if(BACK.rec&&isProt(blob))BACK.rec.prot=true}
 const RL_BAD=/(micr[oó]fono|microphone|mic)\s*(array|interno|integrad|incorporad|internal|built)|array de micr|micr[oó]fono (interno|integrado|incorporado)|internal mic|built-?in|integrated|webcam|c[aá]mara|camera|laptop|realtek.*(mic|micr[oó]fono)(?!.*line)/i;
@@ -2669,7 +2678,7 @@ setInterval(()=>{document.querySelectorAll(".rr .pp").forEach(b=>{const on=!!(b.
 /* ---------- v1.91 · descargar en WAV 44,1 kHz (16 bits) o MP3 con elección de calidad. Solo audio que NO es de las carpetas protegidas ---------- */
 const LAMEURL="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js";
 function loadLame(){if(window.lamejs&&window.lamejs.Mp3Encoder)return Promise.resolve();
-  return new Promise((ok,no)=>{const sc=document.createElement("script");sc.src=LAMEURL;sc.async=true;let t=setTimeout(()=>{sc.remove();no(new Error("timeout"))},20000);
+  return new Promise((ok,no)=>{const sc=document.createElement("script");sc.src=window.BOTONERA_LOCAL?"vendor/lame.min.js":LAMEURL;sc.async=true;let t=setTimeout(()=>{sc.remove();no(new Error("timeout"))},20000);
     sc.onload=()=>{clearTimeout(t);window.lamejs&&window.lamejs.Mp3Encoder?ok():no(new Error("lib"))};sc.onerror=()=>{clearTimeout(t);no(new Error("net"))};document.head.appendChild(sc)})}
 const bufChans=b=>{const o=[];for(let c=0;c<b.numberOfChannels;c++)o.push(b.getChannelData(c));return o};
 async function exportResample(ch,sr,to){if(sr===to)return ch;
