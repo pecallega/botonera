@@ -942,6 +942,43 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .recx .rtog .rch{width:12px;height:12px;transition:transform .15s}
 .recx.open .rtog .rch{transform:rotate(180deg)}
 .recx:not(.open)>:not(.rtog):not(.recstat){display:none!important}
+/* v2.02 · Principal con la misma estética que Helper */
+.fx{padding:10px!important}
+.fx select,.usr select,#indev,#rlin{background-color:#050506!important;background-image:none;border:1px solid rgba(255,255,255,.1)!important;color:var(--tx,#f4f4f6);font:500 .7rem "Space Mono",monospace!important;letter-spacing:.04em;text-transform:uppercase;padding:8px 28px 8px 10px!important;border-radius:0!important;min-height:36px}
+#indev{padding-left:34px!important}
+.fx select:hover,.usr select:hover,.fx select:focus,.usr select:focus{background-color:#050506!important;border-color:rgba(255,255,255,.28)!important}
+.recx .rll{font:500 .6rem "Space Mono",monospace}
+.fx input[type=text],.fx input[type=number]{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.recx .rlin2{width:46px;box-sizing:border-box;padding:2px 4px;text-align:right;background:#050506;border:1px solid #3dff7a;color:#3dff7a;font:300 .62rem var(--f-txt);border-radius:0}
+.recbar{grid-column:1/-1;margin-top:10px;border:1px solid rgba(255,255,255,.14);background:#050506}
+.recbar .rbh{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;background:transparent;border:0;color:rgba(255,255,255,.55);font:500 .68rem "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.recbar .rbd{flex:none;width:9px;height:9px;border-radius:50%;background:#555}
+.recbar .rbn{margin-left:2px;min-width:18px;padding:1px 6px;text-align:center;background:#ff2a2a;color:#fff;font:500 .62rem "Space Mono",monospace}
+.recbar .rbn:empty{display:none}
+.recbar .rch{margin-left:auto;width:14px;height:14px;transition:transform .15s}
+.recbar.open .rch{transform:rotate(180deg)}
+.recbar.has{border-color:#ff2a2a;background:#14050680;box-shadow:0 0 0 1px #ff2a2a55,0 0 18px #ff2a2a33}
+.recbar.has .rbh{color:#ff7b80}
+.recbar.has .rbd{background:#ff2a2a;animation:recdot 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.recbar.has .rbd{animation:none}}
+.recbar .rbb{display:none;padding:2px 10px 10px;flex-direction:column;gap:4px}
+.recbar.open .rbb{display:flex}
+.recbar .rbhint{color:rgba(255,255,255,.5);font:300 .62rem var(--f-txt);padding:2px 2px 4px}
+.rr{display:flex;align-items:center;gap:6px;padding:4px 6px;background:#050506;border:1px solid rgba(255,255,255,.1)}
+.recbar .rr{background:#0b0b0d}
+.rr.dg{cursor:grab}.rr.dragging{opacity:.4}
+.rr i{flex:none;width:8px;height:8px;border-radius:50%}
+.rr .rn{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:300 .66rem var(--f-txt);color:#3dff7a}
+.rr .rd{flex:none;font:300 .58rem var(--f-txt);color:rgba(255,255,255,.55)}
+.rr button{flex:none}
+body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
+.recbar .rr button{min-width:0!important;padding:3px 6px!important;font-size:.52rem!important;text-transform:uppercase;line-height:0}
+.recbar .rr button svg{width:12px;height:12px}
+.recbar .rr .pp.on{background:#c4151c!important;border-color:#ff2a2a!important;color:#fff!important}
+.recbar .rr .rx{color:#ff6b70}
+.recbar .rr .re{display:inline-flex;align-items:center;gap:4px;line-height:1}
+.recbar .rr button:disabled{opacity:.35}
+.recstat[hidden],.recx [hidden]{display:none!important}
 </style>
 </head>
 <body class="booting">
@@ -975,8 +1012,8 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
           <div class="recx" id="recx">
             <button type="button" class="rtog" id="rtog" aria-expanded="false" aria-controls="recx" title="Mostrar u ocultar vúmetros, niveles y grabaciones de REC LIVE y REC BACK"><span>Niveles y grabaciones REC</span><svg class="ic rch" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
             <div class="rlrow"><span class="rll" title="Entrada de línea de REC LIVE (independiente de la entrada del live)">Entrada REC LIVE</span><select id="rlin" aria-label="Entrada de línea para REC LIVE"><option value="">— elegí la entrada de línea —</option></select></div>
-            <div class="rlv"><span class="rlt">Live</span><canvas id="vum-live" class="rvu" aria-label="Vúmetro de REC LIVE"></canvas><input id="rlg" type="range" min="-24" max="24" step="1" value="0" aria-label="Nivel de REC LIVE en decibeles" title="Nivel de REC LIVE (doble clic: 0 dB)"><b id="rlgv" class="rldb">0 dB</b><button type="button" id="rlm" class="rlmb" aria-pressed="false" title="Probar nivel: enciende la entrada elegida solo para ver el vúmetro y acomodar el nivel, sin grabar nada">Probar</button></div>
-            <div class="rlv"><span class="rlt">Back</span><canvas id="vum-back" class="rvu" aria-label="Vúmetro de REC BACK"></canvas><input id="rbg" type="range" min="-24" max="24" step="1" value="0" aria-label="Nivel de REC BACK en decibeles" title="Nivel de REC BACK (doble clic: 0 dB)"><b id="rbgv" class="rldb">0 dB</b><span class="rlmb rlsp" aria-hidden="true"></span></div>
+            <div class="rlv"><span class="rlt">Live</span><canvas id="vum-live" class="rvu" aria-label="Vúmetro de REC LIVE"></canvas><input id="rlg" type="range" min="-24" max="24" step="0.5" value="0" aria-label="Nivel de REC LIVE en decibeles" title="Nivel de REC LIVE (doble clic: 0 dB)"><b id="rlgv" class="rldb">0 dB</b><button type="button" id="rlm" class="rlmb" aria-pressed="false" title="Probar nivel: enciende la entrada elegida solo para ver el vúmetro y acomodar el nivel, sin grabar nada">Probar</button></div>
+            <div class="rlv"><span class="rlt">Back</span><canvas id="vum-back" class="rvu" aria-label="Vúmetro de REC BACK"></canvas><input id="rbg" type="range" min="-24" max="24" step="0.5" value="0" aria-label="Nivel de REC BACK en decibeles" title="Nivel de REC BACK (doble clic: 0 dB)"><b id="rbgv" class="rldb">0 dB</b><span class="rlmb rlsp" aria-hidden="true"></span></div>
             <div class="recstat" id="recstat" hidden></div>
             <div class="recbox" id="recbox" aria-label="Últimas grabaciones REC"></div>
           </div>
@@ -1078,7 +1115,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.98 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.98</span></footer>
+<footer id="sig" title="Versión 2.02 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.02</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -2285,13 +2322,13 @@ function playNative(src,kind,mode,title,vertHint){
   el.addEventListener("loadedmetadata",()=>{const w=el.videoWidth,h=el.videoHeight;if(w&&h)vpShow(h>w?"v":"h",w+"/"+h,title)})}
 
 
-/* ---------- v1.98 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
+/* ---------- v2.02 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
 const BACK={rec:null,live:null,mix:null,dest:null,inG:null,meter:null};
 function backNote(blob){if(BACK.rec&&isProt(blob))BACK.rec.prot=true}
 const RL_BAD=/(micr[oó]fono|microphone|mic)\s*(array|interno|integrad|incorporad|internal|built)|array de micr|micr[oó]fono (interno|integrado|incorporado)|internal mic|built-?in|integrated|webcam|c[aá]mara|camera|laptop|realtek.*(mic|micr[oó]fono)(?!.*line)/i;
 let RL={id:"",label:""};try{RL=JSON.parse(localStorage.getItem("botonera_rlin")||"null")||RL}catch(e){}
 const dbv=d=>Math.pow(10,d/20),dbTxt=d=>(d>0?"+":"")+d+" dB";
-const RLG={live:0,back:0};try{RLG.live=+localStorage.getItem("botonera_rlg")||0;RLG.back=+localStorage.getItem("botonera_rbg")||0}catch(e){}
+const RLG={live:0,back:0}; // los niveles de grabación siempre arrancan en 0 dB
 function mkMeter(src){const sp=ctx.createChannelSplitter(2),a=ctx.createAnalyser(),b=ctx.createAnalyser();a.fftSize=b.fftSize=512;src.connect(sp);sp.connect(a,0);sp.connect(b,1);
   const ba=new Float32Array(512),bb=new Float32Array(512);
   return{sp,a,b,read(){a.getFloatTimeDomainData(ba);b.getFloatTimeDomainData(bb);let x=0,y=0;for(let i=0;i<512;i++){const p=ba[i]<0?-ba[i]:ba[i],q=bb[i]<0?-bb[i]:bb[i];if(p>x)x=p;if(q>y)y=q}return[x,y]},off(){try{src.disconnect(sp)}catch(e){}}}}
@@ -2334,9 +2371,15 @@ function backInit(){if(BACK.mix)return;const M=BACK.mix=ctx.createGain();M.chann
 function backSync(){if(!BACK.mix)return;BACK.inG.gain.setTargetAtTime(mic.dev[0]==="_"||(mic.live&&mic.stream&&!mic.muted)?0:1,ctx.currentTime,.01);try{busEd.connect(BACK.mix)}catch(e){}} // si el live suena, su voz ya entra por la mezcla
 setInterval(backSync,700);
 function setGain(k,d){RLG[k]=d;const v=dbv(d);if(k==="live"&&RLN)RLN.g.gain.setTargetAtTime(v,ctx.currentTime,.01);if(k==="back"&&BACK.mix)BACK.mix.gain.setTargetAtTime(v,ctx.currentTime,.01);
-  $(k==="live"?"rlgv":"rbgv").textContent=dbTxt(d);try{localStorage.setItem(k==="live"?"botonera_rlg":"botonera_rbg",String(d))}catch(e){}}
+  $(k==="live"?"rlgv":"rbgv").textContent=dbTxt(d);}
 [["live","rlg"],["back","rbg"]].forEach(([k,id])=>{const el=$(id);el.value=RLG[k];$(k==="live"?"rlgv":"rbgv").textContent=dbTxt(RLG[k]);
-  el.addEventListener("input",()=>setGain(k,+el.value));el.addEventListener("dblclick",()=>{el.value=0;setGain(k,0)})});
+  el.addEventListener("input",()=>setGain(k,+el.value));el.addEventListener("dblclick",()=>{el.value=0;setGain(k,0)});
+  /* doble clic sobre el valor: escribir los dB que se necesitan */
+  const lab=$(k==="live"?"rlgv":"rbgv");lab.title="Doble clic para escribir los dB";lab.style.cursor="text";
+  lab.addEventListener("dblclick",()=>{const inp=document.createElement("input");inp.type="text";inp.inputMode="decimal";inp.value=RLG[k];inp.className="rldb rlin2";inp.setAttribute("aria-label","Nivel en decibeles");
+    let done=false;const fin=ok=>{if(done)return;done=true;inp.replaceWith(lab);if(ok){const v=parseFloat(String(inp.value).replace(",","."));if(isFinite(v)){const d=Math.max(-24,Math.min(24,Math.round(v*10)/10));el.value=d;setGain(k,d)}else note("Escribí un número de dB, por ejemplo -6 o 3.","warn","rec",4000)}};
+    inp.addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();fin(true)}else if(e.key==="Escape"){e.preventDefault();fin(false)}});
+    inp.addEventListener("blur",()=>fin(true));lab.replaceWith(inp);inp.focus();inp.select()})});
 backInit();
 /* plegable: por defecto cerrado para no romper el diseño */
 {const x=$("recx"),b=$("rtog");let o=false;try{o=localStorage.getItem("botonera_recopen")==="1"}catch(e){}
@@ -2348,48 +2391,73 @@ function recName(kind){const d=new Date(),z=n=>String(n).padStart(2,"0");return 
 function recBtnUI(){const l=BACK.live,b=BACK.rec,bl=$("reclive"),bb=$("recback");bl.classList.toggle("on",!!l);bb.classList.toggle("on",!!b);
   bl.querySelector("span").textContent=l?"REC "+recFmt(Date.now()-l.t0):"REC LIVE";bb.querySelector("span").textContent=b?"REC "+recFmt(Date.now()-b.t0):"REC BACK";bl.setAttribute("aria-pressed",!!l);bb.setAttribute("aria-pressed",!!b);
   const st=$("recstat");if(l||b){st.hidden=false;st.textContent="";const mk=(t,r)=>{const e=document.createElement("div");e.className="rs";const d=document.createElement("i"),x=document.createElement("span");x.textContent="GRABANDO · "+t+" · "+recFmt(Date.now()-r.t0);e.append(d,x);st.appendChild(e)};if(l)mk("REC LIVE",l);if(b)mk("REC BACK",b)}else st.hidden=true}
-setInterval(()=>{if(BACK.live||BACK.rec)recBtnUI()},250);
+/* al parar, el cartel «GRABANDO» se apaga enseguida; si el grabador ya estaba parado por su cuenta, también */
+function recStopNow(r,k){const mr=r.mr;if(BACK[k]===r)BACK[k]=null;recBtnUI();try{if(mr.state!=="inactive")mr.stop()}catch(e){}}
+setInterval(()=>{if(BACK.live&&BACK.live.mr.state==="inactive")BACK.live=null;if(BACK.rec&&BACK.rec.mr.state==="inactive")BACK.rec=null;recBtnUI()},250);
 async function recSave(kind,chunks,type,prot){
   const blob=new Blob(chunks,{type:type||"audio/webm"});if(!chunks.length||blob.size<200){note("La grabación quedó vacía: no se creó ningún botón.","warn","rec",6000);return}
-  const nm=recName(kind);if(prot)PROT.add(blob);await add(nm,blob);colors[nm]=RECCOL[kind];render();save();
-  note((kind==="live"?"REC LIVE":"REC BACK")+" guardado como botón "+(kind==="live"?"verde":"ámbar")+": «"+nm.replace(/\.webm$/,"")+"»."+(prot?" Sonó audio de las carpetas protegidas: se puede escuchar y editar, pero no descargar.":""),"info","rec",8000)}
+  const nm=recName(kind);if(prot)PROT.add(blob);await add(nm,blob);const it=items.find(i=>i.name===nm);if(it){it.hid=true;STASH.add(nm);stashSave()}colors[nm]=RECCOL[kind];RB.open=true;try{localStorage.setItem("botonera_recbar","1")}catch(e){}render();save();
+  note((kind==="live"?"REC LIVE":"REC BACK")+" guardada en «Grabaciones» (debajo de la botonera): «"+nm.replace(/\.webm$/,"")+"». Arrastrala a la botonera o a una lista."+(prot?" Sonó audio de las carpetas protegidas: se puede escuchar y editar, pero no descargar.":""),"info","rec",9000)}
 async function recLiveToggle(){
-  if(BACK.live){BACK.live.mr.stop();return}
+  if(BACK.live){recStopNow(BACK.live,"live");return}
   if(!window.MediaRecorder){note("Este navegador no puede grabar. Usá Chrome, Brave o Edge actualizados.","error","rec");return}
   try{if(ctx.state!=="running")ctx.resume();const n=await rlOpen();
     const chunks=[],mr=new MediaRecorder(n.dest.stream,{audioBitsPerSecond:192000});BACK.live={mr,t0:Date.now()};
     mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
-    mr.onstop=async()=>{BACK.live=null;recBtnUI();await recSave("live",chunks,mr.mimeType,false)};
+    mr.onstop=async()=>{BACK.live=null;recBtnUI();try{await recSave("live",chunks,mr.mimeType,false)}catch(e){note("No se pudo guardar la grabación.","error","rec")}};
     mr.start(1000);recBtnUI();note("REC LIVE grabando solo «"+n.label+"».","info","rec",4000)
   }catch(e){BACK.live=null;recBtnUI();if(e&&e.message!=="bad"&&e.message!=="noin")note(micErr(e),"error","rec")}}
 async function recBackToggle(){
-  if(BACK.rec){BACK.rec.mr.stop();return}
+  if(BACK.rec){recStopNow(BACK.rec,"rec");return}
   if(!window.MediaRecorder){note("Este navegador no puede grabar. Usá Chrome, Brave o Edge actualizados.","error","rec");return}
   try{if(ctx.state!=="running")ctx.resume();if(mic.dev[0]!=="_")await openMic();backInit();backSync();
     const chunks=[],mr=new MediaRecorder(BACK.dest.stream,{audioBitsPerSecond:192000}),prot=items.some(i=>i.playing.size&&isProt(i.blob))||PLISTS.some(L=>L.src);
-    BACK.rec={mr,t0:Date.now(),prot};
+    const R=BACK.rec={mr,t0:Date.now(),prot};
     mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
-    mr.onstop=async()=>{const pr=BACK.rec.prot;BACK.rec=null;if(mic.dev[0]!=="_")closeMicIfIdle();syncIns();recBtnUI();await recSave("back",chunks,mr.mimeType,pr)};
+    mr.onstop=async()=>{const pr=R.prot;if(BACK.rec===R)BACK.rec=null;recBtnUI();try{if(mic.dev[0]!=="_")closeMicIfIdle();syncIns()}catch(e){}try{await recSave("back",chunks,mr.mimeType,pr)}catch(e){note("No se pudo guardar la grabación.","error","rec")}};
     mr.start(1000);recBtnUI();syncIns();note(mic.dev[0]==="_"?"REC BACK grabando todo lo de la botonera. La entrada «"+(mic.dev==="__player"?"reproductor del buscador":"sistema")+"» es captura de pantalla y no se mezcla (duplicaría el sonido); para sumar tu voz elegí un micrófono o línea como entrada.":"REC BACK grabando: entrada + todo lo que suena en la botonera.","info","rec",9000)
   }catch(e){BACK.rec=null;recBtnUI();note(micErr(e),"error","rec")}}
 $("reclive").addEventListener("click",recLiveToggle);$("recback").addEventListener("click",recBackToggle);
 /* caja con las últimas 2 grabaciones REC: play/stop, eliminar y descargar (el resto está en la botonera) */
 const IC_PLAY='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z" fill="currentColor"/></svg>',IC_STOP='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" fill="currentColor"/></svg>',IC_DEL='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',IC_DL='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>';
+function recRowEl(it,drag){const kind=/^REC LIVE/.test(it.name)?"live":"back",pr=isProt(it.blob);
+  const r=document.createElement("div");r.className="rr "+kind;const dot=document.createElement("i");dot.style.background=RECCOL[kind];
+  const nm=document.createElement("span");nm.className="rn";nm.textContent=it.name.replace(/\.webm$/,"");nm.title=it.name+(pr?" · protegido":"");
+  const du=document.createElement("small");du.className="rd";du.textContent=it.buffer?recFmt(it.buffer.duration*1000):"";
+  const pp=document.createElement("button");pp.type="button";pp.className="pp";pp.innerHTML=IC_PLAY;pp.title="Escuchar / parar";pp.setAttribute("aria-label","Escuchar o parar");pp._it=it;
+  pp.addEventListener("click",()=>{const k=items.indexOf(it);if(k<0)return;if(it.playing.size)it.playing.forEach(s=>{try{s.stop()}catch(e){}});else play(k)});
+  const ed=document.createElement("button");ed.type="button";ed.className="re";ed.innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4"/></svg><span>Editar</span>';ed.title="Abrir en el editor de audio";ed.setAttribute("aria-label","Editar");ed.addEventListener("click",()=>{const k=items.indexOf(it);if(k>=0)edOpen(k)});
+  const dl=document.createElement("button");dl.type="button";dl.innerHTML=IC_DL;dl.disabled=pr;dl.title=pr?"Contiene audio de las carpetas protegidas: no se puede descargar":"Descargar esta grabación";dl.setAttribute("aria-label","Descargar");
+  dl.addEventListener("click",()=>{if(isProt(it.blob)){protNote();return}exportDlg({name:nice(it.name),ch:bufChans(it.buffer),sr:it.buffer.sampleRate,blob:it.blob,orig:true,origName:it.name})});
+  const de=document.createElement("button");de.type="button";de.className="rx";de.innerHTML=IC_DEL;de.title="Eliminar esta grabación";de.setAttribute("aria-label","Eliminar grabación");
+  de.addEventListener("click",()=>{const k=items.indexOf(it);if(k>=0)askRemove(k,true)});
+  if(drag){r.draggable=true;r.classList.add("dg");r.title="Arrastrá a la botonera o a una lista";
+    r.addEventListener("dragstart",e=>{if(e.target.closest("button")){e.preventDefault();return}RDRAG=it;r.classList.add("dragging");document.body.classList.add("recdrag");e.dataTransfer.effectAllowed="copyMove";try{e.dataTransfer.setData("text/plain","rec")}catch(x){}});
+    r.addEventListener("dragend",()=>{RDRAG=null;r.classList.remove("dragging");document.body.classList.remove("recdrag");recClr()})}
+  r.append(dot,nm,du,pp,ed,dl,de);return r}
 function recBoxRender(){const box=$("recbox");if(!box)return;box.textContent="";
-  const list=items.filter(it=>/^REC (LIVE|BACK) /.test(it.name)).slice(-2).reverse();
-  list.forEach(it=>{const kind=/^REC LIVE/.test(it.name)?"live":"back",pr=isProt(it.blob);
-    const r=document.createElement("div");r.className="rr "+kind;const dot=document.createElement("i");dot.style.background=RECCOL[kind];
-    const nm=document.createElement("span");nm.className="rn";nm.textContent=it.name.replace(/\.webm$/,"");nm.title=it.name+(pr?" · protegido":"");
-    const pp=document.createElement("button");pp.type="button";pp.className="pp";pp.innerHTML=IC_PLAY;pp.title="Escuchar / parar";pp.setAttribute("aria-label","Escuchar o parar");pp._it=it;
-    pp.addEventListener("click",()=>{const k=items.indexOf(it);if(k<0)return;if(it.playing.size)it.playing.forEach(s=>{try{s.stop()}catch(e){}});else play(k)});
-    const dl=document.createElement("button");dl.type="button";dl.innerHTML=IC_DL;dl.disabled=pr;dl.title=pr?"Contiene audio de las carpetas protegidas: no se puede descargar":"Descargar esta grabación";dl.setAttribute("aria-label","Descargar");
-    dl.addEventListener("click",()=>{if(isProt(it.blob)){protNote();return}exportDlg({name:nice(it.name),ch:bufChans(it.buffer),sr:it.buffer.sampleRate,blob:it.blob,orig:true,origName:it.name})});
-    const de=document.createElement("button");de.type="button";de.className="rx";de.innerHTML=IC_DEL;de.title="Eliminar esta grabación";de.setAttribute("aria-label","Eliminar grabación");
-    de.addEventListener("click",()=>{const k=items.indexOf(it);if(k>=0)askRemove(k,true)});
-    const ed=document.createElement("button");ed.type="button";ed.className="re";ed.innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4"/></svg><span>Editar</span>';ed.title="Abrir en el editor de audio";ed.setAttribute("aria-label","Editar");ed.addEventListener("click",()=>{const k=items.indexOf(it);if(k>=0)edOpen(k)});
-    r.append(dot,nm,pp,ed,dl,de);box.appendChild(r)})}
-setInterval(()=>{document.querySelectorAll("#recbox .pp").forEach(b=>{const on=!!(b._it&&b._it.playing.size);if(b._on!==on){b._on=on;b.innerHTML=on?IC_STOP:IC_PLAY;b.classList.toggle("on",on)}})},200);
-{const _r=render;render=function(){_r.apply(this,arguments);try{recBoxRender()}catch(e){}}}
+  items.filter(it=>/^REC (LIVE|BACK) /.test(it.name)).slice(-2).reverse().forEach(it=>box.appendChild(recRowEl(it,false)))}
+/* barra «Grabaciones»: debajo de Cortinas y Mensajes. Las grabaciones no son botones: se listan y se arrastran a donde se necesiten */
+let RDRAG=null;const RB={open:false};try{RB.open=localStorage.getItem("botonera_recbar")==="1"}catch(e){}
+function recClr(){document.querySelectorAll(".plr.da,.plr.db").forEach(x=>x.classList.remove("da","db"));gridMark(null)}
+function recBarRender(){const list=items.filter(it=>it.hid&&/^REC (LIVE|BACK) /.test(it.name)).reverse(),n=list.length;
+  const bar=document.createElement("div");bar.id="recbar";bar.className="recbar"+(n?" has":"")+(RB.open?" open":"");
+  const h=document.createElement("button");h.type="button";h.className="rbh";h.setAttribute("aria-expanded",RB.open);
+  h.innerHTML='<i class="rbd"></i><span class="rbt">Grabaciones</span><b class="rbn"></b><svg class="ic rch" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  h.querySelector(".rbn").textContent=n?String(n):"";h.title=n?n+(n===1?" grabación guardada":" grabaciones guardadas")+": abrí la barra y arrastralas":"Acá se listan tus grabaciones REC LIVE y REC BACK";
+  h.addEventListener("click",()=>{RB.open=!RB.open;try{localStorage.setItem("botonera_recbar",RB.open?"1":"0")}catch(e){}bar.classList.toggle("open",RB.open);h.setAttribute("aria-expanded",RB.open)});
+  const body=document.createElement("div");body.className="rbb";
+  if(n){const hint=document.createElement("small");hint.className="rbhint";hint.textContent="Arrastrá una grabación a la botonera o a una lista. Hasta entonces no es un botón.";body.appendChild(hint);list.forEach(it=>body.appendChild(recRowEl(it,true)))}
+  else{const e=document.createElement("small");e.className="rbhint";e.textContent="Sin grabaciones. Lo que grabes con REC LIVE o REC BACK aparece acá.";body.appendChild(e)}
+  bar.append(h,body);grid.appendChild(bar)}
+(function(){const where=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);if(!el||!el.closest||el.closest("#recbar"))return null;if(el.closest(".plp"))return"l";if(el.closest("#gcol"))return"g";return null};
+  document.addEventListener("dragover",e=>{if(!RDRAG)return;const w=where(e);recClr();if(!w)return;e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect="copy";
+    if(w==="l"){const x=plWhereXY(e.clientX,e.clientY);if(x&&x.el)x.el.classList.add(x.after?"db":"da")}else gridMark(gridDrop(e.clientX,e.clientY))},true);
+  document.addEventListener("drop",e=>{if(!RDRAG)return;const w=where(e);if(!w)return;e.preventDefault();e.stopPropagation();const it=RDRAG;RDRAG=null;document.body.classList.remove("recdrag");recClr();
+    if(w==="l"){const x=plWhereXY(e.clientX,e.clientY);if(!x)return;PL.rows.splice(x.ins,0,plMk(it.name,it.blob,it.buffer));plRender();plSave();note("«"+nice(it.name)+"» agregada a la lista.","info","rec",3500)}
+    else{const gt=gridDrop(e.clientX,e.clientY);stashRestore(it,gt?gt.ins:null)}},true)})();
+setInterval(()=>{document.querySelectorAll(".rr .pp").forEach(b=>{const on=!!(b._it&&b._it.playing.size);if(b._on!==on){b._on=on;b.innerHTML=on?IC_STOP:IC_PLAY;b.classList.toggle("on",on)}})},200);
+{const _r=render;render=function(){_r.apply(this,arguments);try{recBoxRender()}catch(e){}try{recBarRender()}catch(e){}}}
 /* ---------- v1.91 · descargar en WAV 44,1 kHz (16 bits) o MP3 con elección de calidad. Solo audio que NO es de las carpetas protegidas ---------- */
 const LAMEURL="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js";
 function loadLame(){if(window.lamejs&&window.lamejs.Mp3Encoder)return Promise.resolve();
