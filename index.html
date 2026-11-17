@@ -944,7 +944,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .recx .rtog .rch{width:12px;height:12px;transition:transform .15s}
 .recx.open .rtog .rch{transform:rotate(180deg)}
 .recx:not(.open)>:not(.rtog):not(.recstat){display:none!important}
-/* v2.16 · Principal con la misma estética que Helper */
+/* v2.17 · Principal con la misma estética que Helper */
 .fx{padding:10px!important}
 .fx select,.usr select,#indev,#rlin{background-color:#050506!important;background-image:none;border:1px solid rgba(255,255,255,.1)!important;color:var(--tx,#f4f4f6);font:500 .7rem "Space Mono",monospace!important;letter-spacing:.04em;text-transform:uppercase;padding:8px 28px 8px 10px!important;border-radius:0!important;min-height:36px}
 #indev{padding-left:34px!important}
@@ -988,7 +988,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .fx .fxtop button,.fx .fxtop select{width:auto!important;min-width:0;flex:0 0 auto;grid-column:auto}
 .fx .fxtop .usr select{width:140px!important;max-width:140px}
 .fx .fxtop #outb{margin-left:4px}
-/* v2.16 · Botonera con el mismo recuadro que Principal y Helper */
+/* v2.17 · Botonera con el mismo recuadro que Principal y Helper */
 #gcol{border:1px solid rgba(255,255,255,.16);background-image:linear-gradient(rgba(255,255,255,.055),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(0,0,0,.65),inset 0 0 26px rgba(0,0,0,.35),0 6px 22px rgba(0,0,0,.35);padding:10px;box-sizing:border-box}
 #gcol #gbar{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
 #ed.recover{outline:2px dashed #ff2a2a;outline-offset:-4px}
@@ -1011,7 +1011,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .tbar .tsb::-moz-range-thumb{width:8px;height:18px;background:#d8d8dc;border:1px solid #000;border-radius:0}
 .tbar .tvl{flex:0 0 70px}
 #sesclr{color:#ff7b80}
-/* v2.16 · celular */
+/* v2.17 · celular */
 @media (max-width:700px){
   #sig,footer#sig{position:static!important;margin:14px auto 18px!important;transform:none!important}
   .fx .micr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
@@ -1023,7 +1023,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
   .pad,.gear,.mv,button{touch-action:manipulation}
   .pad{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
 }
-/* v2.16 · diseño */
+/* v2.17 · diseño */
 html{padding:0 var(--lmr,0px) 0 var(--lml,0px)}
 body{padding-top:calc(20px + var(--lmt,0px))}
 @media (min-width:901px){
@@ -1074,14 +1074,28 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 .plp .plh b.plnm{cursor:text;max-width:150px;overflow:hidden;text-overflow:ellipsis}
 .plp .plh b.plnm:hover{text-decoration:underline dotted}
 #stage.mpl{overflow:visible;padding-bottom:6px}
-@media (min-width:901px){#stage.mpl{flex-wrap:wrap;row-gap:10px}#stage.mpl #gcol{flex:1 1 460px;min-width:420px}#stage.mpl .plp{flex:0 1 auto;min-width:240px;max-width:100%}}
+@media (min-width:901px){
+  #stage{gap:16px}
+  #stage > .plp{margin-left:0}
+  #stage.mpl{flex-wrap:wrap;gap:14px}
+  #stage.mpl #gcol{flex:1 1 440px;min-width:min(100%,400px);margin-bottom:0;padding-bottom:10px}
+  #stage.mpl > .plp,#stage.mpl > .plp.empty{flex:0 0 auto;width:clamp(250px,17.5vw,340px);min-width:0;max-width:100%}
+}
 .plp.plclosed{display:none!important}
 #ed .edh{cursor:grab}
 #ed .edh input,#ed .edh button{cursor:auto}
 .laymk{position:fixed;z-index:9600;pointer-events:none;background:#ff2a2a;box-shadow:0 0 10px #ff2a2a}
 .layzone[data-pos]::after{content:attr(data-pos);position:absolute;left:10px;top:8px;padding:2px 8px;background:#ff2a2a;color:#fff;font:500 .62rem "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
-.layzone{z-index:9400}
+.layzone{z-index:9400;opacity:.5}
+.layzone.on{opacity:1;background:rgba(255,42,42,.26);border-style:solid}
 #gbar,.plp .plh,#ed .edh{touch-action:none}
+/* v2.17 · cuadro del helper: botones solo con ícono (el nombre sale al pasar el mouse) para que el buscador sea más ancho */
+@media (min-width:901px){
+  .lk #lkgo .bt,.lk #lkmodes button .bt,.lk #lkh span,.lk #lkmon span{display:none}
+  .lk #lkgo,.lk #lkmodes button,.lk #lkh,.lk #lkmon{width:38px;min-width:38px;height:36px;padding:0!important;gap:0}
+  .lk>.lkr:nth-child(1){flex:1 1 320px}
+  .lk #lkurl{min-width:200px;font-size:.84rem}
+}
 </style>
 </head>
 <body class="booting">
@@ -1142,15 +1156,15 @@ body.laydrag{cursor:grabbing!important;user-select:none}
   <div class="lk" id="lk" role="search" aria-label="Buscador de links de video y audio">
     <div class="lkr">
       <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
-      <input id="lkurl" type="text" inputmode="search" enterkeyhint="search" autocapitalize="none" spellcheck="false" autocomplete="off" placeholder="Pegá un link o buscá…" aria-label="Link o texto a buscar">
-      <button id="lkgo" aria-label="Buscar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Buscar</button>
+      <input id="lkurl" type="text" inputmode="search" enterkeyhint="search" autocapitalize="none" spellcheck="false" autocomplete="off" placeholder="Buscá o pegá un link…" aria-label="Buscá o pegá un link">
+      <button id="lkgo" aria-label="Buscar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="bt">Buscar</span></button>
       <div class="lkerr" id="lkerr" role="alert" hidden></div>
     </div>
     <div class="lkr">
       <div class="seg" id="lkmodes" role="group" aria-label="Qué reproducir">
-        <button data-m="a" aria-pressed="false" title="Solo el audio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>Audio</button>
-        <button data-m="v" aria-pressed="false" title="Solo la imagen (sin sonido)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="m10 9 5 3-5 3z"/></svg>Video</button>
-        <button data-m="av" aria-pressed="true" class="sel" title="Imagen y sonido"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/></svg>Audio + video</button>
+        <button data-m="a" aria-pressed="false" title="Solo el audio" aria-label="Solo el audio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg><span class="bt">Audio</span></button>
+        <button data-m="v" aria-pressed="false" title="Solo la imagen (sin sonido)" aria-label="Solo el video"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="m10 9 5 3-5 3z"/></svg><span class="bt">Video</span></button>
+        <button data-m="av" aria-pressed="true" class="sel" title="Imagen y sonido" aria-label="Audio y video"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12"/><path d="M8 20h8M12 16v4"/></svg><span class="bt">Audio + video</span></button>
       </div>
       <button id="lkh" class="lkh off" title="Estado del helper de descarga"><i class="dot"></i><span>Helper</span></button>
       <button id="lkmon" title="Monitor en vivo: un canal siempre en mute para ver el aire o la competencia"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="1"/><path d="M8 21h8M12 17v4"/></svg><span>Monitor</span></button>
@@ -1222,7 +1236,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.16 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.16</span></footer>
+<footer id="sig" title="Versión 2.17 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.17</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1294,7 +1308,7 @@ const KEYS="1234567890QWERTYUPASDFGHJKLZXVBN".split(""); // C, M, I, O reservada
 const PALETTE=["#e8232a","#a3141a","#ff5a36","#f2c230","#4a90f2","#3a3a3a","#6b6b6b","#9a9a9a","#c4c4c4","#ffffff"];
 const AC=window.AudioContext||window.webkitAudioContext;
 const ctx=new AC({latencyHint:"interactive"});
-/* ---------- v2.16 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
+/* ---------- v2.17 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 let SILA=null;
 function unlockAudio(){
@@ -2448,7 +2462,7 @@ function playNative(src,kind,mode,title,vertHint){
 
 /* ---------- app de escritorio: señal de vida para que el programa se cierre solo al cerrar la ventana ---------- */
 if(window.BOTONERA_LOCAL){const hb=()=>fetch("/app/ping",{cache:"no-store"}).catch(()=>{});hb();setInterval(hb,15000)}
-/* ---------- v2.16 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
+/* ---------- v2.17 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
 const LAYK="botonera_layout",LAYD={list:"r",head:"n",ml:0,mr:0,mt:0,ed:"b",edh:150,sides:{},order:[]};let LAY=Object.assign({},LAYD,{sides:{},order:[]});
 try{const j=JSON.parse(localStorage.getItem(LAYK)||"null");if(j&&typeof j==="object")Object.keys(LAYD).forEach(k=>{if(j[k]!==undefined)LAY[k]=j[k]});if(!LAY.sides||typeof LAY.sides!=="object")LAY.sides={};if(!Array.isArray(LAY.order))LAY.order=[]}catch(e){}
 function layApply(){const h=document.documentElement,c=v=>Math.max(0,Math.min(400,+v||0));
@@ -2513,25 +2527,35 @@ document.addEventListener("pointerdown",e=>{
   if(e.button!==0)return;const t=e.target;if(!t||!t.closest)return;
   const hd=t.closest("#gbar,.plp .plh,#ed .edh");if(!hd||t.closest("button,input,select,textarea,a,.otag,canvas,label,.vu,.vu2"))return;
   const isEd=!!hd.closest("#ed"),isG=!isEd&&!!hd.closest("#gcol"),src=isEd?$("ed"):(isG?$("gcol"):hd.closest(".plp"));if(!src)return;
-  const name=isEd?"Editor":isG?"Botonera":(src._L?plTitle(src._L):"Lista"),sx=e.clientX,sy=e.clientY;let drag=false,ghost=null,mk=null,zone=null,tgt=null,above=false;
+  const name=isEd?"Editor":isG?"Botonera":(src._L?plTitle(src._L):"Lista"),sx=e.clientX,sy=e.clientY;
+  let drag=false,ghost=null,mk=null,zT=null,zB=null,tgt=null,above=LAY.ed==="t",px=sx,py=sy,raf=0;
   const stage=$("stage"),ns=ev=>ev.preventDefault();
-  const clean=()=>{document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);document.removeEventListener("selectstart",ns);
-    document.body.classList.remove("laydrag");src.classList.remove("laysrc");if(ghost)ghost.remove();if(mk)mk.remove();if(zone)zone.remove()};
-  const mv=ev=>{
-    if(!drag){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<8)return;drag=true;document.body.classList.add("laydrag");src.classList.add("laysrc");document.addEventListener("selectstart",ns);
+  const clean=()=>{cancelAnimationFrame(raf);document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);document.removeEventListener("selectstart",ns);
+    document.body.classList.remove("laydrag");src.classList.remove("laysrc");[ghost,mk,zT,zB].forEach(x=>x&&x.remove())};
+  /* editor: «arriba» = parte alta de la botonera o borde superior de la pantalla; «abajo» = parte baja o borde inferior. En el medio queda como estaba */
+  const edUpdate=()=>{const r=stage.getBoundingClientRect(),bh=Math.min(200,Math.max(90,r.height/4)),E=64;
+    if(py<E)above=true;else if(py>innerHeight-E)above=false;else if(py<r.top+bh)above=true;else if(py>r.bottom-bh)above=false;
+    const vt=Math.max(r.top,0),th=Math.max(44,r.top+bh-vt),vb=Math.min(r.bottom,innerHeight),bhh=Math.max(44,vb-(r.bottom-bh));
+    zT.style.left=zB.style.left=Math.max(r.left,0)+"px";zT.style.width=zB.style.width=r.width+"px";
+    zT.style.top=vt+"px";zT.style.height=th+"px";zB.style.height=bhh+"px";zB.style.top=(vb-bhh)+"px";
+    zT.classList.toggle("on",above);zB.classList.toggle("on",!above)};
+  const tick=()=>{if(!drag)return;if(isEd){const v=64;if(py<v)scrollBy(0,-Math.ceil((v-py)/3));else if(py>innerHeight-v)scrollBy(0,Math.ceil((py-(innerHeight-v))/3));edUpdate()}raf=requestAnimationFrame(tick)};
+  const mv=ev=>{px=ev.clientX;py=ev.clientY;
+    if(!drag){if(Math.hypot(px-sx,py-sy)<8)return;drag=true;document.body.classList.add("laydrag");src.classList.add("laysrc");document.addEventListener("selectstart",ns);
       ghost=document.createElement("div");ghost.className="layghost";ghost.textContent=name;document.body.appendChild(ghost);
-      if(isEd){zone=document.createElement("div");zone.className="layzone";document.body.appendChild(zone)}else{mk=document.createElement("div");mk.className="laymk";document.body.appendChild(mk)}}
-    ghost.style.left=ev.clientX+12+"px";ghost.style.top=ev.clientY+12+"px";
-    if(isEd){const r=stage.getBoundingClientRect();above=ev.clientY<r.top+r.height/2;zone.style.left=r.left+"px";zone.style.width=r.width+"px";zone.style.height=Math.min(r.height/2,260)+"px";zone.style.top=(above?r.top:r.bottom-Math.min(r.height/2,260))+"px";zone.dataset.pos=above?"arriba":"abajo"}
-    else{tgt=layTarget(src,ev.clientX,ev.clientY);if(!tgt){mk.style.display="none";return}mk.style.display="block";const r=tgt.rect;
-      if(tgt.col){mk.style.left=r.left+"px";mk.style.width=r.width+"px";mk.style.height="4px";mk.style.top=((tgt.after?r.bottom:r.top)-2)+"px"}
-      else{mk.style.top=r.top+"px";mk.style.height=r.height+"px";mk.style.width="4px";mk.style.left=((tgt.after?r.right:r.left)-2)+"px"}}};
+      if(isEd){zT=document.createElement("div");zT.className="layzone";zT.dataset.pos="arriba (antes de la botonera y las listas)";zB=document.createElement("div");zB.className="layzone";zB.dataset.pos="abajo";document.body.append(zT,zB);raf=requestAnimationFrame(tick)}
+      else{mk=document.createElement("div");mk.className="laymk";document.body.appendChild(mk)}}
+    ghost.style.left=px+12+"px";ghost.style.top=py+12+"px";
+    if(isEd){edUpdate();return}
+    tgt=layTarget(src,px,py);if(!tgt){mk.style.display="none";return}mk.style.display="block";const r=tgt.rect;
+    if(tgt.col){mk.style.left=r.left+"px";mk.style.width=r.width+"px";mk.style.height="4px";mk.style.top=((tgt.after?r.bottom:r.top)-2)+"px"}
+    else{mk.style.top=r.top+"px";mk.style.height=r.height+"px";mk.style.width="4px";mk.style.left=((tgt.after?r.right:r.left)-2)+"px"}};
   const up=ev=>{const was=drag,cancel=ev.type==="pointercancel",tg=tgt,ab=above;clean();if(!was||cancel)return;
-    if(isEd){LAY.ed=ab?"t":"b";layApply();laySave();layPos()}
+    if(isEd){LAY.ed=ab?"t":"b";layApply();laySave();layPos();try{$("ed").scrollIntoView({block:"nearest",behavior:"smooth"})}catch(x){}}
     else if(tg){const ids=layIds().filter(i=>i!==src.id),k=ids.indexOf(tg.el.id);ids.splice(tg.after?k+1:k,0,src.id);LAY.order=ids;layApply();laySave()}
-    if(was){const stop=x=>{x.stopPropagation();x.preventDefault()};document.addEventListener("click",stop,{capture:true,once:true});setTimeout(()=>document.removeEventListener("click",stop,true),50)}};
+    const stop=x=>{x.stopPropagation();x.preventDefault()};document.addEventListener("click",stop,{capture:true,once:true});setTimeout(()=>document.removeEventListener("click",stop,true),50)};
   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)},true);
-/* ---------- v2.16 · limpiar la botonera (doble advertencia) ---------- */
+/* ---------- v2.17 · limpiar la botonera (doble advertencia) ---------- */
 $("sesclr").addEventListener("click",async()=>{
   const keep=it=>(it.base&&catOf(it)>0)||isRecOrig(it);
   const gone=items.filter(it=>!keep(it)),nl=PLISTS.reduce((a,L)=>a+(L.rows?L.rows.length:0),0);
@@ -2546,7 +2570,7 @@ $("sesclr").addEventListener("click",async()=>{
   items=items.filter(keep);STASH.clear();items.forEach(it=>{if(it.hid&&isRecOrig(it)){STASH.add(it.name)}else it.hid=false});stashSave();
   PLISTS.forEach(L=>{try{plAct(L);PL.rows=[];plRender();plSave()}catch(e){}});
   waiting=null;SEL.clear();BLINK.clear();render();save();note("Botonera y listas en cero.","info","",5000)});
-/* ---------- v2.16 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
+/* ---------- v2.17 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
 const TI={play:'<path d="M7 4v16l13-8z" fill="currentColor"/>',pause:'<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>',vol:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12"/>',mute:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/>',back:'<path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>',fwd:'<path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>'};
 function mkTransport(el){
   const bar=document.createElement("div");bar.className="tbar";
@@ -2569,7 +2593,7 @@ function mkTransport(el){
   mu.addEventListener("click",()=>{el.muted=!el.muted});
   vl.addEventListener("input",()=>{el.muted=false;el.volume=vl.value/100;paint(vl)});
   upd();return bar}
-/* ---------- v2.16 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
+/* ---------- v2.17 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
 const BACK={rec:null,live:null,mix:null,dest:null,inG:null,meter:null};
 function backNote(blob){if(BACK.rec&&isProt(blob))BACK.rec.prot=true}
 const RL_BAD=/(micr[oó]fono|microphone|mic)\s*(array|interno|integrad|incorporad|internal|built)|array de micr|micr[oó]fono (interno|integrado|incorporado)|internal mic|built-?in|integrated|webcam|c[aá]mara|camera|laptop|realtek.*(mic|micr[oó]fono)(?!.*line)/i;
