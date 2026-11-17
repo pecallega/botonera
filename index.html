@@ -944,7 +944,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .recx .rtog .rch{width:12px;height:12px;transition:transform .15s}
 .recx.open .rtog .rch{transform:rotate(180deg)}
 .recx:not(.open)>:not(.rtog):not(.recstat){display:none!important}
-/* v2.15 · Principal con la misma estética que Helper */
+/* v2.16 · Principal con la misma estética que Helper */
 .fx{padding:10px!important}
 .fx select,.usr select,#indev,#rlin{background-color:#050506!important;background-image:none;border:1px solid rgba(255,255,255,.1)!important;color:var(--tx,#f4f4f6);font:500 .7rem "Space Mono",monospace!important;letter-spacing:.04em;text-transform:uppercase;padding:8px 28px 8px 10px!important;border-radius:0!important;min-height:36px}
 #indev{padding-left:34px!important}
@@ -988,7 +988,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .fx .fxtop button,.fx .fxtop select{width:auto!important;min-width:0;flex:0 0 auto;grid-column:auto}
 .fx .fxtop .usr select{width:140px!important;max-width:140px}
 .fx .fxtop #outb{margin-left:4px}
-/* v2.15 · Botonera con el mismo recuadro que Principal y Helper */
+/* v2.16 · Botonera con el mismo recuadro que Principal y Helper */
 #gcol{border:1px solid rgba(255,255,255,.16);background-image:linear-gradient(rgba(255,255,255,.055),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(0,0,0,.65),inset 0 0 26px rgba(0,0,0,.35),0 6px 22px rgba(0,0,0,.35);padding:10px;box-sizing:border-box}
 #gcol #gbar{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
 #ed.recover{outline:2px dashed #ff2a2a;outline-offset:-4px}
@@ -1011,7 +1011,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .tbar .tsb::-moz-range-thumb{width:8px;height:18px;background:#d8d8dc;border:1px solid #000;border-radius:0}
 .tbar .tvl{flex:0 0 70px}
 #sesclr{color:#ff7b80}
-/* v2.15 · celular */
+/* v2.16 · celular */
 @media (max-width:700px){
   #sig,footer#sig{position:static!important;margin:14px auto 18px!important;transform:none!important}
   .fx .micr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
@@ -1023,7 +1023,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
   .pad,.gear,.mv,button{touch-action:manipulation}
   .pad{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
 }
-/* v2.15 · diseño */
+/* v2.16 · diseño */
 html{padding:0 var(--lmr,0px) 0 var(--lml,0px)}
 body{padding-top:calc(20px + var(--lmt,0px))}
 @media (min-width:901px){
@@ -1075,7 +1075,13 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 .plp .plh b.plnm:hover{text-decoration:underline dotted}
 #stage.mpl{overflow:visible;padding-bottom:6px}
 @media (min-width:901px){#stage.mpl{flex-wrap:wrap;row-gap:10px}#stage.mpl #gcol{flex:1 1 460px;min-width:420px}#stage.mpl .plp{flex:0 1 auto;min-width:240px;max-width:100%}}
-@media (min-width:901px){#stage > .plp{order:var(--ord,1)}#stage > #gcol{order:0}}
+.plp.plclosed{display:none!important}
+#ed .edh{cursor:grab}
+#ed .edh input,#ed .edh button{cursor:auto}
+.laymk{position:fixed;z-index:9600;pointer-events:none;background:#ff2a2a;box-shadow:0 0 10px #ff2a2a}
+.layzone[data-pos]::after{content:attr(data-pos);position:absolute;left:10px;top:8px;padding:2px 8px;background:#ff2a2a;color:#fff;font:500 .62rem "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+.layzone{z-index:9400}
+#gbar,.plp .plh,#ed .edh{touch-action:none}
 </style>
 </head>
 <body class="booting">
@@ -1216,7 +1222,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.15 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.15</span></footer>
+<footer id="sig" title="Versión 2.16 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.16</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1288,7 +1294,7 @@ const KEYS="1234567890QWERTYUPASDFGHJKLZXVBN".split(""); // C, M, I, O reservada
 const PALETTE=["#e8232a","#a3141a","#ff5a36","#f2c230","#4a90f2","#3a3a3a","#6b6b6b","#9a9a9a","#c4c4c4","#ffffff"];
 const AC=window.AudioContext||window.webkitAudioContext;
 const ctx=new AC({latencyHint:"interactive"});
-/* ---------- v2.15 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
+/* ---------- v2.16 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 let SILA=null;
 function unlockAudio(){
@@ -2442,9 +2448,9 @@ function playNative(src,kind,mode,title,vertHint){
 
 /* ---------- app de escritorio: señal de vida para que el programa se cierre solo al cerrar la ventana ---------- */
 if(window.BOTONERA_LOCAL){const hb=()=>fetch("/app/ping",{cache:"no-store"}).catch(()=>{});hb();setInterval(hb,15000)}
-/* ---------- v2.15 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
-const LAYK="botonera_layout",LAYD={list:"r",head:"n",ml:0,mr:0,mt:0,ed:"b",edh:150,sides:{}};let LAY=Object.assign({},LAYD,{sides:{}});
-try{const j=JSON.parse(localStorage.getItem(LAYK)||"null");if(j&&typeof j==="object")Object.keys(LAYD).forEach(k=>{if(j[k]!==undefined)LAY[k]=j[k]});if(!LAY.sides||typeof LAY.sides!=="object")LAY.sides={}}catch(e){}
+/* ---------- v2.16 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
+const LAYK="botonera_layout",LAYD={list:"r",head:"n",ml:0,mr:0,mt:0,ed:"b",edh:150,sides:{},order:[]};let LAY=Object.assign({},LAYD,{sides:{},order:[]});
+try{const j=JSON.parse(localStorage.getItem(LAYK)||"null");if(j&&typeof j==="object")Object.keys(LAYD).forEach(k=>{if(j[k]!==undefined)LAY[k]=j[k]});if(!LAY.sides||typeof LAY.sides!=="object")LAY.sides={};if(!Array.isArray(LAY.order))LAY.order=[]}catch(e){}
 function layApply(){const h=document.documentElement,c=v=>Math.max(0,Math.min(400,+v||0));
   h.style.setProperty("--lml",c(LAY.ml)+"px");h.style.setProperty("--lmr",c(LAY.mr)+"px");h.style.setProperty("--lmt",c(LAY.mt)+"px");
   h.style.setProperty("--edh",Math.max(80,Math.min(700,+LAY.edh||150))+"px");
@@ -2454,8 +2460,14 @@ function layEd(){const e=$("ed"),st=$("stage");if(!e||!st)return;const top=LAY.e
   if(top&&e.nextElementSibling!==st)st.before(e);else if(!top&&e.previousElementSibling!==st)st.after(e);
   e.classList.toggle("edtop",top);if(typeof edDraw==="function"&&window.ed&&0){}
   try{if(typeof ed==="object"&&ed.ch)edDraw()}catch(x){}}
-/* cada lista tiene su propio lado: izquierda (antes de la botonera) o derecha */
-function laySides(){document.querySelectorAll("#stage > .plp").forEach(r=>{const side=(LAY.sides&&LAY.sides[r.id])||LAY.list;r.style.setProperty("--ord",side==="l"?-1:1);r.dataset.side=side})}
+/* orden de la botonera y de cada lista: se acomodan entre sí en cualquier lugar (la lista 3 donde está la 1, etc.) */
+function layIds(){const st=$("stage"),ids=[...st.children].filter(e=>e.id==="gcol"||e.classList.contains("plp")).map(e=>e.id);
+  let ord=(Array.isArray(LAY.order)?LAY.order:[]).filter(i=>ids.includes(i));
+  if(!ord.length){const lists=ids.filter(i=>i!=="gcol"),side=i=>(LAY.sides&&LAY.sides[i])||LAY.list||"r"; // sin orden guardado: se parte de los lados de antes
+    ord=lists.filter(i=>side(i)==="l").concat(["gcol"],lists.filter(i=>side(i)!=="l"))}
+  else ids.forEach(i=>{if(!ord.includes(i))ord.push(i)}); // lista nueva: va al final
+  return ord}
+function laySides(){const st=$("stage");if(!st)return;layIds().forEach((id,i)=>{const e=document.getElementById(id);if(e){e.style.order=i}})}
 function laySave(){try{localStorage.setItem(LAYK,JSON.stringify(LAY))}catch(e){}}
 layApply();
 new MutationObserver(laySides).observe($("stage"),{childList:true});
@@ -2481,41 +2493,45 @@ function layPos(){if(!LDH)return;const W=innerWidth,H=innerHeight;LDH.hl.style.l
   const e=$("ed"),vis=e&&!e.hidden&&e.offsetParent!==null;LDH.eb.style.display=vis?"":"none";if(vis)LDH.eb.style.top=e.getBoundingClientRect().bottom+"px"}
 window.addEventListener("resize",layPos);
 function layBar(){let b=$("laybar");if(b)return b;b=document.createElement("div");b.id="laybar";
-  b.innerHTML='<b>Diseño</b><span>Arrastrá los bordes para los márgenes y el título de «Botonera» o «Lista» para cambiarlas de lado.</span><button type="button" id="lyed" title="Pasar el editor de audio arriba o abajo (también arrastrando su título)">Editor arriba</button><button type="button" id="lysw">Intercambiar Principal / Helper</button><button type="button" id="lyrs">Restablecer</button><button type="button" id="lyok" class="ok">Listo</button>';
+  b.innerHTML='<b>Diseño</b><span>Arrastrá los bordes para los márgenes. Arrastrá el título de la Botonera, de cada Lista o del Editor para acomodarlos donde quieras.</span><button type="button" id="lyed" title="Pasar el editor de audio arriba o abajo (también arrastrando su título)">Editor arriba</button><button type="button" id="lysw">Intercambiar Principal / Helper</button><button type="button" id="lyrs">Restablecer</button><button type="button" id="lyok" class="ok">Listo</button>';
   document.body.appendChild(b);
   const lyedT=()=>{$("lyed").textContent=LAY.ed==="t"?"Editor abajo":"Editor arriba"};lyedT();$("lyed").onclick=()=>{LAY.ed=LAY.ed==="t"?"b":"t";layApply();laySave();lyedT();layPos()};
   $("lysw").onclick=()=>{LAY.head=LAY.head==="s"?"n":"s";layApply();laySave()};
-  $("lyrs").onclick=()=>{LAY=Object.assign({},LAYD,{sides:{}});layApply();laySave();layPos()};
+  $("lyrs").onclick=()=>{LAY=Object.assign({},LAYD,{sides:{},order:[]});layApply();laySave();layPos()};
   $("lyok").onclick=()=>layMode(false);return b}
 function layMode(on){LDM=on;document.body.classList.toggle("laymode",on);$("sesdis").classList.toggle("on",on);
   if(on){layHandles();layBar();layPos();LDH.root.hidden=false;$("laybar").hidden=false}else{if(LDH)LDH.root.hidden=true;const b=$("laybar");if(b)b.hidden=true}}
 $("sesdis").addEventListener("click",()=>layMode(!LDM));
 document.addEventListener("keydown",e=>{if(LDM&&e.key==="Escape")layMode(false)});
-/* arrastrar la botonera o la lista (de su título) a la izquierda o a la derecha */
+/* arrastrar de su título: la botonera y cada lista se acomodan entre sí; el editor va arriba o abajo de todo. Funciona siempre (no hace falta el modo Diseño) */
+function layKids(except){return [...$("stage").children].filter(e=>e!==except&&(e.id==="gcol"||e.classList.contains("plp"))&&e.offsetParent!==null)}
+function layTarget(src,x,y){
+  const col=getComputedStyle($("stage")).flexDirection.indexOf("column")===0,kids=layKids(src);if(!kids.length)return null;
+  let best=null,bd=1e9;kids.forEach(el=>{const r=el.getBoundingClientRect(),dx=Math.max(r.left-x,0,x-r.right),dy=Math.max(r.top-y,0,y-r.bottom),d=Math.hypot(dx,dy);if(d<bd){bd=d;best=el}});
+  const r=best.getBoundingClientRect();return{el:best,col,rect:r,after:col?y>r.top+r.height/2:x>r.left+r.width/2}}
 document.addEventListener("pointerdown",e=>{
-  if(e.button!==0||e.pointerType==="touch"&&false)return;const hd=e.target.closest&&e.target.closest("#gbar,.plp .plh");if(!hd||e.target.closest("button,input,select,textarea,a,.otag,canvas"))return;
-  const isG=!!hd.closest("#gcol"),src=isG?$("gcol"):hd.closest(".plp"),sx=e.clientX,sy=e.clientY;let drag=false,ghost=null,zl=null;
-  const stage=$("stage");if(getComputedStyle(stage).flexDirection.indexOf("column")===0)return; // en pantalla angosta van apiladas
-  const mv=ev=>{if(!drag){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<8)return;drag=true;document.body.classList.add("laydrag");src.classList.add("laysrc");
-      ghost=document.createElement("div");ghost.className="layghost";ghost.textContent=isG?"Botonera":"Lista";document.body.appendChild(ghost);
-      zl=document.createElement("div");zl.className="layzone";document.body.appendChild(zl)}
+  if(e.button!==0)return;const t=e.target;if(!t||!t.closest)return;
+  const hd=t.closest("#gbar,.plp .plh,#ed .edh");if(!hd||t.closest("button,input,select,textarea,a,.otag,canvas,label,.vu,.vu2"))return;
+  const isEd=!!hd.closest("#ed"),isG=!isEd&&!!hd.closest("#gcol"),src=isEd?$("ed"):(isG?$("gcol"):hd.closest(".plp"));if(!src)return;
+  const name=isEd?"Editor":isG?"Botonera":(src._L?plTitle(src._L):"Lista"),sx=e.clientX,sy=e.clientY;let drag=false,ghost=null,mk=null,zone=null,tgt=null,above=false;
+  const stage=$("stage"),ns=ev=>ev.preventDefault();
+  const clean=()=>{document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);document.removeEventListener("selectstart",ns);
+    document.body.classList.remove("laydrag");src.classList.remove("laysrc");if(ghost)ghost.remove();if(mk)mk.remove();if(zone)zone.remove()};
+  const mv=ev=>{
+    if(!drag){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<8)return;drag=true;document.body.classList.add("laydrag");src.classList.add("laysrc");document.addEventListener("selectstart",ns);
+      ghost=document.createElement("div");ghost.className="layghost";ghost.textContent=name;document.body.appendChild(ghost);
+      if(isEd){zone=document.createElement("div");zone.className="layzone";document.body.appendChild(zone)}else{mk=document.createElement("div");mk.className="laymk";document.body.appendChild(mk)}}
     ghost.style.left=ev.clientX+12+"px";ghost.style.top=ev.clientY+12+"px";
-    const r=stage.getBoundingClientRect(),left=ev.clientX<r.left+r.width/2;zl.style.top=r.top+"px";zl.style.height=r.height+"px";zl.style.width=r.width/2+"px";zl.style.left=(left?r.left:r.left+r.width/2)+"px";zl.dataset.side=left?"l":"r"};
-  const up=ev=>{document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);
-    if(!drag)return;document.body.classList.remove("laydrag");src.classList.remove("laysrc");if(ghost)ghost.remove();if(zl)zl.remove();
-    if(ev.type==="pointercancel")return;
-    const r=stage.getBoundingClientRect(),left=ev.clientX<r.left+r.width/2;
-    if(isG){LAY.list=left?"r":"l";LAY.sides={}}else{LAY.sides=LAY.sides||{};LAY.sides[src.id]=left?"l":"r"}layApply();laySave()};
+    if(isEd){const r=stage.getBoundingClientRect();above=ev.clientY<r.top+r.height/2;zone.style.left=r.left+"px";zone.style.width=r.width+"px";zone.style.height=Math.min(r.height/2,260)+"px";zone.style.top=(above?r.top:r.bottom-Math.min(r.height/2,260))+"px";zone.dataset.pos=above?"arriba":"abajo"}
+    else{tgt=layTarget(src,ev.clientX,ev.clientY);if(!tgt){mk.style.display="none";return}mk.style.display="block";const r=tgt.rect;
+      if(tgt.col){mk.style.left=r.left+"px";mk.style.width=r.width+"px";mk.style.height="4px";mk.style.top=((tgt.after?r.bottom:r.top)-2)+"px"}
+      else{mk.style.top=r.top+"px";mk.style.height=r.height+"px";mk.style.width="4px";mk.style.left=((tgt.after?r.right:r.left)-2)+"px"}}};
+  const up=ev=>{const was=drag,cancel=ev.type==="pointercancel",tg=tgt,ab=above;clean();if(!was||cancel)return;
+    if(isEd){LAY.ed=ab?"t":"b";layApply();laySave();layPos()}
+    else if(tg){const ids=layIds().filter(i=>i!==src.id),k=ids.indexOf(tg.el.id);ids.splice(tg.after?k+1:k,0,src.id);LAY.order=ids;layApply();laySave()}
+    if(was){const stop=x=>{x.stopPropagation();x.preventDefault()};document.addEventListener("click",stop,{capture:true,once:true});setTimeout(()=>document.removeEventListener("click",stop,true),50)}};
   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)},true);
-/* arrastrar el título del editor hacia arriba o abajo de la botonera */
-document.addEventListener("pointerdown",e=>{
-  if(e.button!==0||!LDM)return;const hd=e.target.closest&&e.target.closest("#ed .edh");if(!hd||e.target.closest("button,input,select,textarea,a,.otag,canvas,label"))return;
-  const sx=e.clientX,sy=e.clientY;let drag=false,ghost=null;
-  const mv=ev=>{if(!drag){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)<8)return;drag=true;ghost=document.createElement("div");ghost.className="layghost";ghost.textContent="Editor";document.body.appendChild(ghost)}ghost.style.left=ev.clientX+12+"px";ghost.style.top=ev.clientY+12+"px"};
-  const up=ev=>{document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);if(ghost)ghost.remove();if(!drag||ev.type==="pointercancel")return;
-    const r=$("stage").getBoundingClientRect();LAY.ed=ev.clientY<r.top+r.height/2?"t":"b";layApply();laySave();layPos()};
-  document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)},true);
-/* ---------- v2.15 · limpiar la botonera (doble advertencia) ---------- */
+/* ---------- v2.16 · limpiar la botonera (doble advertencia) ---------- */
 $("sesclr").addEventListener("click",async()=>{
   const keep=it=>(it.base&&catOf(it)>0)||isRecOrig(it);
   const gone=items.filter(it=>!keep(it)),nl=PLISTS.reduce((a,L)=>a+(L.rows?L.rows.length:0),0);
@@ -2530,7 +2546,7 @@ $("sesclr").addEventListener("click",async()=>{
   items=items.filter(keep);STASH.clear();items.forEach(it=>{if(it.hid&&isRecOrig(it)){STASH.add(it.name)}else it.hid=false});stashSave();
   PLISTS.forEach(L=>{try{plAct(L);PL.rows=[];plRender();plSave()}catch(e){}});
   waiting=null;SEL.clear();BLINK.clear();render();save();note("Botonera y listas en cero.","info","",5000)});
-/* ---------- v2.15 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
+/* ---------- v2.16 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
 const TI={play:'<path d="M7 4v16l13-8z" fill="currentColor"/>',pause:'<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>',vol:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12"/>',mute:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/>',back:'<path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>',fwd:'<path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>'};
 function mkTransport(el){
   const bar=document.createElement("div");bar.className="tbar";
@@ -2553,7 +2569,7 @@ function mkTransport(el){
   mu.addEventListener("click",()=>{el.muted=!el.muted});
   vl.addEventListener("input",()=>{el.muted=false;el.volume=vl.value/100;paint(vl)});
   upd();return bar}
-/* ---------- v2.15 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
+/* ---------- v2.16 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
 const BACK={rec:null,live:null,mix:null,dest:null,inG:null,meter:null};
 function backNote(blob){if(BACK.rec&&isProt(blob))BACK.rec.prot=true}
 const RL_BAD=/(micr[oó]fono|microphone|mic)\s*(array|interno|integrad|incorporad|internal|built)|array de micr|micr[oó]fono (interno|integrado|incorporado)|internal mic|built-?in|integrated|webcam|c[aá]mara|camera|laptop|realtek.*(mic|micr[oó]fono)(?!.*line)/i;
@@ -3516,7 +3532,7 @@ function plWfDraw(){
 function plDelCue(r,i){r.cues.splice(i,1);if(i<=PL.cueAt)PL.cueAt--;plRender();plSave();plSt();plWfDraw();note("Cue borrado.","info","pl",1500)}
 const M=document.createElement("div");M.id="wfm";M.innerHTML='<button class="mi del" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar cue</button>';document.body.appendChild(M);let MI=-1;
 const hideM=()=>{M.style.display="none";MI=-1};
-  M.querySelector("button").addEventListener("click",()=>{plAct(PLUSER);const r=plRow(PL.curId);if(r&&MI>=0&&r.cues&&MI<r.cues.length)plDelCue(r,MI);hideM()});
+  M.querySelector("button").addEventListener("click",()=>{plAct(plUser());const r=plRow(PL.curId);if(r&&MI>=0&&r.cues&&MI<r.cues.length)plDelCue(r,MI);hideM()});
 document.addEventListener("pointerdown",e=>{if(!e.target.closest||!e.target.closest("#wfm"))hideM()},true);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")hideM()});window.addEventListener("blur",hideM);
 PLWIRE.push(()=>{const c=$p("plwfc");
@@ -3593,14 +3609,14 @@ PLWIRE.push(()=>{{const L=$p("pll");
     else if(PLS.length)plSelSet([]);
     if(!mod&&!sh){const now=performance.now();if(plLast.id===id&&now-plLast.t<450){plLast.t=0;plDblSafe(id)}else{plLast.id=id;plLast.t=now}}});
   L.addEventListener("click",e=>{if(PLC!==null&&!e.ctrlKey&&!e.shiftKey&&!e.metaKey){const row=e.target.closest(".plr");if(row&&+row.dataset.id===PLC)plSelSet([])}PLC=null})}});
-document.addEventListener("pointerdown",e=>{const t=e.target;if(t.closest){const pp=t.closest(".plp");if(pp){plAct(pp._L);PLUSER=pp._L}else if(t.closest("#plm"))plAct(PLUSER)}ACT=t.closest?(t.closest(".plp,#plm")?"pl":t.closest("#ed")?"ed":t.closest("#gcol")?"pad":null):null},true);
+document.addEventListener("pointerdown",e=>{const t=e.target;if(t.closest){const pp=t.closest(".plp");if(pp){plAct(pp._L);PLUSER=pp._L}else if(t.closest("#plm"))plAct(plUser())}ACT=t.closest?(t.closest(".plp,#plm")?"pl":t.closest("#ed")?"ed":t.closest("#gcol")?"pad":null):null},true);
 const kTyping=e=>{const t=e.target;return !!t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.tagName==="SELECT"||t.isContentEditable)};
 document.addEventListener("keydown",e=>{ // botonera: Supr con botones seleccionados
   if(ACT!=="pad"||kTyping(e)||e.ctrlKey||e.metaKey||e.altKey||e.key!=="Delete"||(typeof waiting!=="undefined"&&waiting!==null)||document.getElementById("dlg"))return;
   const l=selList();if(!l.length)return;e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)l.length>1?askRemoveMany(l):askRemove(items.indexOf(l[0]),true)},true);
 document.addEventListener("keydown",e=>{ // lista: Ctrl+A/C/X/V, Supr, Inicio, Fin
   if(ACT!=="pl"||kTyping(e)||e.altKey||(typeof waiting!=="undefined"&&waiting!==null)||document.getElementById("dlg"))return;
-  plAct(PLUSER);
+  plAct(plUser());
   const mod=e.ctrlKey||e.metaKey,k=(e.key||"").toLowerCase(),eat=()=>{e.preventDefault();e.stopImmediatePropagation()};
   if(mod){
     if(k==="a"){eat();if(!e.repeat)plShowCur();return}
@@ -3714,7 +3730,7 @@ function padPress(e,idx,b){
   window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)}
 /* recuadro de selección (líneas punteadas) sobre el fondo de la botonera */
 $("stage").addEventListener("pointerdown",e=>{
-  if(e.button!==0||!(e.target.closest("#gcol")||e.target.id==="stage")||e.target.closest(".pad,button,label,select,input,canvas,a,.plp"))return;
+  if(e.button!==0||!(e.target.closest("#gcol")||e.target.id==="stage")||e.target.closest(".pad,button,label,select,input,canvas,a,.plp,#gbar"))return;
   e.preventDefault();hideCm();
   const sx=e.clientX,sy=e.clientY,add=e.ctrlKey||e.metaKey,base=add?new Set(SEL):new Set();let box=null,moved=false;
   const mv=ev=>{
@@ -3729,7 +3745,7 @@ $("stage").addEventListener("pointerdown",e=>{
     if(box)box.remove();document.body.classList.remove("marqing");if(!moved&&!add){SEL.clear();selApply()}};
   window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)});
 $("gselclr").addEventListener("click",()=>{SEL.clear();selApply()});
-$("gseladd").addEventListener("click",()=>{const l=selList();if(!l.length)return;plAct(PLUSER);plAddItems(l);selFlash(l);note("Agregado a la lista: "+(l.length>1?l.length+" botones.":"«"+nice(l[0].name)+"».")+" Orden de la botonera.","info","pl",3000)});
+$("gseladd").addEventListener("click",()=>{const l=selList();if(!l.length)return;plAct(plUser());plAddItems(l);selFlash(l);note("Agregado a la lista: "+(l.length>1?l.length+" botones.":"«"+nice(l[0].name)+"».")+" Orden de la botonera.","info","pl",3000)});
 $("eddl").addEventListener("click",()=>{
   if(!ed.it||!ed.ch.length)return;
   let nm=($("edname").value.trim()||nice(ed.it.name)+(ed.dirty?" (editado)":"")).replace(/[\\/:*?"<>|]/g,"").slice(0,80)||"audio";
@@ -3754,11 +3770,11 @@ $p("plsolo").addEventListener("click",()=>{PL.solo=!PL.solo;plSt();plSave()});
 $p("plfile").addEventListener("change",async e=>{const f=Array.from(e.target.files);e.target.value="";await plAddFiles(f)});
   $p("plnew").addEventListener("click",()=>plNewClick());$p("plrm").addEventListener("click",()=>plRemove(PL))});
 setInterval(()=>plEach(()=>{if(PL.state==="play")plSt()}),200);
-$("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)return;plAct(PLUSER);PL.rows.push(plMk(it.name,it.blob,it.buffer));plRender();plSave();note("Agregado a la lista: «"+nice(it.name)+"».","info","pl",3000)});
+$("cpl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)return;plAct(plUser());PL.rows.push(plMk(it.name,it.blob,it.buffer));plRender();plSave();note("Agregado a la lista: «"+nice(it.name)+"».","info","pl",3000)});
 
 /* ---- v1.79: cola de reproducción · próximo tema / al final de la lista en vivo ---- */
 function qAdd(name,blob,buffer,next){
-  plAct(PLUSER);
+  plAct(plUser());
   const r=plMk(name,blob,buffer);
   if(!next){PL.rows.push(r);plRender();plSave();note("Agregado al final de la lista: «"+nice(name)+"».","info","pl",3000);return}
   const ci=PL.state==="stop"&&PL.curId===null?-1:plIdx(PL.curId);
@@ -3774,11 +3790,11 @@ function edToList(next){const it=ed.it;if(!it)return;const n=edN();if(!n){note("
   qAdd((it.name||"audio"),wavP(ed.ch,ed.sr,it.blob),buf,next)} // hereda la protección: solo play out
 $("ednext").addEventListener("click",()=>edToList(true));$("edend").addEventListener("click",()=>edToList(false));
   const plm=$("plm"),hideP=()=>{plm.style.display="none";const L0=PLUSER;L0.menuId=null;const LL=document.getElementById("pll"+L0.sfx);if(LL)LL.querySelectorAll(".mins").forEach(x=>x.classList.remove("mins","minsb"))};
-  PALETTE.forEach(c=>{const b=document.createElement("button");b.style.background=c;b.title=c;b.addEventListener("click",()=>{plAct(PLUSER);const r=plRow(PL.menuId);if(r)r.color=c;hideP();plRender();plSave()});$("plsws").appendChild(b)});
-  {const b=document.createElement("button");b.textContent="×";b.title="Sin color";b.addEventListener("click",()=>{plAct(PLUSER);const r=plRow(PL.menuId);if(r)r.color=null;hideP();plRender();plSave()});$("plsws").appendChild(b)}
+  PALETTE.forEach(c=>{const b=document.createElement("button");b.style.background=c;b.title=c;b.addEventListener("click",()=>{plAct(plUser());const r=plRow(PL.menuId);if(r)r.color=c;hideP();plRender();plSave()});$("plsws").appendChild(b)});
+  {const b=document.createElement("button");b.textContent="×";b.title="Sin color";b.addEventListener("click",()=>{plAct(plUser());const r=plRow(PL.menuId);if(r)r.color=null;hideP();plRender();plSave()});$("plsws").appendChild(b)}
   $("plcol").addEventListener("click",()=>{const o=$("plsw").style.display!=="block";$("plsw").style.display=o?"block":"none";$("plcol").setAttribute("aria-expanded",o)});
   plm.querySelectorAll(".mi[data-a]").forEach(b=>b.addEventListener("click",()=>{
-    plAct(PLUSER);const a=b.dataset.a,id=PL.menuId,i=id===null?-1:plIdx(id);hideP();const mrows=()=>PLS.includes(id)?plSelRows():[plRow(id)].filter(Boolean);
+    plAct(plUser());const a=b.dataset.a,id=PL.menuId,i=id===null?-1:plIdx(id);hideP();const mrows=()=>PLS.includes(id)?plSelRows():[plRow(id)].filter(Boolean);
     if(a==="show"){plShowCur();return}
     if(a==="all"){plSelSet(PL.rows.map(r=>r.id));return}
     if(a==="stop"){const sr=plMkStop();PL.rows.splice(Math.min(PL.menuIns,PL.rows.length),0,sr)}
@@ -3843,7 +3859,7 @@ function plBuild(n){
   [root].concat(Array.from(root.querySelectorAll("[id]"))).forEach(e=>{e.id=e.id==="otg-pl"?"otg-pl"+n:e.id+sfx});
   root.classList.add("plp");root._L=L;root.querySelector(".plh b").textContent="Lista "+n;root.querySelector("#plrm"+sfx).hidden=false;
   Array.from(document.querySelectorAll(".plp")).pop().after(root);
-  L.style=plCssClone(n);PLISTS.push(L);$("stage").classList.add("mpl");
+  L.style=plCssClone(n);PLISTS.push(L);plMplUpdate();
   OUTK[k]="Lista "+n;let sv={};try{sv=JSON.parse(localStorage.getItem("botonera_out")||"{}")}catch(e){}
   OUT[k]={bus:L.bus,id:typeof sv[k]==="string"?sv[k]:"",label:typeof sv[k+"L"]==="string"?sv[k+"L"]:"",el:null};
   const row=document.createElement("div");row.className="or";row.id="orow-"+k;row.innerHTML='<label for="o-'+k+'"></label><select id="o-'+k+'"></select>';row.firstChild.textContent="Lista "+n;$("outnames").before(row);
@@ -3853,11 +3869,28 @@ function plBuild(n){
   outList().then(async()=>{if(OUT[k]&&OUT[k].id){const ok=await outRoute(k);if(!ok)note("La salida guardada de Lista "+n+" no está disponible: vuelve a la principal del sistema.","warn","out",9000)}outSave();outFill()});
   return L}
 function plNewClick(){
+  if(PLISTS[0].closed){plReopen(PLISTS[0]);note("Lista reabierta.","info","pl",3000);return}
   let n=2;while(PLISTS.some(L=>L.n===n))n++;const L=plBuild(n);PLUSER=L;
   note("Lista "+n+" creada a la derecha. Elegí su salida de audio con el botón «Salida» de su cabecera.","info","pl",5000);
   const r=document.getElementById("pl"+L.sfx);if(r&&r.scrollIntoView)r.scrollIntoView({block:"nearest",inline:"nearest"})}
+/* la primera lista es la base de todo el sistema: «cerrarla» la vacía y la oculta; se vuelve a abrir con el «+» de otra lista. Siempre queda al menos una lista visible */
+const PL1K="botonera_pl1x:"+PROF.active;
+const plFirst=()=>PLISTS.find(L=>!L.closed)||PLISTS[0];
+function plMplUpdate(){const vis=PLISTS.filter(L=>!L.closed);$("stage").classList.toggle("mpl",vis.length>=2);
+  PLISTS.forEach(L=>{const root=L.n>1?document.getElementById("pl"+L.sfx):$("pl"),b=root&&root.querySelector(".plh button[id^=plrm]");if(b){const last=vis.length<=1&&!L.closed;b.disabled=last;b.title=last?"Tiene que quedar al menos una lista":"Quitar esta lista"}});const rw=$("o-pl")&&$("o-pl").closest(".or");if(rw)rw.hidden=!!PLISTS[0].closed;try{laySides()}catch(e){}}
+function plReopen(L){L.closed=false;const root=L.n>1?document.getElementById("pl"+L.sfx):$("pl");if(root)root.classList.remove("plclosed");if(L.n<2){try{localStorage.removeItem(PL1K)}catch(e){}}plMplUpdate();PLUSER=L}
+function plUser(){if(PLUSER&&PLUSER.closed)plReopen(PLUSER);return PLUSER}
+const plLastMsg=()=>note("Tiene que quedar al menos una lista. Creá otra con «+» antes de quitar esta, o usá «Vaciar» para limpiarla.","warn","pl",5000);
+async function plCloseBase(L){
+  if(PLISTS.filter(x=>!x.closed).length<=1){plLastMsg();return}
+  const nt=L.rows.filter(r=>r.t==="f").length;
+  if(nt&&!(await askDlg("Quitar «"+plTitle(L)+"»","Tiene "+nt+(nt===1?" tema":" temas")+". Se quita del tablero y se borra su contenido.","Quitar lista")))return;
+  plWith(L,()=>{plKill();L.state="stop";PL.rows=[];plRender();plSave()});
+  L.closed=true;$("pl").classList.add("plclosed");try{localStorage.setItem(PL1K,"1")}catch(e){}
+  if(PLUSER===L)PLUSER=plFirst();plMplUpdate();note("«"+plTitle(L)+"» quitada. Para volver a abrirla tocá «+» en otra lista.","info","pl",5000)}
 async function plRemove(L){
-  if(L.n<2)return;
+  if(L.n<2){return plCloseBase(L)}
+  if(PLISTS.filter(x=>!x.closed).length<=1){plLastMsg();return}
   const nt=L.rows.filter(r=>r.t==="f").length;
   if(nt&&!(await askDlg("Quitar «"+plTitle(L)+"»","Tiene "+nt+(nt===1?" tema":" temas")+". Se quita del tablero y se borra su contenido.","Quitar lista")))return;
   plWith(L,()=>{plKill();L.state="stop"});clearTimeout(L.saveT);
@@ -3866,8 +3899,8 @@ async function plRemove(L){
   delete OUT[k];delete OUTK[k];const rw=$("orow-"+k);if(rw)rw.remove();
   const root=document.getElementById("pl"+L.sfx);if(root)root.remove();if(L.style)L.style.remove();
   const fi=PLFX.indexOf(L.fx);if(fi>=0)PLFX.splice(fi,1);PLISTS.splice(PLISTS.indexOf(L),1);
-  if(PL===L){PL=PLISTS[0];PLS=PL.sel;PLBLINK=PL.blink;PLANCH=PL.anch;PLC=PL.plc;plLast=PL.last}if(PLUSER===L)PLUSER=PLISTS[0];
-  if(PLISTS.length<2)$("stage").classList.remove("mpl");
+  if(PL===L){PL=PLISTS[0];PLS=PL.sel;PLBLINK=PL.blink;PLANCH=PL.anch;PLC=PL.plc;plLast=PL.last}if(PLUSER===L)PLUSER=plFirst();
+  plMplUpdate();
   try{const d=await db();d.transaction("s","readwrite").objectStore("s").delete(plKeyOf(L))}catch(e){}
   plRegSave();outSave();outDirect();outFill();note("Lista "+L.n+" quitada.","info","pl",3000)}
 plHook($("pl"),PL);
@@ -3887,7 +3920,8 @@ plApplyTitle(PLISTS[0]);
 async function plInitAll(){
   for(const n of plRegGet()){if(!PLISTS.some(L=>L.n===n))plBuild(n)}
   for(const L of PLISTS.slice()){plAct(L);try{await plLoad()}catch(e){console.warn(e)}}
-  plAct(PLISTS[0]);PLUSER=PLISTS[0]}
+  try{if(localStorage.getItem(PL1K)==="1"){PLISTS[0].closed=true;$("pl").classList.add("plclosed")}}catch(e){}
+  plAct(plFirst());PLUSER=plFirst();plMplUpdate()}
 
 /* --- tarjeta de resultado y búsqueda --- */
 function lkCard(){
