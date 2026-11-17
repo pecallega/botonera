@@ -783,6 +783,22 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 #vprs span{display:none}
 #rcol{max-height:calc(100vh - 24px);overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
 @media (max-width:900px){#rcol{max-height:none;overflow:visible}}
+
+#hpan{position:fixed;z-index:450;width:318px;background:#141418;border:1px solid var(--line);box-shadow:0 14px 44px rgba(0,0,0,.65);font-family:var(--f-txt);font-weight:300}
+#hpan .hph{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line)}
+#hpan .hph b{font-family:var(--f-act);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:400}
+#hpan .hps{margin-left:auto;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase}
+#hpan .hps.ok{color:#3dff7a}#hpan .hps.off{color:#ff5a5f}
+#hpan #hpx{padding:0 8px;font-size:1rem;line-height:1.6}
+#hpan .hpb{display:flex;flex-direction:column;gap:6px;padding:10px}
+#hpan .hpi{font-size:.62rem;color:var(--mut);letter-spacing:.06em;text-transform:uppercase}
+#hpan .hpa{font-size:.74rem;color:#3dff7a;word-break:break-all}
+#hpan label{font-size:.62rem;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+#hpan .hpr{display:flex;gap:6px}#hpan .hpr input{flex:1;min-width:0}
+#hpan .hpm{min-height:1.2em;font-size:.66rem;line-height:1.4;color:var(--mut)}
+#hpan .hpm.ok{color:#3dff7a}#hpan .hpm.err{color:#ff5a5f}
+#hpan .hpk{display:flex;gap:6px;flex-wrap:wrap}
+#hpan .hpgo{background:rgba(59,130,246,.24)!important;border-color:#4c9aff!important;color:#fff}
 </style>
 </head>
 <body class="booting">
@@ -905,7 +921,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 1.79 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.79</span></footer>
+<footer id="sig" title="Versión 1.80 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v1.80</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1764,10 +1780,10 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 window.addEventListener("resize",()=>edDraw());
 let hidden=new Set();try{hidden=new Set(JSON.parse(localStorage.getItem(HK)||"[]"))}catch(e){}
 /* ---------- buscador de links + reproductor lateral + descarga (helper) ---------- */
-const HELPER=(()=>{try{return localStorage.getItem("botonera_helper")||"http://127.0.0.1:8765"}catch(e){return"http://127.0.0.1:8765"}})();
+let HELPER=(()=>{try{return localStorage.getItem("botonera_helper")||"http://127.0.0.1:8765"}catch(e){return"http://127.0.0.1:8765"}})();
 document.querySelectorAll("#lkmodes button").forEach(x=>x.dataset.t=x.title);
-const HTOK=(()=>{try{return localStorage.getItem("botonera_htoken")||""}catch(e){return""}})();
-const HREMOTE=!/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/|$)/i.test(HELPER);
+let HTOK=(()=>{try{return localStorage.getItem("botonera_htoken")||""}catch(e){return""}})();
+let HREMOTE=!/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/|$)/i.test(HELPER);
 function hfetch(u,o){o=o||{};if(HTOK&&HREMOTE)o.headers=Object.assign({},o.headers,{"X-Botonera-Token":HTOK});
   return fetch(u,o).catch(async e=>{if(e&&e.name==="AbortError")throw e;await new Promise(r=>setTimeout(r,1200));if(o.signal&&o.signal.aborted)throw e;return fetch(u,o)})} // un corte breve de red se reintenta solo
 const LK={ok:false,h:null,mode:"av",p:null,info:null,src:"",cache:{},busy:null};
@@ -3063,29 +3079,64 @@ $("lkurl").addEventListener("input",()=>{lkReady();lkErrHide()});
 $("lkurl").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lkGo()}});
 $("lkurl").addEventListener("focus",e=>{e.target.select();hping()});
 $("lkmodes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.getAttribute("aria-disabled")==="true"){note("Sin el helper solo está disponible AUDIO + VIDEO (reproductor oficial de la red).","info","lk",6000);return}setMode(b.dataset.m);if(LK.p)lkPlay()});
-$("lkh").addEventListener("click",async e=>{if(e.shiftKey){hDiag();return}await hping();
-  if(!LK.ok){hRed();return}
+$("lkh").addEventListener("click",async e=>{if(e.shiftKey){hDiag();return}
+  if(!LK.ok){hOpen();return}await hping();
+  if(!LK.ok){hOpen();return}
   if(!LK.ok)note("Helper no detectado en "+HELPER+". Abrí iniciar-helper.bat (carpeta del helper) y dejá esa ventana abierta. Si el helper está en otra compu: clic derecho en HELPER para poner su dirección y clave. Si el navegador pide permiso de red local, aceptalo. Brave: bajá el escudo del sitio.","info","lk",14000);
   else if(!(LK.h.ytdlp&&LK.h.ffmpeg))note("Helper conectado, pero faltan componentes: "+[!LK.h.ytdlp&&"yt-dlp",!LK.h.ffmpeg&&"ffmpeg"].filter(Boolean).join(" y ")+". Ejecutá iniciar-helper.bat para instalarlos.","warn","lk",14000);
   else note("Helper v"+LK.h.v+" · yt-dlp "+LK.h.ytdlp+" · ffmpeg OK."+(HREMOTE?" Estás usando un helper remoto; para cambiarlo, clic derecho o mantené apretado el botón HELPER.":""),"info","lk",8000)});
-/* helper remoto: clic derecho en HELPER para poner la dirección del túnel y la clave (vacío = helper de esta compu) */
-async function hCfg(){
-  const cur=HREMOTE?HELPER:"";
-  const url=await askName("Helper remoto","Dirección del helper (ej. https://algo.trycloudflare.com). Escribí «local» para volver a usar el helper de esta compu. (Shift+clic en HELPER: diagnóstico.)",cur,"Siguiente",200);if(url===null)return;
-  const clean=(url||"").trim().replace(/\/+$/,"");
-  if(!clean||/^local$/i.test(clean)){try{localStorage.removeItem("botonera_helper");localStorage.removeItem("botonera_htoken")}catch(x){}note("Se usará el helper de esta compu. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900);return}
-  if(!/^https:\/\/[^\s/]+/i.test(clean)){note("La dirección tiene que empezar con https:// (la que te muestra el túnel).","error","hcfg",8000);return}
-  const tk=await askName("Clave del helper","Pegá la clave que muestra la ventana del helper (o el archivo token.txt).",HTOK,"Guardar",80);if(tk===null)return;
-  try{localStorage.setItem("botonera_helper",clean);localStorage.setItem("botonera_htoken",(tk||"").trim())}catch(x){}
-  note("Helper remoto guardado en este navegador. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900)}
-/* HELPER en rojo (clic izquierdo, derecho o toque): primero busca el helper de esta compu; si no está, pide la dirección del túnel */
-async function hRed(){
-  note("Buscando el helper de esta compu…","info","hcfg",3000);
-  const ac=new AbortController(),t=setTimeout(()=>ac.abort(),2500);let ok=false;
-  try{const r=await fetch("http://127.0.0.1:8765/ping",{signal:ac.signal}),j=await r.json();ok=!!(j&&j.ok&&!j.need_token)}catch(e){}finally{clearTimeout(t)}
-  if(ok){try{localStorage.removeItem("botonera_helper");localStorage.removeItem("botonera_htoken")}catch(x){}note("Se encontró el helper de esta compu. Recargando…","info","hcfg",2500);setTimeout(()=>location.reload(),900);return}
-  clearNote("hcfg");await hCfg()}
-$("lkh").addEventListener("contextmenu",async e=>{e.preventDefault();await hping();if(!LK.ok)hRed();else hCfg()});
+/* ---------- panel flotante del helper (no bloquea la botonera ni recarga la página) ---------- */
+const HREM_DEF="https://helper.botonera.app";
+const hIsRemote=u=>!/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/|$)/i.test(u);
+function hSet(url,tok,save){HELPER=url;HREMOTE=hIsRemote(url);if(tok!==undefined)HTOK=tok;
+  if(save){try{if(HREMOTE){localStorage.setItem("botonera_helper",url);localStorage.setItem("botonera_htoken",HTOK)}else localStorage.removeItem("botonera_helper")}catch(e){}}}
+async function hTry(url,tok){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),8000);
+  try{const r=await fetch(url+"/ping",{signal:ac.signal,headers:hIsRemote(url)&&tok?{"X-Botonera-Token":tok}:{}});let j={};try{j=await r.json()}catch(e){}
+    if(r.ok&&j.ok&&!j.need_token)return{ok:true,j};if(r.status===401||j.need_token)return{ok:false,need:true};return{ok:false,err:"El helper respondió HTTP "+r.status}}
+  catch(e){return{ok:false,err:e&&e.name==="AbortError"?"No respondió en 8 s":"No se pudo llegar"}}finally{clearTimeout(t)}}
+let hPan=null;
+function hPanClose(){if(hPan){hPan.remove();hPan=null}document.removeEventListener("keydown",hPanKey,true)}
+function hPanKey(e){if(e.key==="Escape"&&hPan){e.stopImmediatePropagation();hPanClose()}}
+function hPanPlace(){if(!hPan)return;const r=$("lkh").getBoundingClientRect(),w=hPan.offsetWidth,h=hPan.offsetHeight;
+  hPan.style.left=Math.max(8,Math.min(innerWidth-w-8,r.right-w))+"px";const below=r.bottom+6;hPan.style.top=Math.max(8,below+h>innerHeight-8?Math.max(8,r.top-h-6):below)+"px"}
+function hOpen(){
+  if(hPan){hPanClose();return}
+  const remote=HREMOTE?HELPER:(()=>{try{return localStorage.getItem("botonera_helper")}catch(e){return null}})()||HREM_DEF;
+  let addr=remote;
+  const w=document.createElement("div");w.id="hpan";w.setAttribute("role","dialog");w.setAttribute("aria-modal","false");w.setAttribute("aria-label","Conectar al helper");
+  w.innerHTML='<div class="hph"><b>Helper</b><span class="hps" id="hps"></span><button type="button" id="hpx" aria-label="Cerrar">×</button></div>'+
+    '<div class="hpb"><div class="hpi">Se va a conectar a:</div><div class="hpa" id="hpa"></div>'+
+    '<label for="hpt">Clave de seguridad (token)</label><div class="hpr"><input id="hpt" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Pegá la clave"><button type="button" id="hpe" aria-label="Mostrar u ocultar la clave" title="Mostrar / ocultar">◉</button></div>'+
+    '<div class="hpm" id="hpm" role="status"></div>'+
+    '<div class="hpk"><button type="button" id="hpc" class="hpgo">Conectar</button><button type="button" id="hpl" title="Buscar y usar el helper de esta misma compu">Esta compu</button><button type="button" id="hpd" title="Revisa por qué no conecta">Diagnóstico</button></div></div>';
+  document.body.appendChild(w);hPan=w;document.addEventListener("keydown",hPanKey,true);
+  const q=x=>w.querySelector(x),msg=(t,k)=>{const m=q("#hpm");m.textContent=t||"";m.className="hpm"+(k?" "+k:"")};
+  const ui=()=>{q("#hpa").textContent=addr;q("#hps").textContent=LK.ok?"conectado a "+(HREMOTE?"remoto":"esta compu"):"sin conexión";q("#hps").className="hps "+(LK.ok?"ok":"off");q("#hpl").style.display=HREMOTE||!LK.ok?"":"none"};
+  q("#hpt").value=HTOK||(()=>{try{return localStorage.getItem("botonera_htoken")||""}catch(e){return""}})();
+  const done=ok=>{hpFail=0;hpWasOk=ok?true:null;hping().then(()=>{ui();if(ok){note("Helper conectado: "+(HREMOTE?addr:"esta compu")+".","info","hcfg",4000);setTimeout(hPanClose,900)}})};
+  const connect=async()=>{const tok=q("#hpt").value.trim();q("#hpc").disabled=true;msg("Conectando a "+addr+"…");const r=await hTry(addr,tok);q("#hpc").disabled=false;
+    if(!hPan)return;
+    if(r.ok){hSet(addr,tok,true);msg("Conectado.","ok");done(true)}
+    else if(r.need){msg(tok?"La clave no es correcta. Revisá que esté completa (está en token.txt, en la carpeta del helper).":"Falta la clave de seguridad.","err");q("#hpt").focus()}
+    else msg(r.err+" ("+addr+"). ¿Está prendida la PC del helper? Probá «Diagnóstico».","err")};
+  q("#hpc").addEventListener("click",connect);
+  q("#hpt").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();connect()}});
+  q("#hpx").addEventListener("click",hPanClose);
+  q("#hpe").addEventListener("click",()=>{const t=q("#hpt");t.type=t.type==="password"?"text":"password"});
+  q("#hpl").addEventListener("click",async()=>{msg("Buscando el helper de esta compu…");const r=await hTry("http://127.0.0.1:8765","");if(!hPan)return;
+    if(r.ok){hSet("http://127.0.0.1:8765",undefined,true);addr=remote;msg("Usando el helper de esta compu.","ok");done(true)}else msg("No hay un helper abierto en esta compu (abrí iniciar-helper.bat).","err")});
+  q("#hpd").addEventListener("click",async()=>{const pu=HELPER,pt=HTOK;hSet(addr,q("#hpt").value.trim(),false);try{await hDiag()}finally{hSet(pu,pt,false)}});
+  ui();hPanPlace();
+  const tk=q("#hpt").value;
+  if(!LK.ok){ // primero busca el helper de esta compu; si no está y hay clave guardada, conecta solo al remoto
+    (async()=>{msg("Buscando el helper de esta compu…");const l=await hTry("http://127.0.0.1:8765","");if(!hPan)return;
+      if(l.ok){hSet("http://127.0.0.1:8765",undefined,true);msg("Se encontró el helper de esta compu.","ok");done(true);return}
+      if(tk){connect()}else{msg("Pegá la clave y tocá Conectar.");q("#hpt").focus()}})()}
+  else if(!tk)q("#hpt").focus();
+  window.addEventListener("resize",hPanPlace,{once:true})}
+async function hCfg(){hOpen()}
+async function hRed(){hOpen()}
+$("lkh").addEventListener("contextmenu",e=>{e.preventDefault();hOpen()});
 $("lkcancel").addEventListener("click",()=>{if(LK.busy)LK.busy.ac.abort()});
 muUI();
 hping();
