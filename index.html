@@ -942,7 +942,7 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .recx .rtog .rch{width:12px;height:12px;transition:transform .15s}
 .recx.open .rtog .rch{transform:rotate(180deg)}
 .recx:not(.open)>:not(.rtog):not(.recstat){display:none!important}
-/* v2.11 · Principal con la misma estética que Helper */
+/* v2.12 · Principal con la misma estética que Helper */
 .fx{padding:10px!important}
 .fx select,.usr select,#indev,#rlin{background-color:#050506!important;background-image:none;border:1px solid rgba(255,255,255,.1)!important;color:var(--tx,#f4f4f6);font:500 .7rem "Space Mono",monospace!important;letter-spacing:.04em;text-transform:uppercase;padding:8px 28px 8px 10px!important;border-radius:0!important;min-height:36px}
 #indev{padding-left:34px!important}
@@ -986,7 +986,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .fx .fxtop button,.fx .fxtop select{width:auto!important;min-width:0;flex:0 0 auto;grid-column:auto}
 .fx .fxtop .usr select{width:140px!important;max-width:140px}
 .fx .fxtop #outb{margin-left:4px}
-/* v2.11 · Botonera con el mismo recuadro que Principal y Helper */
+/* v2.12 · Botonera con el mismo recuadro que Principal y Helper */
 #gcol{border:1px solid rgba(255,255,255,.16);background-image:linear-gradient(rgba(255,255,255,.055),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(0,0,0,.65),inset 0 0 26px rgba(0,0,0,.35),0 6px 22px rgba(0,0,0,.35);padding:10px;box-sizing:border-box}
 #gcol #gbar{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
 #ed.recover{outline:2px dashed #ff2a2a;outline-offset:-4px}
@@ -1009,7 +1009,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
 .tbar .tsb::-moz-range-thumb{width:8px;height:18px;background:#d8d8dc;border:1px solid #000;border-radius:0}
 .tbar .tvl{flex:0 0 70px}
 #sesclr{color:#ff7b80}
-/* v2.11 · celular */
+/* v2.12 · celular */
 @media (max-width:700px){
   #sig,footer#sig{position:static!important;margin:14px auto 18px!important;transform:none!important}
   .fx .micr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
@@ -1021,7 +1021,7 @@ body.recdrag #gcol .cell{outline:1px dashed rgba(255,42,42,.0)}
   .pad,.gear,.mv,button{touch-action:manipulation}
   .pad{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
 }
-/* v2.11 · diseño */
+/* v2.12 · diseño */
 html{padding:0 var(--lmr,0px) 0 var(--lml,0px)}
 body{padding-top:calc(20px + var(--lmt,0px))}
 @media (min-width:901px){
@@ -1070,6 +1070,10 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 #layh .lh[data-k=ml] .lhg{left:12px}
 #layh .lh[data-k=mr] .lhg{left:-24px}
 #layh .lh[data-k=mt] .lhg{top:12px}
+.plp .plh b.plnm{cursor:text;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.plp .plh b.plnm:hover{text-decoration:underline dotted}
+#stage.mpl{overflow-x:auto;padding-bottom:6px}
+@media (min-width:901px){#stage.mpl #gcol{flex:1 0 620px}#stage.mpl .plp{flex:0 0 auto}}
 </style>
 </head>
 <body class="booting">
@@ -1210,7 +1214,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.11 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.11</span></footer>
+<footer id="sig" title="Versión 2.12 · 17 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.12</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1282,7 +1286,7 @@ const KEYS="1234567890QWERTYUPASDFGHJKLZXVBN".split(""); // C, M, I, O reservada
 const PALETTE=["#e8232a","#a3141a","#ff5a36","#f2c230","#4a90f2","#3a3a3a","#6b6b6b","#9a9a9a","#c4c4c4","#ffffff"];
 const AC=window.AudioContext||window.webkitAudioContext;
 const ctx=new AC({latencyHint:"interactive"});
-/* ---------- v2.11 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
+/* ---------- v2.12 · celular: desbloqueo de audio (el navegador móvil arranca el audio suspendido y, en iPhone, el botón de silencio lo calla) ---------- */
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 let SILA=null;
 function unlockAudio(){
@@ -2430,7 +2434,7 @@ function playNative(src,kind,mode,title,vertHint){
   el.addEventListener("loadedmetadata",()=>{const w=el.videoWidth,h=el.videoHeight;if(w&&h)vpShow(h>w?"v":"h",w+"/"+h,title)})}
 
 
-/* ---------- v2.11 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
+/* ---------- v2.12 · diseño: lado de la lista, orden de Principal/Helper y márgenes manuales ---------- */
 const LAYK="botonera_layout",LAYD={list:"r",head:"n",ml:0,mr:0,mt:0};let LAY=Object.assign({},LAYD);
 try{const j=JSON.parse(localStorage.getItem(LAYK)||"null");if(j&&typeof j==="object")Object.keys(LAYD).forEach(k=>{if(j[k]!==undefined)LAY[k]=j[k]})}catch(e){}
 function layApply(){const h=document.documentElement,c=v=>Math.max(0,Math.min(400,+v||0));
@@ -2479,7 +2483,7 @@ document.addEventListener("pointerdown",e=>{
     const r=stage.getBoundingClientRect(),left=ev.clientX<r.left+r.width/2;
     LAY.list=isG?(left?"r":"l"):(left?"l":"r");layApply();laySave()};
   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)},true);
-/* ---------- v2.11 · limpiar la botonera (doble advertencia) ---------- */
+/* ---------- v2.12 · limpiar la botonera (doble advertencia) ---------- */
 $("sesclr").addEventListener("click",async()=>{
   const keep=it=>(it.base&&catOf(it)>0)||isRecOrig(it);
   const gone=items.filter(it=>!keep(it)),nl=PLISTS.reduce((a,L)=>a+(L.rows?L.rows.length:0),0);
@@ -2494,7 +2498,7 @@ $("sesclr").addEventListener("click",async()=>{
   items=items.filter(keep);STASH.clear();items.forEach(it=>{if(it.hid&&isRecOrig(it)){STASH.add(it.name)}else it.hid=false});stashSave();
   PLISTS.forEach(L=>{try{plAct(L);PL.rows=[];plRender();plSave()}catch(e){}});
   waiting=null;SEL.clear();BLINK.clear();render();save();note("Botonera y listas en cero.","info","",5000)});
-/* ---------- v2.11 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
+/* ---------- v2.12 · control de transporte propio (reemplaza el genérico del navegador) ---------- */
 const TI={play:'<path d="M7 4v16l13-8z" fill="currentColor"/>',pause:'<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>',vol:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12"/>',mute:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/>',back:'<path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>',fwd:'<path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6"/><text x="9" y="17" font-size="7" fill="currentColor" stroke="none">10</text>'};
 function mkTransport(el){
   const bar=document.createElement("div");bar.className="tbar";
@@ -2517,7 +2521,7 @@ function mkTransport(el){
   mu.addEventListener("click",()=>{el.muted=!el.muted});
   vl.addEventListener("input",()=>{el.muted=false;el.volume=vl.value/100;paint(vl)});
   upd();return bar}
-/* ---------- v2.11 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
+/* ---------- v2.12 · REC LIVE (cinta testigo: solo la entrada de línea) y REC BACK (entrada + todo lo que suena), con vúmetro y nivel ---------- */
 const BACK={rec:null,live:null,mix:null,dest:null,inG:null,meter:null};
 function backNote(blob){if(BACK.rec&&isProt(blob))BACK.rec.prot=true}
 const RL_BAD=/(micr[oó]fono|microphone|mic)\s*(array|interno|integrad|incorporad|internal|built)|array de micr|micr[oó]fono (interno|integrado|incorporado)|internal mic|built-?in|integrated|webcam|c[aá]mara|camera|laptop|realtek.*(mic|micr[oó]fono)(?!.*line)/i;
@@ -3788,8 +3792,8 @@ PLWIRE.push(()=>{const L=$p("pll");
     else await plAddFiles(e.dataTransfer.files,w.ins)})});
 
 /* ---------- varias listas: cada una a la derecha de la anterior, con su propia salida ---------- */
-const PL_MAX=4,PLREG="botonera_pls:"+PROF.active;
-function plRegGet(){try{const a=JSON.parse(localStorage.getItem(PLREG)||"[]");return Array.isArray(a)?a.filter(n=>Number.isInteger(n)&&n>1&&n<=9):[]}catch(e){return[]}}
+const PL_MAX=999,PLREG="botonera_pls:"+PROF.active;
+function plRegGet(){try{const a=JSON.parse(localStorage.getItem(PLREG)||"[]");return Array.isArray(a)?a.filter(n=>Number.isInteger(n)&&n>1&&n<=PL_MAX):[]}catch(e){return[]}}
 function plRegSave(){try{localStorage.setItem(PLREG,JSON.stringify(PLISTS.filter(L=>L.n>1).map(L=>L.n)))}catch(e){}}
 function plCssClone(n){ // copia las reglas de #pl… para los ids de la lista n (#pl_2, #pll_2…)
   const SK="plm|plsw|plsws|plcol|plsep",sfx="_"+n,fix=t=>t.replace(/#(pl[a-z0-9]*)\b/g,(m,id)=>new RegExp("^("+SK+")$").test(id)?m:"#"+id+sfx),
@@ -3811,20 +3815,19 @@ function plBuild(n){
   OUTK[k]="Lista "+n;let sv={};try{sv=JSON.parse(localStorage.getItem("botonera_out")||"{}")}catch(e){}
   OUT[k]={bus:L.bus,id:typeof sv[k]==="string"?sv[k]:"",label:typeof sv[k+"L"]==="string"?sv[k+"L"]:"",el:null};
   const row=document.createElement("div");row.className="or";row.id="orow-"+k;row.innerHTML='<label for="o-'+k+'"></label><select id="o-'+k+'"></select>';row.firstChild.textContent="Lista "+n;$("outnames").before(row);
-  outBind(k);$("otg-"+k).addEventListener("click",e=>{e.stopPropagation();outOpen($("otg-"+k))});
+  outBind(k);$("otg-"+k).addEventListener("click",e=>{e.stopPropagation();outOpen($("otg-"+k))});setTimeout(()=>plApplyTitle(L),0);
   plHook(root,L);plWith(L,()=>{PLWIRE.forEach(f=>f());plRender()});
   applyFx();plRegSave();
   outList().then(async()=>{if(OUT[k]&&OUT[k].id){const ok=await outRoute(k);if(!ok)note("La salida guardada de Lista "+n+" no está disponible: vuelve a la principal del sistema.","warn","out",9000)}outSave();outFill()});
   return L}
 function plNewClick(){
-  if(PLISTS.length>=PL_MAX){note("Máximo "+PL_MAX+" listas.","warn","pl",3000);return}
   let n=2;while(PLISTS.some(L=>L.n===n))n++;const L=plBuild(n);PLUSER=L;
   note("Lista "+n+" creada a la derecha. Elegí su salida de audio con el botón «Salida» de su cabecera.","info","pl",5000);
   const r=document.getElementById("pl"+L.sfx);if(r&&r.scrollIntoView)r.scrollIntoView({block:"nearest",inline:"nearest"})}
 async function plRemove(L){
   if(L.n<2)return;
   const nt=L.rows.filter(r=>r.t==="f").length;
-  if(nt&&!(await askDlg("Quitar Lista "+L.n,"Tiene "+nt+(nt===1?" tema":" temas")+". Se quita del tablero y se borra su contenido.","Quitar lista")))return;
+  if(nt&&!(await askDlg("Quitar «"+plTitle(L)+"»","Tiene "+nt+(nt===1?" tema":" temas")+". Se quita del tablero y se borra su contenido.","Quitar lista")))return;
   plWith(L,()=>{plKill();L.state="stop"});clearTimeout(L.saveT);
   const k="pl"+L.n,o=OUT[k];try{L.bus.disconnect()}catch(e){}
   if(o&&o.el){try{o.el.pause();o.el.srcObject=null}catch(e){}OUTWAIT.delete(o.el)}
@@ -3837,8 +3840,20 @@ async function plRemove(L){
   plRegSave();outSave();outDirect();outFill();note("Lista "+L.n+" quitada.","info","pl",3000)}
 plHook($("pl"),PL);
 PLWIRE.forEach(f=>f()); // primera lista
+/* nombres de las listas: se cambian con un clic en el título y quedan guardados */
+const PLNK="botonera_plnames:"+PROF.active;let PLN={};try{PLN=JSON.parse(localStorage.getItem(PLNK)||"{}")||{}}catch(e){}
+const plTitle=L=>(PLN[L.n]&&String(PLN[L.n]).trim())||(L.n>1?"Lista "+L.n:"Lista");
+function plApplyTitle(L){const t=plTitle(L),root=L.n>1?document.getElementById("pl"+L.sfx):$("pl");if(!root)return;
+  const b=root.querySelector(".plh b");if(b){b.textContent=t;b.title="Clic para cambiar el nombre de esta lista";b.classList.add("plnm")}
+  const k=L.n>1?"pl"+L.n:"pl";OUTK[k]=t;const lb=document.querySelector('label[for="o-'+k+'"]');if(lb)lb.textContent=t;try{outTags()}catch(e){}}
+document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest(".plp .plh b");if(!b)return;
+  const root=b.closest(".plp"),L=root.id==="pl"?PLISTS[0]:root._L;if(!L)return;
+  const v=await askName("Nombre de la lista","Elegí el nombre que se ve en esta lista y en el selector de salidas.",PLN[L.n]||plTitle(L),"Guardar",30);
+  if(v===null||v===undefined)return;const nm=String(v).trim().replace(/[<>]/g,"");if(nm)PLN[L.n]=nm;else delete PLN[L.n];
+  try{localStorage.setItem(PLNK,JSON.stringify(PLN))}catch(x){}plApplyTitle(L)});
+plApplyTitle(PLISTS[0]);
 async function plInitAll(){
-  for(const n of plRegGet().slice(0,PL_MAX-1)){if(!PLISTS.some(L=>L.n===n))plBuild(n)}
+  for(const n of plRegGet()){if(!PLISTS.some(L=>L.n===n))plBuild(n)}
   for(const L of PLISTS.slice()){plAct(L);try{await plLoad()}catch(e){console.warn(e)}}
   plAct(PLISTS[0]);PLUSER=PLISTS[0]}
 
