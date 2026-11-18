@@ -159,7 +159,7 @@ label.btn{display:inline-flex;align-items:center;gap:8px}
 .cdel:hover{background:rgba(232,35,42,.22);border-color:var(--on);color:#fff}
 .row .restore{width:100%;margin-top:8px}
 /* ---- menú contextual con submenú de color ---- */
-#cm{width:210px;padding:6px}
+#cm{width:max-content;min-width:230px;max-width:calc(100vw - 16px);padding:6px}
 #cm .mw{position:relative}
 #cm .mi{display:flex;align-items:center;justify-content:flex-start;gap:10px;width:100%;padding:9px 10px;border:1px solid transparent;border-radius:10px;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
 #cm .mi:hover,#cm .mw:hover>.mi,#cm .mw.open>.mi{background:var(--glass2)}
@@ -721,7 +721,26 @@ body.selgrab,body.selgrab *{cursor:grabbing!important}
 .mongo.ready{background:rgba(59,130,246,.24)!important;border-color:#4c9aff!important;color:#fff!important;box-shadow:0 0 0 1px rgba(76,154,255,.55),0 0 16px rgba(59,130,246,.4)}
 .monerr{display:flex;align-items:flex-start;gap:6px;color:#ff5a5f;font-size:.68rem;line-height:1.35;font-family:var(--f-txt);font-weight:300}
 .monerr svg{flex:none;width:14px;height:14px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.monfav{display:flex;flex-wrap:wrap;gap:6px}
+.monfm{flex:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.monfm .ic{width:14px;height:14px}
+.monfm b{font-weight:500;font-size:.62rem;min-width:18px;text-align:center;padding:2px 4px;background:rgba(255,255,255,.12)}
+.monfm[aria-expanded=true]{background:var(--glass2)}
+#favm{position:fixed;display:none;z-index:420;width:min(340px,calc(100vw - 16px));max-height:min(60vh,420px);overflow:auto;padding:6px;background:#141418;border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6);border-radius:0;font-family:"Satoshi",system-ui,-apple-system,"Segoe UI",sans-serif}
+#favm *{font-family:inherit}
+#favm .fvh{padding:6px 8px 8px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+#favm .fve{padding:6px 8px 10px;font-size:.72rem;line-height:1.45;color:var(--mut)}
+#favm .fvi{display:flex;align-items:stretch}
+#favm button{border-radius:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+#favm .fvgo{flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:flex-start;gap:10px;text-align:left;padding:9px 10px;border:1px solid transparent;background:transparent;font-size:.72rem;letter-spacing:.04em;color:var(--ink)}
+#favm .fvgo span{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#favm .fvgo .ic{flex:none;width:14px;height:14px;color:#ffb020}
+#favm .fvgo:hover,#favm .fvall:hover{background:var(--glass2)}
+#favm .fvx{flex:none;width:34px;display:grid;place-items:center;padding:0;border:1px solid transparent;background:transparent;color:var(--mut)}
+#favm .fvx:hover{background:rgba(232,35,42,.25);color:#fff}
+#favm .fvx .ic,#favm .fvall .ic{width:14px;height:14px}
+#favm .fvs{height:1px;margin:6px 4px;background:var(--line)}
+#favm .fvall{width:100%;display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:9px 10px;border:1px solid transparent;background:transparent;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#ff7377}
+#favm .fvall:hover{background:rgba(232,35,42,.2);color:#fff}
 .monfav:empty{display:none}
 .monfav .chip{display:inline-flex;align-items:center;max-width:100%;border:1px solid var(--line);background:#050506;font-family:var(--f-txt);font-weight:300;font-size:.66rem}
 .monfav .chip button{border:0;background:none;padding:5px 8px;font-size:.66rem;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1086,6 +1105,13 @@ body.laydrag{cursor:grabbing!important;user-select:none}
   #stage.mpl .plp,#stage.mpl .plp.empty{flex:0 0 auto;width:clamp(250px,17.5vw,340px);min-width:0;max-width:100%}
 }
 .plp.plclosed{display:none!important}
+/* v2.25: una opción = un renglón, alineada a la izquierda, y el menú se ensancha lo necesario */
+#cm .mi,#selm .mi,#plm .mi,#mkm .mi,#wfm .mi{white-space:nowrap;text-align:left;justify-content:flex-start;line-height:1.2}
+#selm,#plm,#mkm,#wfm{width:max-content!important;max-width:calc(100vw - 16px)}
+#selm{min-width:230px}#plm{min-width:240px}#mkm{min-width:190px}
+.kbig{margin:6px auto 10px;min-width:84px;width:max-content;padding:12px 22px;text-align:center;font:700 2.6rem/1 "Space Mono",monospace;color:#fff;background:#050506;border:1px solid var(--line)}
+.kerr{min-height:1.2em;margin:0 0 8px;color:#ff7377;font-size:.78rem}
+#dlg .dx{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff}
 #lstL{order:-1}
 #lstR{order:1}
 #lstL,#lstR{display:contents}
@@ -1250,7 +1276,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.24 · 18 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.24</span></footer>
+<footer id="sig" title="Versión 2.25 · 18 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.25</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1289,6 +1315,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 <div id="cm" role="menu" aria-label="Opciones del botón">
   <button class="mi" id="cedit" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4"/></svg>Editar audio</button>
   <button class="mi" id="cdl" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>Descargar</button>
+  <button class="mi" id="ckey" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>Cambiar letra o número</button>
   <button class="mi" id="cnx" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h9M4 12h9M4 18h6"/><path d="m16 8 5 4-5 4z" fill="currentColor"/><path d="M21 7v10"/></svg>Agregar como próximo tema</button>
   <button class="mi" id="cpl" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>Agregar al final de la lista</button>
   <button class="mi" id="chd" role="menuitem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg><span id="chdt">Ocultar botón</span></button>
@@ -1796,6 +1823,26 @@ $("mcol").addEventListener("click",()=>$("mw").classList.toggle("open"));
 $("cdl").addEventListener("click",()=>{const it=items[cmIdx];hideCm();if(!it)return;if(isProt(it.blob)){protNote();return}
   exportDlg({name:nice(it.name),ch:bufChans(it.buffer),sr:it.buffer.sampleRate,blob:it.blob,orig:true,origName:it.name})});
 $("cedit").addEventListener("click",()=>{const i=cmIdx;hideCm();edOpen(i)});
+/* cambiar la letra o número del botón sin pasar por el engranaje: se apreta la tecla nueva (si otro botón la tiene, se intercambian) */
+function askKey(idx){const it=items[idx];if(!it)return;
+  const w=document.createElement("div");w.id="dlg";
+  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Cambiar letra o número</b><p></p><div class="kbig" id="kbig"></div><p class="kerr" id="kerr"></p><div class="drow"><button class="dno">Cancelar</button><button class="dx" title="Deja el botón sin tecla asignada">Quitar tecla</button></div></div>';
+  w.querySelector("p").textContent="Apretá en el teclado la letra o el número nuevo para «"+nice(it.name)+"». Si otro botón ya la usa, se intercambian. Esc cancela.";
+  const big=w.querySelector("#kbig"),err=w.querySelector("#kerr");big.textContent=it.key||"—";
+  const end=()=>{document.removeEventListener("keydown",kd,true);w.remove()};
+  function kd(e){e.preventDefault();e.stopImmediatePropagation();
+    if(e.key==="Escape"){end();return}
+    if(e.ctrlKey||e.altKey||e.metaKey||e.key==="Shift"||e.key==="Control"||e.key==="Alt"||e.key==="Meta")return;
+    if(e.key==="Backspace"||e.key==="Delete"){end();it.key="";render();save();note("Botón «"+nice(it.name)+"» sin tecla asignada.","info","",3500);return}
+    if(e.key.length!==1)return;const k=e.key.toUpperCase();
+    if(!KEYS.includes(k)){err.textContent="«"+k+"» no se puede usar"+("CMIO".includes(k)?": C, M, I y O están reservadas para las marcas del editor.":": probá con una letra o un número.");return}
+    const o=items.findIndex((x,n)=>n!==idx&&x.key===k);const other=o>=0?items[o]:null;
+    end();assign(idx,k);note("Botón «"+nice(it.name)+"» ahora es la tecla "+k+(other?" (se intercambió con «"+nice(other.name)+"»)":"")+".","info","",4500)}
+  document.addEventListener("keydown",kd,true);
+  w.querySelector(".dno").onclick=end;w.querySelector(".dx").onclick=()=>{end();it.key="";render();save();note("Botón «"+nice(it.name)+"» sin tecla asignada.","info","",3500)};
+  w.addEventListener("pointerdown",e=>{if(e.target===w)end()});
+  document.body.appendChild(w)}
+$("ckey").addEventListener("click",()=>{const i=cmIdx;hideCm();askKey(i)});
 $("chd").addEventListener("click",()=>{const i=cmIdx;hideCm();if(i!==null)stashHide(i)});
 $("cdel").addEventListener("click",()=>{const i=cmIdx;hideCm();if(i!==null)askRemove(i)});
 document.addEventListener("pointerdown",e=>{
@@ -2369,15 +2416,42 @@ const MONTPL=n=>'<div class="vph"><span class="mtag" title="En mute: es solo par
   '<button id="monx'+n+'" title="Quitar este monitor" aria-label="Quitar este monitor">'+MIC('<path d="M18 6 6 18M6 6l12 12"/>')+'</button></div>'+
   '<div class="vmx" id="monst'+n+'"><span class="t" id="monsl'+n+'"></span><div class="b"><div class="f"></div></div></div>'+
   '<div class="vbox monbox" id="monbox'+n+'"></div>'+
-  '<div class="monsrc" id="monsrc'+n+'"><div class="monrow"><input id="monin'+n+'" type="text" inputmode="search" enterkeyhint="search" autocapitalize="none" spellcheck="false" autocomplete="off" placeholder="Buscá o pegá el link (en vivo o video)…" aria-label="Link o búsqueda del monitor"><button id="mongo'+n+'" class="mongo">'+MIC('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>')+'Buscar</button></div>'+
-  '<div class="monerr" id="monerr'+n+'" role="alert" hidden></div><div id="monfav'+n+'" class="monfav"></div><div id="monres'+n+'" class="monres"></div></div>';
+  '<div class="monsrc" id="monsrc'+n+'"><div class="monrow"><input id="monin'+n+'" type="text" inputmode="search" enterkeyhint="search" autocapitalize="none" spellcheck="false" autocomplete="off" placeholder="Buscá o pegá el link (en vivo o video)…" aria-label="Link o búsqueda del monitor"><button id="monfm'+n+'" class="monfm" type="button" aria-haspopup="true" aria-expanded="false" title="Favoritos: abrir o borrar los canales que guardaste con la estrella">'+MIC('<path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/>')+'<span>Favoritos</span><b id="monfc'+n+'">0</b>'+MIC('<path d="m6 9 6 6 6-6"/>')+'</button><button id="mongo'+n+'" class="mongo">'+MIC('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>')+'Buscar</button></div>'+
+  '<div class="monerr" id="monerr'+n+'" role="alert" hidden></div><div id="monres'+n+'" class="monres"></div></div>';
 function monSave(){try{localStorage.setItem(MONK,JSON.stringify({v:2,hid:MONG.hid,favs:MONG.favs,mons:MONS.map(m=>({cur:m.cur,min:m.min,ch:m.ch.on}))}))}catch(e){}}
 const monOpenAny=()=>MONS.some(m=>m.el.classList.contains("open"));
 function monAllUI(){MONS.forEach(m=>m.ui());const op=MONS.filter(m=>m.el.classList.contains("open"));
   const b=$("lkmon");b.classList.toggle("ready",op.length>0&&!MONG.hid);b.classList.toggle("run",MONG.hid&&op.some(m=>m.cur));
   b.title=!op.length?"Abrir el monitor en vivo (siempre en mute)":MONG.hid?"Mostrar el monitor (sigue corriendo escondido)":"Esconder el monitor (sigue corriendo; no se cierra)"}
-function monFavs(){MONS.forEach(m=>{const w=$("monfav"+m.n);w.textContent="";MONG.favs.forEach((x,i)=>{const c=document.createElement("span");c.className="chip";const b=document.createElement("button");b.textContent=x.title||x.url;b.title=x.url;b.onclick=()=>m.go(x.url,x.title);
-  const r=document.createElement("button");r.className="rm";r.setAttribute("aria-label","Quitar de favoritos");r.title="Quitar de favoritos";r.textContent="×";r.onclick=()=>{MONG.favs.splice(i,1);monSave();monFavs();monAllUI()};c.append(b,r);w.appendChild(c)})})}
+function monFavs(){MONS.forEach(m=>{const c=$("monfc"+m.n);if(c)c.textContent=MONG.favs.length});if(FAVM.m&&$("favm").style.display==="block")favRender(FAVM.m)}
+/* menú desplegable de favoritos: abrir un canal o borrarlo (uno o todos) */
+const FAVM={m:null,b:null};
+function favClose(){const f=$("favm");if(f)f.style.display="none";if(FAVM.b)FAVM.b.setAttribute("aria-expanded","false");FAVM.m=null;FAVM.b=null}
+function favRender(m){const f=$("favm");f.textContent="";
+  const h=document.createElement("div");h.className="fvh";h.textContent="Favoritos ("+MONG.favs.length+")";f.appendChild(h);
+  if(!MONG.favs.length){const e=document.createElement("div");e.className="fve";e.textContent="Todavía no guardaste ninguno. Con la estrella de arriba del monitor guardás el canal que estás mirando.";f.appendChild(e);return}
+  MONG.favs.forEach((x,i)=>{const row=document.createElement("div");row.className="fvi";
+    const go=document.createElement("button");go.type="button";go.className="fvgo";go.title="Abrir en este monitor: "+(x.title||x.url);go.setAttribute("role","menuitem");
+    go.innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/></svg><span></span>';go.querySelector("span").textContent=x.title||x.url;
+    go.addEventListener("click",()=>{favClose();m.go(x.url,x.title)});
+    const rm=document.createElement("button");rm.type="button";rm.className="fvx";rm.title="Borrar este favorito";rm.setAttribute("aria-label","Borrar el favorito "+(x.title||x.url));
+    rm.innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+    rm.addEventListener("click",e=>{e.stopPropagation();MONG.favs.splice(i,1);monSave();monFavs();monAllUI();if(!MONG.favs.length)favRender(m)});
+    row.append(go,rm);f.appendChild(row)});
+  const sep=document.createElement("div");sep.className="fvs";f.appendChild(sep);
+  const all=document.createElement("button");all.type="button";all.className="fvall";all.title="Borrar todos los favoritos";all.setAttribute("role","menuitem");
+  all.innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg><span>Borrar todos</span>';
+  all.addEventListener("click",async()=>{favClose();const ok=await askDlg("Borrar favoritos","¿Borrar los "+MONG.favs.length+" favoritos guardados?","Borrar todos");if(ok){MONG.favs.length=0;monSave();monFavs();monAllUI()}});
+  f.appendChild(all)}
+function favOpen(m,b){const f=$("favm");if(f.style.display==="block"&&FAVM.b===b){favClose();return}
+  favClose();FAVM.m=m;FAVM.b=b;b.setAttribute("aria-expanded","true");favRender(m);f.style.display="block";
+  const r=b.getBoundingClientRect(),w=f.offsetWidth,h=f.offsetHeight;
+  f.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left))+"px";
+  f.style.top=(r.bottom+4+h>innerHeight-8&&r.top-4-h>8?Math.max(8,r.top-4-h):Math.min(innerHeight-h-8,r.bottom+4))+"px"}
+(function(){const f=document.createElement("div");f.id="favm";f.setAttribute("role","menu");f.setAttribute("aria-label","Favoritos de los monitores");document.body.appendChild(f);
+  document.addEventListener("pointerdown",e=>{if(f.style.display==="block"&&!e.target.closest("#favm")&&!e.target.closest(".monfm"))favClose()},true);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&f.style.display==="block"){favClose()}},true);
+  window.addEventListener("resize",favClose);window.addEventListener("scroll",favClose,true)})();
 function mkMon(n){
   const el=document.createElement("aside");el.className="mon";el.id="mon"+n;el.setAttribute("aria-label","Monitor en vivo "+n);el.innerHTML=MONTPL(n);$("rcol").appendChild(el);
   const g=x=>$(x+n),box=g("monbox"),m={n,el,box,cur:null,k:null,st:-1,min:false,pop:null};
@@ -2391,7 +2465,7 @@ function mkMon(n){
     else if(/muted=(true|false)/.test(f.src))f.src=f.src.replace(/muted=(true|false)/,"muted="+(m.aud?"false":"true")); // Twitch y Kick: se recarga con o sin mute
     m.ui()};
   g("monau").addEventListener("click",()=>m.audio(!m.aud));
-  m.ui=()=>{m.ch.ui();const au=g("monau");au.classList.toggle("sel",m.aud);au.setAttribute("aria-pressed",m.aud);au.disabled=!m.cur;au.querySelector("span").textContent=m.aud?"Con audio":"Audio";el.classList.toggle("aud",m.aud);const f=m.cur&&MONG.favs.some(x=>x.url===m.cur.url);g("monfv").classList.toggle("sel",!!f);g("monfv").disabled=!m.cur;
+  m.ui=()=>{m.ch.ui();const au=g("monau");au.classList.toggle("sel",m.aud);au.setAttribute("aria-pressed",m.aud);au.disabled=!m.cur;au.querySelector("span").textContent=m.aud?"Con audio":"Audio";el.classList.toggle("aud",m.aud);const f=m.cur&&MONG.favs.some(x=>x.url===m.cur.url);g("monfv").classList.toggle("sel",!!f);g("monfv").title=f?"Este canal está en favoritos: tocá para quitarlo":"Guardar este canal en favoritos (quedan fijos)";g("monfv").disabled=!m.cur;
     el.classList.toggle("min",m.min);el.classList.toggle("hid",MONG.hid&&el.classList.contains("open"));g("monhd").classList.toggle("sel",m.min);g("monhd").title=m.min?"Mostrar el video":"Esconder el video (sigue corriendo)";
     const other=MONS.find(x=>x!==m);g("monad").style.display=other&&!other.el.classList.contains("open")&&el.classList.contains("open")?"":"none";g("monpo").disabled=!m.cur};
   m.err=t=>{const e=g("monerr");if(!t){e.hidden=true;e.textContent="";return}e.innerHTML=SV(NI.warn)+"<span></span>";e.querySelector("span").textContent=t;e.hidden=false};
@@ -2440,7 +2514,8 @@ function mkMon(n){
   g("monhd").addEventListener("click",()=>{m.min=!m.min;monSave();m.ui()});
   g("monx").addEventListener("click",m.close);
   g("monad").addEventListener("click",()=>{const o=MONS.find(x=>x!==m);if(o&&!o.el.classList.contains("open")){MONG.hid=false;o.el.classList.add("open");monAllUI();monSave();$("monin"+o.n).focus()}});
-  g("monfv").addEventListener("click",()=>{if(!m.cur)return;const i=MONG.favs.findIndex(x=>x.url===m.cur.url);if(i>=0)MONG.favs.splice(i,1);else{if(MONG.favs.length>=12)MONG.favs.shift();MONG.favs.push({url:m.cur.url,title:m.cur.title})}monSave();monFavs();monAllUI()});
+  g("monfm").addEventListener("click",()=>favOpen(m,g("monfm")));
+  g("monfv").addEventListener("click",()=>{if(!m.cur)return;const i=MONG.favs.findIndex(x=>x.url===m.cur.url);if(i>=0){MONG.favs.splice(i,1);note("Quitado de favoritos.","info","fav",2500)}else{if(MONG.favs.length>=12)MONG.favs.shift();MONG.favs.push({url:m.cur.url,title:m.cur.title});note("Guardado en favoritos. Lo ves, lo abrís o lo borrás en el menú ★ Favoritos del monitor (máximo 12).","info","fav",5000)}monSave();monFavs();monAllUI()});
   g("monpo").addEventListener("click",e=>m.send(e.shiftKey));g("monpo").addEventListener("contextmenu",e=>{e.preventDefault();m.send(true)});
   m.send=async choose=>{if(!m.cur)return;if(m.pop&&!m.pop.closed){try{m.pop.focus()}catch(e){}return}
     const pk=await vOutPick(choose);if(!pk)return;const win=vOutOpen("Monitor "+n,pk.scr);
@@ -4178,6 +4253,43 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
   if(window.__repoStale&&!msg.dataset.k)note("GitHub no respondió la lista de audios de la carpeta «audios» (límite de consultas por hora). Se usó la última lista guardada; si falta algo, esperá unos minutos y recargá.","warn","repo",12000);
   if(!items.length&&!msg.dataset.k)note("Sin audios cargados. Usá CARGAR AUDIOS (MP3, WAV, OGG, M4A, FLAC) o grabá con GRABAR.","info","empty");
 })();
+
+/* ---------- v2.25 · descripciones (mouse encima) en todos los botones de la app, menos los de la botonera ---------- */
+(function tips(){
+  const T={sesfile:"Elegir un archivo de sesión guardado (.json) para abrirlo",usr:"Usuario activo: cada usuario tiene su propia botonera, listas y ajustes",
+    dly:"Delay (eco): prende o apaga el efecto",rvb:"Reverb (efecto de sala): prende o apaga el efecto",
+    mutb:"Mute: silencia la entrada en vivo (Live audio FX)",onb:"ON: deja pasar la entrada en vivo (Live audio FX)",
+    lkgo:"Buscar lo que escribiste, o abrir el link que pegaste",lkcancel:"Cancelar la descarga o la búsqueda en curso",
+    ttpbar:"Barra de posición: tocá para saltar a ese punto del audio",
+    edplay:"Reproducir el audio del editor desde el cursor (barra espaciadora)",edtrim:"Recortar el silencio del comienzo del audio",
+    ednorm:"Normalizar: sube el volumen al máximo (0 dB) sin distorsionar",eddel:"Borrar la parte seleccionada (Supr)",
+    mkdel:"Eliminar esta marca",
+    "o-pad":"Placa de sonido por la que sale la botonera","o-ed":"Placa de sonido por la que sale el editor","o-pl":"Placa de sonido por la que sale la lista",
+    "o-pl2":"Placa de sonido por la que sale la Lista 2","o-pl3":"Placa de sonido por la que sale la Lista 3",
+    "o-vo":"Elegir la pantalla y la placa de audio para el video del helper",outnames:"Muestra los nombres reales de las placas de sonido (el navegador pide permiso)",
+    creset:"Quitar el color y volver al original",
+    cedit:"Abrir el audio de este botón en el editor",cdl:"Descargar el audio de este botón",ckey:"Cambiar la letra o el número que dispara este botón",
+    cnx:"Agregar este audio como PRÓXIMO tema de la lista en vivo",cpl:"Agregar este audio al final de la lista en vivo",
+    chd:"Ocultar el botón: se guarda y se puede devolver desde este mismo menú",cdel:"Eliminar el botón",mcol:"Cambiar el color del botón",plcol:"Cambiar el color de este tema"};
+  const MI=[["Mostrar reproducción actual","Llevar la lista hasta el tema que está sonando"],["Agregar comando de stop","Insertar un comando que detiene la lista en ese punto"],
+    ["Seleccionar todo","Seleccionar todos los temas de la lista"],["Eliminar de la lista","Sacar de la lista los temas seleccionados"],
+    ["Copiar","Copiar (Ctrl+C)"],["Cortar","Cortar (Ctrl+X)"],["Pegar","Pegar (Ctrl+V)"],
+    ["Selección","Crear un botón nuevo con la parte seleccionada del audio"],["Borrar cue","Borrar este punto de cue"],["Borrar selección","Borrar la parte seleccionada (Supr)"]];
+  const SEG={es:"Voz en español",en:"Voz en inglés",f:"Voz femenina",m:"Voz masculina"};
+  function tip(e){if(!e||e.nodeType!==1||!e.getAttribute)return;if(e.closest(".pad")||e.type==="hidden")return;
+    if((e.getAttribute("title")||"").trim())return;const lb=e.closest("label");if(lb&&(lb.getAttribute("title")||"").trim())return;
+    let t=T[e.id];
+    if(!t&&e.parentElement&&(e.parentElement.id==="ttl"||e.parentElement.id==="ttg"))t=SEG[e.dataset.v];
+    if(!t&&e.dataset&&e.dataset.k&&e.closest("#mkm")&&typeof MK!=="undefined"&&MK[e.dataset.k])t="Convertir en marca "+MK[e.dataset.k].n+" ("+MK[e.dataset.k].t+")";
+    if(!t&&e.classList.contains("mi")){const x=e.textContent.trim().replace(/\s+/g," ");const h=MI.find(a=>x.startsWith(a[0]));if(h)t=h[1]}
+    if(!t&&e.classList.contains("mongo"))t="Buscar o abrir este link en el monitor";
+    if(!t)t=e.getAttribute("aria-label")||((e.tagName==="BUTTON"||e.tagName==="A")?e.textContent.trim().replace(/\s+/g," "):"");
+    if(t&&t.length>1)e.setAttribute("title",t)}
+  const SEL="button,select,input,a[href],[role=button],[role=slider],[role=switch]";
+  const all=r=>{if(r.nodeType!==1)return;if(r.matches&&r.matches(SEL))tip(r);r.querySelectorAll&&r.querySelectorAll(SEL).forEach(tip)};
+  all(document.body);
+  let q=[],tm=0;new MutationObserver(ms=>{ms.forEach(m=>m.addedNodes.forEach(n=>q.push(n)));if(!tm)tm=setTimeout(()=>{tm=0;const l=q;q=[];l.forEach(all)},120)}).observe(document.body,{childList:true,subtree:true});
+  window.__tips=()=>all(document.body)})();
 </script>
 </body>
 </html>
