@@ -846,6 +846,37 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 #sesbar{position:fixed;top:5px;right:14px;z-index:300;display:flex;gap:6px}
 #sesbar button{padding:4px 9px!important;font-size:.56rem!important;gap:6px}
 #sesbar .ic{width:12px;height:12px}
+#sesbar{display:none!important}
+.usr{display:none!important}
+#tbar{position:fixed;top:5px;right:14px;z-index:300;display:flex;align-items:center;gap:6px;font-family:var(--f-act)}
+#tbled{display:flex;gap:2px;align-items:center;padding:5px 7px;border:1px solid var(--line);background:#050506;cursor:default}
+#tbled i{width:5px;height:12px;background:rgba(255,255,255,.14)}
+#tbled i.g{background:#3dff7a;box-shadow:0 0 5px rgba(61,255,122,.8)}#tbled i.a{background:#f2c230;box-shadow:0 0 5px rgba(242,194,48,.8)}#tbled i.r{background:#ff2a2a;box-shadow:0 0 5px rgba(255,42,42,.9)}
+#tbar .tbb{display:inline-flex;align-items:center;gap:6px;padding:4px 9px!important;font-size:.56rem!important;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+#tbar .tbb .ic{width:12px;height:12px}#tbar .tbb .cv{width:9px;height:9px;opacity:.6}
+#tbar .tbb[aria-expanded=true]{background:var(--glass2);border-color:rgba(255,255,255,.3)}
+#tbun{max-width:110px;overflow:hidden;text-overflow:ellipsis}
+.tbs{display:inline-flex;gap:1px}.tbs i{width:3px;height:9px;background:rgba(255,255,255,.14)}
+#tbm.on .tbs i{background:#3dff7a;box-shadow:0 0 4px rgba(61,255,122,.7)}
+#tbm.warn .tbs i:nth-child(-n+2){background:#f2c230;box-shadow:0 0 4px rgba(242,194,48,.7)}
+#tbm.sync .tbs i{background:#3dff7a;animation:tbsw .9s steps(1) infinite}
+#tbm.sync .tbs i:nth-child(2){animation-delay:.12s}#tbm.sync .tbs i:nth-child(3){animation-delay:.24s}#tbm.sync .tbs i:nth-child(4){animation-delay:.36s}#tbm.sync .tbs i:nth-child(5){animation-delay:.48s}
+@keyframes tbsw{0%{opacity:.15}30%{opacity:1}100%{opacity:.15}}
+#tbar.mini:not(:hover):not(:focus-within):not(.open) .tbb:not(#tbu){display:none}
+#tbar.mini:not(:hover):not(:focus-within):not(.open) #tbu .cv{display:none}
+#tbmenu{position:fixed;z-index:420;min-width:210px;max-width:min(330px,94vw);padding:6px;background:#0b0b0d;border:1px solid rgba(255,255,255,.28);box-shadow:0 14px 40px rgba(0,0,0,.75);display:flex;flex-direction:column;gap:2px;font-family:var(--f-act)}
+#tbmenu[hidden]{display:none}
+#tbmenu .th{padding:5px 8px 4px;font-weight:700;font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
+#tbmenu .tm{display:flex;align-items:center;gap:9px;width:100%;padding:8px 9px;border:1px solid transparent!important;background:transparent;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;text-align:left}
+#tbmenu .tm .ic{width:13px;height:13px;flex:none}
+#tbmenu .tm em{margin-left:auto;padding-left:16px;font-style:normal;font-size:.54rem;color:var(--mut);letter-spacing:.06em;text-transform:none;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+#tbmenu .tm:hover:not(:disabled),#tbmenu .tm:focus-visible{background:var(--glass2);outline:0}
+#tbmenu .tm.del{color:#ff7377}#tbmenu .tm.del:hover:not(:disabled){background:rgba(232,35,42,.2);color:#fff}
+#tbmenu .tm:disabled{opacity:.4;cursor:not-allowed}
+#tbmenu .dot{width:7px;height:7px;flex:none;border:1px solid rgba(255,255,255,.45);border-radius:50%!important;margin:0 3px}
+#tbmenu .tm.sel .dot{background:#3dff7a;border-color:#3dff7a;box-shadow:0 0 6px #3dff7a}
+#tbmenu .ts{height:1px;background:var(--line);margin:4px 2px}
+@media (max-width:900px){#tbar{position:static;display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:6px;width:100%;margin:6px 0 0}#tbar #tbm{display:none}#tbar.mini .tbb:not(#tbu){display:inline-flex!important}#tbar .tbb{padding:8px 6px!important;justify-content:center}}
 #sesmed .md{display:inline-block;width:7px;height:7px;border-radius:50%;background:#6b6b6b;flex:none}#sesmed.on .md{background:#3ddc84;box-shadow:0 0 6px #3ddc84}#sesmed.warn .md{background:#f2c230;box-shadow:0 0 6px #f2c230}
 #dlg .mpl{display:flex;flex-direction:column;gap:6px}#dlg .mpl button{width:100%;text-align:center}
 @media (max-width:900px){#sesmed{display:none!important}}
@@ -1152,6 +1183,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </head>
 <body class="booting">
 <div id="splash"><img class="lg" src="logo.png" alt="" onerror="this.parentNode.style.display='none'"><div class="spin" aria-hidden="true"></div><div class="pbar" aria-hidden="true"><i id="spbar"></i></div><div class="tx" id="sptx">Cargando…</div></div>
+<div id="tbar" role="toolbar" aria-label="Usuario, carpeta Media, sesión y listas"><div id="tbled" role="img" aria-label="Estado"><i></i><i></i><i></i><i></i></div><button type="button" class="tbb" id="tbu" aria-haspopup="menu" aria-expanded="false" title="Usuario: cambiar, crear, mail o eliminar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span id="tbun">Principal</span><svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbm" aria-haspopup="menu" aria-expanded="false" title="Carpeta Media: tus audios y tu botonera guardados en tu compu"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Media<span class="tbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbs" aria-haspopup="menu" aria-expanded="false" title="Guardar o abrir una sesión, o limpiar la botonera"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Sesión<svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbl" aria-haspopup="menu" aria-expanded="false" title="Listas en vivo: crear o quitar (hasta 3)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>Listas<svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div><div id="tbmenu" role="menu" hidden></div>
 <div id="sesbar"><button type="button" id="sesave" title="Guarda en un archivo los botones, posiciones, colores, teclas, listas y ajustes. No incluye audios: se vuelven a tomar de la carpeta"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Guardar sesión</button><button type="button" id="sesopen" title="Abre una sesión guardada y restaura botones, posiciones, colores y listas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Abrir sesión</button><button type="button" id="sesmed" title="Elegir una carpeta (Media) donde se copian tus audios y se guarda tu botonera, para tenerla siempre a mano"><i class="md" aria-hidden="true"></i>Media</button><button type="button" id="sesclr" title="Deja la botonera y las listas en cero. Las cortinas y los mensajes de las carpetas siempre se muestran"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>Limpiar botonera</button><input type="file" id="sesfile" accept=".json,application/json" hidden></div>
 <header>
   <div class="brand">
@@ -1299,7 +1331,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.30 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.30</span></footer>
+<footer id="sig" title="Versión 2.31 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.31</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -2764,6 +2796,8 @@ let layWT=0;const layWrapSoon=()=>{cancelAnimationFrame(layWT);layWT=requestAnim
 try{const ro=new ResizeObserver(layWrapSoon);["stage","lstL","lstR","rcol","gcol"].forEach(i=>{const e=$(i);if(e)ro.observe(e)})}catch(e){}
 window.addEventListener("resize",()=>layWrap());
 function laySave(){try{localStorage.setItem(LAYK,JSON.stringify(LAY))}catch(e){}}
+/* una lista quitada o cerrada no recuerda su lugar: al volver, entra a la derecha de todas, como una nueva */
+function layForget(id){if(Array.isArray(LAY.order))LAY.order=LAY.order.filter(i=>i!==id);if(LAY.sides)delete LAY.sides[id];laySave()}
 layApply();
 {const mo=new MutationObserver(laySides);[$("stage"),$("lstL"),$("lstR")].forEach(x=>mo.observe(x,{childList:true}))}
 /* modo diseño: se arrastran los bordes (palito con flechas) para los márgenes, y la botonera o la lista de su título para cambiarlas de lado */
@@ -3255,20 +3289,25 @@ async function sesSave(){
 function sesPickFolder(){return new Promise(res=>{const f=document.createElement("input");f.type="file";f.multiple=true;f.setAttribute("webkitdirectory","");f.style.display="none";document.body.appendChild(f);
   f.addEventListener("change",()=>{const m=new Map();Array.from(f.files).forEach(x=>m.set(x.name.toLowerCase(),x));f.remove();res(m)});
   f.addEventListener("cancel",()=>{f.remove();res(new Map())});f.click()})}
+function sesNeed(S){const have=n=>items.some(i=>i.name===n&&i.blob),need=new Set();
+  S.items.forEach(i=>{if(!i.base&&!have(i.name))need.add(i.name)});
+  (S.lists||[]).forEach(L=>L.rows.forEach(r=>{if(r.t==="f"&&!have(r.name)&&!REPOM[r.name]&&!BASE.includes(r.name))need.add(r.name)}));return need}
+/* busca los audios que faltan: primero en toda la carpeta Media (raíz y subcarpetas, no hace falta que estén en «Audios»); solo si no están, pregunta por otra carpeta */
+async function sesLoadFiles(S){
+  const need=sesNeed(S);let files=new Map();if(!need.size)return files;
+  if(MED.h&&await medPerm(false)){try{files=await medFind(need)}catch(e){}}
+  const miss=[...need].filter(n=>!files.has(n.toLowerCase()));if(!miss.length)return files;
+  const lst=miss.slice(0,8).map(n=>({t:nice(n),g:"falta"}));if(miss.length>8)lst.push({t:"… y "+(miss.length-8)+" más",g:""});
+  const go=await askDlg("Faltan "+miss.length+" audio"+(miss.length===1?"":"s"),(MED.h?"No están en tu carpeta Media. ":"")+"Elegí otra carpeta para buscarlos (se revisan también sus subcarpetas).","Elegir carpeta",lst);
+  if(go){const ex=await sesPickFolder();ex.forEach((v,k)=>{if(!files.has(k))files.set(k,v)})}
+  return files}
+const sesFecha=S=>S.saved?new Date(S.saved).toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}):"";
+const sesResumen=S=>S.items.length+" botones y "+(S.lists||[]).length+" lista"+((S.lists||[]).length===1?"":"s")+" · guardada el "+sesFecha(S)+(S.profile?" · usuario «"+S.profile+"»":"");
 async function sesOpenFile(file){
   let S;try{S=JSON.parse(await file.text())}catch(e){S=null}
   if(!S||S.app!=="botonera-sesion"||!Array.isArray(S.items)){note("Ese archivo no es una sesión de la botonera.","error","ses",7000);return}
-  const have=n=>items.some(i=>i.name===n&&i.blob);
-  const need=new Set();S.items.forEach(i=>{if(!i.base&&!have(i.name))need.add(i.name)});
-  (S.lists||[]).forEach(L=>L.rows.forEach(r=>{if(r.t==="f"&&!have(r.name)&&!REPOM[r.name]&&!BASE.includes(r.name))need.add(r.name)}));
-  const fecha=S.saved?new Date(S.saved).toLocaleString("es-AR"):"";
-  const ok=await askDlg("Abrir sesión","Sesión del "+fecha+(S.profile?" · escritorio «"+S.profile+"»":"")+": "+S.items.length+" botones y "+(S.lists||[]).length+" lista(s). Reemplaza los botones, posiciones, colores, teclas y listas actuales. Los audios de las carpetas audios, cortinas y mensajes se cargan solos.","Abrir",null);
-  if(!ok)return;
-  let files=new Map();
-  if(need.size){const lst=[...need].slice(0,8).map(n=>({t:nice(n),g:"falta"}));if(need.size>8)lst.push({t:"… y "+(need.size-8)+" más",g:""});
-    const go=await askDlg("Faltan audios propios",need.size+" audio(s) de la sesión no están cargados ahora. Elegí la carpeta donde están (con el mismo nombre de archivo).","Elegir carpeta",lst);
-    if(go)files=await sesPickFolder()}
-  await sesApply(S,files)}
+  if(!await askDlg("Abrir sesión",sesResumen(S)+". Reemplaza lo que tenés ahora.","Abrir"))return;
+  await sesApply(S,await sesLoadFiles(S))}
 async function sesApply(S,files){
   window.__sesLock=true;PLISTS.forEach(L=>clearTimeout(L.saveT));
   const memBlob=n=>{const i=items.find(x=>x.name===n);return i&&i.blob?i.blob:null},blobFor=n=>memBlob(n)||files.get(n.toLowerCase())||null;
@@ -3288,7 +3327,7 @@ $("sesave").addEventListener("click",sesSave);
 $("sesopen").addEventListener("click",()=>$("sesfile").click());
 $("sesfile").addEventListener("change",e=>{const f=e.target.files[0];e.target.value="";if(f)sesOpenFile(f)});
 /* ---------- v2.29 · carpeta Media: copia automática de los audios propios + la botonera guardada dentro de la carpeta ---------- */
-const MED={ok:!!window.showDirectoryPicker,h:null,perm:"none",busy:false,man:null,cfgSig:"",done:new WeakMap(),bk:false,last:0,errAt:0,hold:false};
+const MED={ok:!!window.showDirectoryPicker,h:null,perm:"none",busy:false,man:null,cfgSig:"",done:new WeakMap(),chk:new Set(),bk:false,last:0,errAt:0,hold:false};
 const MEDK="mediadir:"+PROF.active;
 const medPut=(k,v)=>window.__medMem?(window.__medMem[k]=v,Promise.resolve(true)):db().then(d=>new Promise(ok=>{const t=d.transaction("s","readwrite");t.objectStore("s").put(v,k);t.oncomplete=()=>ok(true);t.onerror=t.onabort=()=>ok(false)})).catch(()=>false);
 const medGet=k=>window.__medMem?Promise.resolve(window.__medMem[k]||null):db().then(d=>new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(k);q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)})).catch(()=>null);
@@ -3317,14 +3356,17 @@ async function medBackup(){ // antes de pisar la botonera guardada, deja una cop
 async function medSync(force){
   if(!MED.h||MED.busy||MED.hold||window.__sesLock||!document.body.classList.contains("booted"))return;
   if(!(await medPerm(false))){mui();return}
-  MED.busy=true;let n=0;
+  MED.busy=true;mui();let n=0;
   try{
     if(!MED.man)MED.man=(await medLoadMan())||{v:1,files:{}};
     const man=MED.man;let ch=false;
     for(const [name,blob] of medOwn()){
       if(MED.done.get(blob)===name)continue;
-      const m=man.files[name];
-      if(m&&m.size===blob.size){MED.done.set(blob,name);continue}
+      let m=man.files[name];
+      if(m&&m.size===blob.size){ // una vez por sesión se confirma que el archivo sigue en «Audios» (si lo movieron o borraron, se vuelve a copiar)
+        if(MED.chk.has(name)){MED.done.set(blob,name);continue}
+        MED.chk.add(name);const ex=await medRead("Audios",m.f);if(ex&&ex.size===blob.size){MED.done.set(blob,name);continue}
+        delete man.files[name];m=undefined}
       let f=m&&m.f,need=true;
       if(!f){const b0=medSafe(name),ex=await medRead("Audios",b0);
         if(!ex)f=b0;else if(ex.size===blob.size){f=b0;need=false}else f=await medFree(b0)} // ya está: se vincula sin copiar; si el nombre choca con otro audio distinto, se guarda como «nombre (2)»
@@ -3344,10 +3386,14 @@ async function medSync(force){
     if(e&&(e.name==="NotAllowedError"||e.name==="SecurityError"||e.name==="NotFoundError")){MED.perm="prompt"}
     if(Date.now()-MED.errAt>60000){MED.errAt=Date.now();note(e&&e.name==="QuotaExceededError"?"La carpeta Media no tiene más espacio en el disco.":"No pude copiar a la carpeta Media ("+(e&&e.name==="NotAllowedError"?"hay que reconectarla: tocá «Media»":(e&&e.message||e))+").","warn","med",9000)}
   }finally{MED.busy=false;mui()}}
-async function medFiles(){const m=new Map();
-  try{const d=await medDir("Audios");for await(const [n,fh] of d.entries()){if(fh.kind==="file"){const f=await fh.getFile();m.set(n.toLowerCase(),new Blob([await f.arrayBuffer()],{type:f.type||""}))}}}catch(e){}
-  const man=await medLoadMan();if(man)for(const k in man.files){const f=m.get(String(man.files[k].f).toLowerCase());if(f)m.set(k.toLowerCase(),f)}
-  return m}
+async function medIndex(){const m=new Map();
+  const walk=async(d,dep)=>{for await(const [n,h] of d.entries()){if(h.kind==="directory"){if(dep<6&&!/^respaldo$/i.test(n))await walk(h,dep+1)}else{const k=n.toLowerCase();if(!m.has(k))m.set(k,h)}}};
+  await walk(MED.h,0);return m}
+async function medFind(need){ // need: nombres de audio → Map nombre(minúsculas) → Blob, buscando en toda la carpeta
+  const idx=await medIndex(),man=await medLoadMan(),out=new Map();
+  for(const n of need){let h=null;if(man&&man.files[n])h=idx.get(String(man.files[n].f).toLowerCase());if(!h)h=idx.get(n.toLowerCase());
+    if(h){const f=await h.getFile();out.set(n.toLowerCase(),new Blob([await f.arrayBuffer()],{type:f.type||""}))}}
+  return out}
 async function medRestorePerfil(){const f=await medRead("Configuracion","perfil.json");if(!f)return;
   try{const j=JSON.parse(await f.text()),pr=PROF.list.find(u=>u.id===PROF.active);if(pr&&!pr.email&&j&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(j.email||"")){pr.email=j.email;profSave()}}catch(e){}}
 async function medRestore(){
@@ -3355,14 +3401,13 @@ async function medRestore(){
   if(!f){note("La carpeta no tiene una botonera guardada todavía.","warn","med",6000);return false}
   let S;try{S=JSON.parse(await f.text())}catch(e){S=null}
   if(!S||S.app!=="botonera-sesion"||!Array.isArray(S.items)){note("La botonera guardada en la carpeta está dañada. Hay copias en Configuracion/respaldo.","error","med",9000);return false}
-  const fecha=S.saved?new Date(S.saved).toLocaleString("es-AR"):"";
-  const go=await askDlg("Restaurar la botonera","En la carpeta «"+MED.h.name+"» hay una botonera guardada el "+fecha+(S.profile?" (usuario «"+S.profile+"»)":"")+": "+S.items.length+" botones y "+(S.lists||[]).length+" lista(s). Reemplaza los botones, colores, teclas y listas de este usuario. Los audios se toman de la carpeta.","Restaurar");
+  const go=await askDlg("Restaurar la botonera",sesResumen(S)+". Reemplaza lo que tenés ahora en este usuario.","Restaurar");
   if(!go)return false;
-  MED.hold=true;await medRestorePerfil();const files=await medFiles();await sesApply(S,files);return true}
+  MED.hold=true;await medRestorePerfil();await sesApply(S,await sesLoadFiles(S));return true}
 async function medConnect(){
   let h;try{h=window.__medPick?await window.__medPick():await window.showDirectoryPicker({id:"botonera-media",mode:"readwrite",startIn:"documents"})}catch(e){return}
   if(!h)return;
-  MED.h=h;MED.perm="granted";MED.man=null;MED.cfgSig="";MED.done=new WeakMap();MED.bk=false;MED.hold=true;
+  MED.h=h;MED.perm="granted";MED.man=null;MED.cfgSig="";MED.done=new WeakMap();MED.chk=new Set();MED.bk=false;MED.hold=true;
   await medPut(MEDK,h);mui();
   try{
     const f=await medRead("Configuracion","botonera-sesion.json");
@@ -3396,7 +3441,7 @@ async function medPanel(){
   w.querySelector("#mmsg").textContent=txt;
   const B=[];
   if(!MED.h)B.push(["Elegir mi carpeta",medConnect,1]);
-  else{if(!ok)B.push(["Reconectar la carpeta",async()=>{if(await medPerm(true)){MED.hold=false;mui();await medSync(true);note("Carpeta Media reconectada.","info","med",4000)}else{mui();note("No se pudo reconectar. Probá con «Elegir mi carpeta».","warn","med",7000)}},1]);
+  else{if(!ok)B.push(["Reconectar la carpeta",medReconnect,1]);
     if(ok)B.push(["Copiar ahora lo que falta",()=>medSync(true),1],["Restaurar la botonera desde la carpeta",medRestore]);
     B.push(["Elegir otra carpeta",medConnect],["Poner o cambiar mi mail",medEmail],["Desconectar",medDisconnect])}
   const bt=w.querySelector("#mbt");B.forEach(([t,fn,pri])=>{const b=document.createElement("button");b.type="button";b.className=pri?"dok":"dno";b.textContent=t;b.onclick=()=>{end();fn()};bt.appendChild(b)});
@@ -3413,6 +3458,70 @@ setTimeout(async()=>{
   else{let seen=false;try{seen=localStorage.getItem("botonera_medhint")==="1";localStorage.setItem("botonera_medhint","1")}catch(e){}
     if(!seen)note("Nuevo: tocá «Media» arriba a la derecha para elegir tu carpeta. Tus audios y tu botonera se guardan ahí solos.","info","med",14000)}
 },1500);
+/* ---------- v2.31 · barra superior: usuario, Media, sesión y listas en menús desplegables + luces de estado ---------- */
+const TB={mn:null,okSince:0,ok:false};
+const tbI=d=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>';
+const TBIC={user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',save:'<path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/>',
+  list:'<path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/>',plus:'<path d="M12 5v14M5 12h14"/>',trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  mail:'<rect x="3" y="5" width="18" height="14"/><path d="m3 7 9 6 9-6"/>',copy:'<rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/>',restore:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',off:'<path d="M18 6 6 18M6 6l12 12"/>',caret:'<path d="m6 9 6 6 6-6"/>'};
+function tbStat(){ // luces: usuario · Media · helper · audio (g verde, a ámbar, r rojo, n apagada = no aplica)
+  const pr=PROF.list.find(u=>u.id===PROF.active)||{name:"Principal"};
+  const med=!MED.ok?["n","Media: este navegador no permite elegir carpeta"]:MED.h?(MED.perm==="granted"?["g","Media: carpeta «"+MED.h.name+"» conectada"]:["a","Media: hay que reconectar la carpeta"]):["n","Media: sin carpeta elegida"];
+  let hp=["n","Helper: no conectado"];try{hp=LK&&LK.ok?["g","Helper: conectado"]:(hpWasOk===false?["r","Helper: sin conexión"]:["n","Helper: no conectado"])}catch(e){}
+  const au=ctx.state==="running"?["g","Audio: activo"]:["a","Audio: tocá cualquier botón para activarlo"];
+  return {name:pr.name,s:[["g","Usuario: "+pr.name],med,hp,au]}}
+function tbUpdate(){const b=$("tbar");if(!b)return;const st=tbStat();
+  [...$("tbled").children].forEach((i,k)=>{i.className=st.s[k][0]==="n"?"":st.s[k][0]});
+  $("tbled").title=st.s.map(x=>({g:"● ",a:"▲ ",r:"✖ ",n:"○ "}[x[0]])+x[1]).join("\n");
+  $("tbun").textContent=st.name;
+  const m=$("tbm");m.classList.toggle("on",!!MED.h&&MED.perm==="granted");m.classList.toggle("warn",!!MED.h&&MED.perm!=="granted");m.classList.toggle("sync",!!MED.busy);
+  TB.ok=![0,1,3].some(k=>st.s[k][0]==="a"||st.s[k][0]==="r")} // el helper es opcional: no impide el modo micro
+const mui0=mui;
+function tbClose(){const m=$("tbmenu");if(!m||m.hidden)return;m.hidden=true;m.textContent="";$("tbar").classList.remove("open");document.querySelectorAll("#tbar .tbb[aria-expanded]").forEach(b=>b.setAttribute("aria-expanded","false"));TB.mn=null}
+async function medReconnect(){if(await medPerm(true)){MED.hold=false;mui();await medSync(true);note("Carpeta Media reconectada.","info","med",4000)}else{mui();note("No se pudo reconectar. Probá con «Elegir mi carpeta».","warn","med",7000)}}
+function tbItems(k){
+  const pr=PROF.list.find(u=>u.id===PROF.active)||{},I=[];
+  if(k==="u"){I.push({h:"Usuarios de esta compu"});
+    PROF.list.forEach(u=>I.push({t:u.name,s:u.email||"",sel:u.id===PROF.active,fn:()=>{if(u.id===PROF.active)return;PROF.active=u.id;profSave();location.reload()}}));
+    I.push({sep:1},{i:"plus",t:"Nuevo usuario",fn:()=>$("usradd").click()},{i:"mail",t:"Mi mail",s:pr.email?"cambiar":"opcional",fn:medEmail},{i:"trash",t:"Eliminar usuario",del:1,off:PROF.active==="p0",fn:()=>$("usrdel").click()})}
+  else if(k==="m"){const ok=!!MED.h&&MED.perm==="granted",nf=MED.man?Object.keys(MED.man.files).length:0;
+    I.push({h:!MED.ok?"No disponible en este navegador":!MED.h?"Sin carpeta":ok?"Conectada · «"+MED.h.name+"»":"Hay que reconectar"+(MED.h?" «"+MED.h.name+"»":"")});
+    if(!MED.ok)I.push({i:"folder",t:"Por qué no está",fn:medPanel});
+    else if(!MED.h)I.push({i:"folder",t:"Elegir mi carpeta",fn:medConnect});
+    else{if(!ok)I.push({i:"link",t:"Reconectar",fn:medReconnect});
+      else I.push({i:"copy",t:"Copiar lo que falta",s:nf+" audios",fn:()=>medSync(true)},{i:"restore",t:"Restaurar desde la carpeta",fn:medRestore});
+      I.push({sep:1},{i:"folder",t:"Elegir otra carpeta",fn:medConnect},{i:"off",t:"Desconectar",del:1,fn:medDisconnect})}}
+  else if(k==="s"){I.push({i:"save",t:"Guardar sesión",s:"archivo",fn:()=>$("sesave").click()},{i:"folder",t:"Abrir sesión",s:"archivo",fn:()=>$("sesopen").click()},{sep:1},{i:"trash",t:"Limpiar botonera",del:1,fn:()=>$("sesclr").click()})}
+  else if(k==="l"){const vis=PLISTS.filter(L=>!L.closed);I.push({h:"Listas en vivo · "+vis.length+"/"+PLMAX});
+    I.push({i:"plus",t:"Nueva lista",off:vis.length>=PLMAX&&!PLISTS[0].closed,fn:plNewClick});
+    if(vis.length>1||(vis.length===1&&PLISTS.length>1))I.push({sep:1});
+    vis.forEach(L=>I.push({i:"off",t:"Quitar «"+plTitle(L)+"»",del:1,off:vis.length<=1,fn:()=>plRemove(L)}))}
+  return I}
+function tbOpen(k,btn){
+  if(TB.mn===k){tbClose();return}tbClose();const m=$("tbmenu");TB.mn=k;m.textContent="";
+  tbItems(k).forEach(x=>{
+    if(x.sep){const d=document.createElement("div");d.className="ts";m.appendChild(d);return}
+    if(x.h){const d=document.createElement("div");d.className="th";d.textContent=x.h;m.appendChild(d);return}
+    const b=document.createElement("button");b.type="button";b.setAttribute("role","menuitem");b.className="tm"+(x.del?" del":"")+(x.sel?" sel":"");
+    b.innerHTML=(x.i?tbI(TBIC[x.i]):'<i class="dot"></i>')+'<span></span>'+(x.s?'<em></em>':"");b.querySelector("span").textContent=x.t;if(x.s)b.querySelector("em").textContent=x.s;
+    if(x.off)b.disabled=true;b.onclick=()=>{tbClose();try{const r=x.fn();if(r&&r.catch)r.catch(e=>console.warn(e))}catch(e){console.warn(e)}};m.appendChild(b)});
+  m.hidden=false;btn.setAttribute("aria-expanded","true");$("tbar").classList.add("open");
+  const r=btn.getBoundingClientRect();m.style.top=(r.bottom+4)+"px";m.style.left=Math.max(8,Math.min(r.left,innerWidth-m.offsetWidth-8))+"px";
+  const f=m.querySelector(".tm:not(:disabled)");if(f)f.focus({preventScroll:true})}
+[["tbu","u"],["tbm","m"],["tbs","s"],["tbl","l"]].forEach(([id,k])=>$(id).addEventListener("click",e=>{e.stopPropagation();tbOpen(k,$(id))}));
+document.addEventListener("pointerdown",e=>{if(TB.mn&&!e.target.closest("#tbmenu,#tbar"))tbClose()},true);
+document.addEventListener("keydown",e=>{if(!TB.mn)return;
+  if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();const b=$({u:"tbu",m:"tbm",s:"tbs",l:"tbl"}[TB.mn]);tbClose();if(b)b.focus()}
+  else if(e.key==="ArrowDown"||e.key==="ArrowUp"){const L=[...$("tbmenu").querySelectorAll(".tm:not(:disabled)")];if(!L.length)return;e.preventDefault();e.stopImmediatePropagation();
+    const i=L.indexOf(document.activeElement);L[(i+(e.key==="ArrowDown"?1:L.length-1)+(i<0?1:0))%L.length].focus()}},true);
+window.addEventListener("resize",tbClose);
+window.addEventListener("blur",tbClose);
+mui=function(){mui0();tbUpdate()};
+tbUpdate();
+setInterval(()=>{tbUpdate();const b=$("tbar");if(!b)return;
+  if(TB.ok&&innerWidth>900&&!TB.mn){if(!TB.okSince)TB.okSince=Date.now();if(Date.now()-TB.okSince>8000)b.classList.add("mini")}
+  else if(!TB.ok){TB.okSince=0;b.classList.remove("mini")}},1500);
 /* --- helper local --- */
 let hpBusy=null,hpFail=0,hpWasOk=null,hpLast=0;
 function hping(){if(hpBusy)return hpBusy;hpBusy=(async()=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),8000);let ok=false,h=null,need=false;
@@ -4322,7 +4431,7 @@ async function plCloseBase(L){
   const nt=L.rows.filter(r=>r.t==="f").length;
   if(nt&&!(await askDlg("Quitar «"+plTitle(L)+"»","Tiene "+nt+(nt===1?" tema":" temas")+". Se quita del tablero y se borra su contenido.","Quitar lista")))return;
   plWith(L,()=>{plKill();L.state="stop";PL.rows=[];plRender();plSave()});
-  L.closed=true;$("pl").classList.add("plclosed");try{localStorage.setItem(PL1K,"1")}catch(e){}
+  L.closed=true;$("pl").classList.add("plclosed");try{localStorage.setItem(PL1K,"1")}catch(e){}layForget("pl");
   if(PLUSER===L)PLUSER=plFirst();plMplUpdate();note("«"+plTitle(L)+"» quitada. Para volver a abrirla tocá «+» en otra lista.","info","pl",5000)}
 async function plRemove(L){
   if(L.n<2){return plCloseBase(L)}
@@ -4333,7 +4442,7 @@ async function plRemove(L){
   const k="pl"+L.n,o=OUT[k];try{L.bus.disconnect()}catch(e){}
   if(o&&o.el){try{o.el.pause();o.el.srcObject=null}catch(e){}OUTWAIT.delete(o.el)}
   delete OUT[k];delete OUTK[k];const rw=$("orow-"+k);if(rw)rw.remove();
-  const root=document.getElementById("pl"+L.sfx);if(root)root.remove();if(L.style)L.style.remove();
+  const root=document.getElementById("pl"+L.sfx);layForget(root?root.id:"pl"+L.sfx);if(root)root.remove();if(L.style)L.style.remove();
   const fi=PLFX.indexOf(L.fx);if(fi>=0)PLFX.splice(fi,1);PLISTS.splice(PLISTS.indexOf(L),1);
   if(PL===L){PL=PLISTS[0];PLS=PL.sel;PLBLINK=PL.blink;PLANCH=PL.anch;PLC=PL.plc;plLast=PL.last}if(PLUSER===L)PLUSER=plFirst();
   plMplUpdate();
