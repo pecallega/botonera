@@ -1166,6 +1166,12 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 #edkar.sel{background:rgba(61,255,122,.2)!important;border-color:#3dff7a!important;color:#fff!important}
 .edkara .kst{flex:1 1 180px;min-width:150px;font:300 .66rem "JetBrains Mono",monospace;color:var(--mut)}
 .edkara .kst.ok{color:#3dff7a}
+.edkara.wk{position:relative;overflow:hidden}
+.edkara.wk>*:not(.kst):not(.edlab):not(#kax):not(#stx):not(#clx),.edkara.wk .kpre>*:not(#kax):not(#stx):not(#clx){filter:grayscale(1);opacity:.35;pointer-events:none;transition:opacity .2s,filter .2s}
+.edkara.wk .kst{color:#f2c230;opacity:1}
+.edkara.wk::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,transparent,#f2c230,transparent) no-repeat;background-size:35% 100%;animation:wkslide 1.1s linear infinite}
+@keyframes wkslide{from{background-position:-40% 0}to{background-position:140% 0}}
+@media(prefers-reduced-motion:reduce){.edkara.wk::after{animation:none;background:#f2c230;opacity:.6}}
 .edkara .kf{display:flex;align-items:center;gap:8px;flex:1 1 220px;min-width:200px}
 .edkara .kf i{font-style:normal;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;min-width:46px}
 .edkara .kf input{flex:1;min-width:90px}
@@ -1491,7 +1497,7 @@ body.midilearn #stop{outline:1px dashed rgba(61,255,122,.7);outline-offset:2px}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.52 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.52</span></footer>
+<footer id="sig" title="Versión 2.53 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.53</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -2389,7 +2395,8 @@ async function karaSep(L,R,sr,prog,tok){
   }
   return V}
 function karaSet(msg,cls){const e=$("kast");e.textContent=msg;e.className="kst"+(cls?" "+cls:"")}
-function karaUI(){const ok=kar.on&&!!kar.buf&&!kar.busy;["kav","kam","kano","kavo","kaeq","kaok","kanew","kadl"].forEach(i=>{$(i).disabled=!ok});
+function wkUI(){const w=!!(kar.busy||stm.busy||cln.busy);[["edkara",kar.busy||stm.busy],["edstem",stm.busy],["edclnb",cln.busy]].forEach(([i,b])=>{const e=$(i);if(e){e.classList.toggle("wk",!!b);e.setAttribute("aria-busy",b?"true":"false")}})}
+function karaUI(){wkUI();const ok=kar.on&&!!kar.buf&&!kar.busy;["kav","kam","kano","kavo","kaeq","kaok","kanew","kadl"].forEach(i=>{$(i).disabled=!ok});
   $("kavt").textContent=Math.round(kar.gV*100)+" %";$("kamt").textContent=Math.round(kar.gM*100)+" %";$("kav").value=Math.round(kar.gV*100);$("kam").value=Math.round(kar.gM*100);
   const ia=$("kaia");ia.hidden=!(LK.ok&&LK.h&&LK.h.karaoke);ia.disabled=!kar.on||kar.busy;{const pi=$("kapi"),pn=$("kapn");pi.hidden=ia.hidden;pn.hidden=ia.hidden;pi.disabled=pn.disabled=!kar.on||kar.busy}const b=$("edkar");b.classList.toggle("sel",kar.on||stm.on);b.setAttribute("aria-pressed",kar.on||stm.on?"true":"false")}
 function karaGains(){const nd=kar.nodes;if(!nd||!kar.live)return;const t=ctx.currentTime;nd.gV.gain.setTargetAtTime(kar.gV,t,.012);nd.gML.gain.setTargetAtTime(kar.gM,t,.012);nd.gMR.gain.setTargetAtTime(kar.gM,t,.012)}
@@ -5090,7 +5097,7 @@ function stmBuild(){const g=$("stg");g.textContent="";
     r.innerHTML='<span class="stl"><i></i><small></small></span><input type="range" min="0" max="150" step="1" value="100"><b>100 %</b><button type="button" class="sm" title="Silenciar esta pista">M</button><button type="button" class="ss" title="Escuchar solo esta pista (varias solos se suman)">S</button>';
     const ds=k==="otros"?stdOtros(stm.nk):(STD[k]||"");r.querySelector("i").textContent=STN[k]||k;r.querySelector("small").textContent=k==="otros"?(stm.nk===6?"sintes, cuerdas, vientos…":"guitarra, piano, sintes…"):ds.split(":")[0];r.title=(STN[k]||k)+": "+ds+".";g.appendChild(r)});
   const n=document.createElement("div");n.className="stnote";n.textContent="«Otros» es todo lo que el programa no reconoce como voz, batería, bajo"+(stm.nk===6?", guitarra ni piano":"")+": "+stdOtros(stm.nk).split(": ")[1]+".";g.appendChild(n)}
-function stmUI(){const ok=stm.on&&!!stm.buf&&!stm.busy;["stok","stbt","stnew","stdl"].forEach(i=>{$(i).disabled=!ok});
+function stmUI(){wkUI();const ok=stm.on&&!!stm.buf&&!stm.busy;["stok","stbt","stnew","stdl"].forEach(i=>{$(i).disabled=!ok});
   document.querySelectorAll("#stg .stk").forEach(r=>{const i=+r.dataset.i,inp=r.querySelector("input");inp.disabled=!ok;inp.value=Math.round(stm.g[i]*100);r.querySelector("b").textContent=Math.round(stm.g[i]*100)+" %";
     r.querySelector(".sm").classList.toggle("on",!!stm.m[i]);r.querySelector(".ss").classList.toggle("on",!!stm.s[i]);r.classList.toggle("mute",stmG(i)===0)});
   $("edkar").classList.toggle("sel",kar.on||stm.on)}
@@ -5296,7 +5303,7 @@ function clnGraph(){
   for(let li=0;li<L;li++){const row=[];for(let ci=0;ci<nch;ci++){const g=ctx.createGain();sp.connect(g,li*nch+ci);if(nch===1){g.connect(mg,0,0);g.connect(mg,0,1)}else g.connect(mg,0,ci);row.push(g)}cln.nodes.push(row)}
   mg.connect(busEd);clnGains(true);return{buf:cln.buf,in:sp}}
 
-function clnUI(){const ok=cln.on&&!!cln.buf&&!cln.busy;["clab","clnew","cldl","clok"].forEach(i=>{$(i).disabled=!ok});$("clgo").disabled=!cln.on||cln.busy;["clnr","clnh","clne","clns"].forEach(i=>{$(i).disabled=cln.busy});$("clnv").disabled=false;
+function clnUI(){wkUI();const ok=cln.on&&!!cln.buf&&!cln.busy;["clab","clnew","cldl","clok"].forEach(i=>{$(i).disabled=!ok});$("clgo").disabled=!cln.on||cln.busy;["clnr","clnh","clne","clns"].forEach(i=>{$(i).disabled=cln.busy});$("clnv").disabled=false;
   $("clns").parentNode.hidden=!(LK.ok&&LK.h&&LK.h.karaoke);$("clab").textContent="Escuchando: "+(cln.ab==="clean"?"limpio":"original");$("clab").classList.toggle("on",cln.ab==="clean");$("edcln").classList.toggle("sel",cln.on);$("edcln").setAttribute("aria-pressed",cln.on?"true":"false")}
 function clnOff(silent){cln.tok++;if(cln.job){const j=cln.job;cln.job=null;hfetch(HELPER+"/separar/cancelar?id="+j).catch(()=>{}).finally(()=>hfetch(HELPER+"/separar/fin?id="+j).catch(()=>{}))}
   if(cln.on&&ed.src&&!silent)edStop();cln.on=false;cln.busy=false;cln.buf=null;cln.nodes=null;$("edclnb").hidden=true;clnUI();karaUI()}
