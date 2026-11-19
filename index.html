@@ -1258,6 +1258,21 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 .stk .ss.on{background:#f2c230;border-color:#f2c230;color:#111}
 .stk.mute i,.stk.mute b{opacity:.4}
 .stk input:disabled{opacity:.4}
+
+#dlg .dbox:has(.kcols){width:min(560px,100%)}
+#dlg .kcols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){#dlg .kcols{grid-template-columns:1fr}}
+#dlg .kcol{border:1px solid rgba(255,255,255,.16);padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+#dlg .kcol h4{margin:0;font:600 .66rem "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+#dlg .kcol .kbig{margin:0 auto}
+#dlg .khint{margin:0;text-align:center;font:300 .7rem "JetBrains Mono",monospace;color:var(--mut)}
+#dlg .kcol .kerr{margin:0}
+#dlg .kq{align-self:center;padding:6px 10px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:.72rem;cursor:pointer}
+#dlg .kq:hover{background:rgba(255,255,255,.12)}
+#dlg .kmid{flex-direction:column;align-items:stretch;justify-content:center;flex:1;gap:10px}
+#dlg .kmid .kms{font:700 1rem "Space Mono",monospace;color:#fff;text-align:center;padding:12px 8px;background:#050506;border:1px solid var(--line);word-break:break-word}
+#dlg .kmid .kms.no{color:var(--mut);font-weight:400;font-size:.9rem}
+#dlg .kmid .kmh{text-align:center}
 </style>
 </head>
 <body class="booting">
@@ -1419,7 +1434,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.43 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.43</span></footer>
+<footer id="sig" title="Versión 2.44 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.44</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1983,11 +1998,12 @@ $("cedit").addEventListener("click",()=>{const i=cmIdx;hideCm();edOpen(i)});
 /* cambiar la letra o número del botón sin pasar por el engranaje: se apreta la tecla nueva (si otro botón la tiene, se intercambian) */
 function askKey(idx){const it=items[idx];if(!it)return;
   const w=document.createElement("div");w.id="dlg";
-  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Cambiar letra o número</b><p></p><div class="kbig" id="kbig"></div><p class="kerr" id="kerr"></p><div class="kmid" id="kmid"></div><div class="drow"><button class="dno">Cancelar</button><button class="dx" title="Deja el botón sin tecla asignada">Quitar tecla</button></div></div>';
-  w.querySelector("p").textContent="Apretá en el teclado la letra o el número nuevo para «"+nice(it.name)+"». Si otro botón ya la usa, se intercambian. Esc cancela.";
+  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Teclado y MIDI del botón</b><p></p><div class="kcols"><section class="kcol"><h4>Teclado</h4><div class="kbig" id="kbig"></div><p class="khint">Apretá una letra o un número en el teclado</p><p class="kerr" id="kerr"></p><button type="button" class="kq dx" title="Deja el botón sin tecla asignada">Quitar tecla</button></section><section class="kcol"><h4>MIDI</h4><div class="kmid" id="kmid"></div></section></div><div class="drow"><button class="dno">Cerrar</button></div></div>';
+  w.querySelector("p").textContent="Botón «"+nice(it.name)+"». Podés asignarle una tecla, un pad MIDI o las dos cosas. Si otro botón ya usa esa tecla o ese pad, se la saca o se intercambian. Esc cierra.";
+  try{document.activeElement&&document.activeElement.blur()}catch(e){}
   const big=w.querySelector("#kbig"),err=w.querySelector("#kerr");big.textContent=it.key||"—";
-  const end=()=>{midiLearnOff();document.removeEventListener("keydown",kd,true);w.remove()};
-  midiDlg(it,w.querySelector("#kmid"),()=>{end();render();save()});
+  const end=()=>{midiLearnOff();MIDI.redraw=null;document.removeEventListener("keydown",kd,true);w.remove()};
+  midiDlg(it,w.querySelector("#kmid"),()=>{render();save()});
   function kd(e){e.preventDefault();e.stopImmediatePropagation();
     if(e.key==="Escape"){end();return}
     if(e.ctrlKey||e.altKey||e.metaKey||e.key==="Shift"||e.key==="Control"||e.key==="Alt"||e.key==="Meta")return;
@@ -5087,14 +5103,15 @@ function midiAssign(it,sg){let other=null;
   MIDI.map[it.name]=sg;midiSave();
   note("Botón «"+nice(it.name)+"»: "+sigText(sg)+(other?" (se le sacó a «"+nice(other)+"»)":"")+".","info","midi",4500)}
 function midiDlg(it,box,done){
+  const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x)e.textContent=x;box.appendChild(e);return e};
   const draw=()=>{box.textContent="";
-    if(!MIDI.ok){box.textContent="MIDI: este navegador no lo permite (usá Chrome o Edge en la compu).";return}
-    if(!MIDI.on){const b=document.createElement("button");b.type="button";b.textContent="Activar MIDI para usar un controlador";b.onclick=async()=>{await midiEnable();draw()};box.appendChild(b);return}
-    const sg=MIDI.map[it.name],sp=document.createElement("span");
-    sp.textContent=MIDI.ins.size?"…o tocá un pad de tu controlador MIDI"+(sg?" · ahora: "+sigText(sg):""):"MIDI activo, pero no hay ningún controlador conectado.";box.appendChild(sp);
-    if(sg){const q=document.createElement("button");q.type="button";q.textContent="Quitar MIDI";q.onclick=()=>{delete MIDI.map[it.name];midiSave();draw();note("Botón «"+nice(it.name)+"» sin MIDI.","info","midi",3500)};box.appendChild(q)}};
-  draw();if(MIDI.ok&&MIDI.on)MIDI.learn=sg=>{midiAssign(it,sg);if(done)done();else draw()}}
-function midiWire(){if(!MIDI.acc)return;MIDI.ins.clear();
+    if(!MIDI.ok){mk("div","kms no","No disponible");mk("div","kmh","Este navegador no permite MIDI (usá Chrome o Edge en la compu).");return}
+    if(!MIDI.on){mk("div","kms no","MIDI apagado");const b=mk("button","kq","Activar MIDI");b.type="button";b.onclick=async()=>{await midiEnable();draw()};return}
+    const sg=MIDI.map[it.name];mk("div","kms"+(sg?"":" no"),sg?sigText(sg):"Sin pad MIDI");
+    mk("div","kmh",MIDI.ins.size?"Tocá un pad o botón del controlador ("+[...MIDI.ins.values()].join(", ")+")":"MIDI activo, pero no hay ningún controlador conectado. Conectalo por USB y aparece solo.");
+    if(sg){const q=mk("button","kq","Quitar MIDI");q.type="button";q.onclick=()=>{delete MIDI.map[it.name];midiSave();draw();note("Botón «"+nice(it.name)+"» sin MIDI.","info","midi",3500)}}};
+  draw();MIDI.redraw=draw;if(MIDI.ok&&MIDI.on)MIDI.learn=sg=>{midiAssign(it,sg);draw();if(done)done(true)}}
+function midiWire(){if(!MIDI.acc)return;MIDI.ins.clear();if(MIDI.redraw)setTimeout(()=>MIDI.redraw&&MIDI.redraw(),0);
   MIDI.acc.inputs.forEach(inp=>{if(inp.state==="connected"){MIDI.ins.set(inp.id,inp.name||"Controlador");inp.onmidimessage=midiMsg}});midiUI()}
 async function midiEnable(quiet){
   if(!MIDI.ok){note("Este navegador no permite MIDI. Usá Chrome o Edge en la compu (Safari y el iPhone no lo soportan).","warn","midi",8000);return false}
