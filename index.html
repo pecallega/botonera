@@ -1458,7 +1458,7 @@ body.midilearn #stop{outline:1px dashed rgba(61,255,122,.7);outline-offset:2px}
         <label class="cko" title="Saca el zumbido eléctrico (50 y 60 Hz) y los graves por debajo de la voz (golpes de micrófono, motores)"><input type="checkbox" id="clnh" checked> Quitar zumbido y graves</label>
         <label class="cko" title="Realza un poco la claridad de la voz y sube el volumen a un nivel parejo"><input type="checkbox" id="clne" checked> Realzar la voz</label>
         <label class="cko" title="Usa la IA del helper (la misma de Separar pistas) para quedarse solo con la voz y sacar música y ruidos que no son voz. Tarda más"><input type="checkbox" id="clns"> Dejar solo la voz (IA)</label>
-        <label class="cko clsl" title="Cuánto ruido sacar. Más alto limpia más, pero si te pasás la voz suena metálica, «bajo el agua» o se come las letras. Subí de a poco hasta que el ruido molesto se vaya y la voz siga natural"><span>Ruido a sacar</span><input type="range" id="clnv" min="0" max="100" step="1" value="55" aria-label="Cuánto ruido sacar"><b id="clnvt">55 %</b></label>
+        <label class="cko clsl" title="Cuánto ruido sacar. Se puede mover EN VIVO mientras suena, sin volver a limpiar. Más alto limpia más, pero si te pasás la voz suena metálica, «bajo el agua» o se come las letras. Subí de a poco hasta que el ruido molesto se vaya y la voz siga natural"><span>Ruido a sacar</span><input type="range" id="clnv" min="0" max="100" step="1" value="55" aria-label="Cuánto ruido sacar"><b id="clnvt">55 %</b></label>
       </div>
       <span class="kpre"><button id="clgo" type="button" title="Procesa el audio con estas opciones (no modifica el original)">Limpiar</button>
       <button id="clab" type="button" title="Alterna lo que suena al tocar Play: el audio limpio o el original, para comparar" disabled>Escuchando: limpio</button>
@@ -1484,7 +1484,7 @@ body.midilearn #stop{outline:1px dashed rgba(61,255,122,.7);outline-offset:2px}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.49 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.49</span></footer>
+<footer id="sig" title="Versión 2.50 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.50</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -5190,19 +5190,20 @@ function clnBq(x,type,f0,Q,sr,db){const w0=2*Math.PI*f0/sr,c=Math.cos(w0),s=Math
   else{b0=1+al*A;b1=-2*c;b2=1-al*A;a0=1+al/A;a1=-2*c;a2=1-al/A}
   b0/=a0;b1/=a0;b2/=a0;a1/=a0;a2/=a0;let x1=0,x2=0,y1=0,y2=0;
   for(let i=0;i<x.length;i++){const v=x[i],y=b0*v+b1*x1+b2*x2-a1*y1-a2*y2;x2=x1;x1=v;y2=y1;y1=y;x[i]=y}}
-async function clnDenoise(x,sr,P,tok,prog){
-  // reducción de ruido espectral: estima el ruido de cada frecuencia y lo va siguiendo en el tiempo (mínimos), y aplica un filtro de Wiener con SNR «dirigido por decisión» (poco ruido musical)
-  const N=2048,H=512,n=x.length,fft=karaFFT(N),w=new Float64Array(N),K=N/2+1;for(let i=0;i<N;i++)w[i]=Math.sqrt(.5-.5*Math.cos(2*Math.PI*i/N));
+async function clnDenoise(x,sr,svals,tok,prog){
+  // reducción de ruido espectral en VARIOS niveles a la vez (comparten el análisis): sigue el ruido de cada frecuencia en el tiempo y aplica un filtro con silenciado de pausas. Devuelve una salida por nivel.
+  const N=2048,H=512,n=x.length,fft=karaFFT(N),w=new Float64Array(N),K=N/2+1,NL=svals.length;for(let i=0;i<N;i++)w[i]=Math.sqrt(.5-.5*Math.cos(2*Math.PI*i/N));
   const first=-N+H,frames=Math.ceil((n+N-H)/H),rms=new Float32Array(frames);
   for(let f=0;f<frames;f++){const s=first+f*H,i0=Math.max(0,s),i1=Math.min(n,s+N);let a=0;for(let i=i0;i<i1;i++)a+=x[i]*x[i];rms[f]=i1-i0>N/2?Math.sqrt(a/(i1-i0)):-1}
   let idx=[];for(let f=0;f<frames;f++)if(rms[f]>1e-6)idx.push(f);if(idx.length<8)return false;
   idx.sort((a,b)=>rms[a]-rms[b]);idx=idx.slice(0,Math.max(12,Math.floor(idx.length*.1)));const stp=Math.max(1,Math.floor(idx.length/400));
-  const re=new Float64Array(N),im=new Float64Array(N),Pn0=new Float64Array(K);let cnt=0;
-  for(let q=0;q<idx.length;q+=stp){const s=first+idx[q]*H;for(let i=0;i<N;i++){const t=s+i;re[i]=t>=0&&t<n?x[t]*w[i]:0;im[i]=0}fft(re,im);for(let k=0;k<K;k++)Pn0[k]+=re[k]*re[k]+im[k]*im[k];cnt++}
+  const re=new Float64Array(N),im=new Float64Array(N),rt=new Float64Array(N),it=new Float64Array(N),Pn0=new Float64Array(K);let cnt=0;
+  for(let q=0;q<idx.length;q+=stp){const s=first+idx[q]*H;for(let i=0;i<N;i++){const t=s+idx[q]*0+i;re[i]=t>=0&&t<n?x[t]*w[i]:0;im[i]=0}fft(re,im);for(let k=0;k<K;k++)Pn0[k]+=re[k]*re[k]+im[k]*im[k];cnt++}
   for(let k=0;k<K;k++)Pn0[k]=Math.max(Pn0[k]/cnt,1e-12);
-  const sv=Math.max(0,Math.min(1,P.s)),alpha=1+1.6*sv,gmin2=Math.pow(10,-(6+14*sv)/10),gfmin=Math.pow(10,-(24*sv)/20),bias=2,U=14,R=8,sc=1/(N*2),b0=Math.round(200/(sr/N)),b1=Math.round(4000/(sr/N));
+  const bias=2,U=14,R=8,sc=1/(N*2),b0=Math.round(200/(sr/N)),b1=Math.round(4000/(sr/N));
+  const LV=svals.map(sv=>({alpha:1+1.6*sv,gmin2:Math.pow(10,-(6+14*sv)/10),gfmin:Math.pow(10,-(24*sv)/20),gp:new Float64Array(K).fill(1),gfp:1,out:new Float32Array(n)})),g=new Float64Array(K),gs=new Float64Array(K);
   const Ps=Float64Array.from(Pn0),cur=Float64Array.from(Pn0),ring=[];for(let r=0;r<R;r++)ring.push(Float64Array.from(Pn0).map(v=>v/bias));
-  const Pn=new Float64Array(K),g=new Float64Array(K),gp=new Float64Array(K).fill(1),gs=new Float64Array(K),out=new Float32Array(n);let t0=performance.now(),ri=0,hold=0,gfp=1;
+  const Pn=new Float64Array(K);let t0=performance.now(),ri=0,hold=0;
   for(let f=0;f<frames;f++){const s=first+f*H;
     for(let i=0;i<N;i++){const t=s+i;re[i]=t>=0&&t<n?x[t]*w[i]:0;im[i]=0}
     fft(re,im);
@@ -5211,15 +5212,17 @@ async function clnDenoise(x,sr,P,tok,prog){
     if(f%U===U-1){const rr=ring[ri];for(let k=0;k<K;k++){rr[k]=cur[k];cur[k]=Ps[k]}ri=(ri+1)%R}
     for(let k=0;k<K;k++){let m=cur[k];for(let r=0;r<R;r++){const v=ring[r][k];if(v<m)m=v}const pn=bias*m,lo=.5*Pn0[k];Pn[k]=pn>lo?pn:lo}
     for(let k=b0;k<=b1;k++){sp+=re[k]*re[k]+im[k]*im[k];sn+=Pn[k]}
-    const r=sp/(sn+1e-20);let pv=(r-2)/3;pv=pv<0?0:pv>1?1:pv;hold=pv>hold?pv:hold*.88;let gf=gfmin+(1-gfmin)*hold;gf=gf<gfp?Math.max(gf,gfp*.7):gf;gfp=gf;
-    for(let k=0;k<K;k++){const p=re[k]*re[k]+im[k]*im[k];let gg=1-alpha*Pn[k]/(p+1e-20);if(gg<gmin2)gg=gmin2;let v=Math.sqrt(gg);const rl=gp[k]*.78;if(v<rl)v=rl;g[k]=v}
-    for(let k=0;k<K;k++){const a=g[k>0?k-1:0],c=g[k<K-1?k+1:k];gs[k]=(a+2*g[k]+c)*.25;gp[k]=gs[k]}
-    for(let k=0;k<K;k++){const q=gs[k]*gf;re[k]*=q;im[k]*=q}
-    for(let k=1;k<N/2;k++){re[N-k]=re[k];im[N-k]=-im[k]}
-    for(let i=0;i<N;i++)im[i]=-im[i];fft(re,im);
-    for(let i=0;i<N;i++){const t=s+i;if(t>=0&&t<n)out[t]+=re[i]*w[i]*sc}
+    const r=sp/(sn+1e-20);let pv=(r-2)/3;pv=pv<0?0:pv>1?1:pv;hold=pv>hold?pv:hold*.88;
+    for(let li=0;li<NL;li++){const Lv=LV[li];
+      let gf=Lv.gfmin+(1-Lv.gfmin)*hold;gf=gf<Lv.gfp?Math.max(gf,Lv.gfp*.7):gf;Lv.gfp=gf;
+      for(let k=0;k<K;k++){const p=re[k]*re[k]+im[k]*im[k];let gg=1-Lv.alpha*Pn[k]/(p+1e-20);if(gg<Lv.gmin2)gg=Lv.gmin2;let v=Math.sqrt(gg);const rl=Lv.gp[k]*.78;if(v<rl)v=rl;g[k]=v}
+      for(let k=0;k<K;k++){const a=g[k>0?k-1:0],c=g[k<K-1?k+1:k];gs[k]=(a+2*g[k]+c)*.25;Lv.gp[k]=gs[k]}
+      for(let k=0;k<K;k++){const q=gs[k]*gf;rt[k]=re[k]*q;it[k]=im[k]*q}
+      for(let k=1;k<N/2;k++){rt[N-k]=rt[k];it[N-k]=-it[k]}
+      for(let i=0;i<N;i++)it[i]=-it[i];fft(rt,it);
+      const o=Lv.out;for(let i=0;i<N;i++){const t=s+i;if(t>=0&&t<n)o[t]+=rt[i]*w[i]*sc}}
     if(performance.now()-t0>24){await new Promise(ok=>setTimeout(ok,0));t0=performance.now();if(cln.tok!==tok)return null;prog(f/frames)}}
-  x.set(out);return true}
+  return LV.map(l=>l.out)}
 function clnSnr(x){const L=2048,r=[];for(let s=0;s+L<=x.length;s+=L){let a=0;for(let i=s;i<s+L;i++)a+=x[i]*x[i];a=Math.sqrt(a/L);if(a>1e-5)r.push(a)}if(r.length<8)return null;r.sort((a,b)=>a-b);return 20*Math.log10(r[Math.floor(r.length*.9)]/r[Math.floor(r.length*.1)])}
 async function clnVoiceAI(ch,sr,tok){
   const n=ch[0].length,hit=kar.cacheIA.get(ch);if(hit)return hit.getChannelData(2).slice();
@@ -5240,50 +5243,67 @@ async function clnVoiceAI(ch,sr,tok){
     const a0=karaFit(ab.getChannelData(0),n),a1=ab.numberOfChannels>1?karaFit(ab.getChannelData(1),n):a0,V=new Float32Array(n);for(let i=0;i<n;i++)V[i]=(a0[i]+a1[i])*.5;return V}
   finally{if(id&&cln.job===id)cln.job=null;if(id)hfetch(HELPER+"/separar/fin?id="+encodeURIComponent(id)).catch(()=>{})}}
 async function clnGo(){
-  if(!ed.it||cln.busy)return;const o={den:$("clnr").checked,hum:$("clnh").checked,eq:$("clne").checked,ai:$("clns").checked&&!$("clns").hidden,s:(+$("clnv").value)/100};
+  if(!ed.it||cln.busy)return;const o={den:$("clnr").checked,hum:$("clnh").checked,eq:$("clne").checked,ai:$("clns").checked&&!$("clns").hidden};
   if(!(o.den||o.hum||o.eq||o.ai)){note("Elegí al menos una opción para limpiar.","warn","kar",4000);return}
-  edStop();const ch=ed.ch,sr=ed.sr,tok=++cln.tok,t0=Date.now();cln.busy=true;cln.buf=null;cln.ch=null;clnUI();clnSet("Limpiando…","");
+  edStop();const ch=ed.ch,sr=ed.sr,tok=++cln.tok,t0=Date.now();cln.busy=true;cln.buf=null;cln.nodes=null;clnUI();clnSet("Limpiando…","");
   try{
-    const nch=ch.length;let src=ch.map(c=>c.slice()),voiceMono=false,notes=[];
+    const nch=Math.min(2,ch.length),n=ch[0].length;let src=ch.slice(0,nch).map(c=>c.slice()),voiceMono=false,notes=[];
     if(o.ai){const V=await clnVoiceAI(ch,sr,tok);if(V===null||cln.tok!==tok||ed.ch!==ch)return;src=[V];voiceMono=true}
+    const LVL=o.den?(n*nch>12e6?[0,.5,1]:[0,.25,.5,.75,1]):[0],NL=LVL.length,lv=[]; // lv[nivel][canal]
+    for(let li=0;li<NL;li++)lv.push([]);
     for(let ci=0;ci<src.length;ci++){const x=src[ci],tag=src.length>1?" (canal "+(ci+1)+" de "+src.length+")":"";
       if(o.hum){[50,60].forEach(f=>{for(let h=1;h<=4;h++)clnBq(x,"notch",f*h,35,sr)});clnBq(x,"hp",80,.707,sr);clnBq(x,"hp",80,.707,sr)}
-      if(o.den){const r=await clnDenoise(x,sr,o,tok,f=>clnSet("Bajando el ruido de fondo… "+Math.round(f*100)+" %"+tag,""));if(r===null||cln.tok!==tok||ed.ch!==ch)return;if(r===false)notes.push("el audio es muy corto para medir el ruido")}
-      if(o.eq){clnBq(x,"peak",250,.8,sr,-2);clnBq(x,"peak",3000,.9,sr,2.5)}}
-    if(o.eq){let pk=0;src.forEach(x=>{for(let i=0;i<x.length;i++){const v=Math.abs(x[i]);if(v>pk)pk=v}});if(pk>1e-4){const k=Math.min(10,.89/pk);src.forEach(x=>{for(let i=0;i<x.length;i++)x[i]*=k})}}
-    else{let pk=0;src.forEach(x=>{for(let i=0;i<x.length;i++){const v=Math.abs(x[i]);if(v>pk)pk=v}});if(pk>1){src.forEach(x=>{for(let i=0;i<x.length;i++)x[i]/=pk*1.01})}}
-    if(voiceMono&&nch>1)src=Array.from({length:nch},()=>src[0]);
-    const n=ch[0].length,b=ctx.createBuffer(src.length,n,sr);src.forEach((x,i)=>b.copyToChannel(x,i));
-    cln.ch=src;cln.buf=b;cln.src=ch;cln.ab="clean";cln.busy=false;cln.stale=false;{const a=clnSnr(ch[0]),c=clnSnr(src[0]);if(a!==null&&c!==null)notes.push("diferencia entre voz y ruido de fondo: "+Math.round(a)+" dB antes → "+Math.round(c)+" dB ahora")}
-    clnSet("Listo en "+Math.max(1,Math.round((Date.now()-t0)/1000))+" s · apretá Play para escuchar"+(notes.length?" · "+notes.join(", "):"")+". Con «Escuchando» alternás entre limpio y original.","ok");clnUI()}
+      let outs=[x];
+      if(o.den){const r=await clnDenoise(x,sr,LVL.slice(1),tok,f=>clnSet("Preparando la limpieza en "+(NL-1)+" intensidades… "+Math.round(f*100)+" %"+tag,""));if(r===null||cln.tok!==tok||ed.ch!==ch)return;if(r===false){notes.push("el audio es muy corto para medir el ruido");outs=[x]}else outs=[x].concat(r)}
+      if(outs.length<NL){while(outs.length<NL)outs.push(outs[0])}
+      outs.forEach((y,li)=>{const z=(li===0||y===outs[0])?y.slice():y;if(o.eq){clnBq(z,"peak",250,.8,sr,-2);clnBq(z,"peak",3000,.9,sr,2.5)}lv[li].push(z)})}
+    let pk=0;lv.forEach(a=>a.forEach(x=>{for(let i=0;i<x.length;i++){const v=Math.abs(x[i]);if(v>pk)pk=v}}));
+    if(o.eq){if(pk>1e-4){const k=Math.min(10,.89/pk);lv.forEach(a=>a.forEach(x=>{for(let i=0;i<x.length;i++)x[i]*=k}))}}
+    else if(pk>1){lv.forEach(a=>a.forEach(x=>{for(let i=0;i<x.length;i++)x[i]/=pk*1.01}))}
+    const oc=voiceMono&&ch.length>1?Math.min(2,ch.length):src.length;
+    const b=ctx.createBuffer(NL*oc,n,sr);for(let li=0;li<NL;li++)for(let ci=0;ci<oc;ci++)b.copyToChannel(lv[li][voiceMono?0:ci],li*oc+ci);
+    cln.lv=LVL;cln.nch=oc;cln.buf=b;cln.src=ch;cln.ab="clean";cln.busy=false;cln.stale=false;
+    {const m=clnOut(),a=clnSnr(ch[0]),c=clnSnr(m[0]);if(a!==null&&c!==null)notes.push("diferencia entre voz y ruido de fondo: "+Math.round(a)+" dB antes → "+Math.round(c)+" dB ahora (con la barrita donde está)")}
+    clnSet("Listo en "+Math.max(1,Math.round((Date.now()-t0)/1000))+" s · apretá Play y mové la barrita «Ruido a sacar» mientras suena"+(notes.length?" · "+notes.join(", "):"")+".","ok");clnUI()}
   catch(e){if(cln.tok===tok){cln.busy=false;clnUI();clnSet("","");note("Limpiar audio: "+(e&&e.message?e.message:e),"error","kar",10000)}}}
+function clnW(){const v=(+$("clnv").value)/100,L=cln.lv||[0],w=new Array(L.length).fill(0);if(L.length===1){w[0]=1;return w}
+  let i=0;while(i<L.length-2&&v>L[i+1])i++;const a=L[i],b=L[i+1],t=Math.max(0,Math.min(1,(v-a)/(b-a)));w[i]=1-t;w[i+1]=t;return w}
+function clnOut(){ // audio limpio con la barrita donde está: mezcla de los dos niveles vecinos
+  const b=cln.buf,L=cln.lv.length,nch=cln.nch,w=clnW(),n=b.length,o=[];
+  for(let ci=0;ci<nch;ci++){const y=new Float32Array(n);for(let li=0;li<L;li++){if(!w[li])continue;const a=b.getChannelData(li*nch+ci),g=w[li];for(let i=0;i<n;i++)y[i]+=g*a[i]}o.push(y)}
+  return o}
+function clnGains(now){if(!cln.nodes)return;const w=clnW(),t=ctx.currentTime;cln.nodes.forEach((row,li)=>row.forEach(g=>{if(now)g.gain.value=w[li];else g.gain.setTargetAtTime(w[li],t,.03)}))}
 function clnGraph(){
   if(cln.src!==ed.ch||!cln.buf){clnOff(true);note("Limpiar audio: el audio cambió, volvé a limpiarlo.","warn","kar",5000);return null}
-  if(cln.ab!=="clean")return null;const g=ctx.createGain();g.connect(busEd);return{buf:cln.buf,in:g}}
-function clnUI(){const ok=cln.on&&!!cln.buf&&!cln.busy;["clab","clnew","cldl","clok"].forEach(i=>{$(i).disabled=!ok});$("clgo").disabled=!cln.on||cln.busy;["clnr","clnh","clne","clns","clnv"].forEach(i=>{$(i).disabled=cln.busy});
+  if(cln.ab!=="clean")return null;
+  const L=cln.lv.length,nch=cln.nch,sp=ctx.createChannelSplitter(L*nch),mg=ctx.createChannelMerger(2);cln.nodes=[];
+  for(let li=0;li<L;li++){const row=[];for(let ci=0;ci<nch;ci++){const g=ctx.createGain();sp.connect(g,li*nch+ci);if(nch===1){g.connect(mg,0,0);g.connect(mg,0,1)}else g.connect(mg,0,ci);row.push(g)}cln.nodes.push(row)}
+  mg.connect(busEd);clnGains(true);return{buf:cln.buf,in:sp}}
+
+function clnUI(){const ok=cln.on&&!!cln.buf&&!cln.busy;["clab","clnew","cldl","clok"].forEach(i=>{$(i).disabled=!ok});$("clgo").disabled=!cln.on||cln.busy;["clnr","clnh","clne","clns"].forEach(i=>{$(i).disabled=cln.busy});$("clnv").disabled=false;
   $("clns").parentNode.hidden=!(LK.ok&&LK.h&&LK.h.karaoke);$("clab").textContent="Escuchando: "+(cln.ab==="clean"?"limpio":"original");$("clab").classList.toggle("on",cln.ab==="clean");$("edcln").classList.toggle("sel",cln.on);$("edcln").setAttribute("aria-pressed",cln.on?"true":"false")}
 function clnOff(silent){cln.tok++;if(cln.job){const j=cln.job;cln.job=null;hfetch(HELPER+"/separar/cancelar?id="+j).catch(()=>{}).finally(()=>hfetch(HELPER+"/separar/fin?id="+j).catch(()=>{}))}
-  if(cln.on&&ed.src&&!silent)edStop();cln.on=false;cln.busy=false;cln.buf=null;cln.ch=null;$("edclnb").hidden=true;clnUI();karaUI()}
+  if(cln.on&&ed.src&&!silent)edStop();cln.on=false;cln.busy=false;cln.buf=null;cln.nodes=null;$("edclnb").hidden=true;clnUI();karaUI()}
 function clnOpen(){
   if(!ed.it){note("Limpiar audio: primero abrí un audio en el editor.","warn","kar",4000);return}
   if(cln.on){clnOff();return}
   edStop();karaOff(true);if(stm.on)stmOff(true);cln.on=true;cln.src=ed.ch;cln.ab="clean";cln.buf=null;$("edclnb").hidden=false;clnSet("Elegí qué limpiar y apretá «Limpiar». El audio original no se toca hasta que apliques el resultado.","");clnUI()}
 function clnToggleAB(){if(!cln.buf)return;let pos=ed.cur;const playing=!!ed.src;if(playing)pos=Math.round(ed.from+(ctx.currentTime-ed.t0)*ed.sr);
   cln.ab=cln.ab==="clean"?"orig":"clean";clnUI();if(playing){edStop();ed.cur=Math.max(0,Math.min(edN()-1,pos));edPlay()}}
-function clnApply(){if(!cln.on||!cln.ch||cln.busy||cln.src!==ed.ch)return;edStop();
-  edPush();ed.ch=cln.ch.map((c,i,a)=>(i>0&&c===a[0])?new Float32Array(a[0]):new Float32Array(c)).concat(ed.ch.slice(cln.ch.length).map(x=>new Float32Array(x)));ed.dirty=true;clnOff(true);edInfo();edDraw();
-  note("Audio limpio aplicado al editor. Ctrl+Z lo deshace; el diskette guarda.","info","kar",7000)}
+function clnApply(){if(!cln.on||!cln.buf||cln.busy||cln.src!==ed.ch)return;edStop();const m=clnOut();
+  edPush();ed.ch=m.map(c=>c).concat(ed.ch.slice(m.length).map(x=>new Float32Array(x)));ed.dirty=true;clnOff(true);edInfo();edDraw();
+  note("Audio limpio aplicado al editor ("+$("clnv").value+" % de ruido sacado). Ctrl+Z lo deshace; el diskette guarda.","info","kar",7000)}
 async function clnNew(){
-  if(!cln.on||!cln.ch||cln.busy||cln.src!==ed.ch||!ed.it)return;const prot=isProt(ed.it.blob),base=nice(ed.it.name).replace(/[\\/:*?"<>|]/g,"").trim(),def=(base+" · limpio").slice(0,60);
-  const nm0=await askName("Crear audio nuevo","Se crea un botón nuevo con el audio limpio de «"+base+"». El audio original no se modifica.",def,"Crear",60);if(!nm0)return;
+  if(!cln.on||!cln.buf||cln.busy||cln.src!==ed.ch||!ed.it)return;const prot=isProt(ed.it.blob),base=nice(ed.it.name).replace(/[\\/:*?"<>|]/g,"").trim(),def=(base+" · limpio").slice(0,60);
+  const nm0=await askName("Crear audio nuevo","Se crea un botón nuevo con el audio limpio de «"+base+"» tal como lo estás escuchando ("+$("clnv").value+" % de ruido sacado). El audio original no se modifica.",def,"Crear",60);if(!nm0)return;
   const cl=nm0.replace(/[\\/:*?"<>|]/g,"").trim()||def;let nm=cl+".wav",q=2;while(items.some(i=>i.name===nm))nm=cl+" ("+(q++)+").wav";
-  const blob=karaWav(cln.ch,ed.sr);if(prot)PROT.add(blob);const before=items.length;await add(nm,blob);if(items.length===before)return;render();save();
+  const blob=karaWav(clnOut(),ed.sr);if(prot)PROT.add(blob);const before=items.length;await add(nm,blob);if(items.length===before)return;render();save();
   note("Botón creado: «"+nice(nm)+"» ("+fmtMB(blob.size)+"). El original quedó igual."+(prot?" Es de un audio protegido: no se puede descargar.":""),"info","kar",8000)}
-function clnDl(){if(!cln.on||!cln.ch||cln.busy||cln.src!==ed.ch||!ed.it)return;if(isProt(ed.it.blob)){protNote();return}
-  exportDlg({name:(nice(ed.it.name)+" · limpio").replace(/[\\/:*?"<>|]/g,"").slice(0,80)||"audio",ch:cln.ch,sr:ed.sr,blob:karaWav(cln.ch.slice(0,1),ed.sr)})}
+function clnDl(){if(!cln.on||!cln.buf||cln.busy||cln.src!==ed.ch||!ed.it)return;if(isProt(ed.it.blob)){protNote();return}
+  const m=clnOut();exportDlg({name:(nice(ed.it.name)+" · limpio").replace(/[\\/:*?"<>|]/g,"").slice(0,80)||"audio",ch:m,sr:ed.sr,blob:karaWav(m.slice(0,1),ed.sr)})}
 $("edcln").addEventListener("click",clnOpen);$("clgo").addEventListener("click",clnGo);$("clab").addEventListener("click",clnToggleAB);$("clok").addEventListener("click",clnApply);$("clnew").addEventListener("click",clnNew);$("cldl").addEventListener("click",clnDl);$("clx").addEventListener("click",()=>clnOff());
-$("clnv").addEventListener("input",()=>{$("clnvt").textContent=$("clnv").value+" %"});
-["clnr","clnh","clne","clns","clnv"].forEach(i=>$(i).addEventListener("change",()=>{if(cln.buf&&!cln.busy)clnSet("Cambiaste las opciones: apretá «Limpiar» para aplicarlas. Lo que se escucha ahora es el resultado anterior.","")}));
+$("clnv").addEventListener("input",()=>{$("clnvt").textContent=$("clnv").value+" %";clnGains(false)});
+["clnr","clnh","clne","clns"].forEach(i=>$(i).addEventListener("change",()=>{if(cln.buf&&!cln.busy)clnSet("Cambiaste las opciones: apretá «Limpiar» para aplicarlas. Lo que se escucha ahora es el resultado anterior.","")}));
 
 /* ---------- v2.42 · MIDI: disparar los botones con un controlador físico (pads, teclado, botonera MIDI) ---------- */
 const MIDI={ok:!!(navigator.requestMIDIAccess),acc:null,on:false,ins:new Map(),map:{},glob:{},last:"",learn:null,down:new Set(),hitT:0};
