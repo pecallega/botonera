@@ -1234,11 +1234,35 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 /* v2.40 · el ícono de micrófono no se pierde al pasar el mouse; barra superior un poco más grande */
 .fx #indev:hover,.fx #indev:focus{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bbb' stroke-width='2' stroke-linecap='round'><rect x='9' y='3' width='6' height='11' rx='3'/><path d='M5 11a7 7 0 0 0 14 0M12 18v3'/></svg>")!important;background-repeat:no-repeat!important;background-position:11px center!important;background-size:15px!important}
 @media (min-width:901px){#tbar{--k:1.4}#tbar.mini{--k:.82}#tbar #tbtx{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}#tbar #tbbar{min-width:40px}}
+
+/* v2.42 · MIDI */
+.mdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);flex:none;transition:background .12s,box-shadow .12s}
+#tbmi.on .mdot{background:#3dff7a;box-shadow:0 0 5px rgba(61,255,122,.8)}
+#tbmi.warn .mdot{background:#f2c230;box-shadow:0 0 5px rgba(242,194,48,.7)}
+#tbmi.hit .mdot{background:#fff;box-shadow:0 0 9px #fff}
+@media (min-width:901px){#tbar .mdot{width:calc(7px*var(--k));height:calc(7px*var(--k))}}
+#dlg .kmid{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:300 .72rem "JetBrains Mono",monospace;color:var(--mut);min-height:1.4em}
+#dlg .kmid button{padding:6px 10px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;cursor:pointer}
+#dlg .kmid button:hover{background:rgba(255,255,255,.12)}
+
+/* v2.43 · separar en pistas */
+#kapn{background:#0a0a0a;color:var(--ink);border:1px solid rgba(255,255,255,.28);font:inherit;font-size:.7rem;padding:6px 6px}
+#kapn[hidden]{display:none}
+.stg{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:6px 22px;flex:1 1 100%;order:5;margin:2px 0 4px}
+.stk{display:grid;grid-template-columns:62px minmax(60px,1fr) 44px 26px 26px;gap:8px;align-items:center;min-width:0}
+.stk input{min-width:0;width:100%}
+.stk i{font-style:normal;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase}
+.stk b{font:500 .66rem "JetBrains Mono",monospace;text-align:right;color:#3dff7a}
+.stk button{padding:3px 0;min-width:0;font:600 .62rem "JetBrains Mono",monospace;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer}
+.stk .sm.on{background:#e8232a;border-color:#e8232a;color:#fff}
+.stk .ss.on{background:#f2c230;border-color:#f2c230;color:#111}
+.stk.mute i,.stk.mute b{opacity:.4}
+.stk input:disabled{opacity:.4}
 </style>
 </head>
 <body class="booting">
 <div id="splash"><img class="lg" src="logo.png" alt="" onerror="this.parentNode.style.display='none'"><div class="spin" aria-hidden="true"></div><div class="pbar" aria-hidden="true"><i id="spbar"></i></div><div class="tx" id="sptx">Cargando…</div></div>
-<div id="tbar" role="toolbar" aria-label="Usuario, carpeta Media, sesión y listas"><img id="tblogo" src="logo.png" alt="" onerror="this.style.display='none'"><div id="tbled" role="img" aria-label="Estado"><span><i></i>USR</span><span><i></i>MED</span><span><i></i>HLP</span><span><i></i>AUD</span></div><div id="tbtx" aria-live="polite">Sistema OK</div><div id="tbbar" role="progressbar" aria-label="Estado del sistema"><b id="tbfill"></b></div><button type="button" class="tbb" id="tblang" aria-pressed="false" title="Idioma: Español. Tocá para pasar a English"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span class="lg">ES</span></button><button type="button" class="tbb" id="tbu" aria-haspopup="menu" aria-expanded="false" title="Usuario: cambiar, crear, mail o eliminar"><span class="av" id="tbav" aria-hidden="true"></span><span id="tbun">Principal</span><svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbm" aria-haspopup="menu" aria-expanded="false" title="Carpeta Media: tus audios y tu botonera guardados en tu compu"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Media<span class="tbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbs" aria-haspopup="menu" aria-expanded="false" title="Guardar o abrir una sesión, o limpiar la botonera"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Sesión<svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbl" aria-haspopup="menu" aria-expanded="false" title="Listas en vivo: crear o quitar (hasta 3)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>Listas<svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div><div id="tbmenu" role="menu" hidden></div><input type="file" id="avfile" accept="image/*" hidden>
+<div id="tbar" role="toolbar" aria-label="Usuario, carpeta Media, sesión y listas"><img id="tblogo" src="logo.png" alt="" onerror="this.style.display='none'"><div id="tbled" role="img" aria-label="Estado"><span><i></i>USR</span><span><i></i>MED</span><span><i></i>HLP</span><span><i></i>AUD</span></div><div id="tbtx" aria-live="polite">Sistema OK</div><div id="tbbar" role="progressbar" aria-label="Estado del sistema"><b id="tbfill"></b></div><button type="button" class="tbb" id="tblang" aria-pressed="false" title="Idioma: Español. Tocá para pasar a English"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span class="lg">ES</span></button><button type="button" class="tbb" id="tbu" aria-haspopup="menu" aria-expanded="false" title="Usuario: cambiar, crear, mail o eliminar"><span class="av" id="tbav" aria-hidden="true"></span><span id="tbun">Principal</span><svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbm" aria-haspopup="menu" aria-expanded="false" title="Carpeta Media: tus audios y tu botonera guardados en tu compu"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Media<span class="tbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbs" aria-haspopup="menu" aria-expanded="false" title="Guardar o abrir una sesión, o limpiar la botonera"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Sesión<svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbl" aria-haspopup="menu" aria-expanded="false" title="Listas en vivo: crear o quitar (hasta 3)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>Listas<svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button type="button" class="tbb" id="tbmi" aria-haspopup="menu" aria-expanded="false" title="MIDI: usar un controlador con pads o botones físicos para disparar la botonera"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="7" cy="12" r=".9" fill="currentColor"/><circle cx="8.6" cy="7.9" r=".9" fill="currentColor"/><circle cx="12" cy="6.2" r=".9" fill="currentColor"/><circle cx="15.4" cy="7.9" r=".9" fill="currentColor"/><circle cx="17" cy="12" r=".9" fill="currentColor"/></svg>MIDI<span class="mdot" aria-hidden="true"></span><svg class="ic cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div><div id="tbmenu" role="menu" hidden></div><input type="file" id="avfile" accept="image/*" hidden>
 <div id="sesbar"><button type="button" id="sesave" title="Guarda en un archivo los botones, posiciones, colores, teclas, listas y ajustes. No incluye audios: se vuelven a tomar de la carpeta"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Guardar sesión</button><button type="button" id="sesopen" title="Abre una sesión guardada y restaura botones, posiciones, colores y listas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Abrir sesión</button><button type="button" id="sesmed" title="Elegir una carpeta (Media) donde se copian tus audios y se guarda tu botonera, para tenerla siempre a mano"><i class="md" aria-hidden="true"></i>Media</button><button type="button" id="sesclr" title="Deja la botonera y las listas en cero. Las cortinas y los mensajes de las carpetas siempre se muestran"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>Limpiar botonera</button><input type="file" id="sesfile" accept=".json,application/json" hidden></div>
 <header>
   <div class="brand">
@@ -1375,8 +1399,18 @@ body.laydrag{cursor:grabbing!important;user-select:none}
       <label class="kf" title="Nivel de la música: 0 % la quita del todo, 100 % queda como en el original"><i>Música</i><input id="kam" type="range" min="0" max="150" step="1" value="100" aria-label="Nivel de la música" disabled><b id="kamt">100 %</b></label>
       <span class="kpre"><button id="kano" type="button" title="Voz al mínimo y música al 100 %: queda la base para cantar encima" disabled>Quitar voz</button><button id="kavo" type="button" title="Música al mínimo y voz al 100 %: queda solo la voz" disabled>Solo voz</button><button id="kaeq" type="button" title="Los dos faders al 100 %: suena igual que el original" disabled>100 / 100</button></span>
       <button id="kaia" type="button" hidden title="Separa con inteligencia artificial (Demucs, en el helper). Tarda más pero separa mucho mejor, y es lo único que sirve con audios mono">Separar con IA</button>
+      <select id="kapn" title="Cuántas pistas separar. 4 es la más prolija (voz, batería, bajo y todo lo demás). 6 además intenta separar guitarra y piano (la guitarra anda bien, el piano regular)" aria-label="Cantidad de pistas"><option value="6">6 pistas</option><option value="4">4 pistas</option></select>
+      <button id="kapi" type="button" hidden title="Separa la canción con IA en voz, batería, bajo, guitarra, piano y otros (en el helper). Después mezclás con faders, o creás un botón por pista">Separar en pistas</button>
       <button id="kaok" type="button" title="Deja el resultado de los faders como el audio del editor (se puede deshacer con Ctrl+Z) y cierra el karaoke" disabled>Aplicar al audio</button>
       <button id="kax" type="button" title="Cerrar el karaoke sin cambiar el audio">Cerrar</button>
+    </div>
+    <div class="edtools edkara" id="edstem" hidden>
+      <span class="edlab">Pistas</span>
+      <span class="kst" id="stst" role="status" aria-live="polite"></span>
+      <div class="stg" id="stg"></div>
+      <span class="kpre"><button id="stok" type="button" title="Deja la mezcla actual (con los faders, silencios y solos) como el audio del editor. Se puede deshacer con Ctrl+Z" disabled>Aplicar mezcla al audio</button>
+      <button id="stbt" type="button" title="Crea un botón nuevo por cada pista que se esté escuchando (usá M o S para elegir cuáles). Quedan en estéreo y sin tocar" disabled>Crear botones</button>
+      <button id="stx" type="button" title="Cerrar las pistas sin cambiar el audio">Cerrar</button></span>
     </div>
     <div class="edtools edsel"><span class="edlab">Selección</span><button id="edcopy" title="Copiar la selección (Ctrl+C)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar</button><button id="edcut" title="Cortar la selección (Ctrl+X)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>Cortar</button><button id="edpaste" title="Pegar en el cursor o reemplazando la selección (Ctrl+V)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>Pegar</button><button id="eddel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg>Borrar selección</button><button id="edselnew" title="Crear un botón nuevo solo con la selección"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>Selección → botón</button></div>
     <canvas id="edc" height="150"></canvas>
@@ -1385,7 +1419,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.41 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.41</span></footer>
+<footer id="sig" title="Versión 2.43 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.43</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1949,10 +1983,11 @@ $("cedit").addEventListener("click",()=>{const i=cmIdx;hideCm();edOpen(i)});
 /* cambiar la letra o número del botón sin pasar por el engranaje: se apreta la tecla nueva (si otro botón la tiene, se intercambian) */
 function askKey(idx){const it=items[idx];if(!it)return;
   const w=document.createElement("div");w.id="dlg";
-  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Cambiar letra o número</b><p></p><div class="kbig" id="kbig"></div><p class="kerr" id="kerr"></p><div class="drow"><button class="dno">Cancelar</button><button class="dx" title="Deja el botón sin tecla asignada">Quitar tecla</button></div></div>';
+  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Cambiar letra o número</b><p></p><div class="kbig" id="kbig"></div><p class="kerr" id="kerr"></p><div class="kmid" id="kmid"></div><div class="drow"><button class="dno">Cancelar</button><button class="dx" title="Deja el botón sin tecla asignada">Quitar tecla</button></div></div>';
   w.querySelector("p").textContent="Apretá en el teclado la letra o el número nuevo para «"+nice(it.name)+"». Si otro botón ya la usa, se intercambian. Esc cancela.";
   const big=w.querySelector("#kbig"),err=w.querySelector("#kerr");big.textContent=it.key||"—";
-  const end=()=>{document.removeEventListener("keydown",kd,true);w.remove()};
+  const end=()=>{midiLearnOff();document.removeEventListener("keydown",kd,true);w.remove()};
+  midiDlg(it,w.querySelector("#kmid"),()=>{end();render();save()});
   function kd(e){e.preventDefault();e.stopImmediatePropagation();
     if(e.key==="Escape"){end();return}
     if(e.ctrlKey||e.altKey||e.metaKey||e.key==="Shift"||e.key==="Control"||e.key==="Alt"||e.key==="Meta")return;
@@ -2089,7 +2124,7 @@ function edFollow(it){if(!ed.dirty&&ed.it!==it){const i=items.indexOf(it);if(i>=
 const ed={hist:[],redo:[],clip:null,it:null,ch:null,sr:44100,sel:null,cur:0,src:null,t0:0,from:0,raf:0},edc=$("edc"),g2=edc.getContext("2d");
 const edN=()=>ed.ch[0].length;
 function edOpen(idx,quiet){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
-  edStop();if(typeof kar!=="undefined"&&kar.on)karaOff(true);ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
+  edStop();if(typeof kar!=="undefined"&&kar.on)karaOff(true);if(typeof stm!=="undefined"&&stm.on)stmOff(true);ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
   ed.marks=normMarks(it.marks).map(m=>({p:Math.round(m.t*ed.sr),k:m.k}));ed.sel=null;ed.cur=0;ed.dirty=false;ed.hist=[];ed.redo=[];ed.v0=0;ed.v1=edN();{const pr=isProt(it.blob),b=$("eddl");b.disabled=pr;if(pr){b.dataset.t=b.title;b.title="Audio protegido: no se puede descargar"}else if(b.dataset.t!==undefined)b.title=b.dataset.t}$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();if(!quiet){ACT="ed";$("ed").scrollIntoView({behavior:"smooth",block:"end"})}}
 function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
@@ -2236,6 +2271,7 @@ function edTrim(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i
    (igual en izquierda y derecha); lo que está más abierto o distinto en cada lado es la música. Se compara, bin a bin
    (STFT de 2048), qué tan igual es la izquierda y la derecha, y esa parte central (entre ~120 Hz y ~9 kHz) es la «voz».
    Música = original − voz, así que con los dos faders al 100 % suena exactamente igual que el original. */
+const stm={on:false,busy:false,tok:0,src:null,buf:null,sch:2,k:[],g:[],m:[],s:[],nk:6,orig:2,job:null,nodes:null,live:false,cache:new WeakMap()};
 const kar={on:false,busy:false,tok:0,src:null,buf:null,gV:1,gM:1,live:false,nodes:null,job:null,mono:false,cache:new WeakMap(),cacheIA:new WeakMap()};
 function karaFFT(N){const rev=new Uint32Array(N),cs=new Float64Array(N/2),sn=new Float64Array(N/2);let b=0;for(let m=N;m>1;m>>=1)b++;
   for(let i=0;i<N;i++){let x=i,y=0;for(let j=0;j<b;j++){y=(y<<1)|(x&1);x>>=1}rev[i]=y}
@@ -2264,9 +2300,10 @@ async function karaSep(L,R,sr,prog,tok){
 function karaSet(msg,cls){const e=$("kast");e.textContent=msg;e.className="kst"+(cls?" "+cls:"")}
 function karaUI(){const ok=kar.on&&!!kar.buf&&!kar.busy;["kav","kam","kano","kavo","kaeq","kaok"].forEach(i=>{$(i).disabled=!ok});
   $("kavt").textContent=Math.round(kar.gV*100)+" %";$("kamt").textContent=Math.round(kar.gM*100)+" %";$("kav").value=Math.round(kar.gV*100);$("kam").value=Math.round(kar.gM*100);
-  const ia=$("kaia");ia.hidden=!(LK.ok&&LK.h&&LK.h.karaoke);ia.disabled=!kar.on||kar.busy;const b=$("edkar");b.classList.toggle("sel",kar.on);b.setAttribute("aria-pressed",kar.on?"true":"false")}
+  const ia=$("kaia");ia.hidden=!(LK.ok&&LK.h&&LK.h.karaoke);ia.disabled=!kar.on||kar.busy;{const pi=$("kapi"),pn=$("kapn");pi.hidden=ia.hidden;pn.hidden=ia.hidden;pi.disabled=pn.disabled=!kar.on||kar.busy}const b=$("edkar");b.classList.toggle("sel",kar.on||stm.on);b.setAttribute("aria-pressed",kar.on||stm.on?"true":"false")}
 function karaGains(){const nd=kar.nodes;if(!nd||!kar.live)return;const t=ctx.currentTime;nd.gV.gain.setTargetAtTime(kar.gV,t,.012);nd.gML.gain.setTargetAtTime(kar.gM,t,.012);nd.gMR.gain.setTargetAtTime(kar.gM,t,.012)}
 function karaGraph(){
+  if(stm.on)return stmGraph();
   if(!kar.on)return null;
   if(kar.src!==ed.ch||!kar.buf){karaOff(true);note("Karaoke: el audio cambió, volvé a apretar Karaoke para separarlo de nuevo.","warn","kar",5000);return null}
   const sp=ctx.createChannelSplitter(3),mg=ctx.createChannelMerger(2),gV=ctx.createGain(),gML=ctx.createGain(),gMR=ctx.createGain();
@@ -2276,6 +2313,7 @@ function karaGraph(){
 function karaOff(silent){kar.tok++;if(kar.job){const j=kar.job;kar.job=null;hfetch(HELPER+"/separar/cancelar?id="+j).catch(()=>{}).finally(()=>hfetch(HELPER+"/separar/fin?id="+j).catch(()=>{}))}kar.mono=false;if(kar.on&&kar.live&&ed.src&&!silent)edStop();kar.on=false;kar.busy=false;kar.live=false;kar.nodes=null;$("edkara").hidden=true;karaUI()}
 async function karaOpen(){
   if(!ed.it){note("Karaoke: primero abrí un audio en el editor.","warn","kar",4000);return}
+  if(stm.on){stmOff();return}
   if(kar.on){karaOff();return}
   const hasIA=!!(LK.ok&&LK.h&&LK.h.karaoke);
   if(kar.cacheIA.has(ed.ch)){karaIA();return} // ya se separó con IA antes: se reutiliza
@@ -2393,7 +2431,7 @@ function edSave(asNew){const it=ed.it;if(!it)return;edStop();const n=edN();if(!n
     if(colors[old])colors[nm]=colors[old];items.splice(items.indexOf(it)+1,0,n2);const sec=(n/ed.sr).toFixed(2);edClose(true);render();save();note("Botón nuevo creado: «"+nice(nm)+"» ("+sec+" s). El botón original no se modificó.","info","",8000);return}
   if(it.base){hidden.add(old);try{localStorage.setItem(HK,JSON.stringify([...hidden]))}catch(e){}it.base=false}
   if(colors[old]){colors[nn]=colors[old];delete colors[old]}
-  it.marks=ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined;it.name=nn;it.blob=wavP(ed.ch,ed.sr,it.blob);it.buffer=buf;it.peaks=peaks(buf,48);const sec2=(n/ed.sr).toFixed(2),sr2=ed.sr;edClose(true);render();save();note("Guardado en «"+nice(nn)+"» ("+sec2+" s, WAV 16-bit, "+sr2+" Hz). Se reemplazó el audio anterior de este botón.","info","",8000)}
+  it.marks=ed.marks.length?ed.marks.map(m=>({t:m.p/ed.sr,k:m.k})):undefined;midiRen(it.name,nn);it.name=nn;it.blob=wavP(ed.ch,ed.sr,it.blob);it.buffer=buf;it.peaks=peaks(buf,48);const sec2=(n/ed.sr).toFixed(2),sr2=ed.sr;edClose(true);render();save();note("Guardado en «"+nice(nn)+"» ("+sec2+" s, WAV 16-bit, "+sr2+" Hz). Se reemplazó el audio anterior de este botón.","info","",8000)}
 function edClose(force){if(!force&&ed.dirty&&!confirm("¿Cerrar sin guardar los cambios?"))return;edStop();ed.it=null;ed.ch=null;ed.dirty=false;ed.hist=[];ed.redo=[];$("ed").classList.remove("open")}
 const HAND=new Path2D("M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15");
 let mkDrag=null;
@@ -3341,7 +3379,7 @@ $("lkurl").addEventListener("keydown",e=>{if(!sugEl||sugCur()!==$("lkurl"))retur
 window.addEventListener("resize",sugPlace);
 
 /* ---------- v1.82 · guardar / abrir sesión: SOLO datos (nombres, orden, colores, teclas, marcas, listas, ajustes). Nunca incluye audio ---------- */
-const SES_SKIP=/^botonera_(htoken|helper|repo|users|user|vout)$|^botonera_hidden/;
+const SES_SKIP=/^botonera_(htoken|helper|repo|users|user|vout|midi_on)$|^botonera_hidden/;
 function sesBuild(){
   const lists=PLISTS.map(L=>({n:L.n,solo:!!L.solo,rows:L.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,color:r.color||null,cues:r.cues||[]})}));
   const ls={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^botonera_/.test(k)&&!SES_SKIP.test(k))ls[k]=localStorage.getItem(k)}}catch(e){}
@@ -3584,6 +3622,7 @@ function tbItems(k){
     I.push({i:"plus",t:"Nueva lista",off:vis.length>=PLMAX&&!PLISTS[0].closed,fn:plNewClick});
     if(vis.length>1||(vis.length===1&&PLISTS.length>1))I.push({sep:1});
     vis.forEach(L=>I.push({i:"off",t:"Quitar «"+plTitle(L)+"»",del:1,off:vis.length<=1,fn:()=>plRemove(L)}))}
+  else if(k==="i")midiItems(I);
   return I}
 function tbOpen(k,btn){
   if(TB.mn===k){tbClose();return}tbClose();const m=$("tbmenu");TB.mn=k;m.textContent="";
@@ -3596,10 +3635,10 @@ function tbOpen(k,btn){
   m.hidden=false;btn.setAttribute("aria-expanded","true");$("tbar").classList.add("open");
   const r=btn.getBoundingClientRect();m.style.top=(r.bottom+4)+"px";m.style.left=Math.max(8,Math.min(r.left,innerWidth-m.offsetWidth-8))+"px";
   const f=m.querySelector(".tm:not(:disabled)");if(f)f.focus({preventScroll:true})}
-[["tbu","u"],["tbm","m"],["tbs","s"],["tbl","l"]].forEach(([id,k])=>$(id).addEventListener("click",e=>{e.stopPropagation();tbOpen(k,$(id))}));
+[["tbu","u"],["tbm","m"],["tbs","s"],["tbl","l"],["tbmi","i"]].forEach(([id,k])=>$(id).addEventListener("click",e=>{e.stopPropagation();tbOpen(k,$(id))}));
 document.addEventListener("pointerdown",e=>{if(TB.mn&&!e.target.closest("#tbmenu,#tbar"))tbClose()},true);
 document.addEventListener("keydown",e=>{if(!TB.mn)return;
-  if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();const b=$({u:"tbu",m:"tbm",s:"tbs",l:"tbl"}[TB.mn]);tbClose();if(b)b.focus()}
+  if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();const b=$({u:"tbu",m:"tbm",s:"tbs",l:"tbl",i:"tbmi"}[TB.mn]);tbClose();if(b)b.focus()}
   else if(e.key==="ArrowDown"||e.key==="ArrowUp"){const L=[...$("tbmenu").querySelectorAll(".tm:not(:disabled)")];if(!L.length)return;e.preventDefault();e.stopImmediatePropagation();
     const i=L.indexOf(document.activeElement);L[(i+(e.key==="ArrowDown"?1:L.length-1)+(i<0?1:0))%L.length].focus()}},true);
 window.addEventListener("resize",tbClose);
@@ -4941,8 +4980,173 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
   const big=()=>{hov=true;touched=false;apply()};
   document.addEventListener("pointerdown",work,true);document.addEventListener("focusin",work,true);
   tb.addEventListener("pointerenter",big);tb.addEventListener("pointerdown",big);tb.addEventListener("focusin",big);
-  tb.addEventListener("transitionend",e=>{if(e.propertyName!=="height"||typeof TB==="undefined"||!TB.mn)return;const m=document.getElementById("tbmenu"),bt=document.getElementById({u:"tbu",m:"tbm",s:"tbs",l:"tbl"}[TB.mn]);if(m&&!m.hidden&&bt)m.style.top=(bt.getBoundingClientRect().bottom+4)+"px"});
+  tb.addEventListener("transitionend",e=>{if(e.propertyName!=="height"||typeof TB==="undefined"||!TB.mn)return;const m=document.getElementById("tbmenu"),bt=document.getElementById({u:"tbu",m:"tbm",s:"tbs",l:"tbl",i:"tbmi"}[TB.mn]);if(m&&!m.hidden&&bt)m.style.top=(bt.getBoundingClientRect().bottom+4)+"px"});
   limit()})();
+
+/* ---------- v2.43 · separar en pistas con IA (Demucs 4 o 6 pistas, en el helper) ---------- */
+const STN={voz:"Voz",bateria:"Batería",bajo:"Bajo",guitarra:"Guitarra",piano:"Piano",otros:"Otros"};
+const STO={4:["voz","bateria","bajo","otros"],6:["voz","bateria","bajo","guitarra","piano","otros"]};
+const stmG=i=>{const so=stm.s.some(Boolean);return (so?stm.s[i]:!stm.m[i])?stm.g[i]:0};
+function stmSet(msg,cls){const e=$("stst");e.textContent=msg;e.className="kst"+(cls?" "+cls:"")}
+function stmBuild(){const g=$("stg");g.textContent="";
+  stm.k.forEach((k,i)=>{const r=document.createElement("div");r.className="stk";r.dataset.i=i;
+    r.innerHTML='<i></i><input type="range" min="0" max="150" step="1" value="100"><b>100 %</b><button type="button" class="sm" title="Silenciar esta pista">M</button><button type="button" class="ss" title="Escuchar solo esta pista (varias solos se suman)">S</button>';
+    r.querySelector("i").textContent=STN[k]||k;g.appendChild(r)})}
+function stmUI(){const ok=stm.on&&!!stm.buf&&!stm.busy;["stok","stbt"].forEach(i=>{$(i).disabled=!ok});
+  document.querySelectorAll("#stg .stk").forEach(r=>{const i=+r.dataset.i,inp=r.querySelector("input");inp.disabled=!ok;inp.value=Math.round(stm.g[i]*100);r.querySelector("b").textContent=Math.round(stm.g[i]*100)+" %";
+    r.querySelector(".sm").classList.toggle("on",!!stm.m[i]);r.querySelector(".ss").classList.toggle("on",!!stm.s[i]);r.classList.toggle("mute",stmG(i)===0)});
+  $("edkar").classList.toggle("sel",kar.on||stm.on)}
+function stmGains(now){if(!stm.nodes)return;const t=ctx.currentTime;stm.nodes.forEach((a,i)=>a.forEach(g=>{if(now)g.gain.value=stmG(i);else g.gain.setTargetAtTime(stmG(i),t,.012)}))}
+function stmGraph(){
+  if(stm.src!==ed.ch||!stm.buf){stmOff(true);note("Pistas: el audio cambió, volvé a separar en pistas.","warn","kar",5000);return null}
+  const nk=stm.k.length,sch=stm.sch,sp=ctx.createChannelSplitter(nk*sch),mg=ctx.createChannelMerger(2);stm.nodes=[];
+  for(let i=0;i<nk;i++){
+    if(sch===2){const gl=ctx.createGain(),gr=ctx.createGain();sp.connect(gl,i*2);sp.connect(gr,i*2+1);gl.connect(mg,0,0);gr.connect(mg,0,1);stm.nodes.push([gl,gr])}
+    else{const g=ctx.createGain();sp.connect(g,i);g.connect(mg,0,0);g.connect(mg,0,1);stm.nodes.push([g])}}
+  mg.connect(busEd);stm.live=true;stmGains(true);return{buf:stm.buf,in:sp}}
+function stmOff(silent){stm.tok++;if(stm.job){const j=stm.job;stm.job=null;hfetch(HELPER+"/separar/cancelar?id="+j).catch(()=>{}).finally(()=>hfetch(HELPER+"/separar/fin?id="+j).catch(()=>{}))}
+  if(stm.on&&stm.live&&ed.src&&!silent)edStop();stm.on=false;stm.busy=false;stm.live=false;stm.nodes=null;$("edstem").hidden=true;stmUI();karaUI()}
+function stmFin(c){if(c&&c.job)hfetch(HELPER+"/separar/fin?id="+encodeURIComponent(c.job)).catch(()=>{})}
+async function stmRun(){
+  if(!ed.it)return;
+  if(!(LK.ok&&LK.h&&LK.h.karaoke)){note("Pistas: el helper no tiene Demucs instalado. Ejecutá instalar-karaoke-ia.bat (una sola vez) y reabrí el helper.","warn","kar",10000);return}
+  if(!LK.h.kara_stems){note("Para separar en pistas hace falta el helper v1.14 o más nuevo: reemplazá botonera-helper.py y abrilo de nuevo.","warn","kar",10000);return}
+  const nk=+$("kapn").value===4?4:6;edStop();karaOff(true);if(stm.on)stmOff(true);
+  const ch=ed.ch,sr=ed.sr,tok=++stm.tok;
+  stm.on=true;stm.src=ch;stm.busy=true;stm.buf=null;stm.nodes=null;stm.live=false;stm.nk=nk;stm.k=STO[nk];stm.orig=ch.length;
+  stm.g=stm.k.map(()=>1);stm.m=stm.k.map(()=>false);stm.s=stm.k.map(()=>false);stmBuild();$("edstem").hidden=false;stmUI();
+  const hit=stm.cache.get(ch);
+  if(hit&&hit.nk===nk){stm.buf=hit.buf;stm.sch=hit.sch;stm.busy=false;stmSet("Listo (IA, "+nk+" pistas) · mové los faders, M silencia y S deja solo esa pista (también mientras suena)","ok");stmUI();return}
+  if(hit){stmFin(hit);stm.cache.delete(ch)}
+  stmSet("Enviando el audio al helper…","");let id=null;
+  try{
+    const wavBytes=ch[0].length*Math.min(2,ch.length)*2+44;
+    if(wavBytes>95*1048576&&!/^https?:\/\/(127\.0\.0\.1|localhost)/.test(HELPER))throw new Error("el audio es muy largo para mandarlo por el túnel (máximo unos 9 min en estéreo o 18 min en mono). Cortalo en el editor.");
+    if(nk===6&&!stm.warned&&(stm.warned=true))note("La primera vez con 6 pistas el helper baja un modelo nuevo (unos 55 MB) y necesita internet. Dejá esta pestaña abierta.","info","kar",9000);
+    const res=await hfetch(HELPER+"/separar?pistas="+nk,{method:"POST",body:karaWav(ch.slice(0,2),sr),headers:{"Content-Type":"application/octet-stream"}});
+    if(!res.ok){let m="";try{m=(await res.json()).error}catch(e){}throw new Error(m||("HTTP "+res.status))}
+    id=(await res.json()).id;stm.job=id;if(stm.tok!==tok)return;
+    for(;;){await new Promise(ok=>setTimeout(ok,1000));if(stm.tok!==tok)return;
+      const st=await(await hfetch(HELPER+"/separar/estado?id="+encodeURIComponent(id))).json();
+      if(st.error)throw new Error(st.error);if(st.state==="error")throw new Error(st.msg||"falló la separación");if(st.state==="cancelado")return;if(st.state==="listo")break;
+      stmSet(st.state==="separando"?"Separando en "+nk+" pistas con IA… "+st.pct+" %"+(st.dev?" · "+st.dev:"")+(st.eta>0?" · faltan unos "+(st.eta>=90?Math.round(st.eta/60)+" min":Math.max(10,Math.round(st.eta/10)*10)+" s"):(st.el>0?" · "+(st.el>=90?Math.round(st.el/60)+" min":st.el+" s")+" hasta ahora":"")):"Preparando el audio…","")}
+    const n=ch[0].length,sch=n*nk*2<=160e6?2:1;let buf=ctx.createBuffer(nk*sch,n,sr);
+    for(let i=0;i<nk;i++){stmSet("Bajando pista "+(i+1)+" de "+nk+" ("+(STN[stm.k[i]]||stm.k[i])+")…","");
+      const r2=await hfetch(HELPER+"/separar/pista?id="+encodeURIComponent(id)+"&s="+stm.k[i]);if(!r2.ok)throw new Error("no se pudo bajar la pista "+stm.k[i]+" ("+r2.status+")");
+      const ab=await ctx.decodeAudioData(await r2.arrayBuffer());if(stm.tok!==tok||ed.ch!==ch)return;
+      if(sch===2){buf.copyToChannel(karaFit(ab.getChannelData(0),n),i*2);buf.copyToChannel(karaFit(ab.getChannelData(ab.numberOfChannels>1?1:0),n),i*2+1)}
+      else{const a0=karaFit(ab.getChannelData(0),n),a1=ab.numberOfChannels>1?karaFit(ab.getChannelData(1),n):a0,m=new Float32Array(n);for(let j=0;j<n;j++)m[j]=(a0[j]+a1[j])*.5;buf.copyToChannel(m,i)}}
+    if(stm.tok!==tok)return;
+    stm.buf=buf;stm.sch=sch;stm.busy=false;stm.job=null;stm.cache.set(ch,{nk,buf,sch,job:id});id=null;
+    stmSet("Listo (IA, "+nk+" pistas)"+(sch===1?" · audio largo: para escuchar y mezclar se usa mono (los botones sí salen en estéreo)":"")+" · mové los faders, M silencia y S deja solo esa pista","ok");stmUI()}
+  catch(e){if(stm.tok===tok){const j=id;stmOff(true);note("Pistas: "+(e&&e.message?e.message:e),"error","kar",12000);if(j)hfetch(HELPER+"/separar/fin?id="+encodeURIComponent(j)).catch(()=>{})}}}
+function stmApply(){if(!stm.on||!stm.buf||stm.busy||stm.src!==ed.ch)return;edStop();
+  const b=stm.buf,n=b.length,sch=stm.sch,nk=stm.k.length,L=new Float32Array(n),R=new Float32Array(n),inc=[];
+  for(let i=0;i<nk;i++){const g=stmG(i);if(!g)continue;inc.push(STN[stm.k[i]]||stm.k[i]);const a=b.getChannelData(i*sch),c=sch===2?b.getChannelData(i*sch+1):a;for(let j=0;j<n;j++){L[j]+=g*a[j];R[j]+=g*c[j]}}
+  if(!inc.length){note("Todas las pistas están en silencio: no hay nada que aplicar.","warn","kar",4000);return}
+  let pk=0;for(let j=0;j<n;j++){const x=Math.abs(L[j]),y=Math.abs(R[j]);if(x>pk)pk=x;if(y>pk)pk=y}
+  let k=1;if(pk>1){k=.99/pk;for(let j=0;j<n;j++){L[j]*=k;R[j]*=k}}
+  if(stm.orig<2){for(let j=0;j<n;j++)L[j]=(L[j]+R[j])*.5}
+  edPush();ed.ch=(stm.orig<2?[L]:[L,R]).concat(ed.ch.slice(2).map(x=>new Float32Array(x)));ed.dirty=true;stmOff(true);edInfo();edDraw();
+  note("Mezcla aplicada: "+inc.join(", ")+(k<1?" · se bajó "+(-20*Math.log10(k)).toFixed(1)+" dB para no distorsionar":"")+". Ctrl+Z la deshace; el diskette guarda.","info","kar",8000)}
+async function stmBtns(){
+  if(!stm.on||!stm.buf||stm.busy)return;const c=stm.cache.get(stm.src);
+  if(!c||!c.job){note("Las pistas ya no están en el helper (se reinició o pasó mucho tiempo). Separá de nuevo.","warn","kar",7000);return}
+  const sel=stm.k.map((k,i)=>stmG(i)>0?k:null).filter(Boolean);
+  if(!sel.length){note("No hay ninguna pista escuchándose. Activá alguna (sacá el M o usá S).","warn","kar",4000);return}
+  const base=nice(ed.it.name).replace(/[\\/:*?"<>|]/g,"").trim(),mb=Math.round(stm.src[0].length/ed.sr*44100*4*sel.length/1048576);
+  if(!await askDlg("Crear botones con las pistas","Se van a crear "+sel.length+" botones nuevos ("+sel.map(k=>STN[k]||k).join(", ")+") de «"+base+"», en estéreo y sin tocar. Ocupan unos "+mb+" MB en total. Los faders no se aplican: cada botón suena con su pista completa.","Crear"))return;
+  const tok=stm.tok;$("stbt").disabled=true;let made=0;
+  try{for(const k of sel){stmSet("Creando botón: "+(STN[k]||k)+"…","");
+    const r=await hfetch(HELPER+"/separar/pista?id="+encodeURIComponent(c.job)+"&s="+k);if(!r.ok)throw new Error("no se pudo bajar la pista "+k+" ("+r.status+")");
+    const blob=await r.blob();let nm=base+" · "+(STN[k]||k)+".wav",q=2;while(items.some(i=>i.name===nm))nm=base+" · "+(STN[k]||k)+" ("+(q++)+").wav";
+    const before=items.length;await add(nm,blob);if(items.length>before)made++}
+    if(made){render();save()}
+    note(made+" botones creados con las pistas de «"+base+"».","info","kar",8000)}
+  catch(e){if(made){render();save()}note("Pistas: "+(e&&e.message?e.message:e),"error","kar",10000)}
+  finally{if(stm.on&&stm.tok===tok){stmSet("Listo (IA, "+stm.nk+" pistas) · mové los faders, M silencia y S deja solo esa pista","ok");stmUI()}}}
+$("kapi").addEventListener("click",()=>{if(kar.on&&!kar.busy)stmRun()});
+$("stx").addEventListener("click",()=>stmOff());$("stok").addEventListener("click",stmApply);$("stbt").addEventListener("click",stmBtns);
+$("stg").addEventListener("input",e=>{const r=e.target.closest(".stk");if(!r||e.target.type!=="range")return;stm.g[+r.dataset.i]=+e.target.value/100;stmGains();stmUI()});
+$("stg").addEventListener("click",e=>{const b=e.target.closest("button"),r=e.target.closest(".stk");if(!b||!r||!stm.buf||stm.busy)return;const i=+r.dataset.i;
+  if(b.classList.contains("sm"))stm.m[i]=!stm.m[i];else if(b.classList.contains("ss"))stm.s[i]=!stm.s[i];else return;stmGains();stmUI()});
+$("stg").addEventListener("dblclick",e=>{const r=e.target.closest(".stk");if(r&&e.target.type==="range"){stm.g[+r.dataset.i]=1;stmGains();stmUI()}});
+/* ---------- v2.42 · MIDI: disparar los botones con un controlador físico (pads, teclado, botonera MIDI) ---------- */
+const MIDI={ok:!!(navigator.requestMIDIAccess),acc:null,on:false,ins:new Map(),map:{},glob:{},last:"",learn:null,down:new Set(),hitT:0};
+const MK_KEY="botonera_midi"+(PROF.active==="p0"?"":":"+PROF.active),MK_ON="botonera_midi_on";
+try{const o=JSON.parse(localStorage.getItem(MK_KEY)||"{}");MIDI.map=o.map||{};MIDI.glob=o.glob||{}}catch(e){}
+function midiSave(){try{localStorage.setItem(MK_KEY,JSON.stringify({map:MIDI.map,glob:MIDI.glob}))}catch(e){}try{MED.cfgSig="";medSync(false)}catch(e){}}
+const NN=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+function sigText(g){return g?(g.t==="n"?"Nota "+g.n+" ("+NN[g.n%12]+(Math.floor(g.n/12)-1)+")":"Control "+g.n)+" · canal "+(g.ch+1):""}
+const sigEq=(a,b)=>!!a&&!!b&&a.t===b.t&&a.ch===b.ch&&a.n===b.n;
+function midiRen(o,n){if(o!==n&&MIDI.map[o]){MIDI.map[n]=MIDI.map[o];delete MIDI.map[o];midiSave()}}
+function midiLearnOff(){MIDI.learn=null;clearTimeout(MIDI.lt)}
+function midiAssign(it,sg){let other=null;
+  for(const k of Object.keys(MIDI.map)){if(k!==it.name&&sigEq(MIDI.map[k],sg)){other=k;delete MIDI.map[k]}}
+  if(sigEq(MIDI.glob.stop,sg)){delete MIDI.glob.stop;other="Parar todo"}
+  MIDI.map[it.name]=sg;midiSave();
+  note("Botón «"+nice(it.name)+"»: "+sigText(sg)+(other?" (se le sacó a «"+nice(other)+"»)":"")+".","info","midi",4500)}
+function midiDlg(it,box,done){
+  const draw=()=>{box.textContent="";
+    if(!MIDI.ok){box.textContent="MIDI: este navegador no lo permite (usá Chrome o Edge en la compu).";return}
+    if(!MIDI.on){const b=document.createElement("button");b.type="button";b.textContent="Activar MIDI para usar un controlador";b.onclick=async()=>{await midiEnable();draw()};box.appendChild(b);return}
+    const sg=MIDI.map[it.name],sp=document.createElement("span");
+    sp.textContent=MIDI.ins.size?"…o tocá un pad de tu controlador MIDI"+(sg?" · ahora: "+sigText(sg):""):"MIDI activo, pero no hay ningún controlador conectado.";box.appendChild(sp);
+    if(sg){const q=document.createElement("button");q.type="button";q.textContent="Quitar MIDI";q.onclick=()=>{delete MIDI.map[it.name];midiSave();draw();note("Botón «"+nice(it.name)+"» sin MIDI.","info","midi",3500)};box.appendChild(q)}};
+  draw();if(MIDI.ok&&MIDI.on)MIDI.learn=sg=>{midiAssign(it,sg);if(done)done();else draw()}}
+function midiWire(){if(!MIDI.acc)return;MIDI.ins.clear();
+  MIDI.acc.inputs.forEach(inp=>{if(inp.state==="connected"){MIDI.ins.set(inp.id,inp.name||"Controlador");inp.onmidimessage=midiMsg}});midiUI()}
+async function midiEnable(quiet){
+  if(!MIDI.ok){note("Este navegador no permite MIDI. Usá Chrome o Edge en la compu (Safari y el iPhone no lo soportan).","warn","midi",8000);return false}
+  if(MIDI.acc){MIDI.on=true;midiWire();return true}
+  try{MIDI.acc=await navigator.requestMIDIAccess({sysex:false})}catch(e){if(!quiet)note("No se pudo activar MIDI ("+((e&&e.message)||e)+"). Si bloqueaste el permiso, habilitalo desde el candado de la barra de direcciones.","warn","midi",9000);return false}
+  MIDI.on=true;try{localStorage.setItem(MK_ON,"1")}catch(e){}
+  let first=true;MIDI.acc.onstatechange=ev=>{const was=new Set(MIDI.ins.keys());midiWire();
+    if(ev&&ev.port&&ev.port.type==="input"&&ev.port.state==="connected"&&!was.has(ev.port.id))note("Controlador MIDI conectado: "+(ev.port.name||"controlador")+".","info","midi",4000);
+    else if(ev&&ev.port&&ev.port.type==="input"&&ev.port.state==="disconnected")note("Controlador MIDI desconectado: "+(ev.port.name||"controlador")+".","warn","midi",5000)};
+  midiWire();if(!quiet)note(MIDI.ins.size?"MIDI activado: "+[...MIDI.ins.values()].join(", ")+".":"MIDI activado, pero no veo ningún controlador. Conectalo por USB y aparece solo.","info","midi",5500);return true}
+function midiOff(){MIDI.on=false;midiLearnOff();try{localStorage.setItem(MK_ON,"0")}catch(e){}
+  if(MIDI.acc)MIDI.acc.inputs.forEach(i=>{i.onmidimessage=null});MIDI.ins.clear();midiUI();note("MIDI apagado. Tus asignaciones quedan guardadas.","info","midi",4000)}
+function midiUI(){const b=$("tbmi");if(!b)return;b.classList.toggle("on",MIDI.on&&MIDI.ins.size>0);b.classList.toggle("warn",MIDI.on&&MIDI.ins.size===0);
+  b.title="MIDI: "+(!MIDI.ok?"este navegador no lo permite":!MIDI.on?"apagado":MIDI.ins.size?"conectado · "+[...MIDI.ins.values()].join(", "):"activo, sin controlador conectado")}
+function midiMsg(e){const d=e.data;if(!d||d.length<2||d[0]>=0xF0)return;
+  const st=d[0]&0xF0,ch=d[0]&15,n=d[1],v=d.length>2?d[2]:0;let sg=null,press=false;
+  if(st===0x90){sg={t:"n",ch,n};if(v>0)press=true;else MIDI.down.delete(sigKey(sg))}
+  else if(st===0x80){MIDI.down.delete(sigKey({t:"n",ch,n}));return}
+  else if(st===0xB0){sg={t:"c",ch,n};if(v>0){if(!MIDI.down.has(sigKey(sg))){MIDI.down.add(sigKey(sg));press=true}}else MIDI.down.delete(sigKey(sg))}
+  else return;
+  if(st===0x90&&press){if(MIDI.down.has(sigKey(sg)))return;MIDI.down.add(sigKey(sg))}
+  if(!press)return;
+  MIDI.last=sigText(sg);const b=$("tbmi");if(b){b.classList.add("hit");clearTimeout(MIDI.hitT);MIDI.hitT=setTimeout(()=>b.classList.remove("hit"),140)}
+  if(MIDI.learn){const f=MIDI.learn;f(sg);return}
+  if(ctx.state!=="running"){try{ctx.resume()}catch(x){}}
+  const nm=Object.keys(MIDI.map).find(k=>sigEq(MIDI.map[k],sg));
+  if(nm){const idx=items.findIndex(i=>i.name===nm&&!i.hid);if(idx>=0){toggle(idx);return}}
+  if(sigEq(MIDI.glob.stop,sg)){stopAll();return}
+  if(sigEq(MIDI.glob.old,sg)){stopOldest();return}}
+const sigKey=g=>g.t+g.ch+"."+g.n;
+function midiGlobal(key,label){
+  note("Tocá ahora el pad o botón del controlador para «"+label+"». (15 segundos)","info","midi",15000);
+  MIDI.learn=sg=>{midiLearnOff();for(const k of Object.keys(MIDI.map))if(sigEq(MIDI.map[k],sg))delete MIDI.map[k];
+    for(const k of Object.keys(MIDI.glob))if(sigEq(MIDI.glob[k],sg))delete MIDI.glob[k];
+    MIDI.glob[key]=sg;midiSave();note("«"+label+"»: "+sigText(sg)+".","info","midi",4500)};
+  clearTimeout(MIDI.lt);MIDI.lt=setTimeout(()=>{if(MIDI.learn){midiLearnOff();note("Se canceló la asignación (no llegó ninguna señal).","warn","midi",4000)}},15000)}
+function midiItems(I){
+  if(!MIDI.ok){I.push({h:"No disponible en este navegador"},{i:"link",t:"Por qué no está",fn:()=>note("MIDI funciona en Chrome y Edge de escritorio (y Android). Safari, Firefox y el iPhone no lo permiten.","warn","midi",9000)});return}
+  if(!MIDI.on){I.push({h:"MIDI apagado"},{i:"plus",t:"Activar MIDI",s:"pide permiso",fn:()=>midiEnable()});return}
+  I.push({h:MIDI.ins.size?"Conectado · "+[...MIDI.ins.values()].join(", "):"Sin controlador · conectalo por USB"});
+  I.push({i:"link",t:"Última señal",s:MIDI.last||"ninguna todavía",off:true});
+  I.push({sep:1},{i:"list",t:"Asignar a un botón",s:"clic derecho → letra",fn:()=>note("Para asignar: clic derecho en un botón → «Cambiar letra o número» y tocá el pad del controlador.","info","midi",9000)});
+  I.push({i:"off",t:"Parar todo",s:MIDI.glob.stop?sigText(MIDI.glob.stop):"asignar",fn:()=>midiGlobal("stop","Parar todo")},{i:"off",t:"Parar el más antiguo",s:MIDI.glob.old?sigText(MIDI.glob.old):"asignar",fn:()=>midiGlobal("old","Parar el más antiguo")});
+  const n=Object.keys(MIDI.map).length+Object.keys(MIDI.glob).length;
+  I.push({sep:1},{i:"trash",t:"Borrar asignaciones",s:n+"",del:1,off:!n,fn:async()=>{if(await askDlg("Borrar asignaciones MIDI","Se quitan las "+n+" asignaciones MIDI de este usuario. Las teclas no se tocan.","Borrar")){MIDI.map={};MIDI.glob={};midiSave();note("Asignaciones MIDI borradas.","info","midi",3500)}}},
+    {i:"off",t:"Apagar MIDI",fn:midiOff})}
+midiUI();
+if(MIDI.ok){let on="0";try{on=localStorage.getItem(MK_ON)||"0"}catch(e){}
+  if(on==="1"){const go=()=>midiEnable(true);
+    if(navigator.permissions&&navigator.permissions.query)navigator.permissions.query({name:"midi"}).then(p=>{if(p.state==="granted")go()}).catch(()=>{});else go()}}
+(function(){const D={"MIDI apagado":"MIDI off","Activar MIDI":"Turn MIDI on","pide permiso":"asks permission","Última señal":"Last signal","ninguna todavía":"none yet","Asignar a un botón":"Assign to a button","clic derecho → letra":"right-click → key","Parar todo":"Stop all","Parar el más antiguo":"Stop the oldest","asignar":"assign","Borrar asignaciones":"Clear assignments","Apagar MIDI":"Turn MIDI off","Por qué no está":"Why it is not available","No disponible en este navegador":"Not available in this browser","Quitar MIDI":"Remove MIDI","Activar MIDI para usar un controlador":"Turn MIDI on to use a controller","MIDI: usar un controlador con pads o botones físicos para disparar la botonera":"MIDI: use a controller with physical pads or buttons to trigger the soundboard"};
+  if(typeof I18_DIC!=="undefined")Object.keys(D).forEach(k=>I18_DIC.set(k,D[k]))})();
 </script>
 </body>
 </html>
