@@ -853,7 +853,9 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 .logo{transform:none}
 .brand{gap:22px clamp(40px,7vw,96px)}
 /* v2.35: el panel de delay/reverb se acerca al helper usando solo el lugar que sobra (nunca fuerza que el helper baje de renglón) */
-@media (min-width:1200px){.brand{gap:22px 40px;flex:1 1 auto;max-width:740px;justify-content:space-between}}
+@media (min-width:1200px){.brand{gap:22px 40px;flex:1 1 auto;max-width:740px;justify-content:space-between}
+/* v2.36: el logo ocupa todo el ancho libre a la izquierda del panel y acompaña el scroll hasta llegar a la botonera */
+.lb{position:sticky;top:46px;align-self:flex-start;width:150px;flex:1 1 150px;min-width:0;max-width:260px;overflow:visible}.lb .logo{width:100%;height:auto;transform:none}}
 #gbar .stop{padding:5px 10px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;gap:6px;flex:none}#gbar .stop svg{width:14px;height:14px}
 #tblogo{height:22px;width:auto;flex:none;filter:drop-shadow(0 0 4px rgba(232,35,42,.55))}
 .av{display:inline-block;flex:none;width:20px;height:20px;background:#1c1c20 center/cover no-repeat;border:1px solid rgba(255,255,255,.35)}
@@ -1350,7 +1352,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.35 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.35</span></footer>
+<footer id="sig" title="Versión 2.36 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.36</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
