@@ -1249,8 +1249,11 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 #kapn{background:#0a0a0a;color:var(--ink);border:1px solid rgba(255,255,255,.28);font:inherit;font-size:.7rem;padding:6px 6px}
 #kapn[hidden]{display:none}
 .stg{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:6px 22px;flex:1 1 100%;order:5;margin:2px 0 4px}
-.stk{display:grid;grid-template-columns:62px minmax(60px,1fr) 44px 26px 26px;gap:8px;align-items:center;min-width:0}
+.stk{display:grid;grid-template-columns:104px minmax(60px,1fr) 44px 26px 26px;gap:8px;align-items:center;min-width:0}
 .stk input{min-width:0;width:100%}
+.stnote{grid-column:1/-1;font:300 .6rem "JetBrains Mono",monospace;color:var(--mut)}
+.stl{display:flex;flex-direction:column;gap:1px;min-width:0}
+.stl small{font:300 .54rem/1.15 "JetBrains Mono",monospace;color:var(--mut);letter-spacing:0;text-transform:none}
 .stk i{font-style:normal;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase}
 .stk b{font:500 .66rem "JetBrains Mono",monospace;text-align:right;color:#3dff7a}
 .stk button{padding:3px 0;min-width:0;font:600 .62rem "JetBrains Mono",monospace;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer}
@@ -1273,6 +1276,23 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 #dlg .kmid .kms{font:700 1rem "Space Mono",monospace;color:#fff;text-align:center;padding:12px 8px;background:#050506;border:1px solid var(--line);word-break:break-word}
 #dlg .kmid .kms.no{color:var(--mut);font-weight:400;font-size:.9rem}
 #dlg .kmid .kmh{text-align:center}
+
+/* v2.46 · tecla y modo MIDI */
+#dlg .kbig.listen{animation:klis 1.4s ease-in-out infinite}
+@keyframes klis{0%,100%{border-color:var(--line)}50%{border-color:#3dff7a;box-shadow:0 0 10px rgba(61,255,122,.35)}}
+#gbar .mbtn{padding:5px 10px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;gap:7px;flex:none;display:inline-flex;align-items:center}
+#gbar .mbtn svg{width:14px;height:14px}
+#gbar .mbtn.on .mdot{background:#3dff7a;box-shadow:0 0 5px rgba(61,255,122,.8)}
+#gbar .mbtn.warn .mdot{background:#f2c230;box-shadow:0 0 5px rgba(242,194,48,.7)}
+#gbar .mbtn.hit .mdot{background:#fff;box-shadow:0 0 9px #fff}
+#gbar .mbtn.lm{background:#3dff7a;border-color:#3dff7a;color:#06140b}
+#gbar .mbtn.lm .mdot{background:#06140b;box-shadow:none}
+#gbar canvas{flex:1 1 90px;width:90px}
+.pad .mb{position:absolute;right:6px;bottom:4px;left:auto;top:auto;width:max-content;height:auto;line-height:1.3;display:block;z-index:3;font:600 .54rem "JetBrains Mono",monospace;letter-spacing:.04em;padding:1px 4px;background:rgba(0,0,0,.65);color:#7dffa6;border:1px solid rgba(125,255,166,.45);pointer-events:none}
+body.midilearn .pad{outline:1px dashed rgba(61,255,122,.7);outline-offset:-3px;cursor:crosshair}
+body.midilearn .pad.mlsel,body.midilearn #stop.mlsel{outline:2px solid #3dff7a;outline-offset:-2px;animation:mlp .9s ease-in-out infinite}
+body.midilearn #stop{outline:1px dashed rgba(61,255,122,.7);outline-offset:2px}
+@keyframes mlp{0%,100%{box-shadow:inset 0 0 0 0 rgba(61,255,122,0)}50%{box-shadow:inset 0 0 22px 0 rgba(61,255,122,.45)}}
 </style>
 </head>
 <body class="booting">
@@ -1370,7 +1390,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </header>
 <p id="msg"></p>
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
-<div id="stage"><div id="lstL"></div><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><button id="stop" class="stop" title="Parar todo" aria-label="Parar todo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Parar todo</button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*,.mpeg,.mpg,.mpga,.mp2,.mpa,.m2a" multiple></label><span class="av" id="gav" role="img" aria-label="Usuario activo"></span></div><div id="grid"></div></div>
+<div id="stage"><div id="lstL"></div><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><button id="stop" class="stop" title="Parar todo" aria-label="Parar todo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Parar todo</button><button type="button" id="gmidi" class="mbtn" title="MIDI: asignar pads de un controlador a los botones. Tocá este botón, después un botón de la botonera y por último el pad"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="7" cy="12" r=".9" fill="currentColor"/><circle cx="8.6" cy="7.9" r=".9" fill="currentColor"/><circle cx="12" cy="6.2" r=".9" fill="currentColor"/><circle cx="15.4" cy="7.9" r=".9" fill="currentColor"/><circle cx="17" cy="12" r=".9" fill="currentColor"/></svg>MIDI<span class="mdot" aria-hidden="true"></span></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*,.mpeg,.mpg,.mpga,.mp2,.mpa,.m2a" multiple></label><span class="av" id="gav" role="img" aria-label="Usuario activo"></span></div><div id="grid"></div></div>
 <div id="lstR"><aside id="pl" class="plp" aria-label="Lista de reproducción">
   <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span><button type="button" id="plnew" class="plb plnb" title="Agregar otra lista a la derecha (cada lista puede salir por su propia placa de sonido)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Lista</span></button><button type="button" id="plrm" class="plb plnb" hidden title="Quitar esta lista"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><button type="button" id="plshow" class="plb" title="Play actual: lleva la lista hasta el tema que suena o el que quedó elegido para reproducirse (Ctrl+A)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Play actual</span></button><button type="button" class="otag" id="otg-pl"></button></div>
   <div class="plact">
@@ -1434,7 +1454,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.44 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.44</span></footer>
+<footer id="sig" title="Versión 2.46 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.46</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1998,21 +2018,23 @@ $("cedit").addEventListener("click",()=>{const i=cmIdx;hideCm();edOpen(i)});
 /* cambiar la letra o número del botón sin pasar por el engranaje: se apreta la tecla nueva (si otro botón la tiene, se intercambian) */
 function askKey(idx){const it=items[idx];if(!it)return;
   const w=document.createElement("div");w.id="dlg";
-  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Teclado y MIDI del botón</b><p></p><div class="kcols"><section class="kcol"><h4>Teclado</h4><div class="kbig" id="kbig"></div><p class="khint">Apretá una letra o un número en el teclado</p><p class="kerr" id="kerr"></p><button type="button" class="kq dx" title="Deja el botón sin tecla asignada">Quitar tecla</button></section><section class="kcol"><h4>MIDI</h4><div class="kmid" id="kmid"></div></section></div><div class="drow"><button class="dno">Cerrar</button></div></div>';
+  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Teclado y MIDI del botón</b><p></p><div class="kcols"><section class="kcol"><h4>Teclado</h4><div class="kbig listen" id="kbig"></div><p class="khint" id="khint"></p><p class="kerr" id="kerr"></p><button type="button" class="kq dx" title="Deja el botón sin tecla asignada">Quitar tecla</button></section><section class="kcol"><h4>MIDI</h4><div class="kmid" id="kmid"></div></section></div><div class="drow"><button class="dno">Cerrar</button></div></div>';
   w.querySelector("p").textContent="Botón «"+nice(it.name)+"». Podés asignarle una tecla, un pad MIDI o las dos cosas. Si otro botón ya usa esa tecla o ese pad, se la saca o se intercambian. Esc cierra.";
   try{document.activeElement&&document.activeElement.blur()}catch(e){}
-  const big=w.querySelector("#kbig"),err=w.querySelector("#kerr");big.textContent=it.key||"—";
-  const end=()=>{midiLearnOff();MIDI.redraw=null;document.removeEventListener("keydown",kd,true);w.remove()};
+  const big=w.querySelector("#kbig"),err=w.querySelector("#kerr");big.textContent=it.key||"—";const hint=w.querySelector("#khint");hint.textContent=it.key?"Tecla actual: "+it.key+". Para cambiarla, apretá otra letra o número en el teclado.":"Sin tecla. Apretá una letra o un número en el teclado.";
+  const end=()=>{midiLearnOff();MIDI.redraw=null;window.removeEventListener("keydown",kd,true);w.remove()};
   midiDlg(it,w.querySelector("#kmid"),()=>{render();save()});
   function kd(e){e.preventDefault();e.stopImmediatePropagation();
     if(e.key==="Escape"){end();return}
     if(e.ctrlKey||e.altKey||e.metaKey||e.key==="Shift"||e.key==="Control"||e.key==="Alt"||e.key==="Meta")return;
     if(e.key==="Backspace"||e.key==="Delete"){end();it.key="";render();save();note("Botón «"+nice(it.name)+"» sin tecla asignada.","info","",3500);return}
-    if(e.key.length!==1)return;const k=e.key.toUpperCase();
+    let kc=e.key;if(!kc||kc.length!==1){const m=/^(?:Key([A-Z])|Digit(\d)|Numpad(\d))$/.exec(e.code||"");if(m)kc=m[1]||m[2]||m[3]}
+    if(!kc||kc.length!==1){err.textContent="«"+(e.key==="Process"||e.key==="Dead"?"esa tecla":e.key)+"» no se puede usar: probá con una letra o un número.";return}
+    const k=kc.toUpperCase();err.textContent="";
     if(!KEYS.includes(k)){err.textContent="«"+k+"» no se puede usar"+("CMIO".includes(k)?": C, M, I y O están reservadas para las marcas del editor.":": probá con una letra o un número.");return}
     const o=items.findIndex((x,n)=>n!==idx&&x.key===k);const other=o>=0?items[o]:null;
     end();assign(idx,k);note("Botón «"+nice(it.name)+"» ahora es la tecla "+k+(other?" (se intercambió con «"+nice(other.name)+"»)":"")+".","info","",4500)}
-  document.addEventListener("keydown",kd,true);
+  window.addEventListener("keydown",kd,true);
   w.querySelector(".dno").onclick=end;w.querySelector(".dx").onclick=()=>{end();it.key="";render();save();note("Botón «"+nice(it.name)+"» sin tecla asignada.","info","",3500)};
   w.addEventListener("pointerdown",e=>{if(e.target===w)end()});
   document.body.appendChild(w)}
@@ -2140,8 +2162,11 @@ function edFollow(it){if(!ed.dirty&&ed.it!==it){const i=items.indexOf(it);if(i>=
 const ed={hist:[],redo:[],clip:null,it:null,ch:null,sr:44100,sel:null,cur:0,src:null,t0:0,from:0,raf:0},edc=$("edc"),g2=edc.getContext("2d");
 const edN=()=>ed.ch[0].length;
 function edOpen(idx,quiet){const it=items[idx];if(!it)return;if(ed.it&&ed.dirty&&!confirm("¿Descartar los cambios del editor actual?"))return;
-  edStop();if(typeof kar!=="undefined"&&kar.on)karaOff(true);if(typeof stm!=="undefined"&&stm.on)stmOff(true);ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
-  ed.marks=normMarks(it.marks).map(m=>({p:Math.round(m.t*ed.sr),k:m.k}));ed.sel=null;ed.cur=0;ed.dirty=false;ed.hist=[];ed.redo=[];ed.v0=0;ed.v1=edN();{const pr=isProt(it.blob),b=$("eddl");b.disabled=pr;if(pr){b.dataset.t=b.title;b.title="Audio protegido: no se puede descargar"}else if(b.dataset.t!==undefined)b.title=b.dataset.t}$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();if(!quiet){ACT="ed";$("ed").scrollIntoView({behavior:"smooth",block:"end"})}}
+  edStop();const wasK=(typeof stm!=="undefined"&&stm.on)?"stm":(typeof kar!=="undefined"&&kar.on)?"kar":"",sameB=ed.it&&ed.it.buffer===it.buffer&&!ed.dirty;if(typeof kar!=="undefined"&&kar.on)karaOff(true);if(typeof stm!=="undefined"&&stm.on)stmOff(true);ed.it=it;ed.sr=it.buffer.sampleRate;ed.ch=[];for(let c=0;c<it.buffer.numberOfChannels;c++)ed.ch.push(new Float32Array(it.buffer.getChannelData(c)));
+  ed.marks=normMarks(it.marks).map(m=>({p:Math.round(m.t*ed.sr),k:m.k}));ed.sel=null;ed.cur=0;ed.dirty=false;ed.hist=[];ed.redo=[];ed.v0=0;ed.v1=edN();{const pr=isProt(it.blob),b=$("eddl");b.disabled=pr;if(pr){b.dataset.t=b.title;b.title="Audio protegido: no se puede descargar"}else if(b.dataset.t!==undefined)b.title=b.dataset.t}$("ed").classList.add("open");$("edn").textContent=nice(it.name);$("edname").value="";edInfo();edDraw();
+  {const e=BC.get(it.buffer);if(e){if(e.fast)kar.cache.set(ed.ch,e.fast);if(e.ia)kar.cacheIA.set(ed.ch,e.ia);if(e.stm)stm.cache.set(ed.ch,e.stm);kar.last=e.last||kar.last}
+   if(wasK&&sameB&&e)setTimeout(()=>{if(ed.it===it&&!kar.on&&!stm.on)karaOpen()},0)}
+  if(!quiet){ACT="ed";$("ed").scrollIntoView({behavior:"smooth",block:"end"})}}
 function edInfo(){let pk=0;ed.ch.forEach(c=>{for(let i=0;i<c.length;i++){const v=Math.abs(c[i]);if(v>pk)pk=v}});
   $("edinfo").textContent=(edN()/ed.sr).toFixed(2)+" s · pico "+(pk?(20*Math.log10(pk)).toFixed(1):"−∞")+" dB"}
 /* ---------- v2.21 · regla de tiempo debajo de la forma de onda y reloj transcurrido / restante ---------- */
@@ -2287,6 +2312,9 @@ function edTrim(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i
    (igual en izquierda y derecha); lo que está más abierto o distinto en cada lado es la música. Se compara, bin a bin
    (STFT de 2048), qué tan igual es la izquierda y la derecha, y esa parte central (entre ~120 Hz y ~9 kHz) es la «voz».
    Música = original − voz, así que con los dos faders al 100 % suena exactamente igual que el original. */
+const BC=new WeakMap(); // caché de separaciones por audio original (it.buffer): se pierde sola si el audio se edita y se guarda
+function bcPut(k,v){if(ed.it&&!ed.dirty&&ed.it.buffer){let e=BC.get(ed.it.buffer);if(!e)BC.set(ed.it.buffer,e={});e[k]=v}}
+function bcLast(m){kar.last=m;if(ed.it&&!ed.dirty&&ed.it.buffer){let e=BC.get(ed.it.buffer);if(!e)BC.set(ed.it.buffer,e={});e.last=m}}
 const stm={on:false,busy:false,tok:0,src:null,buf:null,sch:2,k:[],g:[],m:[],s:[],nk:6,orig:2,job:null,nodes:null,live:false,cache:new WeakMap()};
 const kar={on:false,busy:false,tok:0,src:null,buf:null,gV:1,gM:1,live:false,nodes:null,job:null,mono:false,cache:new WeakMap(),cacheIA:new WeakMap()};
 function karaFFT(N){const rev=new Uint32Array(N),cs=new Float64Array(N/2),sn=new Float64Array(N/2);let b=0;for(let m=N;m>1;m>>=1)b++;
@@ -2332,6 +2360,7 @@ async function karaOpen(){
   if(stm.on){stmOff();return}
   if(kar.on){karaOff();return}
   const hasIA=!!(LK.ok&&LK.h&&LK.h.karaoke);
+  {const sh=stm.cache.get(ed.ch);if(sh&&(kar.last==="stm"||(!kar.cacheIA.has(ed.ch)&&kar.last!=="fast"))){$("kapn").value=String(sh.nk);stmRun(sh.nk);return}} // ya se separó en pistas: se reutiliza
   if(kar.cacheIA.has(ed.ch)){karaIA();return} // ya se separó con IA antes: se reutiliza
   let why="";
   if(ed.ch.length<2)why="este audio es mono (un solo canal): la voz y la música están mezcladas en el mismo canal";
@@ -2341,14 +2370,14 @@ async function karaOpen(){
     if(hasIA){karaIA();return}
     note("Karaoke: "+why+", y así no se puede separar la voz de la música con el método rápido. "+(LK.ok?"Con la IA del helper sí: ejecutá instalar-karaoke-ia.bat (una sola vez), reabrí el helper y volvé a apretar Karaoke.":"Hace falta el helper con el karaoke IA instalado (instalar-karaoke-ia.bat)."),"warn","kar",13000);return}
   const L=ed.ch[0],R=ed.ch[1];
-  edStop();kar.on=true;kar.src=ed.ch;kar.gV=1;kar.gM=1;$("edkara").hidden=false;
+  edStop();kar.on=true;kar.src=ed.ch;kar.gV=1;kar.gM=1;$("edkara").hidden=false;bcLast("fast");
   const hit=kar.cache.get(ed.ch);
   if(hit){kar.buf=hit;kar.busy=false;karaSet("Listo · mové los faders (también mientras suena)","ok");karaUI();return}
   kar.buf=null;kar.busy=true;karaUI();const tok=++kar.tok,ch=ed.ch,sr=ed.sr;karaSet("Separando voz y música… 0 %","");
   try{const V=await karaSep(L,R,sr,f=>karaSet("Separando voz y música… "+Math.round(f*100)+" %",""),tok);
     if(V===null||kar.tok!==tok||ed.ch!==ch)return;
     const n=L.length,b=ctx.createBuffer(3,n,sr),m0=new Float32Array(n),m1=new Float32Array(n);for(let i=0;i<n;i++){m0[i]=L[i]-V[i];m1[i]=R[i]-V[i]}
-    b.copyToChannel(m0,0);b.copyToChannel(m1,1);b.copyToChannel(V,2);kar.cache.set(ch,b);kar.buf=b;kar.busy=false;karaSet("Listo · mové los faders (también mientras suena)","ok");karaUI()}
+    b.copyToChannel(m0,0);b.copyToChannel(m1,1);b.copyToChannel(V,2);kar.cache.set(ch,b);bcPut("fast",b);kar.buf=b;kar.busy=false;karaSet("Listo · mové los faders (también mientras suena)","ok");karaUI()}
   catch(e){karaOff(true);note("Karaoke: no se pudo separar el audio ("+(e&&e.message?e.message:e)+").","error","kar",9000)}}
 function karaApply(){if(!kar.on||!kar.buf||kar.busy||kar.src!==ed.ch)return;edStop();
   const b=kar.buf,m0=b.getChannelData(0),m1=b.getChannelData(1),V=b.getChannelData(2),n=V.length,a=new Float32Array(n),c=new Float32Array(n);let pk=0;
@@ -2371,7 +2400,7 @@ async function karaIA(){
   if(!(LK.ok&&LK.h&&LK.h.karaoke)){note("Karaoke IA: el helper no tiene Demucs instalado. Ejecutá instalar-karaoke-ia.bat (una sola vez) y reabrí el helper.","warn","kar",10000);return}
   edStop();const ch=ed.ch,sr=ed.sr,tok=++kar.tok;
   kar.on=true;kar.src=ch;kar.mono=ch.length<2;kar.gV=1;kar.gM=1;kar.live=false;kar.nodes=null;$("edkara").hidden=false;
-  const hit=kar.cacheIA.get(ch);
+  const hit=kar.cacheIA.get(ch);bcLast("ia");
   if(hit){kar.buf=hit;kar.busy=false;karaSet("Listo (IA) · mové los faders (también mientras suena)","ok");karaUI();return}
   kar.buf=null;kar.busy=true;karaUI();karaSet("Enviando el audio al helper…","");let id=null;
   try{
@@ -2391,7 +2420,7 @@ async function karaIA(){
     const n=ch[0].length,b=ctx.createBuffer(3,n,sr),v0=karaFit(vb.getChannelData(0),n),v1=karaFit(vb.getChannelData(vb.numberOfChannels>1?1:0),n),V=new Float32Array(n);
     for(let i=0;i<n;i++)V[i]=(v0[i]+v1[i])*.5;
     b.copyToChannel(karaFit(mb.getChannelData(0),n),0);b.copyToChannel(karaFit(mb.getChannelData(mb.numberOfChannels>1?1:0),n),1);b.copyToChannel(V,2);
-    kar.cacheIA.set(ch,b);kar.buf=b;kar.busy=false;karaSet("Listo (IA) · mové los faders (también mientras suena)","ok");karaUI()}
+    kar.cacheIA.set(ch,b);bcPut("ia",b);kar.buf=b;kar.busy=false;karaSet("Listo (IA) · mové los faders (también mientras suena)","ok");karaUI()}
   catch(e){if(kar.tok===tok){karaOff(true);note("Karaoke IA: "+(e&&e.message?e.message:e),"error","kar",12000)}}
   finally{if(id&&kar.job===id)kar.job=null;if(id)hfetch(HELPER+"/separar/fin?id="+encodeURIComponent(id)).catch(()=>{})}}
 $("kaia").addEventListener("click",()=>{if(kar.on&&!kar.busy)karaIA()});
@@ -5001,13 +5030,17 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
 
 /* ---------- v2.43 · separar en pistas con IA (Demucs 4 o 6 pistas, en el helper) ---------- */
 const STN={voz:"Voz",bateria:"Batería",bajo:"Bajo",guitarra:"Guitarra",piano:"Piano",otros:"Otros"};
+const STD={voz:"cantante y coros",bateria:"percusión: bombo, caja, platillos",bajo:"bajo eléctrico o contrabajo",guitarra:"guitarras eléctricas y acústicas",piano:"piano y teclados de piano"};
+const stdOtros=nk=>nk===6?"lo que no es voz, batería, bajo, guitarra ni piano: sintetizadores, órganos, cuerdas, vientos, metales y efectos":"todo lo que no es voz, batería ni bajo: guitarras, pianos, teclados, sintetizadores, cuerdas, vientos y efectos";
+const STB={otros:"Resto de instrumentos"};
 const STO={4:["voz","bateria","bajo","otros"],6:["voz","bateria","bajo","guitarra","piano","otros"]};
 const stmG=i=>{const so=stm.s.some(Boolean);return (so?stm.s[i]:!stm.m[i])?stm.g[i]:0};
 function stmSet(msg,cls){const e=$("stst");e.textContent=msg;e.className="kst"+(cls?" "+cls:"")}
 function stmBuild(){const g=$("stg");g.textContent="";
   stm.k.forEach((k,i)=>{const r=document.createElement("div");r.className="stk";r.dataset.i=i;
-    r.innerHTML='<i></i><input type="range" min="0" max="150" step="1" value="100"><b>100 %</b><button type="button" class="sm" title="Silenciar esta pista">M</button><button type="button" class="ss" title="Escuchar solo esta pista (varias solos se suman)">S</button>';
-    r.querySelector("i").textContent=STN[k]||k;g.appendChild(r)})}
+    r.innerHTML='<span class="stl"><i></i><small></small></span><input type="range" min="0" max="150" step="1" value="100"><b>100 %</b><button type="button" class="sm" title="Silenciar esta pista">M</button><button type="button" class="ss" title="Escuchar solo esta pista (varias solos se suman)">S</button>';
+    const ds=k==="otros"?stdOtros(stm.nk):(STD[k]||"");r.querySelector("i").textContent=STN[k]||k;r.querySelector("small").textContent=k==="otros"?(stm.nk===6?"sintes, cuerdas, vientos…":"guitarra, piano, sintes…"):ds.split(":")[0];r.title=(STN[k]||k)+": "+ds+".";g.appendChild(r)});
+  const n=document.createElement("div");n.className="stnote";n.textContent="«Otros» es todo lo que el programa no reconoce como voz, batería, bajo"+(stm.nk===6?", guitarra ni piano":"")+": "+stdOtros(stm.nk).split(": ")[1]+".";g.appendChild(n)}
 function stmUI(){const ok=stm.on&&!!stm.buf&&!stm.busy;["stok","stbt"].forEach(i=>{$(i).disabled=!ok});
   document.querySelectorAll("#stg .stk").forEach(r=>{const i=+r.dataset.i,inp=r.querySelector("input");inp.disabled=!ok;inp.value=Math.round(stm.g[i]*100);r.querySelector("b").textContent=Math.round(stm.g[i]*100)+" %";
     r.querySelector(".sm").classList.toggle("on",!!stm.m[i]);r.querySelector(".ss").classList.toggle("on",!!stm.s[i]);r.classList.toggle("mute",stmG(i)===0)});
@@ -5023,11 +5056,11 @@ function stmGraph(){
 function stmOff(silent){stm.tok++;if(stm.job){const j=stm.job;stm.job=null;hfetch(HELPER+"/separar/cancelar?id="+j).catch(()=>{}).finally(()=>hfetch(HELPER+"/separar/fin?id="+j).catch(()=>{}))}
   if(stm.on&&stm.live&&ed.src&&!silent)edStop();stm.on=false;stm.busy=false;stm.live=false;stm.nodes=null;$("edstem").hidden=true;stmUI();karaUI()}
 function stmFin(c){if(c&&c.job)hfetch(HELPER+"/separar/fin?id="+encodeURIComponent(c.job)).catch(()=>{})}
-async function stmRun(){
+async function stmRun(nkIn){
   if(!ed.it)return;
   if(!(LK.ok&&LK.h&&LK.h.karaoke)){note("Pistas: el helper no tiene Demucs instalado. Ejecutá instalar-karaoke-ia.bat (una sola vez) y reabrí el helper.","warn","kar",10000);return}
   if(!LK.h.kara_stems){note("Para separar en pistas hace falta el helper v1.14 o más nuevo: reemplazá botonera-helper.py y abrilo de nuevo.","warn","kar",10000);return}
-  const nk=+$("kapn").value===4?4:6;edStop();karaOff(true);if(stm.on)stmOff(true);
+  const nk=nkIn||(+$("kapn").value===4?4:6);edStop();karaOff(true);if(stm.on)stmOff(true);bcLast("stm");
   const ch=ed.ch,sr=ed.sr,tok=++stm.tok;
   stm.on=true;stm.src=ch;stm.busy=true;stm.buf=null;stm.nodes=null;stm.live=false;stm.nk=nk;stm.k=STO[nk];stm.orig=ch.length;
   stm.g=stm.k.map(()=>1);stm.m=stm.k.map(()=>false);stm.s=stm.k.map(()=>false);stmBuild();$("edstem").hidden=false;stmUI();
@@ -5053,7 +5086,7 @@ async function stmRun(){
       if(sch===2){buf.copyToChannel(karaFit(ab.getChannelData(0),n),i*2);buf.copyToChannel(karaFit(ab.getChannelData(ab.numberOfChannels>1?1:0),n),i*2+1)}
       else{const a0=karaFit(ab.getChannelData(0),n),a1=ab.numberOfChannels>1?karaFit(ab.getChannelData(1),n):a0,m=new Float32Array(n);for(let j=0;j<n;j++)m[j]=(a0[j]+a1[j])*.5;buf.copyToChannel(m,i)}}
     if(stm.tok!==tok)return;
-    stm.buf=buf;stm.sch=sch;stm.busy=false;stm.job=null;stm.cache.set(ch,{nk,buf,sch,job:id});id=null;
+    stm.buf=buf;stm.sch=sch;stm.busy=false;stm.job=null;{const ent={nk,buf,sch,job:id};stm.cache.set(ch,ent);bcPut("stm",ent)}id=null;
     stmSet("Listo (IA, "+nk+" pistas)"+(sch===1?" · audio largo: para escuchar y mezclar se usa mono (los botones sí salen en estéreo)":"")+" · mové los faders, M silencia y S deja solo esa pista","ok");stmUI()}
   catch(e){if(stm.tok===tok){const j=id;stmOff(true);note("Pistas: "+(e&&e.message?e.message:e),"error","kar",12000);if(j)hfetch(HELPER+"/separar/fin?id="+encodeURIComponent(j)).catch(()=>{})}}}
 function stmApply(){if(!stm.on||!stm.buf||stm.busy||stm.src!==ed.ch)return;edStop();
@@ -5071,11 +5104,11 @@ async function stmBtns(){
   const sel=stm.k.map((k,i)=>stmG(i)>0?k:null).filter(Boolean);
   if(!sel.length){note("No hay ninguna pista escuchándose. Activá alguna (sacá el M o usá S).","warn","kar",4000);return}
   const base=nice(ed.it.name).replace(/[\\/:*?"<>|]/g,"").trim(),mb=Math.round(stm.src[0].length/ed.sr*44100*4*sel.length/1048576);
-  if(!await askDlg("Crear botones con las pistas","Se van a crear "+sel.length+" botones nuevos ("+sel.map(k=>STN[k]||k).join(", ")+") de «"+base+"», en estéreo y sin tocar. Ocupan unos "+mb+" MB en total. Los faders no se aplican: cada botón suena con su pista completa.","Crear"))return;
+  if(!await askDlg("Crear botones con las pistas","Se van a crear "+sel.length+" botones nuevos ("+sel.map(k=>STB[k]||STN[k]||k).join(", ")+") de «"+base+"», en estéreo y sin tocar. Ocupan unos "+mb+" MB en total. Los faders no se aplican: cada botón suena con su pista completa.","Crear"))return;
   const tok=stm.tok;$("stbt").disabled=true;let made=0;
   try{for(const k of sel){stmSet("Creando botón: "+(STN[k]||k)+"…","");
     const r=await hfetch(HELPER+"/separar/pista?id="+encodeURIComponent(c.job)+"&s="+k);if(!r.ok)throw new Error("no se pudo bajar la pista "+k+" ("+r.status+")");
-    const blob=await r.blob();let nm=base+" · "+(STN[k]||k)+".wav",q=2;while(items.some(i=>i.name===nm))nm=base+" · "+(STN[k]||k)+" ("+(q++)+").wav";
+    const blob=await r.blob();const lb=STB[k]||STN[k]||k;let nm=base+" · "+lb+".wav",q=2;while(items.some(i=>i.name===nm))nm=base+" · "+lb+" ("+(q++)+").wav";
     const before=items.length;await add(nm,blob);if(items.length>before)made++}
     if(made){render();save()}
     note(made+" botones creados con las pistas de «"+base+"».","info","kar",8000)}
@@ -5124,7 +5157,7 @@ async function midiEnable(quiet){
   midiWire();if(!quiet)note(MIDI.ins.size?"MIDI activado: "+[...MIDI.ins.values()].join(", ")+".":"MIDI activado, pero no veo ningún controlador. Conectalo por USB y aparece solo.","info","midi",5500);return true}
 function midiOff(){MIDI.on=false;midiLearnOff();try{localStorage.setItem(MK_ON,"0")}catch(e){}
   if(MIDI.acc)MIDI.acc.inputs.forEach(i=>{i.onmidimessage=null});MIDI.ins.clear();midiUI();note("MIDI apagado. Tus asignaciones quedan guardadas.","info","midi",4000)}
-function midiUI(){const b=$("tbmi");if(!b)return;b.classList.toggle("on",MIDI.on&&MIDI.ins.size>0);b.classList.toggle("warn",MIDI.on&&MIDI.ins.size===0);
+function midiUI(){midiBadges();const g=$("gmidi");if(g){g.classList.toggle("on",MIDI.on&&MIDI.ins.size>0);g.classList.toggle("warn",MIDI.on&&MIDI.ins.size===0);g.classList.toggle("lm",!!MIDI.lm);g.title="MIDI: "+(!MIDI.ok?"este navegador no lo permite":!MIDI.on?"apagado. Tocá para activarlo":MIDI.lm?"modo asignar activo: tocá un botón y después un pad. Tocá de nuevo para salir":"tocá para asignar pads a los botones")}const b=$("tbmi");if(!b)return;b.classList.toggle("on",MIDI.on&&MIDI.ins.size>0);b.classList.toggle("warn",MIDI.on&&MIDI.ins.size===0);
   b.title="MIDI: "+(!MIDI.ok?"este navegador no lo permite":!MIDI.on?"apagado":MIDI.ins.size?"conectado · "+[...MIDI.ins.values()].join(", "):"activo, sin controlador conectado")}
 function midiMsg(e){const d=e.data;if(!d||d.length<2||d[0]>=0xF0)return;
   const st=d[0]&0xF0,ch=d[0]&15,n=d[1],v=d.length>2?d[2]:0;let sg=null,press=false;
@@ -5134,7 +5167,7 @@ function midiMsg(e){const d=e.data;if(!d||d.length<2||d[0]>=0xF0)return;
   else return;
   if(st===0x90&&press){if(MIDI.down.has(sigKey(sg)))return;MIDI.down.add(sigKey(sg))}
   if(!press)return;
-  MIDI.last=sigText(sg);const b=$("tbmi");if(b){b.classList.add("hit");clearTimeout(MIDI.hitT);MIDI.hitT=setTimeout(()=>b.classList.remove("hit"),140)}
+  MIDI.last=sigText(sg);[$("tbmi"),$("gmidi")].forEach(b=>{if(b)b.classList.add("hit")});clearTimeout(MIDI.hitT);MIDI.hitT=setTimeout(()=>[$("tbmi"),$("gmidi")].forEach(b=>{if(b)b.classList.remove("hit")}),140)
   if(MIDI.learn){const f=MIDI.learn;f(sg);return}
   if(ctx.state!=="running"){try{ctx.resume()}catch(x){}}
   const nm=Object.keys(MIDI.map).find(k=>sigEq(MIDI.map[k],sg));
@@ -5158,6 +5191,34 @@ function midiItems(I){
   const n=Object.keys(MIDI.map).length+Object.keys(MIDI.glob).length;
   I.push({sep:1},{i:"trash",t:"Borrar asignaciones",s:n+"",del:1,off:!n,fn:async()=>{if(await askDlg("Borrar asignaciones MIDI","Se quitan las "+n+" asignaciones MIDI de este usuario. Las teclas no se tocan.","Borrar")){MIDI.map={};MIDI.glob={};midiSave();note("Asignaciones MIDI borradas.","info","midi",3500)}}},
     {i:"off",t:"Apagar MIDI",fn:midiOff})}
+/* ---------- v2.46 · insignias MIDI en los botones + modo «asignar» desde la botonera ---------- */
+const sigShort=g=>g?(g.t==="n"?"♪":"CC")+g.n:"";
+function midiBadges(){try{grid.querySelectorAll(".pad").forEach(b=>{const idx=+b.id.slice(1),it=items[idx],sg=it&&MIDI.map[it.name];let e=b.querySelector(".mb");
+    if(!sg){if(e)e.remove();return}
+    if(!e){e=document.createElement("span");e.className="mb";b.appendChild(e)}e.textContent=sigShort(sg);e.title="MIDI: "+sigText(sg)})}catch(e){}
+  const st=$("stop");if(st){let e=st.querySelector(".mb");const sg=MIDI.glob.stop;if(!sg){if(e)e.remove()}else{if(!e){e=document.createElement("span");e.className="mb";e.style.cssText="position:static;margin-left:4px;pointer-events:none";st.appendChild(e)}e.textContent=sigShort(sg)}}}
+new MutationObserver(()=>{clearTimeout(midiBadges.t);midiBadges.t=setTimeout(midiBadges,60)}).observe(grid,{childList:true});
+function mlClear(){grid.querySelectorAll(".mlsel").forEach(e=>e.classList.remove("mlsel"));$("stop").classList.remove("mlsel")}
+function mlAskPad(){mlClear();MIDI.mlTarget=null;MIDI.learn=sg=>{const nm=Object.keys(MIDI.map).find(k=>sigEq(MIDI.map[k],sg));
+    note(nm?"Ese pad ya es del botón «"+nice(nm)+"». Elegí primero el botón que querés cambiar.":"Primero tocá un botón de la botonera y después el pad.","info","midi",3500)}}
+function mlSelect(target,el){mlClear();el.classList.add("mlsel");MIDI.mlTarget=target;
+  const label=target==="stop"?"Parar todo":nice(items[target].name);
+  note("Tocá ahora el pad del controlador para «"+label+"».","info","midi",30000);
+  MIDI.learn=sg=>{
+    if(target==="stop"){for(const k of Object.keys(MIDI.map))if(sigEq(MIDI.map[k],sg))delete MIDI.map[k];for(const k of Object.keys(MIDI.glob))if(sigEq(MIDI.glob[k],sg))delete MIDI.glob[k];MIDI.glob.stop=sg;midiSave();note("«Parar todo»: "+sigText(sg)+".","info","midi",4500)}
+    else{const it=items[target];if(it)midiAssign(it,sg)}
+    midiUI();mlAskPad()}}
+function mlStart(){MIDI.lm=true;document.body.classList.add("midilearn");mlAskPad();midiUI();
+  note("Modo MIDI: tocá un botón de la botonera y después el pad. Podés seguir con el siguiente. Para salir tocá MIDI otra vez o Esc.","info","midi",9000)}
+function mlStop(){if(!MIDI.lm)return;MIDI.lm=false;MIDI.mlTarget=null;document.body.classList.remove("midilearn");mlClear();midiLearnOff();midiUI();note("Modo MIDI terminado.","info","midi",3000)}
+grid.addEventListener("pointerdown",e=>{if(!MIDI.lm)return;const b=e.target.closest&&e.target.closest(".pad");if(!b)return;e.preventDefault();e.stopImmediatePropagation();hideCm();mlSelect(+b.id.slice(1),b)},true);
+$("stop").addEventListener("click",e=>{if(!MIDI.lm)return;e.preventDefault();e.stopImmediatePropagation();mlSelect("stop",$("stop"))},true);
+document.addEventListener("keydown",e=>{if(MIDI.lm&&e.key==="Escape"&&!$("dlg")){e.stopImmediatePropagation();mlStop()}},true);
+$("gmidi").addEventListener("click",async()=>{
+  if(!MIDI.ok){note("Este navegador no permite MIDI. Usá Chrome o Edge en la compu (Safari y el iPhone no lo soportan).","warn","midi",8000);return}
+  if(MIDI.lm){mlStop();return}
+  if(!MIDI.on&&!(await midiEnable()))return;
+  mlStart()});
 midiUI();
 if(MIDI.ok){let on="0";try{on=localStorage.getItem(MK_ON)||"0"}catch(e){}
   if(on==="1"){const go=()=>midiEnable(true);
