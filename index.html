@@ -1230,6 +1230,10 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 .lb{top:56px!important}
 }
 @media (prefers-reduced-motion:reduce){#tbar,#tbar *{transition:none!important}}
+
+/* v2.40 · el ícono de micrófono no se pierde al pasar el mouse; barra superior un poco más grande */
+.fx #indev:hover,.fx #indev:focus{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bbb' stroke-width='2' stroke-linecap='round'><rect x='9' y='3' width='6' height='11' rx='3'/><path d='M5 11a7 7 0 0 0 14 0M12 18v3'/></svg>")!important;background-repeat:no-repeat!important;background-position:11px center!important;background-size:15px!important}
+@media (min-width:901px){#tbar{--k:1.4}#tbar.mini{--k:.82}#tbar #tbtx{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}#tbar #tbbar{min-width:40px}}
 </style>
 </head>
 <body class="booting">
@@ -1381,7 +1385,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.39 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.39</span></footer>
+<footer id="sig" title="Versión 2.40 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.40</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -4916,14 +4920,26 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
   function fit(){raf=0;if(innerWidth<=900){rc.style.removeProperty("--rct");return}
     const H=rc.offsetHeight,top=56,bot=12;rc.style.setProperty("--rct",(H+top+bot>innerHeight?Math.min(top,innerHeight-H-bot):top)+"px")}
   const go=()=>{if(!raf)raf=requestAnimationFrame(fit)};new ResizeObserver(go).observe(rc);window.addEventListener("resize",go);go()})();
-/* ---------- v2.39 · barra superior: se achica al trabajar en la botonera y se agranda al tocarla o pasar el mouse ---------- */
+/* ---------- v2.40 · barra superior: grande arriba; se achica al llegar al límite del logo (al bajar) o al trabajar en la botonera; se agranda al pasar el mouse o tocarla ---------- */
 (function(){const tb=document.getElementById("tbar");if(!tb)return;
+  const brand=document.querySelector(".brand"),lb=document.querySelector(".brand .lb"),st=document.getElementById("stage");
+  let touched=false,atLim=false,hov=false,raf=0;
+  const menuOpen=()=>{const m=document.getElementById("tbmenu");return !!(m&&!m.hidden)};
+  const apply=()=>tb.classList.toggle("mini",!menuOpen()&&!hov&&(atLim||touched));
+  function limit(){raf=0;if(innerWidth<=900){atLim=false;apply();return}
+    let gap;if(lb&&brand&&innerWidth>=1200){gap=brand.getBoundingClientRect().bottom-lb.getBoundingClientRect().bottom;}
+    else gap=st?st.getBoundingClientRect().top-90:999; /* sin logo pegado: cuando la botonera llega arriba */
+    const was=atLim;if(!atLim&&gap<=2&&scrollY>20)atLim=true;else if(atLim&&(gap>40||scrollY<=20))atLim=false;
+    if(atLim!==was)hov=false;apply()}
+  const sch=()=>{if(!raf)raf=requestAnimationFrame(limit)};
+  addEventListener("scroll",()=>{hov=false;sch()},{passive:true});addEventListener("resize",sch);
   const out=t=>!(t&&t.closest&&t.closest("#tbar,#tbmenu"));
-  const mini=e=>{if(!out(e.target))return;const m=document.getElementById("tbmenu");if(m&&!m.hidden)return;tb.classList.add("mini")};
-  const big=()=>tb.classList.remove("mini");
-  document.addEventListener("pointerdown",mini,true);document.addEventListener("focusin",mini,true);
+  const work=e=>{if(!out(e.target)||menuOpen())return;touched=true;hov=false;apply()};
+  const big=()=>{hov=true;touched=false;apply()};
+  document.addEventListener("pointerdown",work,true);document.addEventListener("focusin",work,true);
   tb.addEventListener("pointerenter",big);tb.addEventListener("pointerdown",big);tb.addEventListener("focusin",big);
-  tb.addEventListener("transitionend",e=>{if(e.propertyName!=="height"||typeof TB==="undefined"||!TB.mn)return;const m=document.getElementById("tbmenu"),b=document.getElementById({u:"tbu",m:"tbm",s:"tbs",l:"tbl"}[TB.mn]);if(m&&!m.hidden&&b)m.style.top=(b.getBoundingClientRect().bottom+4)+"px"})})();
+  tb.addEventListener("transitionend",e=>{if(e.propertyName!=="height"||typeof TB==="undefined"||!TB.mn)return;const m=document.getElementById("tbmenu"),bt=document.getElementById({u:"tbu",m:"tbm",s:"tbs",l:"tbl"}[TB.mn]);if(m&&!m.hidden&&bt)m.style.top=(bt.getBoundingClientRect().bottom+4)+"px"});
+  limit()})();
 </script>
 </body>
 </html>
