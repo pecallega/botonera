@@ -846,6 +846,9 @@ button,label.btn,select,input,.fx,#ed,.lk,#pl,.plp,#sig,.pad,.so,.vpa,.gear,.cli
 #sesbar{position:fixed;top:5px;right:14px;z-index:300;display:flex;gap:6px}
 #sesbar button{padding:4px 9px!important;font-size:.56rem!important;gap:6px}
 #sesbar .ic{width:12px;height:12px}
+#sesmed .md{display:inline-block;width:7px;height:7px;border-radius:50%;background:#6b6b6b;flex:none}#sesmed.on .md{background:#3ddc84;box-shadow:0 0 6px #3ddc84}#sesmed.warn .md{background:#f2c230;box-shadow:0 0 6px #f2c230}
+#dlg .mpl{display:flex;flex-direction:column;gap:6px}#dlg .mpl button{width:100%;text-align:center}
+@media (max-width:900px){#sesmed{display:none!important}}
 @media (max-width:900px){#sesbar{position:static;justify-content:flex-end;margin:6px 0 0}}
 
 #hpan .hpi{display:flex;align-items:center;gap:7px}
@@ -1149,7 +1152,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </head>
 <body class="booting">
 <div id="splash"><img class="lg" src="logo.png" alt="" onerror="this.parentNode.style.display='none'"><div class="spin" aria-hidden="true"></div><div class="pbar" aria-hidden="true"><i id="spbar"></i></div><div class="tx" id="sptx">Cargando…</div></div>
-<div id="sesbar"><button type="button" id="sesave" title="Guarda en un archivo los botones, posiciones, colores, teclas, listas y ajustes. No incluye audios: se vuelven a tomar de la carpeta"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Guardar sesión</button><button type="button" id="sesopen" title="Abre una sesión guardada y restaura botones, posiciones, colores y listas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Abrir sesión</button><button type="button" id="sesclr" title="Deja la botonera y las listas en cero. Las cortinas y los mensajes de las carpetas siempre se muestran"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>Limpiar botonera</button><input type="file" id="sesfile" accept=".json,application/json" hidden></div>
+<div id="sesbar"><button type="button" id="sesave" title="Guarda en un archivo los botones, posiciones, colores, teclas, listas y ajustes. No incluye audios: se vuelven a tomar de la carpeta"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg>Guardar sesión</button><button type="button" id="sesopen" title="Abre una sesión guardada y restaura botones, posiciones, colores y listas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Abrir sesión</button><button type="button" id="sesmed" title="Elegir una carpeta (Media) donde se copian tus audios y se guarda tu botonera, para tenerla siempre a mano"><i class="md" aria-hidden="true"></i>Media</button><button type="button" id="sesclr" title="Deja la botonera y las listas en cero. Las cortinas y los mensajes de las carpetas siempre se muestran"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>Limpiar botonera</button><input type="file" id="sesfile" accept=".json,application/json" hidden></div>
 <header>
   <div class="brand">
     <div class="lb"><img class="logo" src="logo.png" alt="" onerror="this.style.display='none'">
@@ -1162,7 +1165,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
       <div class="bar">
         <div class="fx" title="Delay: 80 a 150 ms = slapback rockabilly. Podés escribir el valor exacto en el campo de la derecha.">
           <div class="fxtop">
-        <div class="usr" role="group" aria-label="Usuarios de esta computadora"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><select id="usr" aria-label="Usuario activo"></select><button id="usradd" title="Nuevo usuario (escritorio vacío; muestra solo la carpeta audios)" aria-label="Nuevo usuario"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button><button id="usrdel" title="Eliminar este usuario y sus botones" aria-label="Eliminar este usuario"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
+        <div class="usr" role="group" aria-label="Usuarios de esta computadora"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><select id="usr" aria-label="Usuario activo"></select><button id="usradd" title="Nuevo usuario: escribí su mail (escritorio vacío; muestra solo la carpeta audios)" aria-label="Nuevo usuario"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button><button id="usrdel" title="Eliminar este usuario y sus botones" aria-label="Eliminar este usuario"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
         <button id="outb" title="Salida de audio: elegir la placa de la botonera, la lista y el editor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span>Salida</span></button>
         <button id="burger" aria-label="Configurar teclas" title="Configurar teclas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
           </div>
@@ -1242,13 +1245,13 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </header>
 <p id="msg"></p>
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
-<div id="stage"><div id="lstL"></div><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*" multiple></label></div><div id="grid"></div></div>
+<div id="stage"><div id="lstL"></div><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*,.mpeg,.mpg,.mpga,.mp2,.mpa,.m2a" multiple></label></div><div id="grid"></div></div>
 <div id="lstR"><aside id="pl" class="plp" aria-label="Lista de reproducción">
   <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span><button type="button" id="plnew" class="plb plnb" title="Agregar otra lista a la derecha (cada lista puede salir por su propia placa de sonido)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Lista</span></button><button type="button" id="plrm" class="plb plnb" hidden title="Quitar esta lista"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><button type="button" id="plshow" class="plb" title="Play actual: lleva la lista hasta el tema que suena o el que quedó elegido para reproducirse (Ctrl+A)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Play actual</span></button><button type="button" class="otag" id="otg-pl"></button></div>
   <div class="plact">
     <button id="plsvb" class="plb" title="Guardar la lista, abrir una guardada o pasarla de/ a un archivo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg><span>Listas</span></button>
     <button id="plclr" class="plb" title="Vaciar la lista: quita todos los temas y stops (pide confirmar con un segundo clic)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/></svg><span>Vaciar</span></button>
-    <label class="btn plb" title="Agregar audios a la lista (también podés arrastrarlos hasta acá)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar<input id="plfile" type="file" accept="audio/*" multiple hidden></label>
+    <label class="btn plb" title="Agregar audios a la lista (también podés arrastrarlos hasta acá)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar<input id="plfile" type="file" accept="audio/*,.mpeg,.mpg,.mpga,.mp2,.mpa,.m2a" multiple hidden></label>
   </div>
   <div id="plsv" hidden>
     <div class="plr2"><input id="plname" type="text" maxlength="40" placeholder="Nombre de la lista" autocomplete="off" aria-label="Nombre de la lista"><button id="plsaveb" title="Guardar la lista actual en este navegador">Guardar</button></div>
@@ -1285,6 +1288,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
       <label class="kf" title="Nivel de la voz: 0 % la quita del todo, 100 % queda como en el original"><i>Voz</i><input id="kav" type="range" min="0" max="150" step="1" value="100" aria-label="Nivel de la voz" disabled><b id="kavt">100 %</b></label>
       <label class="kf" title="Nivel de la música: 0 % la quita del todo, 100 % queda como en el original"><i>Música</i><input id="kam" type="range" min="0" max="150" step="1" value="100" aria-label="Nivel de la música" disabled><b id="kamt">100 %</b></label>
       <span class="kpre"><button id="kano" type="button" title="Voz al mínimo y música al 100 %: queda la base para cantar encima" disabled>Quitar voz</button><button id="kavo" type="button" title="Música al mínimo y voz al 100 %: queda solo la voz" disabled>Solo voz</button><button id="kaeq" type="button" title="Los dos faders al 100 %: suena igual que el original" disabled>100 / 100</button></span>
+      <button id="kaia" type="button" hidden title="Separa con inteligencia artificial (Demucs, en el helper). Tarda más pero separa mucho mejor, y es lo único que sirve con audios mono">Separar con IA</button>
       <button id="kaok" type="button" title="Deja el resultado de los faders como el audio del editor (se puede deshacer con Ctrl+Z) y cierra el karaoke" disabled>Aplicar al audio</button>
       <button id="kax" type="button" title="Cerrar el karaoke sin cambiar el audio">Cerrar</button>
     </div>
@@ -1295,7 +1299,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.26 · 18 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.26</span></footer>
+<footer id="sig" title="Versión 2.30 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.30</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1610,13 +1614,27 @@ function peaks(buf,n){const d=buf.getChannelData(0),size=Math.floor(d.length/n)|
 function waveSVG(p){let r="";p.forEach((v,i)=>{const h=Math.max(1.5,v*22);r+='<rect x="'+i+'" y="'+(12-h/2).toFixed(1)+'" width=".7" height="'+h.toFixed(1)+'"/>'});
   return '<svg class="w" viewBox="0 0 '+p.length+' 24" preserveAspectRatio="none" aria-hidden="true">'+r+'</svg>'}
 function freeKey(){return KEYS.find(k=>!items.some(i=>i.key===k))||""}
+/* el navegador no abre algunos formatos (MPEG, MP2…): si el helper está, ffmpeg los pasa a MP3 y se usa esa copia */
+const CONVX=/\.(mpeg|mpg|mpga|mp2|mpa|m2a)$/i;
+async function convAudio(blob,name){
+  if(!(LK.ok&&LK.h&&LK.h.convert))return null;
+  try{const res=await hfetch(HELPER+"/convertir",{method:"POST",body:blob,headers:{"Content-Type":"application/octet-stream"}});
+    if(!res.ok){let m="";try{m=(await res.json()).error}catch(e){}throw new Error(m||("HTTP "+res.status))}
+    const b=await res.blob(),ext=/flac/.test(b.type)?".flac":".mp3";return{blob:b,name:String(name||"audio").replace(/\.[a-z0-9]{2,5}$/i,"")+ext}}
+  catch(e){note("No se pudo convertir «"+name+"»: "+(e&&e.message?e.message:e),"error","conv",9000);return null}}
+async function decodeAny(blob,name){ // -> {blob,buffer,name,conv} | null
+  try{return{blob,buffer:await decode(await blob.arrayBuffer()),name}}catch(e){}
+  note("Convirtiendo «"+name+"» con el helper…","info","conv",4000);
+  const c=await convAudio(blob,name);
+  if(c){try{const buffer=await decode(await c.blob.arrayBuffer());clearNote("conv");return{blob:c.blob,buffer,name:c.name,conv:true}}catch(e){}}
+  return null}
 async function add(name,blob,key,base){
   if(items.some(i=>i.name===name))return;
-  if(base)PROT.add(blob);
-  try{
-    const buffer=await decode(await blob.arrayBuffer());
-    items.push({name,blob,buffer,peaks:peaks(buffer,48),key:key===undefined?freeKey():key,base:!!base,playing:new Set(),hid:STASH.has(name)});
-  }catch(e){note("No se pudo decodificar «"+name+"» (formato no soportado o archivo dañado). Formatos habituales: MP3, WAV, OGG, M4A/AAC, FLAC.","warn","dec")}
+  const d=await decodeAny(blob,name);
+  if(!d){note("No se pudo abrir «"+name+"»."+(CONVX.test(name)&&!(LK.ok&&LK.h&&LK.h.convert)?" Los archivos MPEG/MP2 necesitan el helper abierto (con ffmpeg) para convertirlos automáticamente.":" Formato no soportado o archivo dañado. Formatos habituales: MP3, WAV, OGG, M4A/AAC, FLAC, MPEG."),"warn","dec",9000);return}
+  if(d.conv){name=d.name;let c=2;const b0=name.replace(/\.[a-z0-9]+$/i,""),e0=name.slice(b0.length);while(items.some(i=>i.name===name))name=b0+" ("+(c++)+")"+e0}
+  blob=d.blob;if(base)PROT.add(blob);
+  items.push({name,blob,buffer:d.buffer,peaks:peaks(d.buffer,48),key:key===undefined?freeKey():key,base:!!base,playing:new Set(),hid:STASH.has(name)});
 }
 let padRaf=0;
 let padLast=0;
@@ -1874,7 +1892,7 @@ window.addEventListener("scroll",hideCm,true);window.addEventListener("resize",h
 /* ---------- eventos ---------- */
 async function loadFiles(list){
   const files=Array.from(list||[]);
-  const ok=files.filter(f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba)$/i.test(f.name));
+  const ok=files.filter(f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba|mpeg|mpg|mpga|mp2|mpa|m2a)$/i.test(f.name));
   const bad=files.length-ok.length;
   let n=0,dup=0;
   for(const f of ok){const before=items.length;await add(f.name,f);if(items.length>before)n++;else if(items.some(i=>i.name===f.name))dup++}
@@ -1930,7 +1948,7 @@ document.addEventListener("keydown",e=>{
 /* ---------- arranque ---------- */
 // Lee la carpeta "audios" del repositorio (solo funciona en GitHub Pages; si falla, se ignora sin mostrar error).
 async function repoList(){
-  const AUD=/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i,DIRS=["audios","cortinas","mensajes"];
+  const AUD=/\.(mp3|wav|ogg|m4a|aac|flac|opus|mpeg|mpg|mpga|mp2|mpa|m2a)$/i,DIRS=["audios","cortinas","mensajes"];
   let cache=[];try{cache=JSON.parse(localStorage.getItem("botonera_repo")||"[]")}catch(x){}if(!Array.isArray(cache))cache=[];
   const parse=l=>l.filter(x=>typeof x==="string").map(x=>{const [pt,sha,sz]=x.split("|"),k=pt.indexOf("/");return k>0?{d:pt.slice(0,k),n:pt.slice(k+1),sha:sha||"",size:+sz||0}:{d:"audios",n:pt,sha:"",size:0}});
   const cached=d=>parse(cache).filter(x=>x.d===d);
@@ -1966,15 +1984,17 @@ setTimeout(appReady,45000); // red de seguridad
 function usrUI(){const sl=$("usr");sl.innerHTML="";PROF.list.forEach(u=>{const o=document.createElement("option");o.value=u.id;o.textContent=u.name;sl.appendChild(o)});sl.value=PROF.active;$("usrdel").disabled=PROF.active==="p0"}
 usrUI();
 $("usr").addEventListener("change",e=>{PROF.active=e.target.value;profSave();location.reload()});
-$("usradd").addEventListener("click",()=>{
-  let n=(prompt("Nombre del nuevo usuario:","")||"").trim().replace(/[<>]/g,"").slice(0,24);if(!n)return;
-  if(PROF.list.some(u=>u.name.toLowerCase()===n.toLowerCase())){note("Ya existe un usuario llamado «"+n+"».","warn","usr",6000);return}
-  const id="u"+Date.now().toString(36);PROF.list.push({id,name:n});PROF.active=id;profSave();location.reload()});
+$("usradd").addEventListener("click",async()=>{ // usuario nuevo: solo el nombre, sin mail (el mail es opcional y se pone desde «Media»); no deja repetir nombres
+  let msg="Escribí el nombre del usuario. Cada usuario tiene su propia botonera, listas y ajustes.",n;
+  for(;;){n=await askName("Nuevo usuario",msg,"","Crear",24);if(n===null)return;n=n.replace(/[<>]/g,"").trim();if(!n)return;
+    const dup=PROF.list.find(u=>u.name.toLowerCase()===n.toLowerCase());if(!dup)break;msg="Ya existe un usuario llamado «"+dup.name+"». Probá con otro nombre."}
+  const id="u"+Date.now().toString(36);PROF.list.push({id,name:n,email:""});PROF.active=id;profSave();location.reload()});
 $("usrdel").addEventListener("click",async()=>{
   if(PROF.active==="p0")return;const u=PROF.list.find(x=>x.id===PROF.active);
   if(!await askDlg("Eliminar usuario","¿Eliminar el usuario «"+(u?u.name:"")+"» y todos sus botones guardados? No se puede deshacer.","Eliminar"))return;
   try{const d=await db();await new Promise(ok=>{const t=d.transaction("s","readwrite");t.objectStore("s").delete(IK);t.oncomplete=ok;t.onerror=ok;t.onabort=ok})}catch(e){}
   try{localStorage.removeItem(HK)}catch(e){}
+  try{await medDel(MEDK)}catch(e){}
   PROF.list=PROF.list.filter(x=>x.id!==PROF.active);PROF.active="p0";profSave();location.reload()});
 const MK={m:{c:"#ff8a1f",n:"M",t:"marca"},c:{c:"#ff2d2d",n:"C",t:"importante"},i:{c:"#8cf29a",n:"I",t:"intro"},o:{c:"#e8232a",n:"O",t:"outro"}};
 const normMarks=a=>(Array.isArray(a)?a:[]).map(m=>typeof m==="number"?{t:m,k:"c"}:{t:+(m&&m.t),k:m&&MK[m.k]?m.k:"m"}).filter(m=>isFinite(m.t)&&m.t>=0);
@@ -2130,7 +2150,7 @@ function edTrim(){if(!ed.it)return;edStop();let pk=0;ed.ch.forEach(c=>{for(let i
    (igual en izquierda y derecha); lo que está más abierto o distinto en cada lado es la música. Se compara, bin a bin
    (STFT de 2048), qué tan igual es la izquierda y la derecha, y esa parte central (entre ~120 Hz y ~9 kHz) es la «voz».
    Música = original − voz, así que con los dos faders al 100 % suena exactamente igual que el original. */
-const kar={on:false,busy:false,tok:0,src:null,buf:null,gV:1,gM:1,live:false,nodes:null,cache:new WeakMap()};
+const kar={on:false,busy:false,tok:0,src:null,buf:null,gV:1,gM:1,live:false,nodes:null,job:null,mono:false,cache:new WeakMap(),cacheIA:new WeakMap()};
 function karaFFT(N){const rev=new Uint32Array(N),cs=new Float64Array(N/2),sn=new Float64Array(N/2);let b=0;for(let m=N;m>1;m>>=1)b++;
   for(let i=0;i<N;i++){let x=i,y=0;for(let j=0;j<b;j++){y=(y<<1)|(x&1);x>>=1}rev[i]=y}
   for(let i=0;i<N/2;i++){cs[i]=Math.cos(2*Math.PI*i/N);sn[i]=-Math.sin(2*Math.PI*i/N)}
@@ -2158,7 +2178,7 @@ async function karaSep(L,R,sr,prog,tok){
 function karaSet(msg,cls){const e=$("kast");e.textContent=msg;e.className="kst"+(cls?" "+cls:"")}
 function karaUI(){const ok=kar.on&&!!kar.buf&&!kar.busy;["kav","kam","kano","kavo","kaeq","kaok"].forEach(i=>{$(i).disabled=!ok});
   $("kavt").textContent=Math.round(kar.gV*100)+" %";$("kamt").textContent=Math.round(kar.gM*100)+" %";$("kav").value=Math.round(kar.gV*100);$("kam").value=Math.round(kar.gM*100);
-  const b=$("edkar");b.classList.toggle("sel",kar.on);b.setAttribute("aria-pressed",kar.on?"true":"false")}
+  const ia=$("kaia");ia.hidden=!(LK.ok&&LK.h&&LK.h.karaoke);ia.disabled=!kar.on||kar.busy;const b=$("edkar");b.classList.toggle("sel",kar.on);b.setAttribute("aria-pressed",kar.on?"true":"false")}
 function karaGains(){const nd=kar.nodes;if(!nd||!kar.live)return;const t=ctx.currentTime;nd.gV.gain.setTargetAtTime(kar.gV,t,.012);nd.gML.gain.setTargetAtTime(kar.gM,t,.012);nd.gMR.gain.setTargetAtTime(kar.gM,t,.012)}
 function karaGraph(){
   if(!kar.on)return null;
@@ -2167,13 +2187,20 @@ function karaGraph(){
   gV.gain.value=kar.gV;gML.gain.value=kar.gM;gMR.gain.value=kar.gM;
   sp.connect(gML,0);sp.connect(gMR,1);sp.connect(gV,2);gML.connect(mg,0,0);gMR.connect(mg,0,1);gV.connect(mg,0,0);gV.connect(mg,0,1);mg.connect(busEd);
   kar.nodes={gV,gML,gMR};kar.live=true;return{buf:kar.buf,in:sp}}
-function karaOff(silent){kar.tok++;if(kar.on&&kar.live&&ed.src&&!silent)edStop();kar.on=false;kar.busy=false;kar.live=false;kar.nodes=null;$("edkara").hidden=true;karaUI()}
+function karaOff(silent){kar.tok++;if(kar.job){const j=kar.job;kar.job=null;hfetch(HELPER+"/separar/cancelar?id="+j).catch(()=>{}).finally(()=>hfetch(HELPER+"/separar/fin?id="+j).catch(()=>{}))}kar.mono=false;if(kar.on&&kar.live&&ed.src&&!silent)edStop();kar.on=false;kar.busy=false;kar.live=false;kar.nodes=null;$("edkara").hidden=true;karaUI()}
 async function karaOpen(){
   if(!ed.it){note("Karaoke: primero abrí un audio en el editor.","warn","kar",4000);return}
   if(kar.on){karaOff();return}
-  if(ed.ch.length<2){note("Karaoke: este audio es mono (un solo canal). La voz y la música están mezcladas en el mismo canal y no se pueden separar. Hace falta un audio estéreo.","warn","kar",9000);return}
-  const L=ed.ch[0],R=ed.ch[1];let sd=0,tt=0;const stp=Math.max(1,Math.floor(L.length/20000));for(let i=0;i<L.length;i+=stp){const m=L[i]+R[i],d=L[i]-R[i];tt+=m*m;sd+=d*d}
-  if(tt>0&&sd/tt<1e-4){note("Karaoke: el audio es «falso estéreo» (izquierda y derecha son idénticas), así que todo está al centro y no hay forma de separar la voz de la música.","warn","kar",9000);return}
+  const hasIA=!!(LK.ok&&LK.h&&LK.h.karaoke);
+  if(kar.cacheIA.has(ed.ch)){karaIA();return} // ya se separó con IA antes: se reutiliza
+  let why="";
+  if(ed.ch.length<2)why="este audio es mono (un solo canal): la voz y la música están mezcladas en el mismo canal";
+  else{const L0=ed.ch[0],R0=ed.ch[1];let sd=0,tt=0;const stp=Math.max(1,Math.floor(L0.length/20000));for(let i=0;i<L0.length;i+=stp){const m=L0[i]+R0[i],d=L0[i]-R0[i];tt+=m*m;sd+=d*d}
+    if(tt>0&&sd/tt<1e-4)why="es «falso estéreo» (izquierda y derecha son idénticas): todo está al centro"}
+  if(why){
+    if(hasIA){karaIA();return}
+    note("Karaoke: "+why+", y así no se puede separar la voz de la música con el método rápido. "+(LK.ok?"Con la IA del helper sí: ejecutá instalar-karaoke-ia.bat (una sola vez), reabrí el helper y volvé a apretar Karaoke.":"Hace falta el helper con el karaoke IA instalado (instalar-karaoke-ia.bat)."),"warn","kar",13000);return}
+  const L=ed.ch[0],R=ed.ch[1];
   edStop();kar.on=true;kar.src=ed.ch;kar.gV=1;kar.gM=1;$("edkara").hidden=false;
   const hit=kar.cache.get(ed.ch);
   if(hit){kar.buf=hit;kar.busy=false;karaSet("Listo · mové los faders (también mientras suena)","ok");karaUI();return}
@@ -2188,8 +2215,43 @@ function karaApply(){if(!kar.on||!kar.buf||kar.busy||kar.src!==ed.ch)return;edSt
   for(let i=0;i<n;i++){const x=kar.gV*V[i]+kar.gM*m0[i],y=kar.gV*V[i]+kar.gM*m1[i];a[i]=x;c[i]=y;const ax=Math.abs(x),ay=Math.abs(y);if(ax>pk)pk=ax;if(ay>pk)pk=ay}
   let k=1;if(pk>1){k=.99/pk;for(let i=0;i<n;i++){a[i]*=k;c[i]*=k}}
   const gv=Math.round(kar.gV*100),gm=Math.round(kar.gM*100);
-  edPush();ed.ch=[a,c].concat(ed.ch.slice(2).map(x=>new Float32Array(x)));ed.dirty=true;karaOff(true);edInfo();edDraw();
+  if(kar.mono){for(let i=0;i<n;i++)a[i]=(a[i]+c[i])*.5} // el original era mono: queda mono
+  edPush();ed.ch=(kar.mono?[a]:[a,c]).concat(ed.ch.slice(2).map(x=>new Float32Array(x)));ed.dirty=true;karaOff(true);edInfo();edDraw();
   note("Karaoke aplicado (voz "+gv+" %, música "+gm+" %)"+(k<1?" · se bajó "+(-20*Math.log10(k)).toFixed(1)+" dB para no distorsionar":"")+". Ctrl+Z lo deshace; el diskette guarda.","info","kar",7000)}
+
+/* --- karaoke con IA (Demucs en el helper): sirve también para audios mono --- */
+function karaWav(chs,sr){const n=chs[0].length,nc=chs.length,buf=new ArrayBuffer(44+n*nc*2),v=new DataView(buf),w=(o,t)=>{for(let i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i))};
+  w(0,"RIFF");v.setUint32(4,36+n*nc*2,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,nc,true);v.setUint32(24,sr,true);v.setUint32(28,sr*nc*2,true);v.setUint16(32,nc*2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*nc*2,true);
+  let o=44;for(let i=0;i<n;i++)for(let c=0;c<nc;c++){const x=Math.max(-1,Math.min(1,chs[c][i]));v.setInt16(o,x<0?x*32768:x*32767,true);o+=2}
+  return new Blob([buf],{type:"audio/wav"})}
+function karaFit(a,n){if(a.length===n)return a;const o=new Float32Array(n);if(Math.abs(a.length-n)<=Math.max(2048,n*.01)){o.set(a.subarray(0,Math.min(n,a.length)));return o}
+  const k=(a.length-1)/Math.max(1,n-1);for(let i=0;i<n;i++){const x=i*k,i0=Math.floor(x),f=x-i0;o[i]=a[i0]*(1-f)+a[Math.min(a.length-1,i0+1)]*f}return o}
+async function karaIA(){
+  if(!ed.it)return;
+  if(!(LK.ok&&LK.h&&LK.h.karaoke)){note("Karaoke IA: el helper no tiene Demucs instalado. Ejecutá instalar-karaoke-ia.bat (una sola vez) y reabrí el helper.","warn","kar",10000);return}
+  edStop();const ch=ed.ch,sr=ed.sr,tok=++kar.tok;
+  kar.on=true;kar.src=ch;kar.mono=ch.length<2;kar.gV=1;kar.gM=1;kar.live=false;kar.nodes=null;$("edkara").hidden=false;
+  const hit=kar.cacheIA.get(ch);
+  if(hit){kar.buf=hit;kar.busy=false;karaSet("Listo (IA) · mové los faders (también mientras suena)","ok");karaUI();return}
+  kar.buf=null;kar.busy=true;karaUI();karaSet("Enviando el audio al helper…","");let id=null;
+  try{
+    const res=await hfetch(HELPER+"/separar",{method:"POST",body:karaWav(ch.slice(0,2),sr),headers:{"Content-Type":"application/octet-stream"}});
+    if(!res.ok){let m="";try{m=(await res.json()).error}catch(e){}throw new Error(m||("HTTP "+res.status))}
+    id=(await res.json()).id;kar.job=id;if(kar.tok!==tok)return;
+    for(;;){await new Promise(ok=>setTimeout(ok,1000));if(kar.tok!==tok)return;
+      const st=await(await hfetch(HELPER+"/separar/estado?id="+encodeURIComponent(id))).json();
+      if(st.error)throw new Error(st.error);if(st.state==="error")throw new Error(st.msg||"falló la separación");if(st.state==="cancelado")return;if(st.state==="listo")break;
+      karaSet(st.state==="separando"?"Separando con IA en el helper… "+st.pct+" %"+(st.dev?" · "+st.dev:""):"Preparando el audio…","")}
+    karaSet("Bajando las pistas…","");
+    const get=async q=>{const r2=await hfetch(HELPER+"/separar/pista?id="+encodeURIComponent(id)+"&s="+q);if(!r2.ok)throw new Error("no se pudo bajar la pista ("+r2.status+")");return ctx.decodeAudioData(await r2.arrayBuffer())};
+    const vb=await get("voz"),mb=await get("musica");if(kar.tok!==tok||ed.ch!==ch)return;
+    const n=ch[0].length,b=ctx.createBuffer(3,n,sr),v0=karaFit(vb.getChannelData(0),n),v1=karaFit(vb.getChannelData(vb.numberOfChannels>1?1:0),n),V=new Float32Array(n);
+    for(let i=0;i<n;i++)V[i]=(v0[i]+v1[i])*.5;
+    b.copyToChannel(karaFit(mb.getChannelData(0),n),0);b.copyToChannel(karaFit(mb.getChannelData(mb.numberOfChannels>1?1:0),n),1);b.copyToChannel(V,2);
+    kar.cacheIA.set(ch,b);kar.buf=b;kar.busy=false;karaSet("Listo (IA) · mové los faders (también mientras suena)","ok");karaUI()}
+  catch(e){if(kar.tok===tok){karaOff(true);note("Karaoke IA: "+(e&&e.message?e.message:e),"error","kar",12000)}}
+  finally{if(id&&kar.job===id)kar.job=null;if(id)hfetch(HELPER+"/separar/fin?id="+encodeURIComponent(id)).catch(()=>{})}}
+$("kaia").addEventListener("click",()=>{if(kar.on&&!kar.busy)karaIA()});
 $("edkar").addEventListener("click",karaOpen);$("kax").addEventListener("click",()=>karaOff());$("kaok").addEventListener("click",karaApply);
 $("kav").addEventListener("input",()=>{kar.gV=+$("kav").value/100;karaGains();karaUI()});$("kam").addEventListener("input",()=>{kar.gM=+$("kam").value/100;karaGains();karaUI()});
 ["kav","kam"].forEach(i=>$(i).addEventListener("dblclick",()=>{if(i==="kav")kar.gV=1;else kar.gM=1;karaGains();karaUI()}));
@@ -2372,7 +2434,7 @@ function parseLink(raw){
   const h=u.hostname.toLowerCase().replace(/^(www|m|mobile|music)\./,""),p=u.pathname,q=u.searchParams;let m;
   const r={url:u.href,host:h,platform:h},ext=(p.match(/\.([a-z0-9]{2,5})$/i)||[])[1]||"";
   const yt=(id,v)=>{r.platform="YouTube"+(v?" Shorts":"");r.embed={src:"https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id)+"?autoplay=1&mute=1&enablejsapi=1&rel=0&playsinline=1"+(location.protocol.indexOf("http")===0?"&origin="+encodeURIComponent(location.origin):""),ratio:v?"9/16":"16/9",cls:v?"v":"h"};return r};
-  if(/^(mp3|wav|ogg|oga|m4a|aac|flac|opus)$/i.test(ext)){r.direct="audio";r.platform="Archivo de audio";return r}
+  if(/^(mp3|wav|ogg|oga|m4a|aac|flac|opus|mpga|mp2)$/i.test(ext)){r.direct="audio";r.platform="Archivo de audio";return r}
   if(/^(mp4|webm|mov|m4v|ogv)$/i.test(ext)){r.direct="video";r.platform="Archivo de video";return r}
   if(h==="youtu.be"&&(m=p.match(/^\/([\w-]{6,})/)))return yt(m[1],false);
   if(/(^|\.)youtube(-nocookie)?\.com$/.test(h)){
@@ -3225,6 +3287,132 @@ async function sesApply(S,files){
 $("sesave").addEventListener("click",sesSave);
 $("sesopen").addEventListener("click",()=>$("sesfile").click());
 $("sesfile").addEventListener("change",e=>{const f=e.target.files[0];e.target.value="";if(f)sesOpenFile(f)});
+/* ---------- v2.29 · carpeta Media: copia automática de los audios propios + la botonera guardada dentro de la carpeta ---------- */
+const MED={ok:!!window.showDirectoryPicker,h:null,perm:"none",busy:false,man:null,cfgSig:"",done:new WeakMap(),bk:false,last:0,errAt:0,hold:false};
+const MEDK="mediadir:"+PROF.active;
+const medPut=(k,v)=>window.__medMem?(window.__medMem[k]=v,Promise.resolve(true)):db().then(d=>new Promise(ok=>{const t=d.transaction("s","readwrite");t.objectStore("s").put(v,k);t.oncomplete=()=>ok(true);t.onerror=t.onabort=()=>ok(false)})).catch(()=>false);
+const medGet=k=>window.__medMem?Promise.resolve(window.__medMem[k]||null):db().then(d=>new Promise(ok=>{const q=d.transaction("s").objectStore("s").get(k);q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)})).catch(()=>null);
+const medDel=k=>window.__medMem?(delete window.__medMem[k],Promise.resolve(true)):db().then(d=>new Promise(ok=>{const t=d.transaction("s","readwrite");t.objectStore("s").delete(k);t.oncomplete=()=>ok(true);t.onerror=t.onabort=()=>ok(false)})).catch(()=>false);
+const medSafe=n=>(String(n).replace(/[\\\/:*?"<>|\u0000-\u001f]/g,"_").replace(/[. ]+$/,"")||"audio").slice(0,180);
+async function medPerm(ask){const h=MED.h;if(!h)return false;
+  try{let p=h.queryPermission?await h.queryPermission({mode:"readwrite"}):"granted";if(p!=="granted"&&ask&&h.requestPermission)p=await h.requestPermission({mode:"readwrite"});MED.perm=p;return p==="granted"}
+  catch(e){MED.perm="prompt";return false}}
+const medDir=(n,create)=>MED.h.getDirectoryHandle(n,{create:!!create});
+async function medRead(sub,name){try{return await (await (await medDir(sub)).getFileHandle(name)).getFile()}catch(e){return null}}
+async function medWrite(sub,name,blob){const d=await medDir(sub,true),fh=await d.getFileHandle(name,{create:true}),w=await fh.createWritable();try{await w.write(blob);await w.close()}catch(e){try{await w.abort()}catch(x){}throw e}}
+async function medFree(f){const m=f.match(/^(.*?)(\.[^.]+)?$/);let k=2,n;for(;;){n=m[1]+" ("+k+")"+(m[2]||"");if(!await medRead("Audios",n))return n;k++}}
+async function medLoadMan(){const f=await medRead("Configuracion","medios.json");if(!f)return null;try{const j=JSON.parse(await f.text());return j&&j.files?j:null}catch(e){return null}}
+function medOwn(){const m=new Map(); // audios propios (botonera + listas). No se copian los protegidos ni los originales de grabación
+  items.forEach(i=>{if(!i.base&&i.blob&&!i.hid&&!isProt(i.blob))m.set(i.name,i.blob)});
+  PLISTS.forEach(L=>L.rows.forEach(r=>{if(r.t==="f"&&r.blob&&!isProt(r.blob)&&!m.has(r.name)&&!items.some(i=>i.base&&i.name===r.name))m.set(r.name,r.blob)}));
+  return m}
+async function medBackup(){ // antes de pisar la botonera guardada, deja una copia (las 10 últimas)
+  try{const f=await medRead("Configuracion","botonera-sesion.json");if(!f)return;const t=await f.text();let S;try{S=JSON.parse(t)}catch(e){return}
+    if(!S||!Array.isArray(S.items)||!S.items.length)return;
+    const nm="botonera-sesion-"+String(S.saved||"previo").slice(0,16).replace(/[:T]/g,"-")+".json";
+    const rd=await (await medDir("Configuracion",true)).getDirectoryHandle("respaldo",{create:true});
+    let ex=false;try{await rd.getFileHandle(nm);ex=true}catch(e){}
+    if(!ex){const fh=await rd.getFileHandle(nm,{create:true}),w=await fh.createWritable();await w.write(t);await w.close()}
+    const names=[];for await(const [n] of rd.entries())names.push(n);names.sort();while(names.length>10)await rd.removeEntry(names.shift())}catch(e){}}
+async function medSync(force){
+  if(!MED.h||MED.busy||MED.hold||window.__sesLock||!document.body.classList.contains("booted"))return;
+  if(!(await medPerm(false))){mui();return}
+  MED.busy=true;let n=0;
+  try{
+    if(!MED.man)MED.man=(await medLoadMan())||{v:1,files:{}};
+    const man=MED.man;let ch=false;
+    for(const [name,blob] of medOwn()){
+      if(MED.done.get(blob)===name)continue;
+      const m=man.files[name];
+      if(m&&m.size===blob.size){MED.done.set(blob,name);continue}
+      let f=m&&m.f,need=true;
+      if(!f){const b0=medSafe(name),ex=await medRead("Audios",b0);
+        if(!ex)f=b0;else if(ex.size===blob.size){f=b0;need=false}else f=await medFree(b0)} // ya está: se vincula sin copiar; si el nombre choca con otro audio distinto, se guarda como «nombre (2)»
+      if(need){await medWrite("Audios",f,blob);n++}
+      man.files[name]={f,size:blob.size};ch=true;MED.done.set(blob,name)}
+    if(ch)await medWrite("Configuracion","medios.json",new Blob([JSON.stringify(man)],{type:"application/json"}));
+    const cfg=sesBuild();
+    if(cfg.items.length||force){const sig=JSON.stringify(Object.assign({},cfg,{saved:0,ver:0}));
+      if(sig!==MED.cfgSig||force){if(!MED.bk){MED.bk=true;await medBackup()}
+        await medWrite("Configuracion","botonera-sesion.json",new Blob([JSON.stringify(cfg)],{type:"application/json"}));
+        const pr=PROF.list.find(u=>u.id===PROF.active)||{};
+        await medWrite("Configuracion","perfil.json",new Blob([JSON.stringify({app:"botonera-perfil",v:1,id:PROF.active,name:pr.name||"",email:pr.email||"",saved:new Date().toISOString()})],{type:"application/json"}));
+        MED.cfgSig=sig;MED.last=Date.now()}}
+    MED.err="";if(n&&force)note("Carpeta Media: se copiaron "+n+" audio"+(n===1?"":"s")+" nuevo"+(n===1?"":"s")+".","info","med",5000)
+  }catch(e){
+    MED.err=(e&&e.name||"")+" "+(e&&e.message||"");
+    if(e&&(e.name==="NotAllowedError"||e.name==="SecurityError"||e.name==="NotFoundError")){MED.perm="prompt"}
+    if(Date.now()-MED.errAt>60000){MED.errAt=Date.now();note(e&&e.name==="QuotaExceededError"?"La carpeta Media no tiene más espacio en el disco.":"No pude copiar a la carpeta Media ("+(e&&e.name==="NotAllowedError"?"hay que reconectarla: tocá «Media»":(e&&e.message||e))+").","warn","med",9000)}
+  }finally{MED.busy=false;mui()}}
+async function medFiles(){const m=new Map();
+  try{const d=await medDir("Audios");for await(const [n,fh] of d.entries()){if(fh.kind==="file"){const f=await fh.getFile();m.set(n.toLowerCase(),new Blob([await f.arrayBuffer()],{type:f.type||""}))}}}catch(e){}
+  const man=await medLoadMan();if(man)for(const k in man.files){const f=m.get(String(man.files[k].f).toLowerCase());if(f)m.set(k.toLowerCase(),f)}
+  return m}
+async function medRestorePerfil(){const f=await medRead("Configuracion","perfil.json");if(!f)return;
+  try{const j=JSON.parse(await f.text()),pr=PROF.list.find(u=>u.id===PROF.active);if(pr&&!pr.email&&j&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(j.email||"")){pr.email=j.email;profSave()}}catch(e){}}
+async function medRestore(){
+  const f=await medRead("Configuracion","botonera-sesion.json");
+  if(!f){note("La carpeta no tiene una botonera guardada todavía.","warn","med",6000);return false}
+  let S;try{S=JSON.parse(await f.text())}catch(e){S=null}
+  if(!S||S.app!=="botonera-sesion"||!Array.isArray(S.items)){note("La botonera guardada en la carpeta está dañada. Hay copias en Configuracion/respaldo.","error","med",9000);return false}
+  const fecha=S.saved?new Date(S.saved).toLocaleString("es-AR"):"";
+  const go=await askDlg("Restaurar la botonera","En la carpeta «"+MED.h.name+"» hay una botonera guardada el "+fecha+(S.profile?" (usuario «"+S.profile+"»)":"")+": "+S.items.length+" botones y "+(S.lists||[]).length+" lista(s). Reemplaza los botones, colores, teclas y listas de este usuario. Los audios se toman de la carpeta.","Restaurar");
+  if(!go)return false;
+  MED.hold=true;await medRestorePerfil();const files=await medFiles();await sesApply(S,files);return true}
+async function medConnect(){
+  let h;try{h=window.__medPick?await window.__medPick():await window.showDirectoryPicker({id:"botonera-media",mode:"readwrite",startIn:"documents"})}catch(e){return}
+  if(!h)return;
+  MED.h=h;MED.perm="granted";MED.man=null;MED.cfgSig="";MED.done=new WeakMap();MED.bk=false;MED.hold=true;
+  await medPut(MEDK,h);mui();
+  try{
+    const f=await medRead("Configuracion","botonera-sesion.json");
+    if(f){let S=null;try{S=JSON.parse(await f.text())}catch(e){}
+      if(S&&S.app==="botonera-sesion"&&Array.isArray(S.items)&&S.items.length){if(await medRestore())return}}
+  }catch(e){}
+  MED.hold=false;await medSync(true);
+  note("Carpeta Media conectada: «"+h.name+"». Lo que agregues a la botonera se copia ahí solo, junto con tu botonera guardada.","info","med",8000)}
+async function medDisconnect(){
+  if(!await askDlg("Desconectar la carpeta","La botonera deja de copiar audios a la carpeta «"+(MED.h?MED.h.name:"")+"». No se borra nada de la carpeta ni de la botonera.","Desconectar"))return;
+  MED.h=null;MED.perm="none";MED.man=null;await medDel(MEDK);mui();note("Carpeta Media desconectada.","info","med",5000)}
+async function medEmail(){const pr=PROF.list.find(u=>u.id===PROF.active);if(!pr)return;
+  let msg="Es opcional: sirve para reconocer tu botonera en la carpeta. No se verifica ni se envía a ningún lado.",v;
+  for(;;){v=await askName("Mail del usuario «"+pr.name+"»",msg,pr.email||"","Guardar",80);if(v===null||!v)return;v=v.trim().toLowerCase();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){msg="Ese mail no parece válido. Probá de nuevo (por ejemplo nombre@correo.com).";continue}
+    const dup=PROF.list.find(u=>u.id!==pr.id&&(u.email||"").toLowerCase()===v);
+    if(dup){msg="Ese mail ya lo usa el usuario «"+dup.name+"». Probá con otro.";continue}break}
+  pr.email=v;profSave();MED.cfgSig="";medSync(true);note("Mail guardado: "+v,"info","med",5000)}
+function mui(){const b=$("sesmed");if(!b)return;const on=!!MED.h&&MED.perm==="granted",wr=!!MED.h&&!on;
+  b.classList.toggle("on",on);b.classList.toggle("warn",wr);
+  b.title=!MED.ok?"Carpeta Media: este navegador no permite elegir una carpeta (usá Chrome o Edge)":on?"Carpeta Media conectada: «"+MED.h.name+"». Los audios que agregues se copian ahí solos y la botonera queda guardada":wr?"Carpeta Media: hay que reconectarla (un clic y permitir)":"Elegir una carpeta (Media) donde se copian tus audios y se guarda tu botonera, para tenerla siempre a mano"}
+async function medPanel(){
+  if(!MED.ok){await askDlg("Carpeta Media","Este navegador no permite elegir una carpeta para guardar los audios (Safari y Firefox no lo permiten). Usá Chrome o Edge en la computadora. Mientras tanto podés usar «Guardar sesión» y «Abrir sesión».","Entendido");return}
+  const pr=PROF.list.find(u=>u.id===PROF.active)||{},w=document.createElement("div");w.id="dlg";
+  w.innerHTML='<div class="dbox" role="dialog" aria-modal="true"><b>Carpeta Media</b><p id="mmsg"></p><div class="mpl" id="mbt"></div><div class="drow"><button class="dno" id="mcl">Cerrar</button></div></div>';
+  const end=()=>{document.removeEventListener("keydown",kd,true);w.remove()},kd=e=>{if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();end()}};
+  document.addEventListener("keydown",kd,true);w.addEventListener("pointerdown",e=>{if(e.target===w)end()});
+  const ok=!!MED.h&&MED.perm==="granted";let txt="";
+  if(!MED.h)txt="Elegí una carpeta de tu compu (por ejemplo «Media»). Todo audio propio que agregues a la botonera o a las listas se copia ahí solo, si no estaba ya, y tu botonera (botones, colores, teclas, listas) queda guardada dentro. Si cambiás de compu o reinstalás Windows, elegís la misma carpeta y todo vuelve como estaba. Conviene que no esté en el disco C: o que la sincronices con Drive, Dropbox u OneDrive.";
+  else{const nf=MED.man?Object.keys(MED.man.files).length:0;txt="Carpeta: «"+MED.h.name+"»"+(ok?"":" (hay que reconectarla)")+". Audios copiados: "+nf+(MED.last?". Botonera guardada a las "+new Date(MED.last).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hour12:false}):"")+". Usuario: "+(pr.email||pr.name||"")+"."}
+  w.querySelector("#mmsg").textContent=txt;
+  const B=[];
+  if(!MED.h)B.push(["Elegir mi carpeta",medConnect,1]);
+  else{if(!ok)B.push(["Reconectar la carpeta",async()=>{if(await medPerm(true)){MED.hold=false;mui();await medSync(true);note("Carpeta Media reconectada.","info","med",4000)}else{mui();note("No se pudo reconectar. Probá con «Elegir mi carpeta».","warn","med",7000)}},1]);
+    if(ok)B.push(["Copiar ahora lo que falta",()=>medSync(true),1],["Restaurar la botonera desde la carpeta",medRestore]);
+    B.push(["Elegir otra carpeta",medConnect],["Poner o cambiar mi mail",medEmail],["Desconectar",medDisconnect])}
+  const bt=w.querySelector("#mbt");B.forEach(([t,fn,pri])=>{const b=document.createElement("button");b.type="button";b.className=pri?"dok":"dno";b.textContent=t;b.onclick=()=>{end();fn()};bt.appendChild(b)});
+  w.querySelector("#mcl").onclick=end;document.body.appendChild(w);const f=bt.querySelector("button");if(f)f.focus()}
+$("sesmed").addEventListener("click",medPanel);
+setInterval(()=>medSync(false),15000);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)medSync(false)});
+setTimeout(async()=>{
+  if(!MED.ok){mui();return}
+  try{MED.h=await medGet(MEDK);if(MED.h&&!(MED.h.kind==="directory"))MED.h=null}catch(e){MED.h=null}
+  if(MED.h)await medPerm(false);mui();
+  if(MED.h&&MED.perm==="granted")setTimeout(()=>medSync(false),4000);
+  else if(MED.h)note("Carpeta Media «"+MED.h.name+"»: tocá «Media» para reconectarla (un clic y permitir).","warn","med",12000);
+  else{let seen=false;try{seen=localStorage.getItem("botonera_medhint")==="1";localStorage.setItem("botonera_medhint","1")}catch(e){}
+    if(!seen)note("Nuevo: tocá «Media» arriba a la derecha para elegir tu carpeta. Tus audios y tu botonera se guardan ahí solos.","info","med",14000)}
+},1500);
 /* --- helper local --- */
 let hpBusy=null,hpFail=0,hpWasOk=null,hpLast=0;
 function hping(){if(hpBusy)return hpBusy;hpBusy=(async()=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),8000);let ok=false,h=null,need=false;
@@ -3423,7 +3611,7 @@ const plKeyOf=L=>PLK+(L.n>1?"#"+L.n:"");
 const PLTPL=$p("pl").cloneNode(true); // molde limpio del panel para las listas nuevas
 $p("pl")._L=PL;
 const plIdx=id=>PL.rows.findIndex(r=>r.id===id),plRow=id=>PL.rows[plIdx(id)];
-const plAudio=f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba)$/i.test(f.name);
+const plAudio=f=>/^audio\//.test(f.type)||/\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|webm|weba|mpeg|mpg|mpga|mp2|mpa|m2a)$/i.test(f.name);
 const fmtM=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
 const plMk=(name,blob,buffer)=>({id:PL.uid++,t:"f",name,blob,buffer,color:null}),plMkStop=()=>({id:PL.uid++,t:"s"});
 const plClone=r=>{if(r.t==="s")return plMkStop();const c=plMk(r.name,r.blob,r.buffer);c.color=r.color;c.cues=(r.cues||[]).slice();return c};
@@ -3432,7 +3620,9 @@ async function plDecode(b,name){try{
   return await decode(await b.arrayBuffer())}catch(e){return null}}
 async function plAddFiles(list,at){
   const _L=PL,fs=Array.from(list||[]),ok=fs.filter(plAudio);let pos=at===undefined||at<0?PL.rows.length:at,n=0;
-  for(const f of ok){const b=await plDecode(f);plAct(_L);if(!b){note("No se pudo decodificar «"+f.name+"».","warn","pl",6000);continue}PL.rows.splice(pos++,0,plMk(f.name,f,b));n++}
+  for(const f of ok){let b=await plDecode(f),blob=f,nm=f.name;
+    if(!b){const d=await decodeAny(f,f.name);if(d){b=d.buffer;blob=d.blob;nm=d.name}}
+    plAct(_L);if(!b){note("No se pudo decodificar «"+f.name+"»."+(CONVX.test(f.name)&&!(LK.ok&&LK.h&&LK.h.convert)?" Los archivos MPEG/MP2 necesitan el helper abierto (con ffmpeg).":""),"warn","pl",7000);continue}PL.rows.splice(pos++,0,plMk(nm,blob,b));n++}
   if(fs.length>ok.length)note((fs.length-ok.length)+" archivo(s) no son audio y se omitieron.","warn","pl",5000);
   plRender();plSave();return n}
 function plNextIdx(){const c=plIdx(PL.curId),n=plIdx(PL.nxtId);if(PL.nxtId!==null&&n>=0&&n!==c)return n;return c>=0&&c+1<PL.rows.length?c+1:-1}
