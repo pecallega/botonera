@@ -1210,7 +1210,26 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 .mon .vph .vpt{flex:1 1 30px;min-width:30px}
 .mon .mtag{gap:5px}
 @container (max-width:560px){.mon .mtx{display:none}}
-@media (min-width:901px){#rcol{top:var(--rct,46px);max-height:none;overflow:visible}}
+@media (min-width:901px){#rcol{top:var(--rct,56px);max-height:none;overflow:visible}}
+
+/* v2.39 · barra superior más grande; al tocar botonera, listas, monitor o buscador se achica con animación (sigue fija y se agranda al pasar el mouse o tocarla) */
+@media (min-width:901px){
+#tbar{--k:1.3;height:calc(32px*var(--k));padding:0 calc(14px*var(--k));gap:calc(10px*var(--k));transition:height .32s ease,padding .32s ease,gap .32s ease,box-shadow .3s}
+#tbar.mini{--k:.84}
+#tbar #tblogo{height:calc(22px*var(--k));transition:height .32s ease}
+#tbar #tbled{gap:calc(10px*var(--k))}
+#tbar #tbled span{font-size:calc(.5rem*var(--k));gap:calc(4px*var(--k));transition:font-size .32s ease}
+#tbar #tbled i{width:calc(6px*var(--k));height:calc(13px*var(--k));transition:width .32s ease,height .32s ease}
+#tbar #tbtx{font-size:calc(.6rem*var(--k));min-width:calc(150px*var(--k));transition:font-size .32s ease,min-width .32s ease}
+#tbar #tbbar{height:calc(14px*var(--k));transition:height .32s ease}
+#tbar .tbb{padding:calc(4px*var(--k)) calc(9px*var(--k))!important;font-size:calc(.56rem*var(--k))!important;gap:calc(6px*var(--k));transition:padding .32s ease,font-size .32s ease,gap .32s ease,background .15s,border-color .15s}
+#tbar .tbb .ic{width:calc(12px*var(--k));height:calc(12px*var(--k));transition:width .32s ease,height .32s ease}
+#tbar .tbb .cv{width:calc(9px*var(--k));height:calc(9px*var(--k))}
+#tbar .av{width:calc(20px*var(--k));height:calc(20px*var(--k));transition:width .32s ease,height .32s ease}
+#tbar .tbs i{width:calc(3px*var(--k));height:calc(9px*var(--k))}
+.lb{top:56px!important}
+}
+@media (prefers-reduced-motion:reduce){#tbar,#tbar *{transition:none!important}}
 </style>
 </head>
 <body class="booting">
@@ -1362,7 +1381,7 @@ body.laydrag{cursor:grabbing!important;user-select:none}
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.38 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.38</span></footer>
+<footer id="sig" title="Versión 2.39 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.39</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -4895,8 +4914,16 @@ window.addEventListener("error",e=>{if(/ResizeObserver loop/i.test(e.message||""
 /* ---------- v2.38 · la columna de videos acompaña el scroll; si es más alta que la pantalla se pega por abajo para ver las sugerencias ---------- */
 (function(){const rc=document.getElementById("rcol");if(!rc||!window.ResizeObserver)return;let raf=0;
   function fit(){raf=0;if(innerWidth<=900){rc.style.removeProperty("--rct");return}
-    const H=rc.offsetHeight,top=46,bot=12;rc.style.setProperty("--rct",(H+top+bot>innerHeight?Math.min(top,innerHeight-H-bot):top)+"px")}
+    const H=rc.offsetHeight,top=56,bot=12;rc.style.setProperty("--rct",(H+top+bot>innerHeight?Math.min(top,innerHeight-H-bot):top)+"px")}
   const go=()=>{if(!raf)raf=requestAnimationFrame(fit)};new ResizeObserver(go).observe(rc);window.addEventListener("resize",go);go()})();
+/* ---------- v2.39 · barra superior: se achica al trabajar en la botonera y se agranda al tocarla o pasar el mouse ---------- */
+(function(){const tb=document.getElementById("tbar");if(!tb)return;
+  const out=t=>!(t&&t.closest&&t.closest("#tbar,#tbmenu"));
+  const mini=e=>{if(!out(e.target))return;const m=document.getElementById("tbmenu");if(m&&!m.hidden)return;tb.classList.add("mini")};
+  const big=()=>tb.classList.remove("mini");
+  document.addEventListener("pointerdown",mini,true);document.addEventListener("focusin",mini,true);
+  tb.addEventListener("pointerenter",big);tb.addEventListener("pointerdown",big);tb.addEventListener("focusin",big);
+  tb.addEventListener("transitionend",e=>{if(e.propertyName!=="height"||typeof TB==="undefined"||!TB.mn)return;const m=document.getElementById("tbmenu"),b=document.getElementById({u:"tbu",m:"tbm",s:"tbs",l:"tbl"}[TB.mn]);if(m&&!m.hidden&&b)m.style.top=(b.getBoundingClientRect().bottom+4)+"px"})})();
 </script>
 </body>
 </html>
