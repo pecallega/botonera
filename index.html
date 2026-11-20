@@ -1322,7 +1322,7 @@ body.midilearn #stop{outline:1px dashed rgba(61,255,122,.7);outline-offset:2px}
 /* v2.55 · vista de celular: solo botonera + grabar + cargar audios (tablets y PC siguen con la vista completa) */
 #mrec,#mdesk,#mphone{display:none}
 html.mob{padding:0!important}
-.mob header,.mob #tbar,.mob #sesbar,.mob #lstL,.mob #lstR,.mob #rcol,.mob #ed,.mob #gmidi,.mob #gbar .gl,.mob #gbar .otag,.mob #gsel,.mob #gav,.mob #recpad,.mob .cell:has(#recpad),.mob .recbar,.mob #cedit,.mob #ckey,.mob #cnx,.mob #cpl,.mob #dz{display:none!important}
+.mob header,.mob #tbar,.mob #sesbar,.mob #lstL,.mob #lstR,.mob #rcol,.mob #ed,.mob #gmidi,.mob #gmov,.mob #gbar .gl,.mob #gbar .otag,.mob #gsel,.mob #gav,.mob #recpad,.mob .cell:has(#recpad),.mob .recbar,.mob #cedit,.mob #ckey,.mob #cnx,.mob #cpl,.mob #dz{display:none!important}
 .mob body,body.mob{padding:0 0 calc(18px + env(safe-area-inset-bottom,0px))!important;margin:0}
 .mob #stage{display:block;padding:0 10px}
 .mob #gcol{margin:0!important;padding:0 0 10px!important;min-height:0;border:0!important;background:none!important;box-shadow:none!important;width:100%}
@@ -1347,6 +1347,19 @@ html:not(.mob) #mphone.show{display:block;position:fixed;right:10px;bottom:calc(
 .lite body.booting>*:not(#splash){filter:none!important;transform:none!important}
 .lite #splash.off{transform:none}
 .lite #menu,.lite #cm,.lite #selm,.lite #plm,.lite #wfm,.lite #mkm{background:rgba(24,24,28,.98)}
+
+/* v2.57 · móvil en vivo */
+#dlg .mvl{display:flex;flex-direction:column;gap:6px}
+#dlg .mvl label.mvk{display:flex!important;gap:10px;align-items:center;justify-content:flex-start!important;text-align:left;font-size:.74rem;cursor:pointer;padding:2px 0;border:0;background:none}
+#dlg .mvl label.mvk input{width:18px!important;height:18px;flex:none;margin:0;padding:0}
+#dlg .mvl input[type=text]{width:100%;box-sizing:border-box}
+#dlg .mvl .mvlink{font-size:.62rem;word-break:break-all;color:var(--mut);background:#050506;border:1px solid var(--line);padding:8px;user-select:all}
+#dlg .mvl .mvb{display:flex;flex-wrap:wrap;gap:6px}
+#dlg .mvl .mvb button{flex:1 1 auto;font-size:.64rem;padding:9px 8px}
+#dlg .mvl .mvb .big{background:var(--on);border-color:var(--on);color:#fff}
+#dlg .mvl small{font-size:.66rem;line-height:1.45;color:var(--mut)}
+#dlg .dbox.mvd{width:min(480px,100%);max-height:92vh;overflow:auto}
+#gmov.live .mdot{background:#3dff7a}
 </style>
 </head>
 <body class="booting">
@@ -1444,7 +1457,7 @@ html:not(.mob) #mphone.show{display:block;position:fixed;right:10px;bottom:calc(
 </header>
 <p id="msg"></p>
 <div id="empty"><img src="logo.png" alt="Botonera al aire" onerror="this.style.display='none'"></div>
-<div id="stage"><div id="lstL"></div><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><button type="button" id="mrec" title="Grabar con el micrófono y crear un botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="currentColor"/></svg><span id="mrect">Grabar</span></button><button id="stop" class="stop" title="Parar todo" aria-label="Parar todo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Parar todo</button><button type="button" id="gmidi" class="mbtn" title="MIDI: asignar pads de un controlador a los botones. Tocá este botón, después un botón de la botonera y por último el pad"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="7" cy="12" r=".9" fill="currentColor"/><circle cx="8.6" cy="7.9" r=".9" fill="currentColor"/><circle cx="12" cy="6.2" r=".9" fill="currentColor"/><circle cx="15.4" cy="7.9" r=".9" fill="currentColor"/><circle cx="17" cy="12" r=".9" fill="currentColor"/></svg>MIDI<span class="mdot" aria-hidden="true"></span></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*,.mpeg,.mpg,.mpga,.mp2,.mpa,.m2a" multiple></label><span class="av" id="gav" role="img" aria-label="Usuario activo"></span></div><div id="grid"></div></div>
+<div id="stage"><div id="lstL"></div><div id="gcol"><div id="gbar"><span class="gl">Botonera</span><button type="button" class="otag" id="otg-pad"></button><button type="button" id="mrec" title="Grabar con el micrófono y crear un botón nuevo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="currentColor"/></svg><span id="mrect">Grabar</span></button><button id="stop" class="stop" title="Parar todo" aria-label="Parar todo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>Parar todo</button><button type="button" id="gmidi" class="mbtn" title="MIDI: asignar pads de un controlador a los botones. Tocá este botón, después un botón de la botonera y por último el pad"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="7" cy="12" r=".9" fill="currentColor"/><circle cx="8.6" cy="7.9" r=".9" fill="currentColor"/><circle cx="12" cy="6.2" r=".9" fill="currentColor"/><circle cx="15.4" cy="7.9" r=".9" fill="currentColor"/><circle cx="17" cy="12" r=".9" fill="currentColor"/></svg>MIDI<span class="mdot" aria-hidden="true"></span></button><button type="button" id="gmov" class="mbtn" title="Móvil en vivo: video y audio en los dos sentidos con un celular (VDO.Ninja)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg>Móvil<span class="mdot" id="gmovd" aria-hidden="true"></span></button><span class="gsel" id="gsel" hidden><b id="gselc"></b><button id="gseladd" title="Agregar los botones seleccionados a la lista (también podés arrastrarlos)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 14 4 3-4 3z" fill="currentColor"/></svg>A la lista</button><button id="gselclr" title="Quitar la selección">Limpiar</button></span><canvas id="gvu" class="vu2" aria-label="Vúmetro general de la botonera (izquierdo y derecho)"></canvas><label class="btn" title="Cargar audios a la botonera: crea un botón por cada archivo (también podés arrastrarlos a cualquier parte de la página)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>Cargar audios<input id="file" type="file" accept="audio/*,.mpeg,.mpg,.mpga,.mp2,.mpa,.m2a" multiple></label><span class="av" id="gav" role="img" aria-label="Usuario activo"></span></div><div id="grid"></div></div>
 <div id="lstR"><aside id="pl" class="plp" aria-label="Lista de reproducción">
   <div class="plh"><b>Lista</b><span id="plcnt"></span><span class="sp"></span><button type="button" id="plnew" class="plb plnb" title="Agregar otra lista a la derecha (cada lista puede salir por su propia placa de sonido)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Lista</span></button><button type="button" id="plrm" class="plb plnb" hidden title="Quitar esta lista"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><button type="button" id="plshow" class="plb" title="Play actual: lleva la lista hasta el tema que suena o el que quedó elegido para reproducirse (Ctrl+A)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Play actual</span></button><button type="button" class="otag" id="otg-pl"></button></div>
   <div class="plact">
@@ -1529,7 +1542,7 @@ html:not(.mob) #mphone.show{display:block;position:fixed;right:10px;bottom:calc(
 </section>
 
 <div id="dz" aria-hidden="true">Soltá los audios para crear botones</div>
-<footer id="sig" title="Versión 2.56 · 19 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.56</span></footer>
+<footer id="sig" title="Versión 2.57 · 20 nov 2026"><a href="https://instagram.com/pecallega" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pecallega"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>© 2026 @pecallega</a><span class="mem" id="memro" title="Memoria que ocupan los audios decodificados. Zona sana en 8 GB de RAM: hasta ~1500 MB."></span><span class="ver">v2.57</span></footer>
 
 <aside id="menu" aria-label="Configurar teclas">
   <div class="top"><h2>Teclas de cada audio</h2><button id="close" aria-label="Cerrar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -1835,6 +1848,32 @@ if(MOB){document.documentElement.classList.add("mob");document.body.classList.ad
   $("mrec").addEventListener("click",()=>{hideCm();recToggle();setTimeout(mrecUI,60)});setInterval(mrecUI,250);
   const f=$("sig"),d=document.createElement("button");d.type="button";d.id="mdesk";d.textContent="Ver versión de escritorio";d.addEventListener("click",()=>{try{sessionStorage.setItem("botonera_vista","pc")}catch(e){}location.reload()});f.appendChild(d)}
 else if(PHONE){const m=document.createElement("button");m.type="button";m.id="mphone";m.className="show";m.textContent="Vista de celular";m.addEventListener("click",()=>{try{sessionStorage.removeItem("botonera_vista")}catch(e){}location.reload()});document.body.appendChild(m)}
+
+/* ---------- v2.57 · móvil en vivo (video y audio con un celular usando VDO.Ninja) ---------- */
+const MOV={k:"botonera_movil",cfg:null,
+  rnd(n){const a="abcdefghijkmnpqrstuvwxyz23456789";let r="";const b=new Uint8Array(n);crypto.getRandomValues(b);b.forEach(x=>r+=a[x%a.length]);return r},
+  load(){if(this.cfg)return this.cfg;let c=null;try{c=JSON.parse(localStorage.getItem(this.k)||"null")}catch(e){}
+    if(!c||!c.pc||!c.mv)c={pc:"bt"+this.rnd(12),mv:"mv"+this.rnd(12),name:"Móvil",studio:"Estudio",mute:false,rear:false};this.cfg=c;this.save();return c},
+  save(){try{localStorage.setItem(this.k,JSON.stringify(this.cfg))}catch(e){}},
+  renew(){const c=this.load();c.pc="bt"+this.rnd(12);c.mv="mv"+this.rnd(12);this.save()},
+  q(o){return Object.entries(o).filter(([k,v])=>v!==false&&v!==null).map(([k,v])=>v===true?k:k+"="+encodeURIComponent(v)).join("&")},
+  phone(){const c=this.load();return "https://vdo.ninja/?"+this.q({push:c.mv,view:c.pc,label:c.name||"Móvil",webcam:true,mute:c.mute,facing:c.rear?"rear":false})},
+  studio(){const c=this.load();return "https://vdo.ninja/?"+this.q({push:c.pc,view:c.mv,label:c.studio||"Estudio",webcam:true})},
+  obs(){const c=this.load();return "https://vdo.ninja/?"+this.q({view:c.mv})}};
+async function movCopy(t,ok){try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(x){}a.remove()}note(ok,"info","mov",3000)}
+function movilDlg(){const c=MOV.load(),w=document.createElement("div");w.id="dlg";
+  w.innerHTML='<div class="dbox mvd" role="dialog" aria-modal="true" aria-label="Móvil en vivo"><b>Móvil en vivo</b><p>Video y audio en los dos sentidos con un celular, con VDO.Ninja (gratis, sin instalar nada). 1) Mandale el link al celular. 2) Abrí tu lado. El celular tiene que usar auriculares con micrófono para que no haya eco.</p><div class="mvl"><input type="text" id="mvn" maxlength="30" aria-label="Nombre del móvil en pantalla" placeholder="Nombre del móvil en pantalla"><label class="mvk"><input type="checkbox" id="mvm"> Solo imagen: el micrófono del móvil entra silenciado</label><label class="mvk"><input type="checkbox" id="mvr"> Cámara trasera del celular</label><div class="mvlink" id="mvl" aria-label="Link para el celular"></div><div class="mvb"><button type="button" class="big" id="mvo">Abrir mi lado</button><button type="button" id="mvc">Copiar link del móvil</button><button type="button" id="mvw">WhatsApp</button></div><div class="mvb"><button type="button" id="mvb">Copiar link para OBS (solo ver)</button><button type="button" id="mvx">Código nuevo</button></div><small>En la ventana de VDO.Ninja elegí tu cámara y tu micrófono. Para mandar el programa al móvil elegí como micrófono la mezcla de tu consola. Si querés mandar solo imagen, silenciá tu micrófono ahí. Cualquiera que tenga el link puede entrar: «Código nuevo» corta el anterior.</small></div><div class="drow"><button class="dok" id="mvz">Cerrar</button></div></div>';
+  const $q=i=>w.querySelector("#"+i),end=()=>{document.removeEventListener("keydown",kd,true);w.remove()},kd=e=>{if(e.key==="Escape"&&document.querySelectorAll("#dlg").length<2){e.preventDefault();e.stopImmediatePropagation();end()}};
+  const upd=()=>{c.name=$q("mvn").value.trim()||"Móvil";c.mute=$q("mvm").checked;c.rear=$q("mvr").checked;MOV.save();$q("mvl").textContent=MOV.phone()};
+  $q("mvn").value=c.name==="Móvil"?"":c.name;$q("mvm").checked=!!c.mute;$q("mvr").checked=!!c.rear;upd();
+  ["input","change"].forEach(ev=>w.addEventListener(ev,e=>{if(e.target.id==="mvn"||e.target.id==="mvm"||e.target.id==="mvr")upd()}));
+  $q("mvo").onclick=()=>{upd();const win=window.open(MOV.studio(),"botonera_movil","popup,width=1100,height=760");if(!win){window.open(MOV.studio(),"_blank")}const b=$("gmov");if(b)b.classList.add("live")};
+  $q("mvc").onclick=()=>{upd();movCopy(MOV.phone(),"Link del móvil copiado. Pegalo en un mensaje al celular.")};
+  $q("mvw").onclick=()=>{upd();window.open("https://wa.me/?text="+encodeURIComponent("Entrá a este link desde el celular para salir en vivo (usá auriculares): "+MOV.phone()),"_blank")};
+  $q("mvb").onclick=()=>{movCopy(MOV.obs(),"Link para OBS copiado (solo muestra la imagen del móvil).")};
+  $q("mvx").onclick=async()=>{if(!(await askDlg("Código nuevo","El link anterior del móvil deja de funcionar y hay que mandar uno nuevo. ¿Seguro?","Generar")))return;MOV.renew();upd();note("Código nuevo generado. Mandale el link nuevo al celular.","info","mov",3500)};
+  $q("mvz").onclick=end;w.addEventListener("pointerdown",e=>{if(e.target===w)end()});document.addEventListener("keydown",kd,true);document.body.appendChild(w);$q("mvo").focus()}
+$("gmov").addEventListener("click",movilDlg);
 
 /* ---------- almacenamiento (IndexedDB) ---------- */
 function db(){return new Promise((ok,no)=>{try{const r=indexedDB.open("botonera",1);
@@ -3522,7 +3561,7 @@ $("lkurl").addEventListener("keydown",e=>{if(!sugEl||sugCur()!==$("lkurl"))retur
 window.addEventListener("resize",sugPlace);
 
 /* ---------- v1.82 · guardar / abrir sesión: SOLO datos (nombres, orden, colores, teclas, marcas, listas, ajustes). Nunca incluye audio ---------- */
-const SES_SKIP=/^botonera_(htoken|helper|repo|users|user|vout|midi_on)$|^botonera_hidden/;
+const SES_SKIP=/^botonera_(htoken|helper|repo|users|user|vout|midi_on|movil)$|^botonera_hidden/;
 function sesBuild(){
   const lists=PLISTS.map(L=>({n:L.n,solo:!!L.solo,rows:L.rows.map(r=>r.t==="s"?{t:"s"}:{t:"f",name:r.name,color:r.color||null,cues:r.cues||[]})}));
   const ls={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^botonera_/.test(k)&&!SES_SKIP.test(k))ls[k]=localStorage.getItem(k)}}catch(e){}
